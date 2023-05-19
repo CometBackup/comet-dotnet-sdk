@@ -10,9 +10,9 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>WinSMBAuth</c>
 /// </summary>
 public class WinSMBAuth {
-	public string SharePath { get; set; } = "";
-	public string Username { get; set; } = "";
-	public string Password { get; set; } = "";
+	public string SharePath { get; set; } = string.Empty;
+	public string Username { get; set; } = string.Empty;
+	public string Password { get; set; } = string.Empty;
 	public ulong PasswordFormat { get; set; }
 
 	public WinSMBAuth(){ }

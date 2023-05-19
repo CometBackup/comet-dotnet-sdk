@@ -10,11 +10,11 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>AllowedAdminUser</c>
 /// </summary>
 public class AllowedAdminUser {
-	public string Username { get; set; } = "";
-	public string OrganizationID { get; set; } = "";
-	public string ExternalAuthenticationSource { get; set; } = "";
+	public string Username { get; set; } = string.Empty;
+	public string OrganizationID { get; set; } = string.Empty;
+	public string ExternalAuthenticationSource { get; set; } = string.Empty;
 	public long PasswordFormat { get; set; }
-	public string Password { get; set; } = "";
+	public string Password { get; set; } = string.Empty;
 	public bool AllowPasswordLogin { get; set; }
 	public bool AllowPasswordAndTOTPLogin { get; set; }
 
@@ -23,12 +23,12 @@ public class AllowedAdminUser {
 	public bool AllowPasswordAndWebAuthnLogin { get; set; }
 
 	[Obsolete("Deprecated since Comet version 21.12.0")]
-	public List<AdminU2FRegistration> U2FRegistrations { get; set; } = new List<AdminU2FRegistration>();
-	public List<AdminWebAuthnRegistration> WebAuthnRegistrations { get; set; } = new List<AdminWebAuthnRegistration>();
+	public List<AdminU2FRegistration> U2FRegistrations { get; set; }
+	public List<AdminWebAuthnRegistration> WebAuthnRegistrations { get; set; }
 	public long TOTPKeyEncryptionFormat { get; set; }
-	public string TOTPKey { get; set; } = "";
-	public string IPWhitelist { get; set; } = "";
-	public AdminUserPermissions Permissions { get; set; } = new AdminUserPermissions();
+	public string TOTPKey { get; set; } = string.Empty;
+	public string IPWhitelist { get; set; } = string.Empty;
+	public AdminUserPermissions Permissions { get; set; }
 
 	public AllowedAdminUser(){ }
 

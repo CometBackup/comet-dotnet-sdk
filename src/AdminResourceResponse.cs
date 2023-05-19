@@ -11,8 +11,8 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 public class AdminResourceResponse {
 	public long Status { get; set; }
-	public string Message { get; set; } = "";
-	public string ResourceHash { get; set; } = "";
+	public string Message { get; set; } = string.Empty;
+	public string ResourceHash { get; set; } = string.Empty;
 
 	public AdminResourceResponse(){ }
 

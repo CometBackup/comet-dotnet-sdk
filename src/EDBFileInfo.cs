@@ -10,11 +10,11 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>EDBFileInfo</c>
 /// </summary>
 public class EDBFileInfo {
-	public string Name { get; set; } = "";
+	public string Name { get; set; } = string.Empty;
 
 	[JsonPropertyName("Guid")]
-	public string GUID { get; set; } = "";
-	public string ServerName { get; set; } = "";
+	public string GUID { get; set; } = string.Empty;
+	public string ServerName { get; set; } = string.Empty;
 	public bool CircularLoggingEnabled { get; set; }
 
 	public EDBFileInfo(){ }

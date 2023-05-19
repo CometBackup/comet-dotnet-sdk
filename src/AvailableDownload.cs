@@ -10,8 +10,8 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>AvailableDownload</c>
 /// </summary>
 public class AvailableDownload {
-	public string Category { get; set; } = "";
-	public string Description { get; set; } = "";
+	public string Category { get; set; } = string.Empty;
+	public string Description { get; set; } = string.Empty;
 	public bool Recommended { get; set; }
 
 	public AvailableDownload(){ }

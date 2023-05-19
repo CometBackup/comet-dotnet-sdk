@@ -11,8 +11,8 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 public class DispatcherStoredObjectsResponse {
 	public long Status { get; set; }
-	public string Message { get; set; } = "";
-	public List<StoredObject> StoredObjects { get; set; } = new List<StoredObject>();
+	public string Message { get; set; } = string.Empty;
+	public List<StoredObject> StoredObjects { get; set; }
 
 	public DispatcherStoredObjectsResponse(){ }
 

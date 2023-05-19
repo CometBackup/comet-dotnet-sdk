@@ -10,17 +10,17 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>SourceConfig</c>
 /// </summary>
 public class SourceConfig {
-	public string Engine { get; set; } = "";
-	public string Description { get; set; } = "";
-	public string OwnerDevice { get; set; } = "";
+	public string Engine { get; set; } = string.Empty;
+	public string Description { get; set; } = string.Empty;
+	public string OwnerDevice { get; set; } = string.Empty;
 	public long CreateTime { get; set; }
 	public long ModifyTime { get; set; }
-	public List<string> PreExec { get; set; } = new List<string>();
-	public List<string> ThawExec { get; set; } = new List<string>();
-	public List<string> PostExec { get; set; } = new List<string>();
-	public Dictionary<string, string> EngineProps { get; set; } = new Dictionary<string, string>();
-	public Dictionary<string, RetentionPolicy> OverrideDestinationRetention { get; set; } = new Dictionary<string, RetentionPolicy>();
-	public SourceStatistics Statistics { get; set; } = new SourceStatistics();
+	public List<string> PreExec { get; set; }
+	public List<string> ThawExec { get; set; }
+	public List<string> PostExec { get; set; }
+	public Dictionary<string, string> EngineProps { get; set; }
+	public Dictionary<string, RetentionPolicy> OverrideDestinationRetention { get; set; }
+	public SourceStatistics Statistics { get; set; }
 
 	public SourceConfig(){ }
 

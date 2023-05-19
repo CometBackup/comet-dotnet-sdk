@@ -10,7 +10,7 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>UserProfileFragment</c>
 /// </summary>
 public class UserProfileFragment {
-	public string Username { get; set; } = "";
+	public string Username { get; set; } = string.Empty;
 
 	public UserProfileFragment(){ }
 

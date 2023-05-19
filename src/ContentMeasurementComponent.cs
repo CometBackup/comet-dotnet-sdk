@@ -11,7 +11,7 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 public class ContentMeasurementComponent {
 	public long Bytes { get; set; }
-	public List<string> UsedBy { get; set; } = new List<string>();
+	public List<string> UsedBy { get; set; }
 
 	public ContentMeasurementComponent(){ }
 

@@ -10,10 +10,10 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>RegisterOfficeApplicationCheckResponse</c>
 /// </summary>
 public class RegisterOfficeApplicationCheckResponse {
-	public string Continuation { get; set; } = "";
+	public string Continuation { get; set; } = string.Empty;
 	public bool Completed { get; set; }
-	public string Error { get; set; } = "";
-	public Office365Credential Result { get; set; } = new Office365Credential();
+	public string Error { get; set; } = string.Empty;
+	public Office365Credential Result { get; set; }
 
 	public RegisterOfficeApplicationCheckResponse(){ }
 

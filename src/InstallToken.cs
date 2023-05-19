@@ -10,9 +10,9 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>InstallToken</c>
 /// </summary>
 public class InstallToken {
-	public string Username { get; set; } = "";
-	public string Server { get; set; } = "";
-	public string Token { get; set; } = "";
+	public string Username { get; set; } = string.Empty;
+	public string Server { get; set; } = string.Empty;
+	public string Token { get; set; } = string.Empty;
 	public long CreateTime { get; set; }
 	public bool Used { get; set; }
 	public long ExpireTime { get; set; }

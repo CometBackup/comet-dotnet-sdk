@@ -10,9 +10,9 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>AdminAccountPropertiesResponse</c>
 /// </summary>
 public class AdminAccountPropertiesResponse {
-	public string OrganizationID { get; set; } = "";
-	public AdminUserPermissions Permissions { get; set; } = new AdminUserPermissions();
-	public AdminSecurityOptions Security { get; set; } = new AdminSecurityOptions();
+	public string OrganizationID { get; set; } = string.Empty;
+	public AdminUserPermissions Permissions { get; set; }
+	public AdminSecurityOptions Security { get; set; }
 
 	public AdminAccountPropertiesResponse(){ }
 

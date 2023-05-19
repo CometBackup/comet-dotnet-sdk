@@ -10,11 +10,11 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>SearchClause</c>
 /// </summary>
 public class SearchClause {
-	public string ClauseType { get; set; } = "";
-	public string RuleField { get; set; } = "";
-	public string RuleOperator { get; set; } = "";
-	public string RuleValue { get; set; } = "";
-	public List<SearchClause> ClauseChildren { get; set; } = new List<SearchClause>();
+	public string ClauseType { get; set; } = string.Empty;
+	public string RuleField { get; set; } = string.Empty;
+	public string RuleOperator { get; set; } = string.Empty;
+	public string RuleValue { get; set; } = string.Empty;
+	public List<SearchClause> ClauseChildren { get; set; }
 
 	public SearchClause(){ }
 

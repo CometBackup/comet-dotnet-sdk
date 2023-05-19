@@ -12,7 +12,7 @@ namespace CometBackup.CometAPI.SDK {
 public class ConstellationRoleOptions {
 	public bool RoleEnabled { get; set; }
 	public bool DeleteUnusedData { get; set; }
-	public List<RemoteServerAddress> Servers { get; set; } = new List<RemoteServerAddress>();
+	public List<RemoteServerAddress> Servers { get; set; }
 
 	public ConstellationRoleOptions(){ }
 

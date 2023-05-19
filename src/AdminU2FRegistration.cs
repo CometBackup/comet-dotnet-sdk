@@ -11,7 +11,7 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 [Obsolete("Deprecated since Comet version 21.12.0")]
 public class AdminU2FRegistration {
-	public string Description { get; set; } = "";
+	public string Description { get; set; } = string.Empty;
 	public long RegisterTime { get; set; }
 	public byte[] Registration { get; set; }
 

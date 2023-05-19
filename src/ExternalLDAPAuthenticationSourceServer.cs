@@ -10,9 +10,9 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>ExternalLDAPAuthenticationSourceServer</c>
 /// </summary>
 public class ExternalLDAPAuthenticationSourceServer {
-	public string Hostname { get; set; } = "";
+	public string Hostname { get; set; } = string.Empty;
 	public long Port { get; set; }
-	public string SecurityMethod { get; set; } = "";
+	public string SecurityMethod { get; set; } = string.Empty;
 	public bool AcceptInvalidSSL { get; set; }
 
 	public ExternalLDAPAuthenticationSourceServer(){ }

@@ -11,8 +11,8 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 public class DispatcherVaultSnapshotsResponse {
 	public long Status { get; set; }
-	public string Message { get; set; } = "";
-	public List<VaultSnapshot> Snapshots { get; set; } = new List<VaultSnapshot>();
+	public string Message { get; set; } = string.Empty;
+	public List<VaultSnapshot> Snapshots { get; set; }
 
 	public DispatcherVaultSnapshotsResponse(){ }
 

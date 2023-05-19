@@ -11,10 +11,10 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 public class TotpRegeneratedResponse {
 	public long Status { get; set; }
-	public string Message { get; set; } = "";
-	public string Image { get; set; } = "";
-	public string URL { get; set; } = "";
-	public string ProfileHash { get; set; } = "";
+	public string Message { get; set; } = string.Empty;
+	public string Image { get; set; } = string.Empty;
+	public string URL { get; set; } = string.Empty;
+	public string ProfileHash { get; set; } = string.Empty;
 
 	public TotpRegeneratedResponse(){ }
 

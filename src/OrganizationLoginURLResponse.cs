@@ -10,7 +10,7 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>OrganizationLoginURLResponse</c>
 /// </summary>
 public class OrganizationLoginURLResponse {
-	public string LoginURL { get; set; } = "";
+	public string LoginURL { get; set; } = string.Empty;
 
 	public OrganizationLoginURLResponse(){ }
 

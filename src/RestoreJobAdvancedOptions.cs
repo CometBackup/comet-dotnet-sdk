@@ -14,20 +14,20 @@ public class RestoreJobAdvancedOptions {
 	public bool OverwriteExistingFiles { get; set; }
 	public bool OverwriteIfNewer { get; set; }
 	public bool DestIsOriginalLocation { get; set; }
-	public string DestPath { get; set; } = "";
-	public List<string> ExactDestPaths { get; set; } = new List<string>();
+	public string DestPath { get; set; } = string.Empty;
+	public List<string> ExactDestPaths { get; set; }
 	public long ArchiveFormat { get; set; }
-	public Office365Credential Office365Credential { get; set; } = new Office365Credential();
-	public string Username { get; set; } = "";
-	public string Password { get; set; } = "";
-	public string Host { get; set; } = "";
-	public string Port { get; set; } = "";
+	public Office365Credential Office365Credential { get; set; }
+	public string Username { get; set; } = string.Empty;
+	public string Password { get; set; } = string.Empty;
+	public string Host { get; set; } = string.Empty;
+	public string Port { get; set; } = string.Empty;
 	public bool UseSsl { get; set; }
 	public bool SslAllowInvalid { get; set; }
-	public string SslCaFile { get; set; } = "";
-	public string SslCrtFile { get; set; } = "";
-	public string SslKeyFile { get; set; } = "";
-	public MSSQLLoginArgs MsSqlConnection { get; set; } = new MSSQLLoginArgs();
+	public string SslCaFile { get; set; } = string.Empty;
+	public string SslCrtFile { get; set; } = string.Empty;
+	public string SslKeyFile { get; set; } = string.Empty;
+	public MSSQLLoginArgs MsSqlConnection { get; set; }
 
 	public RestoreJobAdvancedOptions(){ }
 

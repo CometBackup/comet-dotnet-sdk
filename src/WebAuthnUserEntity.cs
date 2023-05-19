@@ -12,13 +12,13 @@ namespace CometBackup.CometAPI.SDK {
 public class WebAuthnUserEntity {
 
 	[JsonPropertyName("name")]
-	public string Name { get; set; } = "";
+	public string Name { get; set; } = string.Empty;
 
 	[JsonPropertyName("icon")]
-	public string Icon { get; set; } = "";
+	public string Icon { get; set; } = string.Empty;
 
 	[JsonPropertyName("displayName")]
-	public string DisplayName { get; set; } = "";
+	public string DisplayName { get; set; } = string.Empty;
 
 	[JsonPropertyName("id")]
 	public byte[] ID { get; set; }

@@ -10,13 +10,13 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>PublicBrandingProperties</c>
 /// </summary>
 public class PublicBrandingProperties {
-	public string ProductName { get; set; } = "";
-	public string CompanyName { get; set; } = "";
-	public string HelpURL { get; set; } = "";
+	public string ProductName { get; set; } = string.Empty;
+	public string CompanyName { get; set; } = string.Empty;
+	public string HelpURL { get; set; } = string.Empty;
 	public bool HelpIsPopup { get; set; }
-	public string DefaultLoginServerURL { get; set; } = "";
-	public string TileBackgroundColor { get; set; } = "";
-	public string AccountRegisterURL { get; set; } = "";
+	public string DefaultLoginServerURL { get; set; } = string.Empty;
+	public string TileBackgroundColor { get; set; } = string.Empty;
+	public string AccountRegisterURL { get; set; } = string.Empty;
 	public bool HideBackgroundLogo { get; set; }
 
 	public PublicBrandingProperties(){ }

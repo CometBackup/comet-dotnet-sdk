@@ -12,16 +12,16 @@ namespace CometBackup.CometAPI.SDK {
 public class WebAuthnAuthenticatorSelection {
 
 	[JsonPropertyName("authenticatorAttachment")]
-	public string AuthenticatorAttachment { get; set; } = "";
+	public string AuthenticatorAttachment { get; set; } = string.Empty;
 
 	[JsonPropertyName("requireResidentKey")]
 	public bool RequireResidentKey { get; set; }
 
 	[JsonPropertyName("residentKey")]
-	public string ResidentKey { get; set; } = "";
+	public string ResidentKey { get; set; } = string.Empty;
 
 	[JsonPropertyName("userVerification")]
-	public string UserVerification { get; set; } = "";
+	public string UserVerification { get; set; } = string.Empty;
 
 	public WebAuthnAuthenticatorSelection(){ }
 

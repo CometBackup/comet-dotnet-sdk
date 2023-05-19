@@ -10,19 +10,19 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>ReplicaServer</c>
 /// </summary>
 public class ReplicaServer {
-	public string Type { get; set; } = "";
-	public string Description { get; set; } = "";
-	public string RemoteAddress { get; set; } = "";
-	public string Username { get; set; } = "";
-	public string Password { get; set; } = "";
-	public ExternalLDAPAuthenticationSourceSettings LDAP { get; set; } = new ExternalLDAPAuthenticationSourceSettings();
-	public B2VirtualStorageRoleSettings B2 { get; set; } = new B2VirtualStorageRoleSettings();
-	public WasabiVirtualStorageRoleSettings Wasabi { get; set; } = new WasabiVirtualStorageRoleSettings();
-	public CustomRemoteBucketSettings Custom { get; set; } = new CustomRemoteBucketSettings();
-	public S3GenericVirtualStorageRole S3 { get; set; } = new S3GenericVirtualStorageRole();
-	public AmazonAWSVirtualStorageRoleSettings AWS { get; set; } = new AmazonAWSVirtualStorageRoleSettings();
-	public StorjVirtualStorageRoleSetting Storj { get; set; } = new StorjVirtualStorageRoleSetting();
-	public string ReplicaDeletionStrategy { get; set; } = "";
+	public string Type { get; set; } = string.Empty;
+	public string Description { get; set; } = string.Empty;
+	public string RemoteAddress { get; set; } = string.Empty;
+	public string Username { get; set; } = string.Empty;
+	public string Password { get; set; } = string.Empty;
+	public ExternalLDAPAuthenticationSourceSettings LDAP { get; set; }
+	public B2VirtualStorageRoleSettings B2 { get; set; }
+	public WasabiVirtualStorageRoleSettings Wasabi { get; set; }
+	public CustomRemoteBucketSettings Custom { get; set; }
+	public S3GenericVirtualStorageRole S3 { get; set; }
+	public AmazonAWSVirtualStorageRoleSettings AWS { get; set; }
+	public StorjVirtualStorageRoleSetting Storj { get; set; }
+	public string ReplicaDeletionStrategy { get; set; } = string.Empty;
 
 	public ReplicaServer(){ }
 

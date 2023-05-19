@@ -10,12 +10,12 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>Office365Connection</c>
 /// </summary>
 public class Office365Connection {
-	public string FeatureFlag { get; set; } = "";
-	public Office365Credential Credential { get; set; } = new Office365Credential();
-	public Office365CustomSetting CustomSetting { get; set; } = new Office365CustomSetting();
-	public List<string> MailboxUniqueMembers { get; set; } = new List<string>();
-	public List<string> SiteUniqueMembers { get; set; } = new List<string>();
-	public Office365CustomSettingV2 CustomSettingV2 { get; set; } = new Office365CustomSettingV2();
+	public string FeatureFlag { get; set; } = string.Empty;
+	public Office365Credential Credential { get; set; }
+	public Office365CustomSetting CustomSetting { get; set; }
+	public List<string> MailboxUniqueMembers { get; set; }
+	public List<string> SiteUniqueMembers { get; set; }
+	public Office365CustomSettingV2 CustomSettingV2 { get; set; }
 
 	public Office365Connection(){ }
 

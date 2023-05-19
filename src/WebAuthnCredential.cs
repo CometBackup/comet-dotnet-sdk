@@ -11,7 +11,7 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 public class WebAuthnCredential {
 	public byte[] PublicKey { get; set; }
-	public string AttestationType { get; set; } = "";
+	public string AttestationType { get; set; } = string.Empty;
 	public byte[] AAGUID { get; set; }
 	public uint SignCount { get; set; }
 	public bool CloneWarning { get; set; }

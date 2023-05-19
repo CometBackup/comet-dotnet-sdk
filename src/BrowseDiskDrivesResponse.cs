@@ -11,8 +11,8 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 public class BrowseDiskDrivesResponse {
 	public long Status { get; set; }
-	public string Message { get; set; } = "";
-	public List<DiskDrive> Disks { get; set; } = new List<DiskDrive>();
+	public string Message { get; set; } = string.Empty;
+	public List<DiskDrive> Disks { get; set; }
 
 	public BrowseDiskDrivesResponse(){ }
 

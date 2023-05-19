@@ -11,9 +11,9 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 [Obsolete("Deprecated since Comet version 21.12.0")]
 public class U2FRegisteredKey {
-	public string AppID { get; set; } = "";
-	public string KeyHandle { get; set; } = "";
-	public string Version { get; set; } = "";
+	public string AppID { get; set; } = string.Empty;
+	public string KeyHandle { get; set; } = string.Empty;
+	public string Version { get; set; } = string.Empty;
 
 	public U2FRegisteredKey(){ }
 

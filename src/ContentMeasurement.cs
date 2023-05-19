@@ -12,7 +12,7 @@ namespace CometBackup.CometAPI.SDK {
 public class ContentMeasurement {
 	public long MeasureStarted { get; set; }
 	public long MeasureCompleted { get; set; }
-	public List<ContentMeasurementComponent> Components { get; set; } = new List<ContentMeasurementComponent>();
+	public List<ContentMeasurementComponent> Components { get; set; }
 
 	public ContentMeasurement(){ }
 

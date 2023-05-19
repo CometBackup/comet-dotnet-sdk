@@ -11,10 +11,10 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 [Obsolete("Deprecated since Comet version 21.12.0")]
 public class U2FSignResponse {
-	public string ChallengeID { get; set; } = "";
-	public string KeyHandle { get; set; } = "";
-	public string Signature { get; set; } = "";
-	public string ClientData { get; set; } = "";
+	public string ChallengeID { get; set; } = string.Empty;
+	public string KeyHandle { get; set; } = string.Empty;
+	public string Signature { get; set; } = string.Empty;
+	public string ClientData { get; set; } = string.Empty;
 
 	public U2FSignResponse(){ }
 

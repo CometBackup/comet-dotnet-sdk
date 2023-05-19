@@ -12,31 +12,31 @@ namespace CometBackup.CometAPI.SDK {
 public class StoredObject {
 
 	[JsonPropertyName("name")]
-	public string Name { get; set; } = "";
+	public string Name { get; set; } = string.Empty;
 
 	[JsonPropertyName("mtime")]
 	public long ModifyTime { get; set; }
 
 	[JsonPropertyName("type")]
-	public string Type { get; set; } = "";
+	public string Type { get; set; } = string.Empty;
 
 	[JsonPropertyName("subtree")]
-	public string Subtree { get; set; } = "";
+	public string Subtree { get; set; } = string.Empty;
 
 	[JsonPropertyName("size")]
 	public ulong Size { get; set; }
 
 	[JsonPropertyName("dname")]
-	public string DisplayName { get; set; } = "";
+	public string DisplayName { get; set; } = string.Empty;
 
 	[JsonPropertyName("itemClass")]
-	public string ItemClass { get; set; } = "";
+	public string ItemClass { get; set; } = string.Empty;
 
 	[JsonPropertyName("from")]
-	public string From { get; set; } = "";
+	public string From { get; set; } = string.Empty;
 
 	[JsonPropertyName("to")]
-	public string To { get; set; } = "";
+	public string To { get; set; } = string.Empty;
 
 	[JsonPropertyName("rtime")]
 	public long ReceivedDateTime { get; set; }

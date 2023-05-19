@@ -10,9 +10,9 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>WasabiVirtualStorageRoleSettings</c>
 /// </summary>
 public class WasabiVirtualStorageRoleSettings {
-	public string MasterBucket { get; set; } = "";
-	public string AccessKey { get; set; } = "";
-	public string SecretKey { get; set; } = "";
+	public string MasterBucket { get; set; } = string.Empty;
+	public string AccessKey { get; set; } = string.Empty;
+	public string SecretKey { get; set; } = string.Empty;
 	public bool UseObjectLock { get; set; }
 	public long ObjectLockDays { get; set; }
 	public bool RemoveDeleted { get; set; }

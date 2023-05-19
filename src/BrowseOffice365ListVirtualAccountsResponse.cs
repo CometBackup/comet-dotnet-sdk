@@ -11,8 +11,8 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 public class BrowseOffice365ListVirtualAccountsResponse {
 	public long Status { get; set; }
-	public string Message { get; set; } = "";
-	public List<Office365MixedVirtualAccount> Objects { get; set; } = new List<Office365MixedVirtualAccount>();
+	public string Message { get; set; } = string.Empty;
+	public List<Office365MixedVirtualAccount> Objects { get; set; }
 
 	public BrowseOffice365ListVirtualAccountsResponse(){ }
 

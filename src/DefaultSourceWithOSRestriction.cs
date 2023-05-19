@@ -10,7 +10,7 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>DefaultSourceWithOSRestriction</c>
 /// </summary>
 public class DefaultSourceWithOSRestriction {
-	public SourceConfig SourceConfig { get; set; } = new SourceConfig();
+	public SourceConfig SourceConfig { get; set; }
 	public long RestrictOS { get; set; }
 
 	public DefaultSourceWithOSRestriction(){ }

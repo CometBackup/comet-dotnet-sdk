@@ -10,9 +10,9 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>VSSComponent</c>
 /// </summary>
 public class VSSComponent {
-	public string Path { get; set; } = "";
-	public string Name { get; set; } = "";
-	public string CType { get; set; } = "";
+	public string Path { get; set; } = string.Empty;
+	public string Name { get; set; } = string.Empty;
+	public string CType { get; set; } = string.Empty;
 	public bool Selectable { get; set; }
 
 	public VSSComponent(){ }

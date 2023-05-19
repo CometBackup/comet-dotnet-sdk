@@ -10,13 +10,13 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>SelfBackupExportOptions</c>
 /// </summary>
 public class SelfBackupExportOptions {
-	public DestinationLocation Location { get; set; } = new DestinationLocation();
-	public string EncryptionKey { get; set; } = "";
+	public DestinationLocation Location { get; set; }
+	public string EncryptionKey { get; set; } = string.Empty;
 	public ulong EncryptionKeyFormat { get; set; }
 	public long Compression { get; set; }
 	public bool ExcludeJobsDB { get; set; }
 	public bool IncludeServerLogs { get; set; }
-	public string RestrictToSingleOrgID { get; set; } = "";
+	public string RestrictToSingleOrgID { get; set; } = string.Empty;
 	public long Index { get; set; }
 
 	public SelfBackupExportOptions(){ }

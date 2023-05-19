@@ -10,37 +10,37 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>UserProfileConfig</c> This is the main data structure for a user's profile.
 /// </summary>
 public class UserProfileConfig {
-	public string Username { get; set; } = "";
-	public string AccountName { get; set; } = "";
-	public string LocalTimezone { get; set; } = "";
-	public string LanguageCode { get; set; } = "";
-	public string OrganizationID { get; set; } = "";
-	public List<string> Emails { get; set; } = new List<string>();
-	public Dictionary<string, UserCustomEmailSettings> OverrideEmailSettings { get; set; } = new Dictionary<string, UserCustomEmailSettings>();
+	public string Username { get; set; } = string.Empty;
+	public string AccountName { get; set; } = string.Empty;
+	public string LocalTimezone { get; set; } = string.Empty;
+	public string LanguageCode { get; set; } = string.Empty;
+	public string OrganizationID { get; set; } = string.Empty;
+	public List<string> Emails { get; set; }
+	public Dictionary<string, UserCustomEmailSettings> OverrideEmailSettings { get; set; }
 	public bool SendEmailReports { get; set; }
-	public Dictionary<string, DestinationConfig> Destinations { get; set; } = new Dictionary<string, DestinationConfig>();
-	public Dictionary<string, SourceConfig> Sources { get; set; } = new Dictionary<string, SourceConfig>();
-	public Dictionary<string, BackupRuleConfig> BackupRules { get; set; } = new Dictionary<string, BackupRuleConfig>();
-	public Dictionary<string, DeviceConfig> Devices { get; set; } = new Dictionary<string, DeviceConfig>();
+	public Dictionary<string, DestinationConfig> Destinations { get; set; }
+	public Dictionary<string, SourceConfig> Sources { get; set; }
+	public Dictionary<string, BackupRuleConfig> BackupRules { get; set; }
+	public Dictionary<string, DeviceConfig> Devices { get; set; }
 	public bool IsSuspended { get; set; }
 	public long LastSuspended { get; set; }
 	public bool AllProtectedItemsQuotaEnabled { get; set; }
 	public long AllProtectedItemsQuotaBytes { get; set; }
 	public long MaximumDevices { get; set; }
 	public long QuotaOffice365ProtectedAccounts { get; set; }
-	public string PolicyID { get; set; } = "";
-	public UserPolicy Policy { get; set; } = new UserPolicy();
+	public string PolicyID { get; set; } = string.Empty;
+	public UserPolicy Policy { get; set; }
 	public long PasswordFormat { get; set; }
-	public string PasswordHash { get; set; } = "";
-	public string PasswordRecovery { get; set; } = "";
+	public string PasswordHash { get; set; } = string.Empty;
+	public string PasswordRecovery { get; set; } = string.Empty;
 	public bool AllowPasswordLogin { get; set; }
 	public bool AllowPasswordAndTOTPLogin { get; set; }
 	public long TOTPKeyEncryptionFormat { get; set; }
-	public string TOTPKey { get; set; } = "";
+	public string TOTPKey { get; set; } = string.Empty;
 	public bool RequirePasswordChange { get; set; }
 	public long CreateTime { get; set; }
-	public string CreationGUID { get; set; } = "";
-	public UserServerConfig ServerConfig { get; set; } = new UserServerConfig();
+	public string CreationGUID { get; set; } = string.Empty;
+	public UserServerConfig ServerConfig { get; set; }
 
 	public UserProfileConfig(){ }
 

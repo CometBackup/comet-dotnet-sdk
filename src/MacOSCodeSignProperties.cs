@@ -12,19 +12,19 @@ namespace CometBackup.CometAPI.SDK {
 public class MacOSCodeSignProperties {
 	public long Level { get; set; }
 	public bool SignLocally { get; set; }
-	public SSHConnection SSHServer { get; set; } = new SSHConnection();
-	public string CertificateName { get; set; } = "";
-	public string AppCertificateName { get; set; } = "";
-	public string AppleID { get; set; } = "";
-	public string AppleIDPass { get; set; } = "";
+	public SSHConnection SSHServer { get; set; }
+	public string CertificateName { get; set; } = string.Empty;
+	public string AppCertificateName { get; set; } = string.Empty;
+	public string AppleID { get; set; } = string.Empty;
+	public string AppleIDPass { get; set; } = string.Empty;
 	public ulong AppleIDPassFormat { get; set; }
-	public string CertificateFile { get; set; } = "";
-	public string AppCertificateFile { get; set; } = "";
-	public string PfxFilePassword { get; set; } = "";
+	public string CertificateFile { get; set; } = string.Empty;
+	public string AppCertificateFile { get; set; } = string.Empty;
+	public string PfxFilePassword { get; set; } = string.Empty;
 	public ulong PfxFilePasswordFormat { get; set; }
-	public string NotaryAPIIssuerID { get; set; } = "";
-	public string NotaryAPIKeyID { get; set; } = "";
-	public string NotaryAPIKeyFile { get; set; } = "";
+	public string NotaryAPIIssuerID { get; set; } = string.Empty;
+	public string NotaryAPIKeyID { get; set; } = string.Empty;
+	public string NotaryAPIKeyFile { get; set; } = string.Empty;
 
 	public MacOSCodeSignProperties(){ }
 

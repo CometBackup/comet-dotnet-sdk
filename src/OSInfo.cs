@@ -12,13 +12,13 @@ namespace CometBackup.CometAPI.SDK {
 public class OSInfo {
 
 	[JsonPropertyName("version")]
-	public string Version { get; set; } = "";
+	public string Version { get; set; } = string.Empty;
 
 	[JsonPropertyName("distribution")]
-	public string Distribution { get; set; } = "";
+	public string Distribution { get; set; } = string.Empty;
 
 	[JsonPropertyName("build")]
-	public string Build { get; set; } = "";
+	public string Build { get; set; } = string.Empty;
 
 	public OSInfo(){ }
 

@@ -12,7 +12,7 @@ namespace CometBackup.CometAPI.SDK {
 public class WebAuthnCredentialAssertion {
 
 	[JsonPropertyName("publicKey")]
-	public WebAuthnPublicKeyCredentialRequestOptions Response { get; set; } = new WebAuthnPublicKeyCredentialRequestOptions();
+	public WebAuthnPublicKeyCredentialRequestOptions Response { get; set; }
 
 	public WebAuthnCredentialAssertion(){ }
 

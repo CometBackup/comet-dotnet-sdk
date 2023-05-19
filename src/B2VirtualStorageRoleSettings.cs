@@ -10,9 +10,9 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>B2VirtualStorageRoleSettings</c>
 /// </summary>
 public class B2VirtualStorageRoleSettings {
-	public string MasterBucket { get; set; } = "";
-	public string KeyID { get; set; } = "";
-	public string AppKey { get; set; } = "";
+	public string MasterBucket { get; set; } = string.Empty;
+	public string KeyID { get; set; } = string.Empty;
+	public string AppKey { get; set; } = string.Empty;
 	public bool HideDeletedFiles { get; set; }
 
 	public B2VirtualStorageRoleSettings(){ }

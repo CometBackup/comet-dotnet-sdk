@@ -11,8 +11,8 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 public class SearchSnapshotsResponse {
 	public long Status { get; set; }
-	public string Message { get; set; } = "";
-	public Dictionary<string, List<SearchResultFileInfo>> SnapshotFiles { get; set; } = new Dictionary<string, List<SearchResultFileInfo>>();
+	public string Message { get; set; } = string.Empty;
+	public Dictionary<string, List<SearchResultFileInfo>> SnapshotFiles { get; set; }
 
 	public SearchSnapshotsResponse(){ }
 

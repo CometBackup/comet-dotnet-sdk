@@ -10,10 +10,10 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>EmailReportingOption</c>
 /// </summary>
 public class EmailReportingOption {
-	public EmailReportConfig EmailReportConfig { get; set; } = new EmailReportConfig();
-	public string LanguageCode { get; set; } = "";
-	public string LocalTimezone { get; set; } = "";
-	public List<string> Recipients { get; set; } = new List<string>();
+	public EmailReportConfig EmailReportConfig { get; set; }
+	public string LanguageCode { get; set; } = string.Empty;
+	public string LocalTimezone { get; set; } = string.Empty;
+	public List<string> Recipients { get; set; }
 
 	public EmailReportingOption(){ }
 

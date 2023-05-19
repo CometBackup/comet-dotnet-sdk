@@ -10,11 +10,11 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>DeviceConfig</c>
 /// </summary>
 public class DeviceConfig {
-	public string FriendlyName { get; set; } = "";
+	public string FriendlyName { get; set; } = string.Empty;
 	public long RegistrationTime { get; set; }
-	public OSInfo PlatformVersion { get; set; } = new OSInfo();
-	public Dictionary<string, SourceBasicInfo> Sources { get; set; } = new Dictionary<string, SourceBasicInfo>();
-	public string DeviceTimezone { get; set; } = "";
+	public OSInfo PlatformVersion { get; set; }
+	public Dictionary<string, SourceBasicInfo> Sources { get; set; }
+	public string DeviceTimezone { get; set; } = string.Empty;
 
 	public DeviceConfig(){ }
 

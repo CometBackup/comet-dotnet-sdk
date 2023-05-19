@@ -10,8 +10,8 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>NewBucketDetail</c>
 /// </summary>
 public class NewBucketDetail {
-	public string NewBucketID { get; set; } = "";
-	public string NewBucketKey { get; set; } = "";
+	public string NewBucketID { get; set; } = string.Empty;
+	public string NewBucketKey { get; set; } = string.Empty;
 
 	public NewBucketDetail(){ }
 

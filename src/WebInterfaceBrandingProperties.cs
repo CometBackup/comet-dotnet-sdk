@@ -11,11 +11,11 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 public class WebInterfaceBrandingProperties {
 	public long BrandingStyleType { get; set; }
-	public string BrandName { get; set; } = "";
-	public string LogoImage { get; set; } = "";
-	public string TopColor { get; set; } = "";
-	public string AccentColor { get; set; } = "";
-	public string Favicon { get; set; } = "";
+	public string BrandName { get; set; } = string.Empty;
+	public string LogoImage { get; set; } = string.Empty;
+	public string TopColor { get; set; } = string.Empty;
+	public string AccentColor { get; set; } = string.Empty;
+	public string Favicon { get; set; } = string.Empty;
 	public bool HideNewsArea { get; set; }
 
 	public WebInterfaceBrandingProperties(){ }

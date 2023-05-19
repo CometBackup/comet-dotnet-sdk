@@ -11,9 +11,9 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 public class EmailReportConfig {
 	public long ReportType { get; set; }
-	public List<ScheduleConfig> SummaryFrequency { get; set; } = new List<ScheduleConfig>();
-	public TimeSpan TimeSpan { get; set; } = new TimeSpan();
-	public SearchClause Filter { get; set; } = new SearchClause();
+	public List<ScheduleConfig> SummaryFrequency { get; set; }
+	public TimeSpan TimeSpan { get; set; }
+	public SearchClause Filter { get; set; }
 
 	public EmailReportConfig(){ }
 

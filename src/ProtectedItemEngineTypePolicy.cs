@@ -11,7 +11,7 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 public class ProtectedItemEngineTypePolicy {
 	public bool ShouldRestrictEngineTypeList { get; set; }
-	public List<string> AllowedEngineTypeWhenRestricted { get; set; } = new List<string>();
+	public List<string> AllowedEngineTypeWhenRestricted { get; set; }
 
 	public ProtectedItemEngineTypePolicy(){ }
 

@@ -10,11 +10,11 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>Office365ObjectInfo</c>
 /// </summary>
 public class Office365ObjectInfo {
-	public string GUID { get; set; } = "";
-	public string Name { get; set; } = "";
-	public string Type { get; set; } = "";
-	public string Value { get; set; } = "";
-	public List<string> Members { get; set; } = new List<string>();
+	public string GUID { get; set; } = string.Empty;
+	public string Name { get; set; } = string.Empty;
+	public string Type { get; set; } = string.Empty;
+	public string Value { get; set; } = string.Empty;
+	public List<string> Members { get; set; }
 
 	public Office365ObjectInfo(){ }
 

@@ -10,17 +10,17 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>BackupJobDetail</c>
 /// </summary>
 public class BackupJobDetail {
-	public string GUID { get; set; } = "";
-	public string Username { get; set; } = "";
+	public string GUID { get; set; } = string.Empty;
+	public string Username { get; set; } = string.Empty;
 	public ulong Classification { get; set; }
 	public ulong Status { get; set; }
 	public long StartTime { get; set; }
 	public long EndTime { get; set; }
-	public string SourceGUID { get; set; } = "";
-	public string DestinationGUID { get; set; } = "";
-	public string DeviceID { get; set; } = "";
-	public string SnapshotID { get; set; } = "";
-	public string ClientVersion { get; set; } = "";
+	public string SourceGUID { get; set; } = string.Empty;
+	public string DestinationGUID { get; set; } = string.Empty;
+	public string DeviceID { get; set; } = string.Empty;
+	public string SnapshotID { get; set; } = string.Empty;
+	public string ClientVersion { get; set; } = string.Empty;
 	public long TotalDirectories { get; set; }
 	public long TotalFiles { get; set; }
 	public long TotalSize { get; set; }
@@ -33,10 +33,10 @@ public class BackupJobDetail {
 	public long TotalAccountsCount { get; set; }
 	public long TotalLicensedMailsCount { get; set; }
 	public long TotalUnlicensedMailsCount { get; set; }
-	public string CancellationID { get; set; } = "";
-	public BackupJobProgress Progress { get; set; } = new BackupJobProgress();
-	public SizeMeasurement DestinationSizeStart { get; set; } = new SizeMeasurement();
-	public SizeMeasurement DestinationSizeEnd { get; set; } = new SizeMeasurement();
+	public string CancellationID { get; set; } = string.Empty;
+	public BackupJobProgress Progress { get; set; }
+	public SizeMeasurement DestinationSizeStart { get; set; }
+	public SizeMeasurement DestinationSizeEnd { get; set; }
 
 	public BackupJobDetail(){ }
 

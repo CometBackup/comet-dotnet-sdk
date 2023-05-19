@@ -16,10 +16,10 @@ public class UpdateCampaignStatus {
 	public bool DowngradeNewer { get; set; }
 	public bool ForceUpgradeRunning { get; set; }
 	public bool ApplyDeviceFilter { get; set; }
-	public SearchClause DeviceFilter { get; set; } = new SearchClause();
+	public SearchClause DeviceFilter { get; set; }
 	public long StartTime { get; set; }
-	public string TargetVersion { get; set; } = "";
-	public List<UpdateCampaignStatusDeviceEntry> Devices { get; set; } = new List<UpdateCampaignStatusDeviceEntry>();
+	public string TargetVersion { get; set; } = string.Empty;
+	public List<UpdateCampaignStatusDeviceEntry> Devices { get; set; }
 
 	public UpdateCampaignStatus(){ }
 

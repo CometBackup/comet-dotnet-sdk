@@ -10,14 +10,14 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>SFTPDestinationLocation</c>
 /// </summary>
 public class SFTPDestinationLocation {
-	public string SFTPServer { get; set; } = "";
-	public string SFTPUsername { get; set; } = "";
-	public string SFTPRemotePath { get; set; } = "";
+	public string SFTPServer { get; set; } = string.Empty;
+	public string SFTPUsername { get; set; } = string.Empty;
+	public string SFTPRemotePath { get; set; } = string.Empty;
 	public ulong SFTPAuthMode { get; set; }
-	public string SFTPPassword { get; set; } = "";
-	public string SFTPPrivateKey { get; set; } = "";
+	public string SFTPPassword { get; set; } = string.Empty;
+	public string SFTPPrivateKey { get; set; } = string.Empty;
 	public bool SFTPCustomAuth_UseKnownHostsFile { get; set; }
-	public string SFTPCustomAuth_KnownHostsFile { get; set; } = "";
+	public string SFTPCustomAuth_KnownHostsFile { get; set; } = string.Empty;
 
 	public SFTPDestinationLocation(){ }
 

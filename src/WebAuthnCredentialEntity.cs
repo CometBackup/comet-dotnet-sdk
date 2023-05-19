@@ -12,10 +12,10 @@ namespace CometBackup.CometAPI.SDK {
 public class WebAuthnCredentialEntity {
 
 	[JsonPropertyName("name")]
-	public string Name { get; set; } = "";
+	public string Name { get; set; } = string.Empty;
 
 	[JsonPropertyName("icon")]
-	public string Icon { get; set; } = "";
+	public string Icon { get; set; } = string.Empty;
 
 	public WebAuthnCredentialEntity(){ }
 

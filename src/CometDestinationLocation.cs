@@ -10,9 +10,9 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>CometDestinationLocation</c>
 /// </summary>
 public class CometDestinationLocation {
-	public string CometServer { get; set; } = "";
-	public string CometBucket { get; set; } = "";
-	public string CometBucketKey { get; set; } = "";
+	public string CometServer { get; set; } = string.Empty;
+	public string CometBucket { get; set; } = string.Empty;
+	public string CometBucketKey { get; set; } = string.Empty;
 
 	public CometDestinationLocation(){ }
 

@@ -10,21 +10,21 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>SwiftDestinationLocation</c>
 /// </summary>
 public class SwiftDestinationLocation {
-	public string Username { get; set; } = "";
-	public string APIKey { get; set; } = "";
-	public string Region { get; set; } = "";
-	public string AuthURL { get; set; } = "";
-	public string Domain { get; set; } = "";
-	public string Tenant { get; set; } = "";
-	public string TenantDomain { get; set; } = "";
-	public string TenantID { get; set; } = "";
-	public string TrustID { get; set; } = "";
+	public string Username { get; set; } = string.Empty;
+	public string APIKey { get; set; } = string.Empty;
+	public string Region { get; set; } = string.Empty;
+	public string AuthURL { get; set; } = string.Empty;
+	public string Domain { get; set; } = string.Empty;
+	public string Tenant { get; set; } = string.Empty;
+	public string TenantDomain { get; set; } = string.Empty;
+	public string TenantID { get; set; } = string.Empty;
+	public string TrustID { get; set; } = string.Empty;
 
 	[Obsolete("Deprecated since Comet version 17.8.0")]
-	public string AuthToken { get; set; } = "";
-	public string Prefix { get; set; } = "";
-	public string Container { get; set; } = "";
-	public string DefaultContainerPolicy { get; set; } = "";
+	public string AuthToken { get; set; } = string.Empty;
+	public string Prefix { get; set; } = string.Empty;
+	public string Container { get; set; } = string.Empty;
+	public string DefaultContainerPolicy { get; set; } = string.Empty;
 
 	public SwiftDestinationLocation(){ }
 

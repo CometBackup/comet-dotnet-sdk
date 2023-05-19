@@ -11,7 +11,7 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 public class StorageVaultProviderPolicy {
 	public bool ShouldRestrictProviderList { get; set; }
-	public List<ulong> AllowedProvidersWhenRestricted { get; set; } = new List<ulong>();
+	public List<ulong> AllowedProvidersWhenRestricted { get; set; }
 
 	public StorageVaultProviderPolicy(){ }
 

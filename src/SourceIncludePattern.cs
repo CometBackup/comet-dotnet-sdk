@@ -10,8 +10,8 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>SourceIncludePattern</c>
 /// </summary>
 public class SourceIncludePattern {
-	public string TopDirectory { get; set; } = "";
-	public string Value { get; set; } = "";
+	public string TopDirectory { get; set; } = string.Empty;
+	public string Value { get; set; } = string.Empty;
 
 	public SourceIncludePattern(){ }
 

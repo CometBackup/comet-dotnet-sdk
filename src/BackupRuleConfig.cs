@@ -11,14 +11,14 @@ namespace CometBackup.CometAPI.SDK {
 /// with multiple time schedules or event triggers
 /// </summary>
 public class BackupRuleConfig {
-	public string Description { get; set; } = "";
+	public string Description { get; set; } = string.Empty;
 	public long CreateTime { get; set; }
 	public long ModifyTime { get; set; }
-	public List<string> PreExec { get; set; } = new List<string>();
-	public List<string> ThawExec { get; set; } = new List<string>();
-	public List<string> PostExec { get; set; } = new List<string>();
-	public string Source { get; set; } = "";
-	public string Destination { get; set; } = "";
+	public List<string> PreExec { get; set; }
+	public List<string> ThawExec { get; set; }
+	public List<string> PostExec { get; set; }
+	public string Source { get; set; } = string.Empty;
+	public string Destination { get; set; } = string.Empty;
 	public bool SkipAlreadyRunning { get; set; }
 	public long StopAfter { get; set; }
 	public long LimitVaultSpeedBps { get; set; }
@@ -26,8 +26,8 @@ public class BackupRuleConfig {
 	public bool UseOnDiskIndexes { get; set; }
 	public bool AllowZeroFilesSuccess { get; set; }
 	public long AutoRetentionLevel { get; set; }
-	public List<ScheduleConfig> Schedules { get; set; } = new List<ScheduleConfig>();
-	public BackupRuleEventTriggers EventTriggers { get; set; } = new BackupRuleEventTriggers();
+	public List<ScheduleConfig> Schedules { get; set; }
+	public BackupRuleEventTriggers EventTriggers { get; set; }
 
 	public BackupRuleConfig(){ }
 

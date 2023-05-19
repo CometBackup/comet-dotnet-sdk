@@ -10,10 +10,10 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>B2DestinationLocation</c>
 /// </summary>
 public class B2DestinationLocation {
-	public string AccountID { get; set; } = "";
-	public string Key { get; set; } = "";
-	public string Bucket { get; set; } = "";
-	public string Prefix { get; set; } = "";
+	public string AccountID { get; set; } = string.Empty;
+	public string Key { get; set; } = string.Empty;
+	public string Bucket { get; set; } = string.Empty;
+	public string Prefix { get; set; } = string.Empty;
 
 	[Obsolete("Deprecated since Comet version 21.9.7")]
 	public long MaxConnections { get; set; }

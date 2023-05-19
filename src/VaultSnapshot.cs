@@ -10,8 +10,8 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>VaultSnapshot</c>
 /// </summary>
 public class VaultSnapshot {
-	public string Snapshot { get; set; } = "";
-	public string Source { get; set; } = "";
+	public string Snapshot { get; set; } = string.Empty;
+	public string Source { get; set; } = string.Empty;
 	public long CreateTime { get; set; }
 	public bool HasOriginalPathInfo { get; set; }
 

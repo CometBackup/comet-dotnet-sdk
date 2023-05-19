@@ -10,7 +10,7 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>LocalStorageDirectory</c>
 /// </summary>
 public class LocalStorageDirectory {
-	public string Path { get; set; } = "";
+	public string Path { get; set; } = string.Empty;
 
 	public LocalStorageDirectory(){ }
 

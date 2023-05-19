@@ -10,7 +10,7 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>SelfBackupOptions</c>
 /// </summary>
 public class SelfBackupOptions {
-	public List<SelfBackupTarget> Targets { get; set; } = new List<SelfBackupTarget>();
+	public List<SelfBackupTarget> Targets { get; set; }
 
 	public SelfBackupOptions(){ }
 

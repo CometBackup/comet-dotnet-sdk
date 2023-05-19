@@ -11,9 +11,9 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 public class OrganizationResponse {
 	public long Status { get; set; }
-	public string Message { get; set; } = "";
-	public string ID { get; set; } = "";
-	public Organization Organization { get; set; } = new Organization();
+	public string Message { get; set; } = string.Empty;
+	public string ID { get; set; } = string.Empty;
+	public Organization Organization { get; set; }
 
 	public OrganizationResponse(){ }
 

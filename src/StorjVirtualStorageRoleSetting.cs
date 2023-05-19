@@ -10,10 +10,10 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>StorjVirtualStorageRoleSetting</c>
 /// </summary>
 public class StorjVirtualStorageRoleSetting {
-	public string SatelliteAddress { get; set; } = "";
-	public string APIKey { get; set; } = "";
-	public string Passphrase { get; set; } = "";
-	public string Bucket { get; set; } = "";
+	public string SatelliteAddress { get; set; } = string.Empty;
+	public string APIKey { get; set; } = string.Empty;
+	public string Passphrase { get; set; } = string.Empty;
+	public string Bucket { get; set; } = string.Empty;
 
 	public StorjVirtualStorageRoleSetting(){ }
 

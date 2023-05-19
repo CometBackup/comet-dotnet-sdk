@@ -11,8 +11,8 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 public class BrowseVSSResponse {
 	public long Status { get; set; }
-	public string Message { get; set; } = "";
-	public Dictionary<string, VSSWriterInfo> VSSWriters { get; set; } = new Dictionary<string, VSSWriterInfo>();
+	public string Message { get; set; } = string.Empty;
+	public Dictionary<string, VSSWriterInfo> VSSWriters { get; set; }
 
 	public BrowseVSSResponse(){ }
 

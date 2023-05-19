@@ -10,11 +10,11 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>Office365Credential</c>
 /// </summary>
 public class Office365Credential {
-	public string AppID { get; set; } = "";
-	public string TenantID { get; set; } = "";
-	public string Secret { get; set; } = "";
-	public string AppCert { get; set; } = "";
-	public string Region { get; set; } = "";
+	public string AppID { get; set; } = string.Empty;
+	public string TenantID { get; set; } = string.Empty;
+	public string Secret { get; set; } = string.Empty;
+	public string AppCert { get; set; } = string.Empty;
+	public string Region { get; set; } = string.Empty;
 
 	public Office365Credential(){ }
 

@@ -11,9 +11,9 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 public class AddBucketResponseMessage {
 	public long Status { get; set; }
-	public string Message { get; set; } = "";
-	public string NewBucketID { get; set; } = "";
-	public string NewBucketKey { get; set; } = "";
+	public string Message { get; set; } = string.Empty;
+	public string NewBucketID { get; set; } = string.Empty;
+	public string NewBucketKey { get; set; } = string.Empty;
 
 	public AddBucketResponseMessage(){ }
 

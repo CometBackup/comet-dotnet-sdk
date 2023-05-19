@@ -10,7 +10,7 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>UserCustomEmailSettings</c>
 /// </summary>
 public class UserCustomEmailSettings {
-	public List<EmailReportConfig> Reports { get; set; } = new List<EmailReportConfig>();
+	public List<EmailReportConfig> Reports { get; set; }
 
 	public UserCustomEmailSettings(){ }
 

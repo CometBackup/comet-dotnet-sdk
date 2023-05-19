@@ -11,8 +11,8 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 public class GetProfileHashResponseMessage {
 	public long Status { get; set; }
-	public string Message { get; set; } = "";
-	public string ProfileHash { get; set; } = "";
+	public string Message { get; set; } = string.Empty;
+	public string ProfileHash { get; set; } = string.Empty;
 
 	public GetProfileHashResponseMessage(){ }
 

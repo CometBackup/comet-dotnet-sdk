@@ -10,12 +10,12 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>MSSQLConnection</c>
 /// </summary>
 public class MSSQLConnection {
-	public string Type { get; set; } = "";
-	public string Username { get; set; } = "";
-	public string Password { get; set; } = "";
-	public string Hostname { get; set; } = "";
-	public string InstanceName { get; set; } = "";
-	public string Method { get; set; } = "";
+	public string Type { get; set; } = string.Empty;
+	public string Username { get; set; } = string.Empty;
+	public string Password { get; set; } = string.Empty;
+	public string Hostname { get; set; } = string.Empty;
+	public string InstanceName { get; set; } = string.Empty;
+	public string Method { get; set; } = string.Empty;
 
 	public MSSQLConnection(){ }
 

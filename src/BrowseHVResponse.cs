@@ -11,8 +11,8 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 public class BrowseHVResponse {
 	public long Status { get; set; }
-	public string Message { get; set; } = "";
-	public List<HyperVMachineInfo> VirtualMachines { get; set; } = new List<HyperVMachineInfo>();
+	public string Message { get; set; } = string.Empty;
+	public List<HyperVMachineInfo> VirtualMachines { get; set; }
 
 	public BrowseHVResponse(){ }
 

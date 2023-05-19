@@ -10,9 +10,9 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>GroupPolicy</c>
 /// </summary>
 public class GroupPolicy {
-	public string Description { get; set; } = "";
-	public string OrganizationID { get; set; } = "";
-	public UserPolicy Policy { get; set; } = new UserPolicy();
+	public string Description { get; set; } = string.Empty;
+	public string OrganizationID { get; set; } = string.Empty;
+	public UserPolicy Policy { get; set; }
 	public bool DefaultUserPolicy { get; set; }
 	public long CreatedDate { get; set; }
 	public long ModifiedDate { get; set; }

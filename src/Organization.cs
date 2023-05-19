@@ -10,17 +10,17 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>Organization</c>
 /// </summary>
 public class Organization {
-	public string Name { get; set; } = "";
-	public List<string> Hosts { get; set; } = new List<string>();
-	public SoftwareBuildRoleOptions SoftwareBuildRole { get; set; } = new SoftwareBuildRoleOptions();
-	public BrandingOptions Branding { get; set; } = new BrandingOptions();
-	public List<RemoteStorageOption> RemoteStorage { get; set; } = new List<RemoteStorageOption>();
-	public ConstellationRoleOptions ConstellationRole { get; set; } = new ConstellationRoleOptions();
-	public Dictionary<string, WebhookOption> WebhookOptions { get; set; } = new Dictionary<string, WebhookOption>();
-	public List<PSAConfig> PSAConfigs { get; set; } = new List<PSAConfig>();
-	public EmailOptions Email { get; set; } = new EmailOptions();
+	public string Name { get; set; } = string.Empty;
+	public List<string> Hosts { get; set; }
+	public SoftwareBuildRoleOptions SoftwareBuildRole { get; set; }
+	public BrandingOptions Branding { get; set; }
+	public List<RemoteStorageOption> RemoteStorage { get; set; }
+	public ConstellationRoleOptions ConstellationRole { get; set; }
+	public Dictionary<string, WebhookOption> WebhookOptions { get; set; }
+	public List<PSAConfig> PSAConfigs { get; set; }
+	public EmailOptions Email { get; set; }
 	public bool IsSuspended { get; set; }
-	public List<string> ExperimentalOptions { get; set; } = new List<string>();
+	public List<string> ExperimentalOptions { get; set; }
 
 	public Organization(){ }
 

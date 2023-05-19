@@ -11,12 +11,12 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 public class EmailReportGeneratedPreview {
 	public long Status { get; set; }
-	public string Message { get; set; } = "";
-	public string From { get; set; } = "";
-	public List<string> To { get; set; } = new List<string>();
-	public string EmailSubject { get; set; } = "";
-	public string EmailBodyHTML { get; set; } = "";
-	public string EmailBodyPlaintext { get; set; } = "";
+	public string Message { get; set; } = string.Empty;
+	public string From { get; set; } = string.Empty;
+	public List<string> To { get; set; }
+	public string EmailSubject { get; set; } = string.Empty;
+	public string EmailBodyHTML { get; set; } = string.Empty;
+	public string EmailBodyPlaintext { get; set; } = string.Empty;
 
 	public EmailReportGeneratedPreview(){ }
 

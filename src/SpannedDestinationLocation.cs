@@ -10,7 +10,7 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>SpannedDestinationLocation</c>
 /// </summary>
 public class SpannedDestinationLocation {
-	public List<DestinationLocation> SpanTargets { get; set; } = new List<DestinationLocation>();
+	public List<DestinationLocation> SpanTargets { get; set; }
 	public bool SpanUseStaticSlots { get; set; }
 
 	public SpannedDestinationLocation(){ }

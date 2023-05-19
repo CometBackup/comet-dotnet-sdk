@@ -12,13 +12,13 @@ namespace CometBackup.CometAPI.SDK {
 public class WebAuthnCredentialDescriptor {
 
 	[JsonPropertyName("type")]
-	public string Type { get; set; } = "";
+	public string Type { get; set; } = string.Empty;
 
 	[JsonPropertyName("id")]
 	public byte[] CredentialID { get; set; }
 
 	[JsonPropertyName("transports")]
-	public List<string> Transport { get; set; } = new List<string>();
+	public List<string> Transport { get; set; }
 
 	public WebAuthnCredentialDescriptor(){ }
 

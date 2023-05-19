@@ -10,14 +10,14 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>EmailOptions</c>
 /// </summary>
 public class EmailOptions {
-	public string FromEmail { get; set; } = "";
-	public string FromName { get; set; } = "";
-	public string Mode { get; set; } = "";
-	public List<EmailReportingOption> EmailReportingOptions { get; set; } = new List<EmailReportingOption>();
-	public string SMTPHost { get; set; } = "";
+	public string FromEmail { get; set; } = string.Empty;
+	public string FromName { get; set; } = string.Empty;
+	public string Mode { get; set; } = string.Empty;
+	public List<EmailReportingOption> EmailReportingOptions { get; set; }
+	public string SMTPHost { get; set; } = string.Empty;
 	public long SMTPPort { get; set; }
-	public string SMTPUsername { get; set; } = "";
-	public string SMTPPassword { get; set; } = "";
+	public string SMTPUsername { get; set; } = string.Empty;
+	public string SMTPPassword { get; set; } = string.Empty;
 	public bool SMTPAllowInvalidCertificate { get; set; }
 	public bool SMTPAllowUnencrypted { get; set; }
 

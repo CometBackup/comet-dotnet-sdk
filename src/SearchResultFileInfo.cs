@@ -12,25 +12,25 @@ namespace CometBackup.CometAPI.SDK {
 public class SearchResultFileInfo {
 
 	[JsonPropertyName("path")]
-	public string Path { get; set; } = "";
+	public string Path { get; set; } = string.Empty;
 
 	[JsonPropertyName("name")]
-	public string Name { get; set; } = "";
+	public string Name { get; set; } = string.Empty;
 
 	[JsonPropertyName("type")]
-	public string Type { get; set; } = "";
+	public string Type { get; set; } = string.Empty;
 
 	[JsonPropertyName("mode")]
-	public string Mode { get; set; } = "";
+	public string Mode { get; set; } = string.Empty;
 
 	[JsonPropertyName("mtime")]
-	public string Mtime { get; set; } = "";
+	public string Mtime { get; set; } = string.Empty;
 
 	[JsonPropertyName("atime")]
-	public string Atime { get; set; } = "";
+	public string Atime { get; set; } = string.Empty;
 
 	[JsonPropertyName("ctime")]
-	public string Ctime { get; set; } = "";
+	public string Ctime { get; set; } = string.Empty;
 
 	[JsonPropertyName("size")]
 	public long Size { get; set; }

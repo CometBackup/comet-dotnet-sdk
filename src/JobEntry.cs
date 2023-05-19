@@ -11,8 +11,8 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 public class JobEntry {
 	public long Time { get; set; }
-	public string Severity { get; set; } = "";
-	public string Message { get; set; } = "";
+	public string Severity { get; set; } = string.Empty;
+	public string Message { get; set; } = string.Empty;
 
 	public JobEntry(){ }
 

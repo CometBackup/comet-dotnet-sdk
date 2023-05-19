@@ -11,7 +11,7 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 public class RetentionPolicy {
 	public long Mode { get; set; }
-	public List<RetentionRange> Ranges { get; set; } = new List<RetentionRange>();
+	public List<RetentionRange> Ranges { get; set; }
 
 	public RetentionPolicy(){ }
 

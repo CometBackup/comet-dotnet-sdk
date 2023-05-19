@@ -10,11 +10,11 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>StorjDestinationLocation</c>
 /// </summary>
 public class StorjDestinationLocation {
-	public string SatelliteAddress { get; set; } = "";
-	public string APIKey { get; set; } = "";
-	public string Passphrase { get; set; } = "";
-	public string StorjBucket { get; set; } = "";
-	public string StorjBucketPrefix { get; set; } = "";
+	public string SatelliteAddress { get; set; } = string.Empty;
+	public string APIKey { get; set; } = string.Empty;
+	public string Passphrase { get; set; } = string.Empty;
+	public string StorjBucket { get; set; } = string.Empty;
+	public string StorjBucketPrefix { get; set; } = string.Empty;
 
 	public StorjDestinationLocation(){ }
 

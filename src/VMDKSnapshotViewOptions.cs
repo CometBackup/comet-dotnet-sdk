@@ -11,9 +11,9 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 public class VMDKSnapshotViewOptions {
 	public bool Enabled { get; set; }
-	public string PartitionGUID { get; set; } = "";
-	public string ListPath { get; set; } = "";
-	public string PartitionName { get; set; } = "";
+	public string PartitionGUID { get; set; } = string.Empty;
+	public string ListPath { get; set; } = string.Empty;
+	public string PartitionName { get; set; } = string.Empty;
 
 	public VMDKSnapshotViewOptions(){ }
 

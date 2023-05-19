@@ -10,8 +10,8 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>ServerMetaVersionInfo</c>
 /// </summary>
 public class ServerMetaVersionInfo {
-	public string Version { get; set; } = "";
-	public string VersionCodename { get; set; } = "";
+	public string Version { get; set; } = string.Empty;
+	public string VersionCodename { get; set; } = string.Empty;
 	public bool StorageRole { get; set; }
 	public bool AuthenticationRole { get; set; }
 	public bool SoftwareBuildRole { get; set; }
@@ -21,11 +21,11 @@ public class ServerMetaVersionInfo {
 	[JsonPropertyName("OverseerRole")]
 	public bool ConstellationRole_Legacy { get; set; }
 	public bool ConstellationRole { get; set; }
-	public List<string> ExperimentalOptions { get; set; } = new List<string>();
+	public List<string> ExperimentalOptions { get; set; }
 	public long ServerStartTime { get; set; }
-	public string ServerStartHash { get; set; } = "";
+	public string ServerStartHash { get; set; } = string.Empty;
 	public long CurrentTime { get; set; }
-	public string ServerLicenseHash { get; set; } = "";
+	public string ServerLicenseHash { get; set; } = string.Empty;
 	public bool ServerLicenseFeaturesAll { get; set; }
 	public uint ServerLicenseFeatureSet { get; set; }
 	public long LicenseValidUntil { get; set; }
@@ -37,7 +37,7 @@ public class ServerMetaVersionInfo {
 	public long ScheduledEmailThreadWaitingUntil { get; set; }
 	public long ScheduledEmailThreadLastWakeTime { get; set; }
 	public bool ScheduledEmailThreadLastWakeSentEmails { get; set; }
-	public List<SelfBackupStatistics> SelfBackup { get; set; } = new List<SelfBackupStatistics>();
+	public List<SelfBackupStatistics> SelfBackup { get; set; }
 
 	public ServerMetaVersionInfo(){ }
 

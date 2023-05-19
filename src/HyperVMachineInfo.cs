@@ -10,10 +10,10 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>HyperVMachineInfo</c>
 /// </summary>
 public class HyperVMachineInfo {
-	public string ID { get; set; } = "";
+	public string ID { get; set; } = string.Empty;
 
 	[JsonPropertyName("Name")]
-	public string DisplayName { get; set; } = "";
+	public string DisplayName { get; set; } = string.Empty;
 
 	public HyperVMachineInfo(){ }
 

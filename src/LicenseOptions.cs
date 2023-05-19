@@ -10,8 +10,8 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>LicenseOptions</c>
 /// </summary>
 public class LicenseOptions {
-	public string Email { get; set; } = "";
-	public string SerialNumber { get; set; } = "";
+	public string Email { get; set; } = string.Empty;
+	public string SerialNumber { get; set; } = string.Empty;
 
 	public LicenseOptions(){ }
 

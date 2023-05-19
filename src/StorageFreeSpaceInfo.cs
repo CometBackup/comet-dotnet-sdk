@@ -13,8 +13,8 @@ public class StorageFreeSpaceInfo {
 	public bool Unlimited { get; set; }
 	public double UsedPercent { get; set; }
 	public ulong AvailableBytes { get; set; }
-	public SpannedStorageExtraInfo Spanned { get; set; } = new SpannedStorageExtraInfo();
-	public B2StorageExtraInfo B2 { get; set; } = new B2StorageExtraInfo();
+	public SpannedStorageExtraInfo Spanned { get; set; }
+	public B2StorageExtraInfo B2 { get; set; }
 
 	public StorageFreeSpaceInfo(){ }
 

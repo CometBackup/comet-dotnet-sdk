@@ -11,9 +11,9 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 public class SessionKeyRegeneratedResponse {
 	public long Status { get; set; }
-	public string Message { get; set; } = "";
-	public string SessionKey { get; set; } = "";
-	public string SessionType { get; set; } = "";
+	public string Message { get; set; } = string.Empty;
+	public string SessionKey { get; set; } = string.Empty;
+	public string SessionType { get; set; } = string.Empty;
 
 	public SessionKeyRegeneratedResponse(){ }
 

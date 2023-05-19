@@ -10,8 +10,8 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>WebAuthnSignRequest</c>
 /// </summary>
 public class WebAuthnSignRequest {
-	public string ChallengeID { get; set; } = "";
-	public WebAuthnCredentialAssertion Assertion { get; set; } = new WebAuthnCredentialAssertion();
+	public string ChallengeID { get; set; } = string.Empty;
+	public WebAuthnCredentialAssertion Assertion { get; set; }
 
 	public WebAuthnSignRequest(){ }
 

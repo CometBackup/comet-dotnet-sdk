@@ -10,9 +10,9 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>WebhookOption</c>
 /// </summary>
 public class WebhookOption {
-	public string URL { get; set; } = "";
-	public List<long> WhiteListedEventTypes { get; set; } = new List<long>();
-	public Dictionary<string, string> CustomHeaders { get; set; } = new Dictionary<string, string>();
+	public string URL { get; set; } = string.Empty;
+	public List<long> WhiteListedEventTypes { get; set; }
+	public Dictionary<string, string> CustomHeaders { get; set; }
 
 	public WebhookOption(){ }
 

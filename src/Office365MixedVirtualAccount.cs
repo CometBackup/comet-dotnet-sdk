@@ -12,17 +12,17 @@ namespace CometBackup.CometAPI.SDK {
 public class Office365MixedVirtualAccount {
 
 	[JsonPropertyName("id")]
-	public string ID { get; set; } = "";
+	public string ID { get; set; } = string.Empty;
 	public long Type { get; set; }
-	public string DisplayName { get; set; } = "";
-	public string Mail { get; set; } = "";
-	public string JobTitle { get; set; } = "";
-	public string SiteID { get; set; } = "";
-	public string WebID { get; set; } = "";
-	public string WebURL { get; set; } = "";
-	public string UserPrincipalName { get; set; } = "";
+	public string DisplayName { get; set; } = string.Empty;
+	public string Mail { get; set; } = string.Empty;
+	public string JobTitle { get; set; } = string.Empty;
+	public string SiteID { get; set; } = string.Empty;
+	public string WebID { get; set; } = string.Empty;
+	public string WebURL { get; set; } = string.Empty;
+	public string UserPrincipalName { get; set; } = string.Empty;
 	public long EnabledServiceOption { get; set; }
-	public List<string> Members { get; set; } = new List<string>();
+	public List<string> Members { get; set; }
 	public long ServiceOptions { get; set; }
 	public long MemberServiceOptions { get; set; }
 

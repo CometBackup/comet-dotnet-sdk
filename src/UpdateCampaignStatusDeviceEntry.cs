@@ -10,8 +10,8 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>UpdateCampaignStatusDeviceEntry</c>
 /// </summary>
 public class UpdateCampaignStatusDeviceEntry {
-	public string Username { get; set; } = "";
-	public string DeviceID { get; set; } = "";
+	public string Username { get; set; } = string.Empty;
+	public string DeviceID { get; set; } = string.Empty;
 	public long Status { get; set; }
 
 	public UpdateCampaignStatusDeviceEntry(){ }

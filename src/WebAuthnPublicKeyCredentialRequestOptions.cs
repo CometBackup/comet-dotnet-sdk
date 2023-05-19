@@ -18,16 +18,16 @@ public class WebAuthnPublicKeyCredentialRequestOptions {
 	public long Timeout { get; set; }
 
 	[JsonPropertyName("rpId")]
-	public string RelyingPartyID { get; set; } = "";
+	public string RelyingPartyID { get; set; } = string.Empty;
 
 	[JsonPropertyName("allowCredentials")]
-	public List<WebAuthnCredentialDescriptor> AllowedCredentials { get; set; } = new List<WebAuthnCredentialDescriptor>();
+	public List<WebAuthnCredentialDescriptor> AllowedCredentials { get; set; }
 
 	[JsonPropertyName("userVerification")]
-	public string UserVerification { get; set; } = "";
+	public string UserVerification { get; set; } = string.Empty;
 
 	[JsonPropertyName("extensions")]
-	public Dictionary<string, Object> Extensions { get; set; } = new Dictionary<string, Object>();
+	public Dictionary<string, Object> Extensions { get; set; }
 
 	public WebAuthnPublicKeyCredentialRequestOptions(){ }
 

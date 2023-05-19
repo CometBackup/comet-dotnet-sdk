@@ -15,12 +15,12 @@ public class UserPolicy {
 	public bool PreventEditStorageVault { get; set; }
 	public bool HideCloudStorageBranding { get; set; }
 	public bool PreventDeleteStorageVault { get; set; }
-	public StorageVaultProviderPolicy StorageVaultProviders { get; set; } = new StorageVaultProviderPolicy();
+	public StorageVaultProviderPolicy StorageVaultProviders { get; set; }
 	public bool PreventNewProtectedItem { get; set; }
 	public bool PreventEditProtectedItem { get; set; }
 	public bool PreventDeleteProtectedItem { get; set; }
-	public ProtectedItemEngineTypePolicy ProtectedItemEngineTypes { get; set; } = new ProtectedItemEngineTypePolicy();
-	public List<ExtraFileExclusion> FileAndFolderMandatoryExclusions { get; set; } = new List<ExtraFileExclusion>();
+	public ProtectedItemEngineTypePolicy ProtectedItemEngineTypes { get; set; }
+	public List<ExtraFileExclusion> FileAndFolderMandatoryExclusions { get; set; }
 	public long ModeScheduleSkipAlreadyRunning { get; set; }
 	public long ModeAdminResetPassword { get; set; }
 	public long ModeAdminViewFilenames { get; set; }
@@ -35,14 +35,14 @@ public class UserPolicy {
 	public bool HideAppVersion { get; set; }
 	public bool PreventOpenWebUI { get; set; }
 	public bool PreventViewDeviceNames { get; set; }
-	public DefaultEmailReportPolicy DefaultEmailReports { get; set; } = new DefaultEmailReportPolicy();
-	public RetentionPolicy DefaultStorageVaultRetention { get; set; } = new RetentionPolicy();
+	public DefaultEmailReportPolicy DefaultEmailReports { get; set; }
+	public RetentionPolicy DefaultStorageVaultRetention { get; set; }
 	public bool EnforceStorageVaultRetention { get; set; }
 	public bool PreventProtectedItemRetention { get; set; }
-	public Dictionary<string, SourceConfig> DefaultSources { get; set; } = new Dictionary<string, SourceConfig>();
-	public Dictionary<string, BackupRuleConfig> DefaultSourcesBackupRules { get; set; } = new Dictionary<string, BackupRuleConfig>();
-	public Dictionary<string, DefaultSourceWithOSRestriction> DefaultSourcesWithOSRestriction { get; set; } = new Dictionary<string, DefaultSourceWithOSRestriction>();
-	public Dictionary<string, BackupRuleConfig> DefaultBackupRules { get; set; } = new Dictionary<string, BackupRuleConfig>();
+	public Dictionary<string, SourceConfig> DefaultSources { get; set; }
+	public Dictionary<string, BackupRuleConfig> DefaultSourcesBackupRules { get; set; }
+	public Dictionary<string, DefaultSourceWithOSRestriction> DefaultSourcesWithOSRestriction { get; set; }
+	public Dictionary<string, BackupRuleConfig> DefaultBackupRules { get; set; }
 	public ulong RandomDelaySecs { get; set; }
 
 	public UserPolicy(){ }

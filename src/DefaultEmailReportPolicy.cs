@@ -11,7 +11,7 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 public class DefaultEmailReportPolicy {
 	public bool ShouldOverrideDefaultReports { get; set; }
-	public List<EmailReportConfig> Reports { get; set; } = new List<EmailReportConfig>();
+	public List<EmailReportConfig> Reports { get; set; }
 
 	public DefaultEmailReportPolicy(){ }
 

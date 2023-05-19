@@ -11,8 +11,8 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 public class DispatcherWindiskSnapshotResponse {
 	public long Status { get; set; }
-	public string Message { get; set; } = "";
-	public List<DiskDrive> WindiskSnapshot { get; set; } = new List<DiskDrive>();
+	public string Message { get; set; } = string.Empty;
+	public List<DiskDrive> WindiskSnapshot { get; set; }
 
 	public DispatcherWindiskSnapshotResponse(){ }
 

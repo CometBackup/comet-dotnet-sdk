@@ -12,16 +12,16 @@ namespace CometBackup.CometAPI.SDK {
 public class SoftwareUpdateNewsResponse {
 
 	[JsonPropertyName("latest_stable")]
-	public string LatestStable { get; set; } = "";
+	public string LatestStable { get; set; } = string.Empty;
 
 	[JsonPropertyName("latest_prerelease")]
-	public string LatestPrerelease { get; set; } = "";
+	public string LatestPrerelease { get; set; } = string.Empty;
 
 	[JsonPropertyName("downloads_url")]
-	public string DownloadsURL { get; set; } = "";
+	public string DownloadsURL { get; set; } = string.Empty;
 
 	[JsonPropertyName("updates_info")]
-	public List<string> WhatsNew { get; set; } = new List<string>();
+	public List<string> WhatsNew { get; set; }
 
 	public SoftwareUpdateNewsResponse(){ }
 

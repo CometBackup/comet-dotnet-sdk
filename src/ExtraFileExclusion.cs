@@ -10,7 +10,7 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>ExtraFileExclusion</c>
 /// </summary>
 public class ExtraFileExclusion {
-	public string Exclude { get; set; } = "";
+	public string Exclude { get; set; } = string.Empty;
 	public bool Regex { get; set; }
 	public long RestrictOS { get; set; }
 

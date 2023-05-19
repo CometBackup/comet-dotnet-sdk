@@ -10,11 +10,11 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>SingleFieldSource</c>
 /// </summary>
 public class SingleFieldSource {
-	public string FieldName { get; set; } = "";
-	public string FieldType { get; set; } = "";
+	public string FieldName { get; set; } = string.Empty;
+	public string FieldType { get; set; } = string.Empty;
 	public bool BoolVal { get; set; }
 	public long IntVal { get; set; }
-	public string StrVal { get; set; } = "";
+	public string StrVal { get; set; } = string.Empty;
 
 	public SingleFieldSource(){ }
 

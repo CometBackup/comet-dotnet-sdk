@@ -10,9 +10,9 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>LocalDestinationLocation</c>
 /// </summary>
 public class LocalDestinationLocation {
-	public string LocalcopyPath { get; set; } = "";
-	public string LocalcopyWinSMBUsername { get; set; } = "";
-	public string LocalcopyWinSMBPassword { get; set; } = "";
+	public string LocalcopyPath { get; set; } = string.Empty;
+	public string LocalcopyWinSMBUsername { get; set; } = string.Empty;
+	public string LocalcopyWinSMBPassword { get; set; } = string.Empty;
 	public ulong LocalcopyWinSMBPasswordFormat { get; set; }
 
 	public LocalDestinationLocation(){ }

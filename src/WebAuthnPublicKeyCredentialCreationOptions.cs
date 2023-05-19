@@ -15,28 +15,28 @@ public class WebAuthnPublicKeyCredentialCreationOptions {
 	public byte[] Challenge { get; set; }
 
 	[JsonPropertyName("rp")]
-	public WebAuthnRelyingPartyEntity RelyingParty { get; set; } = new WebAuthnRelyingPartyEntity();
+	public WebAuthnRelyingPartyEntity RelyingParty { get; set; }
 
 	[JsonPropertyName("user")]
-	public WebAuthnUserEntity User { get; set; } = new WebAuthnUserEntity();
+	public WebAuthnUserEntity User { get; set; }
 
 	[JsonPropertyName("pubKeyCredParams")]
-	public List<WebAuthnCredentialParameter> Parameters { get; set; } = new List<WebAuthnCredentialParameter>();
+	public List<WebAuthnCredentialParameter> Parameters { get; set; }
 
 	[JsonPropertyName("authenticatorSelection")]
-	public WebAuthnAuthenticatorSelection AuthenticatorSelection { get; set; } = new WebAuthnAuthenticatorSelection();
+	public WebAuthnAuthenticatorSelection AuthenticatorSelection { get; set; }
 
 	[JsonPropertyName("timeout")]
 	public long Timeout { get; set; }
 
 	[JsonPropertyName("excludeCredentials")]
-	public List<WebAuthnCredentialDescriptor> CredentialExcludeList { get; set; } = new List<WebAuthnCredentialDescriptor>();
+	public List<WebAuthnCredentialDescriptor> CredentialExcludeList { get; set; }
 
 	[JsonPropertyName("extensions")]
-	public Dictionary<string, Object> Extensions { get; set; } = new Dictionary<string, Object>();
+	public Dictionary<string, Object> Extensions { get; set; }
 
 	[JsonPropertyName("attestation")]
-	public string Attestation { get; set; } = "";
+	public string Attestation { get; set; } = string.Empty;
 
 	public WebAuthnPublicKeyCredentialCreationOptions(){ }
 

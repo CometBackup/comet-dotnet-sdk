@@ -16,9 +16,9 @@ public class AuthenticationRoleOptions {
 	public long NoMissedBackupEventsBefore { get; set; }
 	public bool GenerateScheduledEmails { get; set; }
 	public long PruneLogsAfterDays { get; set; }
-	public List<RemoteStorageOption> RemoteStorage { get; set; } = new List<RemoteStorageOption>();
-	public List<ReplicaServer> ReplicateTo { get; set; } = new List<ReplicaServer>();
-	public GlobalOverrideOptions GlobalOverrides { get; set; } = new GlobalOverrideOptions();
+	public List<RemoteStorageOption> RemoteStorage { get; set; }
+	public List<ReplicaServer> ReplicateTo { get; set; }
+	public GlobalOverrideOptions GlobalOverrides { get; set; }
 
 	public AuthenticationRoleOptions(){ }
 

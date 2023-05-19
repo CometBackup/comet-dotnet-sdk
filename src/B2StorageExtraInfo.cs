@@ -10,7 +10,7 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>B2StorageExtraInfo</c>
 /// </summary>
 public class B2StorageExtraInfo {
-	public Dictionary<long, B2TransactionTotals> TotalTransactionsInTimeInterval { get; set; } = new Dictionary<long, B2TransactionTotals>();
+	public Dictionary<long, B2TransactionTotals> TotalTransactionsInTimeInterval { get; set; }
 
 	public B2StorageExtraInfo(){ }
 

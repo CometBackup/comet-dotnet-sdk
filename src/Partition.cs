@@ -10,12 +10,12 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>Partition</c>
 /// </summary>
 public class Partition {
-	public string DeviceName { get; set; } = "";
-	public string Filesystem { get; set; } = "";
-	public string VolumeName { get; set; } = "";
-	public string VolumeGuid { get; set; } = "";
-	public string VolumeSerial { get; set; } = "";
-	public List<string> MountPoints { get; set; } = new List<string>();
+	public string DeviceName { get; set; } = string.Empty;
+	public string Filesystem { get; set; } = string.Empty;
+	public string VolumeName { get; set; } = string.Empty;
+	public string VolumeGuid { get; set; } = string.Empty;
+	public string VolumeSerial { get; set; } = string.Empty;
+	public List<string> MountPoints { get; set; }
 	public long ReadOffset { get; set; }
 	public long Size { get; set; }
 	public long UsedSize { get; set; }

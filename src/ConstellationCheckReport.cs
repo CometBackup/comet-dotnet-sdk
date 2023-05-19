@@ -12,7 +12,7 @@ namespace CometBackup.CometAPI.SDK {
 public class ConstellationCheckReport {
 	public long CheckStarted { get; set; }
 	public long CheckCompleted { get; set; }
-	public Dictionary<string, BucketUsageInfo> Usage { get; set; } = new Dictionary<string, BucketUsageInfo>();
+	public Dictionary<string, BucketUsageInfo> Usage { get; set; }
 
 	public ConstellationCheckReport(){ }
 

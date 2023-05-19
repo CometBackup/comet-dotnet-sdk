@@ -11,8 +11,8 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 [Obsolete("Deprecated since Comet version 21.12.0")]
 public class U2FRegisterRequest {
-	public string Challenge { get; set; } = "";
-	public string Version { get; set; } = "";
+	public string Challenge { get; set; } = string.Empty;
+	public string Version { get; set; } = string.Empty;
 
 	public U2FRegisterRequest(){ }
 

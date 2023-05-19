@@ -10,8 +10,8 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>SourceStatistics</c>
 /// </summary>
 public class SourceStatistics {
-	public BackupJobDetail LastBackupJob { get; set; } = new BackupJobDetail();
-	public BackupJobDetail LastSuccessfulBackupJob { get; set; } = new BackupJobDetail();
+	public BackupJobDetail LastBackupJob { get; set; }
+	public BackupJobDetail LastSuccessfulBackupJob { get; set; }
 
 	public SourceStatistics(){ }
 

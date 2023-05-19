@@ -10,9 +10,9 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>BucketUsageInfo</c>
 /// </summary>
 public class BucketUsageInfo {
-	public string AccessKey { get; set; } = "";
-	public List<long> ExistsOnServers { get; set; } = new List<long>();
-	public List<UserOnServer> InUseBy { get; set; } = new List<UserOnServer>();
+	public string AccessKey { get; set; } = string.Empty;
+	public List<long> ExistsOnServers { get; set; }
+	public List<UserOnServer> InUseBy { get; set; }
 
 	public BucketUsageInfo(){ }
 

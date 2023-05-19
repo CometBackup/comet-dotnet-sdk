@@ -10,12 +10,12 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>ServerMetaBrandingProperties</c>
 /// </summary>
 public class ServerMetaBrandingProperties {
-	public string BrandName { get; set; } = "";
-	public string ProductName { get; set; } = "";
+	public string BrandName { get; set; } = string.Empty;
+	public string ProductName { get; set; } = string.Empty;
 	public bool HasImage { get; set; }
-	public string ImageEtag { get; set; } = "";
-	public string TopColor { get; set; } = "";
-	public string AccentColor { get; set; } = "";
+	public string ImageEtag { get; set; } = string.Empty;
+	public string TopColor { get; set; } = string.Empty;
+	public string AccentColor { get; set; } = string.Empty;
 	public bool HideNewsArea { get; set; }
 	public bool AllowUnauthenticatedDownloads { get; set; }
 	public bool AllowAuthenticatedDownloads { get; set; }

@@ -12,7 +12,7 @@ namespace CometBackup.CometAPI.SDK {
 public class WebAuthnCredentialParameter {
 
 	[JsonPropertyName("type")]
-	public string Type { get; set; } = "";
+	public string Type { get; set; } = string.Empty;
 
 	[JsonPropertyName("alg")]
 	public long Algorithm { get; set; }

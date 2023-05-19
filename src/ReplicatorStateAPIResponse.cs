@@ -10,8 +10,8 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>ReplicatorStateAPIResponse</c>
 /// </summary>
 public class ReplicatorStateAPIResponse {
-	public string Description { get; set; } = "";
-	public string RemoteServerID { get; set; } = "";
+	public string Description { get; set; } = string.Empty;
+	public string RemoteServerID { get; set; } = string.Empty;
 	public long DisplayClass { get; set; }
 	public int ActiveWorkers { get; set; }
 	public long TotalWorkers { get; set; }

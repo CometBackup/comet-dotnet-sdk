@@ -11,9 +11,9 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 public class GetGroupPolicyResponse {
 	public long Status { get; set; }
-	public string Message { get; set; } = "";
-	public GroupPolicy Policy { get; set; } = new GroupPolicy();
-	public string PolicyHash { get; set; } = "";
+	public string Message { get; set; } = string.Empty;
+	public GroupPolicy Policy { get; set; }
+	public string PolicyHash { get; set; } = string.Empty;
 
 	public GetGroupPolicyResponse(){ }
 

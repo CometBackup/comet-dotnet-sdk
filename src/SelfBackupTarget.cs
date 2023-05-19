@@ -10,16 +10,16 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>SelfBackupTarget</c>
 /// </summary>
 public class SelfBackupTarget {
-	public List<ScheduleConfig> Schedule { get; set; } = new List<ScheduleConfig>();
-	public string ScheduleTimezone { get; set; } = "";
-	public RetentionPolicy RetentionPolicy { get; set; } = new RetentionPolicy();
-	public DestinationLocation Location { get; set; } = new DestinationLocation();
-	public string EncryptionKey { get; set; } = "";
+	public List<ScheduleConfig> Schedule { get; set; }
+	public string ScheduleTimezone { get; set; } = string.Empty;
+	public RetentionPolicy RetentionPolicy { get; set; }
+	public DestinationLocation Location { get; set; }
+	public string EncryptionKey { get; set; } = string.Empty;
 	public ulong EncryptionKeyFormat { get; set; }
 	public long Compression { get; set; }
 	public bool ExcludeJobsDB { get; set; }
 	public bool IncludeServerLogs { get; set; }
-	public string RestrictToSingleOrgID { get; set; } = "";
+	public string RestrictToSingleOrgID { get; set; } = string.Empty;
 	public long Index { get; set; }
 
 	public SelfBackupTarget(){ }

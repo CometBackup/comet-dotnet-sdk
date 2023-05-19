@@ -14,10 +14,10 @@ public class ScheduleConfig {
 	public ulong SecondsPast { get; set; }
 	public long Offset { get; set; }
 	public bool RestrictRuntime { get; set; }
-	public HourSchedConfig FromTime { get; set; } = new HourSchedConfig();
-	public HourSchedConfig ToTime { get; set; } = new HourSchedConfig();
+	public HourSchedConfig FromTime { get; set; }
+	public HourSchedConfig ToTime { get; set; }
 	public bool RestrictDays { get; set; }
-	public DaysOfWeekConfig DaysSelect { get; set; } = new DaysOfWeekConfig();
+	public DaysOfWeekConfig DaysSelect { get; set; }
 	public ulong RandomDelaySecs { get; set; }
 
 	public ScheduleConfig(){ }

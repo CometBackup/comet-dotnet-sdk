@@ -11,8 +11,8 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 public class BrowseOffice365ObjectsResponse {
 	public long Status { get; set; }
-	public string Message { get; set; } = "";
-	public List<Office365ObjectInfo> Objects { get; set; } = new List<Office365ObjectInfo>();
+	public string Message { get; set; } = string.Empty;
+	public List<Office365ObjectInfo> Objects { get; set; }
 
 	public BrowseOffice365ObjectsResponse(){ }
 

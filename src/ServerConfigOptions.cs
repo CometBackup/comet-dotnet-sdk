@@ -10,27 +10,27 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>ServerConfigOptions</c>
 /// </summary>
 public class ServerConfigOptions {
-	public List<AllowedAdminUser> AdminUsers { get; set; } = new List<AllowedAdminUser>();
-	public AuthenticationRoleOptions AuthenticationRole { get; set; } = new AuthenticationRoleOptions();
-	public BrandingOptions Branding { get; set; } = new BrandingOptions();
-	public ConstellationRoleOptions ConstellationRole { get; set; } = new ConstellationRoleOptions();
+	public List<AllowedAdminUser> AdminUsers { get; set; }
+	public AuthenticationRoleOptions AuthenticationRole { get; set; }
+	public BrandingOptions Branding { get; set; }
+	public ConstellationRoleOptions ConstellationRole { get; set; }
 
 	[JsonPropertyName("OverseerRole")]
-	public ConstellationRoleOptions ConstellationRole_Legacy { get; set; } = new ConstellationRoleOptions();
-	public EmailOptions Email { get; set; } = new EmailOptions();
-	public List<string> ExperimentalOptions { get; set; } = new List<string>();
-	public Dictionary<string, ExternalAuthenticationSource> ExternalAdminUserSources { get; set; } = new Dictionary<string, ExternalAuthenticationSource>();
-	public RatelimitOptions IPRateLimit { get; set; } = new RatelimitOptions();
-	public LicenseOptions License { get; set; } = new LicenseOptions();
-	public List<HTTPConnectorOptions> ListenAddresses { get; set; } = new List<HTTPConnectorOptions>();
-	public Dictionary<string, Organization> Organizations { get; set; } = new Dictionary<string, Organization>();
-	public List<PSAConfig> PSAConfigs { get; set; } = new List<PSAConfig>();
-	public SelfBackupOptions SelfBackup { get; set; } = new SelfBackupOptions();
-	public SessionOptions SessionSettings { get; set; } = new SessionOptions();
-	public SoftwareBuildRoleOptions SoftwareBuildRole { get; set; } = new SoftwareBuildRoleOptions();
-	public StorageRoleOptions StorageRole { get; set; } = new StorageRoleOptions();
+	public ConstellationRoleOptions ConstellationRole_Legacy { get; set; }
+	public EmailOptions Email { get; set; }
+	public List<string> ExperimentalOptions { get; set; }
+	public Dictionary<string, ExternalAuthenticationSource> ExternalAdminUserSources { get; set; }
+	public RatelimitOptions IPRateLimit { get; set; }
+	public LicenseOptions License { get; set; }
+	public List<HTTPConnectorOptions> ListenAddresses { get; set; }
+	public Dictionary<string, Organization> Organizations { get; set; }
+	public List<PSAConfig> PSAConfigs { get; set; }
+	public SelfBackupOptions SelfBackup { get; set; }
+	public SessionOptions SessionSettings { get; set; }
+	public SoftwareBuildRoleOptions SoftwareBuildRole { get; set; }
+	public StorageRoleOptions StorageRole { get; set; }
 	public bool TrustXForwardedFor { get; set; }
-	public Dictionary<string, WebhookOption> WebhookOptions { get; set; } = new Dictionary<string, WebhookOption>();
+	public Dictionary<string, WebhookOption> WebhookOptions { get; set; }
 
 	public ServerConfigOptions(){ }
 

@@ -10,13 +10,13 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>DiskDrive</c>
 /// </summary>
 public class DiskDrive {
-	public string ID { get; set; } = "";
-	public string DeviceName { get; set; } = "";
-	public string Caption { get; set; } = "";
-	public string Model { get; set; } = "";
-	public string SerialNumber { get; set; } = "";
+	public string ID { get; set; } = string.Empty;
+	public string DeviceName { get; set; } = string.Empty;
+	public string Caption { get; set; } = string.Empty;
+	public string Model { get; set; } = string.Empty;
+	public string SerialNumber { get; set; } = string.Empty;
 	public long Size { get; set; }
-	public List<Partition> Partitions { get; set; } = new List<Partition>();
+	public List<Partition> Partitions { get; set; }
 	public long Flags { get; set; }
 	public long Cylinders { get; set; }
 	public long Heads { get; set; }

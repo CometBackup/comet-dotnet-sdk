@@ -16,9 +16,9 @@ public class UpdateCampaignProperties {
 	public bool DowngradeNewer { get; set; }
 	public bool ForceUpgradeRunning { get; set; }
 	public bool ApplyDeviceFilter { get; set; }
-	public SearchClause DeviceFilter { get; set; } = new SearchClause();
+	public SearchClause DeviceFilter { get; set; }
 	public long StartTime { get; set; }
-	public string TargetVersion { get; set; } = "";
+	public string TargetVersion { get; set; } = string.Empty;
 
 	public UpdateCampaignProperties(){ }
 

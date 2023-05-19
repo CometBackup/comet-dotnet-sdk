@@ -11,8 +11,8 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 public class BrowseEDBResponse {
 	public long Status { get; set; }
-	public string Message { get; set; } = "";
-	public List<EDBFileInfo> Databases { get; set; } = new List<EDBFileInfo>();
+	public string Message { get; set; } = string.Empty;
+	public List<EDBFileInfo> Databases { get; set; }
 
 	public BrowseEDBResponse(){ }
 

@@ -10,13 +10,13 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>SSHConnection</c>
 /// </summary>
 public class SSHConnection {
-	public string SSHServer { get; set; } = "";
-	public string SSHUsername { get; set; } = "";
+	public string SSHServer { get; set; } = string.Empty;
+	public string SSHUsername { get; set; } = string.Empty;
 	public ulong SSHAuthMode { get; set; }
-	public string SSHPassword { get; set; } = "";
-	public string SSHPrivateKey { get; set; } = "";
+	public string SSHPassword { get; set; } = string.Empty;
+	public string SSHPrivateKey { get; set; } = string.Empty;
 	public bool SSHCustomAuth_UseKnownHostsFile { get; set; }
-	public string SSHCustomAuth_KnownHostsFile { get; set; } = "";
+	public string SSHCustomAuth_KnownHostsFile { get; set; } = string.Empty;
 
 	public SSHConnection(){ }
 

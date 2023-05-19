@@ -10,10 +10,10 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>SourceBasicInfo</c>
 /// </summary>
 public class SourceBasicInfo {
-	public string Description { get; set; } = "";
+	public string Description { get; set; } = string.Empty;
 	public long O365AccountCount { get; set; }
 	public long Size { get; set; }
-	public Dictionary<string, RetentionPolicy> OverrideDestinationRetention { get; set; } = new Dictionary<string, RetentionPolicy>();
+	public Dictionary<string, RetentionPolicy> OverrideDestinationRetention { get; set; }
 
 	public SourceBasicInfo(){ }
 

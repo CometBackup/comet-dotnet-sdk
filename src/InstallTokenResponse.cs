@@ -11,8 +11,8 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 public class InstallTokenResponse {
 	public long Status { get; set; }
-	public string Message { get; set; } = "";
-	public InstallToken InstallToken { get; set; } = new InstallToken();
+	public string Message { get; set; } = string.Empty;
+	public InstallToken InstallToken { get; set; }
 
 	public InstallTokenResponse(){ }
 

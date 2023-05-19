@@ -11,8 +11,8 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 public class DispatcherAdminSourcesResponse {
 	public long Status { get; set; }
-	public string Message { get; set; } = "";
-	public Dictionary<string, string> ImportSources { get; set; } = new Dictionary<string, string>();
+	public string Message { get; set; } = string.Empty;
+	public Dictionary<string, string> ImportSources { get; set; }
 
 	public DispatcherAdminSourcesResponse(){ }
 

@@ -10,10 +10,10 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>MSSQLLoginArgs</c>
 /// </summary>
 public class MSSQLLoginArgs {
-	public string Instance { get; set; } = "";
-	public string AuthMode { get; set; } = "";
-	public string Username { get; set; } = "";
-	public string Password { get; set; } = "";
+	public string Instance { get; set; } = string.Empty;
+	public string AuthMode { get; set; } = string.Empty;
+	public string Username { get; set; } = string.Empty;
+	public string Password { get; set; } = string.Empty;
 	public bool MethodIsOledb32Bit { get; set; }
 	public bool RestoreNoRecovery { get; set; }
 

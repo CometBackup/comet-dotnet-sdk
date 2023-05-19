@@ -11,10 +11,10 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 public class PSAConfig {
 	public bool AlertsDisabled { get; set; }
-	public Dictionary<string, string> CustomHeaders { get; set; } = new Dictionary<string, string>();
-	public string PartnerKey { get; set; } = "";
+	public Dictionary<string, string> CustomHeaders { get; set; }
+	public string PartnerKey { get; set; } = string.Empty;
 	public long Type { get; set; }
-	public string URL { get; set; } = "";
+	public string URL { get; set; } = string.Empty;
 
 	public PSAConfig(){ }
 

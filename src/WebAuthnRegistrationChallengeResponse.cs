@@ -11,9 +11,9 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 public class WebAuthnRegistrationChallengeResponse {
 	public long Status { get; set; }
-	public string Message { get; set; } = "";
-	public string ChallengeID { get; set; } = "";
-	public WebAuthnPublicKeyCredentialCreationOptions CredentialCreationOptions { get; set; } = new WebAuthnPublicKeyCredentialCreationOptions();
+	public string Message { get; set; } = string.Empty;
+	public string ChallengeID { get; set; } = string.Empty;
+	public WebAuthnPublicKeyCredentialCreationOptions CredentialCreationOptions { get; set; }
 
 	public WebAuthnRegistrationChallengeResponse(){ }
 

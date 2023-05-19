@@ -11,7 +11,7 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 public class UserOnServer {
 	public long ServerID { get; set; }
-	public string Username { get; set; } = "";
+	public string Username { get; set; } = string.Empty;
 
 	public UserOnServer(){ }
 

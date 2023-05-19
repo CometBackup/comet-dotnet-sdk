@@ -10,7 +10,7 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>SpannedStorageExtraInfo</c>
 /// </summary>
 public class SpannedStorageExtraInfo {
-	public List<StorageFreeSpaceInfo> Targets { get; set; } = new List<StorageFreeSpaceInfo>();
+	public List<StorageFreeSpaceInfo> Targets { get; set; }
 
 	public SpannedStorageExtraInfo(){ }
 

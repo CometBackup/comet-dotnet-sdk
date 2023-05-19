@@ -10,9 +10,9 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>DestinationStatistics</c>
 /// </summary>
 public class DestinationStatistics {
-	public SizeMeasurement ClientProvidedSize { get; set; } = new SizeMeasurement();
-	public ContentMeasurement ClientProvidedContent { get; set; } = new ContentMeasurement();
-	public string LastSuccessfulDeepVerify_GUID { get; set; } = "";
+	public SizeMeasurement ClientProvidedSize { get; set; }
+	public ContentMeasurement ClientProvidedContent { get; set; }
+	public string LastSuccessfulDeepVerify_GUID { get; set; } = string.Empty;
 	public long LastSuccessfulDeepVerify_StartTime { get; set; }
 	public long LastSuccessfulDeepVerify_EndTime { get; set; }
 

@@ -10,13 +10,13 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>S3DestinationLocation</c>
 /// </summary>
 public class S3DestinationLocation {
-	public string S3Server { get; set; } = "";
+	public string S3Server { get; set; } = string.Empty;
 	public bool S3UsesTLS { get; set; }
-	public string S3AccessKey { get; set; } = "";
-	public string S3SecretKey { get; set; } = "";
-	public string S3BucketName { get; set; } = "";
-	public string S3Subdir { get; set; } = "";
-	public string S3CustomRegion { get; set; } = "";
+	public string S3AccessKey { get; set; } = string.Empty;
+	public string S3SecretKey { get; set; } = string.Empty;
+	public string S3BucketName { get; set; } = string.Empty;
+	public string S3Subdir { get; set; } = string.Empty;
+	public string S3CustomRegion { get; set; } = string.Empty;
 	public bool S3UsesV2Signing { get; set; }
 	public bool S3RemoveDeleted { get; set; }
 	public long S3ObjectLockDays { get; set; }

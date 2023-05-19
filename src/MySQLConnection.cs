@@ -10,15 +10,15 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>MySQLConnection</c>
 /// </summary>
 public class MySQLConnection {
-	public string Host { get; set; } = "";
-	public string Port { get; set; } = "";
-	public string Username { get; set; } = "";
-	public string Password { get; set; } = "";
+	public string Host { get; set; } = string.Empty;
+	public string Port { get; set; } = string.Empty;
+	public string Username { get; set; } = string.Empty;
+	public string Password { get; set; } = string.Empty;
 	public bool UseTLS { get; set; }
 	public bool TLSSkipVerify { get; set; }
-	public string TLSCustomServerCAPath { get; set; } = "";
-	public string TLSCustomClientCrtPath { get; set; } = "";
-	public string TLSCustomClientKeyPath { get; set; } = "";
+	public string TLSCustomServerCAPath { get; set; } = string.Empty;
+	public string TLSCustomClientCrtPath { get; set; } = string.Empty;
+	public string TLSCustomClientKeyPath { get; set; } = string.Empty;
 
 	public MySQLConnection(){ }
 

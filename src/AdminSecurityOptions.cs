@@ -11,7 +11,7 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 public class AdminSecurityOptions {
 	public long PasswordFormat { get; set; }
-	public string Password { get; set; } = "";
+	public string Password { get; set; } = string.Empty;
 	public bool AllowPasswordLogin { get; set; }
 	public bool AllowPasswordAndTOTPLogin { get; set; }
 
@@ -20,11 +20,11 @@ public class AdminSecurityOptions {
 	public bool AllowPasswordAndWebAuthnLogin { get; set; }
 
 	[Obsolete("Deprecated since Comet version 21.12.0")]
-	public List<AdminU2FRegistration> U2FRegistrations { get; set; } = new List<AdminU2FRegistration>();
-	public List<AdminWebAuthnRegistration> WebAuthnRegistrations { get; set; } = new List<AdminWebAuthnRegistration>();
+	public List<AdminU2FRegistration> U2FRegistrations { get; set; }
+	public List<AdminWebAuthnRegistration> WebAuthnRegistrations { get; set; }
 	public long TOTPKeyEncryptionFormat { get; set; }
-	public string TOTPKey { get; set; } = "";
-	public string IPWhitelist { get; set; } = "";
+	public string TOTPKey { get; set; } = string.Empty;
+	public string IPWhitelist { get; set; } = string.Empty;
 
 	public AdminSecurityOptions(){ }
 

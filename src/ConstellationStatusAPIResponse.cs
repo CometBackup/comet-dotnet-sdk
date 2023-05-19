@@ -11,9 +11,9 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 public class ConstellationStatusAPIResponse {
 	public bool DeletionEnabled { get; set; }
-	public List<string> Targets { get; set; } = new List<string>();
-	public List<string> TargetNames { get; set; } = new List<string>();
-	public ConstellationStats Stats { get; set; } = new ConstellationStats();
+	public List<string> Targets { get; set; }
+	public List<string> TargetNames { get; set; }
+	public ConstellationStats Stats { get; set; }
 
 	public ConstellationStatusAPIResponse(){ }
 

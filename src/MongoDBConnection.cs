@@ -10,27 +10,27 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>MongoDBConnection</c>
 /// </summary>
 public class MongoDBConnection {
-	public string Server { get; set; } = "";
+	public string Server { get; set; } = string.Empty;
 	public long Port { get; set; }
-	public string Username { get; set; } = "";
-	public string Password { get; set; } = "";
-	public string AuthenticationDB { get; set; } = "";
+	public string Username { get; set; } = string.Empty;
+	public string Password { get; set; } = string.Empty;
+	public string AuthenticationDB { get; set; } = string.Empty;
 
 	[Obsolete("Deprecated since Comet version 22.12.3")]
-	public string MongoShellPath { get; set; } = "";
-	public string MongodumpPath { get; set; } = "";
-	public string ReadPreference { get; set; } = "";
+	public string MongoShellPath { get; set; } = string.Empty;
+	public string MongodumpPath { get; set; } = string.Empty;
+	public string ReadPreference { get; set; } = string.Empty;
 	public bool UseReplica { get; set; }
-	public string ReplicaName { get; set; } = "";
-	public List<string> ReplicaMembers { get; set; } = new List<string>();
+	public string ReplicaName { get; set; } = string.Empty;
+	public List<string> ReplicaMembers { get; set; }
 	public bool UseSSL { get; set; }
-	public string ClientSSLPEMPath { get; set; } = "";
-	public string ServerSSLPEMPath { get; set; } = "";
-	public string SSLClientKeyPassword { get; set; } = "";
+	public string ClientSSLPEMPath { get; set; } = string.Empty;
+	public string ServerSSLPEMPath { get; set; } = string.Empty;
+	public string SSLClientKeyPassword { get; set; } = string.Empty;
 	public bool AllowInvalidCertificate { get; set; }
 	public bool AllowInvalidHostname { get; set; }
 	public bool UseSSH { get; set; }
-	public SSHConnection SSHConnection { get; set; } = new SSHConnection();
+	public SSHConnection SSHConnection { get; set; }
 
 	public MongoDBConnection(){ }
 

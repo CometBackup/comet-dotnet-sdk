@@ -10,9 +10,9 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>RegisterOfficeApplicationBeginResponse</c>
 /// </summary>
 public class RegisterOfficeApplicationBeginResponse {
-	public string Continuation { get; set; } = "";
-	public string VerificationURL { get; set; } = "";
-	public string UserCode { get; set; } = "";
+	public string Continuation { get; set; } = string.Empty;
+	public string VerificationURL { get; set; } = string.Empty;
+	public string UserCode { get; set; } = string.Empty;
 
 	public RegisterOfficeApplicationBeginResponse(){ }
 

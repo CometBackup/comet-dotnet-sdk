@@ -10,13 +10,13 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>LiveUserConnection</c>
 /// </summary>
 public class LiveUserConnection {
-	public string Username { get; set; } = "";
-	public string DeviceID { get; set; } = "";
-	public string ReportedVersion { get; set; } = "";
-	public string ReportedPlatform { get; set; } = "";
-	public OSInfo ReportedPlatformVersion { get; set; } = new OSInfo();
-	public string DeviceTimeZone { get; set; } = "";
-	public string IPAddress { get; set; } = "";
+	public string Username { get; set; } = string.Empty;
+	public string DeviceID { get; set; } = string.Empty;
+	public string ReportedVersion { get; set; } = string.Empty;
+	public string ReportedPlatform { get; set; } = string.Empty;
+	public OSInfo ReportedPlatformVersion { get; set; }
+	public string DeviceTimeZone { get; set; } = string.Empty;
+	public string IPAddress { get; set; } = string.Empty;
 	public long ConnectionTime { get; set; }
 	public bool AllowsFilenames { get; set; }
 

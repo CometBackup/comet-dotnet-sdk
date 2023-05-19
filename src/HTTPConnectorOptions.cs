@@ -12,13 +12,13 @@ namespace CometBackup.CometAPI.SDK {
 public class HTTPConnectorOptions {
 
 	[JsonPropertyName("ListenAddress")]
-	public string ListenAddress__DONOTUSEDIRECTLY { get; set; } = "";
-	public string SSLCertPath { get; set; } = "";
-	public string SSLIntermediate { get; set; } = "";
-	public string SSLCertKey { get; set; } = "";
-	public string AutoSSLDomains { get; set; } = "";
-	public string SSLPfxPath { get; set; } = "";
-	public string SSLPfxPassword { get; set; } = "";
+	public string ListenAddress__DONOTUSEDIRECTLY { get; set; } = string.Empty;
+	public string SSLCertPath { get; set; } = string.Empty;
+	public string SSLIntermediate { get; set; } = string.Empty;
+	public string SSLCertKey { get; set; } = string.Empty;
+	public string AutoSSLDomains { get; set; } = string.Empty;
+	public string SSLPfxPath { get; set; } = string.Empty;
+	public string SSLPfxPassword { get; set; } = string.Empty;
 
 	public HTTPConnectorOptions(){ }
 

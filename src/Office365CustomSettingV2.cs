@@ -11,8 +11,8 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 public class Office365CustomSettingV2 {
 	public bool Organization { get; set; }
-	public Dictionary<string, long> BackupOptions { get; set; } = new Dictionary<string, long>();
-	public Dictionary<string, long> MemberBackupOptions { get; set; } = new Dictionary<string, long>();
+	public Dictionary<string, long> BackupOptions { get; set; }
+	public Dictionary<string, long> MemberBackupOptions { get; set; }
 
 	public Office365CustomSettingV2(){ }
 

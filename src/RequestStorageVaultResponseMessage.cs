@@ -11,8 +11,8 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 public class RequestStorageVaultResponseMessage {
 	public long Status { get; set; }
-	public string Message { get; set; } = "";
-	public string DestinationID { get; set; } = "";
+	public string Message { get; set; } = string.Empty;
+	public string DestinationID { get; set; } = string.Empty;
 
 	public RequestStorageVaultResponseMessage(){ }
 

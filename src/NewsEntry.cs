@@ -10,9 +10,9 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>NewsEntry</c>
 /// </summary>
 public class NewsEntry {
-	public string OrganizationID { get; set; } = "";
+	public string OrganizationID { get; set; } = string.Empty;
 	public long DateTime { get; set; }
-	public string TextContent { get; set; } = "";
+	public string TextContent { get; set; } = string.Empty;
 
 	public NewsEntry(){ }
 

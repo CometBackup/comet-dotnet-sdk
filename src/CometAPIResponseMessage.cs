@@ -11,7 +11,7 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 public class CometAPIResponseMessage {
 	public long Status { get; set; }
-	public string Message { get; set; } = "";
+	public string Message { get; set; } = string.Empty;
 
 	public CometAPIResponseMessage(){ }
 

@@ -11,33 +11,33 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 public class PrivateBrandingProperties {
 	public long BuildMode { get; set; }
-	public string PathIcoFile { get; set; } = "";
-	public string PathIcnsFile { get; set; } = "";
-	public string PathMenuBarIcnsFile { get; set; } = "";
-	public string PathEulaRtf { get; set; } = "";
-	public string PathTilePng { get; set; } = "";
-	public string PathHeaderImage { get; set; } = "";
-	public string PathAppIconImage { get; set; } = "";
-	public string PackageIdentifier { get; set; } = "";
+	public string PathIcoFile { get; set; } = string.Empty;
+	public string PathIcnsFile { get; set; } = string.Empty;
+	public string PathMenuBarIcnsFile { get; set; } = string.Empty;
+	public string PathEulaRtf { get; set; } = string.Empty;
+	public string PathTilePng { get; set; } = string.Empty;
+	public string PathHeaderImage { get; set; } = string.Empty;
+	public string PathAppIconImage { get; set; } = string.Empty;
+	public string PackageIdentifier { get; set; } = string.Empty;
 	public long WindowsCodeSignMethod { get; set; }
-	public string WindowsCodeSignPKCS12FilePath { get; set; } = "";
+	public string WindowsCodeSignPKCS12FilePath { get; set; } = string.Empty;
 	public ulong WindowsCodeSignPKCS12PasswordFormat { get; set; }
-	public string WindowsCodeSignPKCS12Password { get; set; } = "";
-	public string WindowsCodeSignPKCS11Engine { get; set; } = "";
-	public string WindowsCodeSignPKCS11Module { get; set; } = "";
+	public string WindowsCodeSignPKCS12Password { get; set; } = string.Empty;
+	public string WindowsCodeSignPKCS11Engine { get; set; } = string.Empty;
+	public string WindowsCodeSignPKCS11Module { get; set; } = string.Empty;
 
 	[Obsolete("Deprecated since Comet version 22.12.7")]
-	public string WindowsCodeSignPKCS11Certfile { get; set; } = "";
-	public string WindowsCodeSignPKCS11KeyID { get; set; } = "";
+	public string WindowsCodeSignPKCS11Certfile { get; set; } = string.Empty;
+	public string WindowsCodeSignPKCS11KeyID { get; set; } = string.Empty;
 	public ulong WindowsCodeSignPKCS11PasswordFormat { get; set; }
-	public string WindowsCodeSignPKCS11Password { get; set; } = "";
-	public string WindowsCodeSignAzureVaultName { get; set; } = "";
-	public string WindowsCodeSignAzureCertName { get; set; } = "";
-	public string WindowsCodeSignAzureAppID { get; set; } = "";
+	public string WindowsCodeSignPKCS11Password { get; set; } = string.Empty;
+	public string WindowsCodeSignAzureVaultName { get; set; } = string.Empty;
+	public string WindowsCodeSignAzureCertName { get; set; } = string.Empty;
+	public string WindowsCodeSignAzureAppID { get; set; } = string.Empty;
 	public ulong WindowsCodeSignAzureAppSecretFormat { get; set; }
-	public string WindowsCodeSignAzureAppSecret { get; set; } = "";
-	public string WindowsCodeSignAzureTenantID { get; set; } = "";
-	public MacOSCodeSignProperties MacOSCodeSign { get; set; } = new MacOSCodeSignProperties();
+	public string WindowsCodeSignAzureAppSecret { get; set; } = string.Empty;
+	public string WindowsCodeSignAzureTenantID { get; set; } = string.Empty;
+	public MacOSCodeSignProperties MacOSCodeSign { get; set; }
 
 	public PrivateBrandingProperties(){ }
 

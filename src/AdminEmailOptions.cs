@@ -10,8 +10,8 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>AdminEmailOptions</c>
 /// </summary>
 public class AdminEmailOptions {
-	public string FromEmail { get; set; } = "";
-	public string FromName { get; set; } = "";
+	public string FromEmail { get; set; } = string.Empty;
+	public string FromName { get; set; } = string.Empty;
 
 	public AdminEmailOptions(){ }
 

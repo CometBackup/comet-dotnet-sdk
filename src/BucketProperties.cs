@@ -10,11 +10,11 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>BucketProperties</c>
 /// </summary>
 public class BucketProperties {
-	public string OrganizationID { get; set; } = "";
+	public string OrganizationID { get; set; } = string.Empty;
 	public long CreateTime { get; set; }
 	public long ReadWriteKeyFormat { get; set; }
-	public string ReadWriteKey { get; set; } = "";
-	public SizeMeasurement Size { get; set; } = new SizeMeasurement();
+	public string ReadWriteKey { get; set; } = string.Empty;
+	public SizeMeasurement Size { get; set; }
 
 	public BucketProperties(){ }
 

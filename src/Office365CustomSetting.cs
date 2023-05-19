@@ -11,11 +11,11 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 [Obsolete("Deprecated since Comet version 21.9.xx")]
 public class Office365CustomSetting {
-	public string MailboxStrategy { get; set; } = "";
-	public string SiteStrategy { get; set; } = "";
-	public List<string> MailboxUserIDs { get; set; } = new List<string>();
-	public List<string> MailboxGroupIDs { get; set; } = new List<string>();
-	public List<string> SiteIDs { get; set; } = new List<string>();
+	public string MailboxStrategy { get; set; } = string.Empty;
+	public string SiteStrategy { get; set; } = string.Empty;
+	public List<string> MailboxUserIDs { get; set; }
+	public List<string> MailboxGroupIDs { get; set; }
+	public List<string> SiteIDs { get; set; }
 
 	public Office365CustomSetting(){ }
 

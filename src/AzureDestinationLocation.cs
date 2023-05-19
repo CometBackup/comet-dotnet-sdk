@@ -10,11 +10,11 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>AzureDestinationLocation</c>
 /// </summary>
 public class AzureDestinationLocation {
-	public string AZBAccountName { get; set; } = "";
-	public string AZBAccountKey { get; set; } = "";
-	public string AZBContainer { get; set; } = "";
-	public string AZBRealm { get; set; } = "";
-	public string AZBPrefix { get; set; } = "";
+	public string AZBAccountName { get; set; } = string.Empty;
+	public string AZBAccountKey { get; set; } = string.Empty;
+	public string AZBContainer { get; set; } = string.Empty;
+	public string AZBRealm { get; set; } = string.Empty;
+	public string AZBPrefix { get; set; } = string.Empty;
 
 	public AzureDestinationLocation(){ }
 
