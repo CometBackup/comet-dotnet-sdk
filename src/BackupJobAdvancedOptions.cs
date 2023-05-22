@@ -11,11 +11,17 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 public class BackupJobAdvancedOptions {
 	public bool SkipAlreadyRunning { get; set; }
+	//If Zero: disabled
 	public long StopAfter { get; set; }
+	//If Zero: disabled
 	public long LimitVaultSpeedBps { get; set; }
+	//Default disabled
 	public bool ReduceDiskConcurrency { get; set; }
+	//Default disabled
 	public bool UseOnDiskIndexes { get; set; }
+	//Default disabled
 	public bool AllowZeroFilesSuccess { get; set; }
+	//If Zero: default Automatic (BACKUPJOBAUTORETENTION_AUTOMATIC)
 	public long AutoRetentionLevel { get; set; }
 
 	public BackupJobAdvancedOptions(){ }

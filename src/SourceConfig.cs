@@ -10,15 +10,59 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>SourceConfig</c>
 /// </summary>
 public class SourceConfig {
+	//One of the ENGINE_BUILTIN_ constants
 	public string Engine { get; set; } = string.Empty;
 	public string Description { get; set; } = string.Empty;
 	public string OwnerDevice { get; set; } = string.Empty;
 	public long CreateTime { get; set; }
 	public long ModifyTime { get; set; }
+	//Custom commands to run before the job
 	public List<string> PreExec { get; set; }
+	//Custom commands to run after taking a disk snapshot
 	public List<string> ThawExec { get; set; }
+	//Custom commands to run after the job
 	public List<string> PostExec { get; set; }
+	//Configuration for the selected Protected Item type. Each "Engine" supports
+	//different configuration options for the EngineProps values.
+	//
+	//For engine1/file, Comet understands the following EngineProp keys:
+	//
+	//- Any key starting with INCLUDE: A path that is included
+	//- Any key starting with EXCLUDE: An exclusion (glob format)
+	//- Any key starting with REXCLUDE: An exclusion (regular expression format)
+	//- Any key starting with PINCLUDE: A JSON string {"TopDirectory": "", "Value": ""}. TopDirectory is the path where
+	//starts to match the value; Value is an inclusion (glob format)
+	//- Any key starting with RINCLUDE: A JSON string {"TopDirectory": "", "Value": ""}. TopDirectory is the path where
+	//starts to match the value; Value is an inclusion (regular expression format)
+	//- Any key starting with SMBAUTH: A set of Windows network share credentials in WinSMBAuth JSON format
+	//- USE_WIN_VSS: If present, the 'Take filesystem snapshot' checkbox is checked
+	//- CONFIRM_EFS: If present, the 'Dismiss EFS warning' checkbox is checked
+	//- RESCAN_UNCHANGED: If present, the 'Rescan unchanged files' checkbox is checked
+	//
+	//For engine1/mssql, Comet understands the following EngineProp keys:
+	//
+	//- ALL_DATABASES: If present, include all databases with specified exclusions. If not present, only back up the
+	//specified inclusions
+	//- Any key starting with DATABASE- : A database that is included. Only valid if ALL_DATABASES is not present.
+	//- Any key starting with EXCEPT-DATABASE- : A database that is excluded. Only valid if ALL_DATABASES is present.
+	//- INSTANCE: The Microsoft SQL Server instance name
+	//- USERNAME: The username to connect to Microsoft SQL Server
+	//- PASSWORD: The password to connect to Microsoft SQL Server
+	//- AUTHMODE: Either "windows" or "native" (corresponding to the declared MSSQL_AUTH_WINDOWS and MSSQL_AUTH_NATIVE
+	//constant values). If not present, use native authentication if the USERNAME and/or PASSWORD fields are filled in, use
+	//windows authentication if they are blank
+	//- METHOD: Either "OLEDB_NATIVE" or "OLEDB_32" (corresponding to the declared MSSQL_METHOD_OLEDB_NATIVE and
+	//MSSQL_METHOD_OLEDB_32 constant values). If not present, defaults to Native
+	//- DIFFBASE: If present, take a "Full (base image)" backup job. Otherwise, take a "Full (copy only)" backup job.
+	//- DIFFERENTIAL: If present, take a "Differential increment" backup job. Otherwise, take a "Full (copy only)" backup
+	//job.
+	//- LOGTRUNC: If present, take a "Log (truncating)" backup job. Otherwise, take a "Full (copy only)" backup job.
+	//- LOGNOTRUNC: If present, take a "Log (no truncation)" backup job. Otherwise, take a "Full (copy only)" backup job.
+	//
 	public Dictionary<string, string> EngineProps { get; set; }
+	//By default, backup jobs from this Protected Item will be subject
+	//to the overall retention policy for the Storage Vault. You can override the policy
+	//for specific Storage Vaults by putting their destination ID as a key here.
 	public Dictionary<string, RetentionPolicy> OverrideDestinationRetention { get; set; }
 	public SourceStatistics Statistics { get; set; }
 

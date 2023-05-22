@@ -10,8 +10,11 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>EmailReportConfig</c>
 /// </summary>
 public class EmailReportConfig {
+	//One of the EMAILREPORTTYPE_ constants
 	public long ReportType { get; set; }
+	//Used as a list of scheduled times to send
 	public List<ScheduleConfig> SummaryFrequency { get; set; }
+	//Used to the determine the time bounds of a report
 	public TimeSpan TimeSpan { get; set; }
 	public SearchClause Filter { get; set; }
 

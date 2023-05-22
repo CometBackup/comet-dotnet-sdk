@@ -22,9 +22,16 @@ public class ServerMetaVersionInfo {
 	public bool ConstellationRole_Legacy { get; set; }
 	public bool ConstellationRole { get; set; }
 	public List<string> ExperimentalOptions { get; set; }
+	//Unix timestamp, in seconds.
 	public long ServerStartTime { get; set; }
+	//A GUID that was randomly generated when this Comet Server started up. You can check this value to see if the Comet
+	//Server has restarted.
 	public string ServerStartHash { get; set; } = string.Empty;
+	//The current time on the Comet Server host machine. Unix timestamp, in seconds. You can check this value to see if
+	//clock drift is occuring.
 	public long CurrentTime { get; set; }
+	//A hash derived from the Comet Server's serial number. You can check this value to see if two Comet Server endpoints
+	//point to an identical server.
 	public string ServerLicenseHash { get; set; } = string.Empty;
 	public bool ServerLicenseFeaturesAll { get; set; }
 	public uint ServerLicenseFeatureSet { get; set; }

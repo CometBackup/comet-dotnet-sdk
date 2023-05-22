@@ -13,6 +13,7 @@ public class SFTPDestinationLocation {
 	public string SFTPServer { get; set; } = string.Empty;
 	public string SFTPUsername { get; set; } = string.Empty;
 	public string SFTPRemotePath { get; set; } = string.Empty;
+	//One of the DESTINATION_SFTP_AUTHMODE_ constants
 	public ulong SFTPAuthMode { get; set; }
 	public string SFTPPassword { get; set; } = string.Empty;
 	public string SFTPPrivateKey { get; set; } = string.Empty;

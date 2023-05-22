@@ -11,6 +11,7 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 [Obsolete("Deprecated since Comet version 21.12.0")]
 public class U2FRegistrationChallengeResponse {
+	//If the operation was successful, the status will be in the 200-299 range.
 	public long Status { get; set; }
 	public string Message { get; set; } = string.Empty;
 	public string ChallengeID { get; set; } = string.Empty;

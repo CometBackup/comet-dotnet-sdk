@@ -11,6 +11,8 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 public class BucketUsageInfo {
 	public string AccessKey { get; set; } = string.Empty;
+	//The servers where this bucket was found. The 0-based indexes here correspond to the entries inside
+	//ConstellationRoleOptions->Servers.
 	public List<long> ExistsOnServers { get; set; }
 	public List<UserOnServer> InUseBy { get; set; }
 

@@ -10,6 +10,7 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>RetentionPolicy</c>
 /// </summary>
 public class RetentionPolicy {
+	//One of the RETENTIONMODE_ constants
 	public long Mode { get; set; }
 	public List<RetentionRange> Ranges { get; set; }
 

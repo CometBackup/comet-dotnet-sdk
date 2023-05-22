@@ -10,6 +10,7 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>SearchSnapshotsResponse</c>
 /// </summary>
 public class SearchSnapshotsResponse {
+	//If the operation was successful, the status will be in the 200-299 range.
 	public long Status { get; set; }
 	public string Message { get; set; } = string.Empty;
 	public Dictionary<string, List<SearchResultFileInfo>> SnapshotFiles { get; set; }

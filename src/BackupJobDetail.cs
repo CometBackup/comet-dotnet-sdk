@@ -14,9 +14,13 @@ public class BackupJobDetail {
 	public string Username { get; set; } = string.Empty;
 	public ulong Classification { get; set; }
 	public ulong Status { get; set; }
+	//Unix timestamp in seconds
 	public long StartTime { get; set; }
+	//Unix timestamp in seconds. Will be zero if the job is still running.
 	public long EndTime { get; set; }
+	//The Protected Item that this job is for
 	public string SourceGUID { get; set; } = string.Empty;
+	//The Storage Vault that this job is for
 	public string DestinationGUID { get; set; } = string.Empty;
 	public string DeviceID { get; set; } = string.Empty;
 	public string SnapshotID { get; set; } = string.Empty;
@@ -27,15 +31,24 @@ public class BackupJobDetail {
 	public long TotalChunks { get; set; }
 	public long UploadSize { get; set; }
 	public long DownloadSize { get; set; }
+	//For Hyper-V and VMware backup jobs, the total number of virtual machines.
 	public long TotalVmCount { get; set; }
+	//For Office 365 backup jobs, the total number of mailboxes.
 	public long TotalMailsCount { get; set; }
+	//For Office 365 backup jobs, the total number of SharePoint sites.
 	public long TotalSitesCount { get; set; }
+	//For Office 365 backup jobs, the calculated effective number of protected accounts.
 	public long TotalAccountsCount { get; set; }
+	//For Office 365 backup jobs, the number of licensed mailboxes.
 	public long TotalLicensedMailsCount { get; set; }
+	//For Office 365 backup jobs, the number of unlicensed mailboxes.
 	public long TotalUnlicensedMailsCount { get; set; }
 	public string CancellationID { get; set; } = string.Empty;
+	//If this backup job is still running, additional partial-progress information may be present in this field.
 	public BackupJobProgress Progress { get; set; }
+	//The size of the Storage Vault, as measured at the start of the job.
 	public SizeMeasurement DestinationSizeStart { get; set; }
+	//The size of the Storage Vault, as measured at the end of the job.
 	public SizeMeasurement DestinationSizeEnd { get; set; }
 
 	public BackupJobDetail(){ }

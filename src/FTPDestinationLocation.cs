@@ -15,6 +15,7 @@ public class FTPDestinationLocation {
 	public string FTPPassword { get; set; } = string.Empty;
 	public bool FTPBaseUseHomeDirectory { get; set; }
 	public string FTPCustomBaseDirectory { get; set; } = string.Empty;
+	//One of the FTPS_MODE_ constants.
 	public long FTPSMode { get; set; }
 	public long FTPPort { get; set; }
 	public long FTPMaxConnections { get; set; }

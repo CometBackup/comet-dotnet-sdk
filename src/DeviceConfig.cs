@@ -12,8 +12,12 @@ namespace CometBackup.CometAPI.SDK {
 public class DeviceConfig {
 	public string FriendlyName { get; set; } = string.Empty;
 	public long RegistrationTime { get; set; }
+	//The operating system that the device uses.
 	public OSInfo PlatformVersion { get; set; }
+	//Minimal information about the device's private Protected Items, so that other devices can safely run retention passes
+	//on a shared Storage Vault.
 	public Dictionary<string, SourceBasicInfo> Sources { get; set; }
+	//The device's reported timezone in IANA format.
 	public string DeviceTimezone { get; set; } = string.Empty;
 
 	public DeviceConfig(){ }

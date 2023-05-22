@@ -10,13 +10,18 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>B2DestinationLocation</c>
 /// </summary>
 public class B2DestinationLocation {
+	//Key ID
 	public string AccountID { get; set; } = string.Empty;
+	//Application Key
 	public string Key { get; set; } = string.Empty;
 	public string Bucket { get; set; } = string.Empty;
 	public string Prefix { get; set; } = string.Empty;
 
 	[Obsolete("Deprecated since Comet version 21.9.7")]
 	public long MaxConnections { get; set; }
+	//Hide files instead of deleting them. This can be used for ransomware protection if (A) the B2 credentials have the
+	//hideFile permission but not the deleteFile permission, and (B) you use the Backblaze B2 server-side lifecycle
+	//policies to clean up old hidden files.
 	public bool HideDeletedFiles { get; set; }
 
 	public B2DestinationLocation(){ }

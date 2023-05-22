@@ -12,6 +12,7 @@ namespace CometBackup.CometAPI.SDK {
 public class EmailOptions {
 	public string FromEmail { get; set; } = string.Empty;
 	public string FromName { get; set; } = string.Empty;
+	//One of the EMAIL_DELIVERY_ constants
 	public string Mode { get; set; } = string.Empty;
 	public List<EmailReportingOption> EmailReportingOptions { get; set; }
 	public string SMTPHost { get; set; } = string.Empty;

@@ -12,6 +12,7 @@ namespace CometBackup.CometAPI.SDK {
 public class BackupJobProgress {
 	public long Counter { get; set; }
 	public long SentTime { get; set; }
+	//The typo is preserved for backwards-compatibility reasons.
 	public long RecievedTime { get; set; }
 	public long BytesDone { get; set; }
 	public long ItemsDone { get; set; }

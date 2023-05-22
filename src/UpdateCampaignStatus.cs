@@ -14,7 +14,10 @@ public class UpdateCampaignStatus {
 	public bool UpgradeOlder { get; set; }
 	public bool ReinstallCurrentVer { get; set; }
 	public bool DowngradeNewer { get; set; }
+	//Choose whether this bulk upgrade campaign is allowed to interrupt a running backup job.
 	public bool ForceUpgradeRunning { get; set; }
+	//If true, then the UserFilter will be used to restrict which accounts and devices will be eligible for the software
+	//update. If false, all users and devices will be eligible for the software update.
 	public bool ApplyDeviceFilter { get; set; }
 	public SearchClause DeviceFilter { get; set; }
 	public long StartTime { get; set; }

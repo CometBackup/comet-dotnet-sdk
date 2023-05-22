@@ -10,12 +10,17 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>SwiftDestinationLocation</c>
 /// </summary>
 public class SwiftDestinationLocation {
+	//Username or UserID or Application Credential name or Application Credential ID, or blank for token authentication
 	public string Username { get; set; } = string.Empty;
+	//User Password, or Application Credential Key, or token if the Username field is blank
 	public string APIKey { get; set; } = string.Empty;
 	public string Region { get; set; } = string.Empty;
+	//Mandatory
 	public string AuthURL { get; set; } = string.Empty;
 	public string Domain { get; set; } = string.Empty;
+	//Tenant name (v2) or Project name (v3)
 	public string Tenant { get; set; } = string.Empty;
+	//Project domain name (v3)
 	public string TenantDomain { get; set; } = string.Empty;
 	public string TenantID { get; set; } = string.Empty;
 	public string TrustID { get; set; } = string.Empty;

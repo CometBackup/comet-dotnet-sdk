@@ -13,6 +13,7 @@ public class AzureDestinationLocation {
 	public string AZBAccountName { get; set; } = string.Empty;
 	public string AZBAccountKey { get; set; } = string.Empty;
 	public string AZBContainer { get; set; } = string.Empty;
+	//The base URL for the Azure Blob Storage service. Leave blank to use the global default URL.
 	public string AZBRealm { get; set; } = string.Empty;
 	public string AZBPrefix { get; set; } = string.Empty;
 

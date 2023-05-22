@@ -13,6 +13,7 @@ public class Office365ObjectInfo {
 	public string GUID { get; set; } = string.Empty;
 	public string Name { get; set; } = string.Empty;
 	public string Type { get; set; } = string.Empty;
+	//May be an email address or a SharePoint site URL
 	public string Value { get; set; } = string.Empty;
 	public List<string> Members { get; set; }
 

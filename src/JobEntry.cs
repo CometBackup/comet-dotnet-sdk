@@ -10,7 +10,9 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>JobEntry</c> JobEntry is a single entry within a job report.
 /// </summary>
 public class JobEntry {
+	//Unix timestamp in seconds
 	public long Time { get; set; }
+	//One of the SEVERITY_ constants.
 	public string Severity { get; set; } = string.Empty;
 	public string Message { get; set; } = string.Empty;
 

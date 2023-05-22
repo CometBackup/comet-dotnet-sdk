@@ -12,19 +12,30 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 public class BackupRuleConfig {
 	public string Description { get; set; } = string.Empty;
+	//Unix timestamp in seconds
 	public long CreateTime { get; set; }
+	//Unix timestamp in seconds. The caller is responsible for updating this themselves.
 	public long ModifyTime { get; set; }
+	//Custom commands to run before the job
 	public List<string> PreExec { get; set; }
+	//Custom commands to run after taking a disk snapshot
 	public List<string> ThawExec { get; set; }
+	//Custom commands to run after the job
 	public List<string> PostExec { get; set; }
 	public string Source { get; set; } = string.Empty;
 	public string Destination { get; set; } = string.Empty;
 	public bool SkipAlreadyRunning { get; set; }
+	//If Zero: disabled
 	public long StopAfter { get; set; }
+	//If Zero: disabled
 	public long LimitVaultSpeedBps { get; set; }
+	//Default disabled
 	public bool ReduceDiskConcurrency { get; set; }
+	//Default disabled
 	public bool UseOnDiskIndexes { get; set; }
+	//Default disabled
 	public bool AllowZeroFilesSuccess { get; set; }
+	//If Zero: default Automatic (BACKUPJOBAUTORETENTION_AUTOMATIC)
 	public long AutoRetentionLevel { get; set; }
 	public List<ScheduleConfig> Schedules { get; set; }
 	public BackupRuleEventTriggers EventTriggers { get; set; }

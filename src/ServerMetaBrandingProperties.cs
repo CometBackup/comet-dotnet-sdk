@@ -12,7 +12,10 @@ namespace CometBackup.CometAPI.SDK {
 public class ServerMetaBrandingProperties {
 	public string BrandName { get; set; } = string.Empty;
 	public string ProductName { get; set; } = string.Empty;
+	//If true, this Comet Server has an image configured for its main logo. You can access it from the /gen/logo.img
+	//endpoint. If false, this Comet Server has text configured for its main logo.
 	public bool HasImage { get; set; }
+	//A value that will change if the branding image (/gen/logo.img) changes. You can use this as a cache key.
 	public string ImageEtag { get; set; } = string.Empty;
 	public string TopColor { get; set; } = string.Empty;
 	public string AccentColor { get; set; } = string.Empty;

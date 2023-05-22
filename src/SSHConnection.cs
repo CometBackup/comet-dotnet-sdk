@@ -12,6 +12,7 @@ namespace CometBackup.CometAPI.SDK {
 public class SSHConnection {
 	public string SSHServer { get; set; } = string.Empty;
 	public string SSHUsername { get; set; } = string.Empty;
+	//One of the SSHCONNECTION_AUTHMODE_ constants
 	public ulong SSHAuthMode { get; set; }
 	public string SSHPassword { get; set; } = string.Empty;
 	public string SSHPrivateKey { get; set; } = string.Empty;

@@ -17,6 +17,7 @@ public class S3DestinationLocation {
 	public string S3BucketName { get; set; } = string.Empty;
 	public string S3Subdir { get; set; } = string.Empty;
 	public string S3CustomRegion { get; set; } = string.Empty;
+	//If true, use legacy v2 signing. If false (default), use modern v4 signing
 	public bool S3UsesV2Signing { get; set; }
 	public bool S3RemoveDeleted { get; set; }
 	public long S3ObjectLockDays { get; set; }

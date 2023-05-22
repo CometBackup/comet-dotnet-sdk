@@ -16,6 +16,7 @@ public class RetentionRange {
 	public long Days { get; set; }
 	public long Weeks { get; set; }
 	public long Months { get; set; }
+	//0: Sunday, 6: Saturday
 	public long WeekOffset { get; set; }
 	public long MonthOffset { get; set; }
 

@@ -10,6 +10,7 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>CreateGroupPolicyResponse</c>
 /// </summary>
 public class CreateGroupPolicyResponse {
+	//If the operation was successful, the status will be in the 200-299 range.
 	public long Status { get; set; }
 	public string Message { get; set; } = string.Empty;
 	public string PolicyHash { get; set; } = string.Empty;

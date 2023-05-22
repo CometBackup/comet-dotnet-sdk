@@ -13,8 +13,11 @@ public class DestinationConfig {
 	public string Description { get; set; } = string.Empty;
 	public long CreateTime { get; set; }
 	public long ModifyTime { get; set; }
+	//Custom commands to run before the job
 	public List<string> PreExec { get; set; }
+	//Custom commands to run after taking a disk snapshot
 	public List<string> ThawExec { get; set; }
+	//Custom commands to run after the job
 	public List<string> PostExec { get; set; }
 	public ulong DestinationType { get; set; }
 	public string CometServer { get; set; } = string.Empty;
@@ -27,12 +30,14 @@ public class DestinationConfig {
 	public string S3BucketName { get; set; } = string.Empty;
 	public string S3Subdir { get; set; } = string.Empty;
 	public string S3CustomRegion { get; set; } = string.Empty;
+	//If true, use legacy v2 signing. If false (default), use modern v4 signing
 	public bool S3UsesV2Signing { get; set; }
 	public bool S3RemoveDeleted { get; set; }
 	public long S3ObjectLockDays { get; set; }
 	public string SFTPServer { get; set; } = string.Empty;
 	public string SFTPUsername { get; set; } = string.Empty;
 	public string SFTPRemotePath { get; set; } = string.Empty;
+	//One of the DESTINATION_SFTP_AUTHMODE_ constants
 	public ulong SFTPAuthMode { get; set; }
 	public string SFTPPassword { get; set; } = string.Empty;
 	public string SFTPPrivateKey { get; set; } = string.Empty;
@@ -43,6 +48,7 @@ public class DestinationConfig {
 	public string FTPPassword { get; set; } = string.Empty;
 	public bool FTPBaseUseHomeDirectory { get; set; }
 	public string FTPCustomBaseDirectory { get; set; } = string.Empty;
+	//One of the FTPS_MODE_ constants.
 	public long FTPSMode { get; set; }
 	public long FTPPort { get; set; }
 	public long FTPMaxConnections { get; set; }
@@ -50,6 +56,7 @@ public class DestinationConfig {
 	public string AZBAccountName { get; set; } = string.Empty;
 	public string AZBAccountKey { get; set; } = string.Empty;
 	public string AZBContainer { get; set; } = string.Empty;
+	//The base URL for the Azure Blob Storage service. Leave blank to use the global default URL.
 	public string AZBRealm { get; set; } = string.Empty;
 	public string AZBPrefix { get; set; } = string.Empty;
 	public string LocalcopyPath { get; set; } = string.Empty;
@@ -61,13 +68,18 @@ public class DestinationConfig {
 	public StorjDestinationLocation Storj { get; set; }
 	public List<DestinationLocation> SpanTargets { get; set; }
 	public bool SpanUseStaticSlots { get; set; }
+	//One of the ENCRYPTIONMETHOD_ constants
 	public ulong EncryptionKeyEncryptionMethod { get; set; }
 	public string EncryptedEncryptionKey { get; set; } = string.Empty;
+	//Unix timestamp in seconds. If zero, the Storage Vault has not yet been initialized for the first time.
 	public long RepoInitTimestamp { get; set; }
+	//Storage Vault quota
 	public bool StorageLimitEnabled { get; set; }
+	//Storage Vault quota
 	public long StorageLimitBytes { get; set; }
 	public DestinationStatistics Statistics { get; set; }
 	public RetentionPolicy DefaultRetention { get; set; }
+	//The "Prevent users from viewing the actual storage type" option
 	public bool RebrandStorage { get; set; }
 
 	public DestinationConfig(){ }

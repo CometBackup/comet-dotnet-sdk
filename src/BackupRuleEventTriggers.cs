@@ -10,7 +10,10 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>BackupRuleEventTriggers</c>
 /// </summary>
 public class BackupRuleEventTriggers {
+	//The "When PC Starts" option
 	public bool OnPCBoot { get; set; }
+	//The "If the last job was Missed" option. In Comet 23.12.3 and later, this condition is evaluated when the PC starts
+	//and/or when the live connection is resumed.
 	public bool OnPCBootIfLastJobMissed { get; set; }
 
 	public BackupRuleEventTriggers(){ }

@@ -10,7 +10,9 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>TimeSpan</c>
 /// </summary>
 public class TimeSpan {
+	//SCHEDULE_FREQUENCY_<TYPE>
 	public ulong FrequencyType { get; set; }
+	//Used for Periodic and Once Only
 	public long Seconds { get; set; }
 
 	public TimeSpan(){ }

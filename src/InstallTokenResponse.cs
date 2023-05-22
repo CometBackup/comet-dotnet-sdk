@@ -10,6 +10,7 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>InstallTokenResponse</c>
 /// </summary>
 public class InstallTokenResponse {
+	//If the operation was successful, the status will be in the 200-299 range.
 	public long Status { get; set; }
 	public string Message { get; set; } = string.Empty;
 	public InstallToken InstallToken { get; set; }

@@ -10,6 +10,8 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>UserOnServer</c>
 /// </summary>
 public class UserOnServer {
+	//The server where this user was found. The 0-based indexes here correspond to the entries inside
+	//ConstellationRoleOptions->Servers.
 	public long ServerID { get; set; }
 	public string Username { get; set; } = string.Empty;
 

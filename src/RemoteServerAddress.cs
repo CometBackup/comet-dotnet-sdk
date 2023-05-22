@@ -20,6 +20,7 @@ public class RemoteServerAddress {
 	public WasabiVirtualStorageRoleSettings Wasabi { get; set; }
 	public CustomRemoteBucketSettings Custom { get; set; }
 	public S3GenericVirtualStorageRole S3 { get; set; }
+	//Amazon AWS - Virtual Storage Role
 	public AmazonAWSVirtualStorageRoleSettings AWS { get; set; }
 	public StorjVirtualStorageRoleSetting Storj { get; set; }
 

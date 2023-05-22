@@ -21,12 +21,14 @@ public class DestinationLocation {
 	public string S3BucketName { get; set; } = string.Empty;
 	public string S3Subdir { get; set; } = string.Empty;
 	public string S3CustomRegion { get; set; } = string.Empty;
+	//If true, use legacy v2 signing. If false (default), use modern v4 signing
 	public bool S3UsesV2Signing { get; set; }
 	public bool S3RemoveDeleted { get; set; }
 	public long S3ObjectLockDays { get; set; }
 	public string SFTPServer { get; set; } = string.Empty;
 	public string SFTPUsername { get; set; } = string.Empty;
 	public string SFTPRemotePath { get; set; } = string.Empty;
+	//One of the DESTINATION_SFTP_AUTHMODE_ constants
 	public ulong SFTPAuthMode { get; set; }
 	public string SFTPPassword { get; set; } = string.Empty;
 	public string SFTPPrivateKey { get; set; } = string.Empty;
@@ -37,6 +39,7 @@ public class DestinationLocation {
 	public string FTPPassword { get; set; } = string.Empty;
 	public bool FTPBaseUseHomeDirectory { get; set; }
 	public string FTPCustomBaseDirectory { get; set; } = string.Empty;
+	//One of the FTPS_MODE_ constants.
 	public long FTPSMode { get; set; }
 	public long FTPPort { get; set; }
 	public long FTPMaxConnections { get; set; }
@@ -44,6 +47,7 @@ public class DestinationLocation {
 	public string AZBAccountName { get; set; } = string.Empty;
 	public string AZBAccountKey { get; set; } = string.Empty;
 	public string AZBContainer { get; set; } = string.Empty;
+	//The base URL for the Azure Blob Storage service. Leave blank to use the global default URL.
 	public string AZBRealm { get; set; } = string.Empty;
 	public string AZBPrefix { get; set; } = string.Empty;
 	public string LocalcopyPath { get; set; } = string.Empty;

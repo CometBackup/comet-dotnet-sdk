@@ -10,36 +10,74 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>UserProfileConfig</c> This is the main data structure for a user's profile.
 /// </summary>
 public class UserProfileConfig {
+	//The name for this account. It uniquely identifies this UserProfileConfig across the entire Comet Server. It cannot be
+	//changed directly.
 	public string Username { get; set; } = string.Empty;
+	//A longer descriptive name for this account. It is not necessarily unique to the Comet Server. The end-user might be
+	//able to change it inside the Comet Backup desktop app.
 	public string AccountName { get; set; } = string.Empty;
+	//Timezone in IANA format. Individual devices may declare a more specific timezone in the Devices field.
 	public string LocalTimezone { get; set; } = string.Empty;
+	//One of the supported languages, such as en_US (DEFAULT_LANGUAGE).
 	public string LanguageCode { get; set; } = string.Empty;
+	//Tenant
 	public string OrganizationID { get; set; } = string.Empty;
+	//A list of email addresses to send reports to.
 	public List<string> Emails { get; set; }
+	//By default, all the email addresses in the Emails field will receieve the policy-default or server-wide-default style
+	//of email report. Add an override for a specific email address in here to allow customizing the email report that will
+	//be received.
 	public Dictionary<string, UserCustomEmailSettings> OverrideEmailSettings { get; set; }
+	//This option can be used to control whether any email reports are sent.
 	public bool SendEmailReports { get; set; }
+	//Storage Vaults
 	public Dictionary<string, DestinationConfig> Destinations { get; set; }
+	//Protected Items
 	public Dictionary<string, SourceConfig> Sources { get; set; }
+	//Schedules
 	public Dictionary<string, BackupRuleConfig> BackupRules { get; set; }
+	//Devices
+	//To revoke a device, use the AdminRevokeDevice API instead of accessing these fields directly. This API can also
+	//remove associated Protected Items, uninstall the remote device, and disconnect its live connection.
 	public Dictionary<string, DeviceConfig> Devices { get; set; }
 	public bool IsSuspended { get; set; }
+	//Unix timestamp in seconds. Zero if the device is not suspended.
 	public long LastSuspended { get; set; }
+	//A limit on the total Size of all Protected Items in this account. The number of bytes should be configured in
+	//AllProtectedItemsQuotaBytes.
 	public bool AllProtectedItemsQuotaEnabled { get; set; }
+	//A limit on the total Size of all Protected Items in this account. It is enforced if AllProtectedItemsQuotaEnabled is
+	//true.
 	public long AllProtectedItemsQuotaBytes { get; set; }
+	//A limit on the total number of devices registered in this account. Set to zero to allow unlimited devices.
 	public long MaximumDevices { get; set; }
+	//A limit on the total number of Office 365 Protected Accounts across all Office 365 Protected Items in this account.
+	//Set to zero to allow unlimited Office 365 Protected Accounts.
 	public long QuotaOffice365ProtectedAccounts { get; set; }
+	//If the PolicyID field is set to a non-empty string, the Comet Server will enforce the contents of the Policy field
+	//based on the matching server's policy. Otherwise if the PolicyID field is set to an empty string, the administrator
+	//may configure any custom values in the Policy field.
 	public string PolicyID { get; set; } = string.Empty;
+	//The Policy field contains a read-only copy of the effective Policy that is applied to this user account.
 	public UserPolicy Policy { get; set; }
+	//To change the user's password, use the AdminResetUserPassword API instead of accessing these fields directly.
+	//Otherwise, other encrypted fields in the user profile may become corrupted.
 	public long PasswordFormat { get; set; }
 	public string PasswordHash { get; set; } = string.Empty;
+	//If this field is empty, the "Allow administrator to reset my password" feature is turned off. If this field is
+	//filled, it contains a cryptographic root of trust that can decrypt and re-encrypt other secrets in this profile.
 	public string PasswordRecovery { get; set; } = string.Empty;
 	public bool AllowPasswordLogin { get; set; }
 	public bool AllowPasswordAndTOTPLogin { get; set; }
 	public long TOTPKeyEncryptionFormat { get; set; }
 	public string TOTPKey { get; set; } = string.Empty;
 	public bool RequirePasswordChange { get; set; }
+	//Unix timestamp in seconds
 	public long CreateTime { get; set; }
+	//A random GUID that is allocated when the user profile is created for the first time. You can use this to help
+	//disambiguate users with the same username across multiple Comet Servers.
 	public string CreationGUID { get; set; } = string.Empty;
+	//Additional server-wide settings that are enforced for this user profile
 	public UserServerConfig ServerConfig { get; set; }
 
 	public UserProfileConfig(){ }

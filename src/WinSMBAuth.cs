@@ -10,9 +10,13 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>WinSMBAuth</c>
 /// </summary>
 public class WinSMBAuth {
+	//The UNC path for the Windows network share (SMB).
 	public string SharePath { get; set; } = string.Empty;
+	//The username to log in to the Windows network share (SMB).
 	public string Username { get; set; } = string.Empty;
+	//The password might be hashed. To set this in cleartext, set PasswordFormat to 0 (PASSWORD_FORMAT_PLAINTEXT).
 	public string Password { get; set; } = string.Empty;
+	//The hash algorithm that is used for the Password field. It is one of the PASSWORD_FORMAT_ constants.
 	public ulong PasswordFormat { get; set; }
 
 	public WinSMBAuth(){ }

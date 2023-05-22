@@ -11,7 +11,9 @@ namespace CometBackup.CometAPI.SDK {
 /// not.
 /// </summary>
 public class UninstallConfig {
+	//If this option is true, the target device will receive a message asking it to uninstall the Comet Backup app.
 	public bool UninstallFlag { get; set; }
+	//This controls the "Remove all user settings from this device" option.
 	public bool RemoveConfigFile { get; set; }
 
 	public UninstallConfig(){ }

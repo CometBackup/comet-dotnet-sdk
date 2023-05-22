@@ -10,8 +10,11 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>VMDKSnapshotViewOptions</c>
 /// </summary>
 public class VMDKSnapshotViewOptions {
+	//Request a list of stored objects in vmdk file. It should be always true for restoring single files from vmdk file
 	public bool Enabled { get; set; }
+	//The vmdk filename inside subdirectory of disk image, should be end with .vmdk
 	public string PartitionGUID { get; set; } = string.Empty;
+	//Browse objects' paths inside vmdk file
 	public string ListPath { get; set; } = string.Empty;
 	public string PartitionName { get; set; } = string.Empty;
 

@@ -17,6 +17,7 @@ public class MongoDBConnection {
 	public string AuthenticationDB { get; set; } = string.Empty;
 
 	[Obsolete("Deprecated since Comet version 22.12.3")]
+	//Prior to Comet 22.12.3, must be a filesystem path to `mongo` (n.b. not `mongosh`). In Comet >= 22.12.3, not used.
 	public string MongoShellPath { get; set; } = string.Empty;
 	public string MongodumpPath { get; set; } = string.Empty;
 	public string ReadPreference { get; set; } = string.Empty;

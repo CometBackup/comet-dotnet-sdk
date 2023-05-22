@@ -18,6 +18,7 @@ public class StoredObject {
 	public long ModifyTime { get; set; }
 
 	[JsonPropertyName("type")]
+	//One of the STOREDOBJECTTYPE_... constant values
 	public string Type { get; set; } = string.Empty;
 
 	[JsonPropertyName("subtree")]
