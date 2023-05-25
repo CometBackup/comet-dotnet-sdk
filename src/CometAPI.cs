@@ -21,12 +21,27 @@ public class CometAPI : IDisposable {
 	public string Password;
 	private HttpClient _client;
 
+	/// <summary>
+	/// Creates an access point for the Comet API. An HttpClient is created and managed automatically.
+	/// <param name="serverURL">Address of Comet server to connect to</param>
+	/// <param name="username">Username on Comet server</param>
+	/// <param name="password">Password on Comet server</param>
+	/// </summary>
 	public CometAPI(string serverURL, string username, string password) :
 		this(serverURL, username, password, new HttpClient()) { }
 
 	// public CometAPI(string serverURL, string username, string password, SocketsHttpHandler handler) :
 	//	this(serverURL, username, password, new HttpClient(handler)) { }
 
+	/// <summary>
+	/// Creates an access point for the Comet API. An HttpClient is supplied by client code, 
+	/// which this class takes ownership of (it will be Disposed when the CometAPI object
+	/// is Disposed)
+	/// <param name="serverURL">Address of Comet server to connect to</param>
+	/// <param name="username">Username on Comet server</param>
+	/// <param name="password">Password on Comet server</param>
+	/// <param name="client">HttpClient used to access the Comet server. Will be cleaned up on Dispose</param>
+	/// </summary>
 	public CometAPI(string serverURL, string username, string password, HttpClient client) {
 		ServerURL = serverURL;
 		Username  = username;
@@ -79,6 +94,7 @@ public class CometAPI : IDisposable {
 	//
 	// DEFAULT CLIENT METHODS
 	//
+
 	/// <summary>
 	/// AdminAccountPropertiesAsync: Retrieve properties about the current admin account
 	/// Some key parameters are obscured, but the obscured values are safely recognised by the corresponding
@@ -167,7 +183,7 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// </summary>
-	/// \t<param name="SelfAddress">(Optional) External URL of this server</param>
+	/// <param name="SelfAddress">(Optional) External URL of this server</param>
 	public async Task<SessionKeyRegeneratedResponse> AdminAccountSessionStartAsync(string SelfAddress = null) {
 		var data = new Dictionary<string,string>();
 
@@ -186,7 +202,7 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// </summary>
-	/// \t<param name="SelfAddress">(Optional) External URL of this server</param>
+	/// <param name="SelfAddress">(Optional) External URL of this server</param>
 	public SessionKeyRegeneratedResponse AdminAccountSessionStart(string SelfAddress = null) {
 		var resultTask = AdminAccountSessionStartAsync(SelfAddress);
 		resultTask.Wait();
@@ -198,7 +214,7 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// </summary>
-	/// \t<param name="TargetUser">Target account username</param>
+	/// <param name="TargetUser">Target account username</param>
 	public async Task<SessionKeyRegeneratedResponse> AdminAccountSessionStartAsUserAsync(string TargetUser) {
 		var data = new Dictionary<string,string>();
 
@@ -217,7 +233,7 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// </summary>
-	/// \t<param name="TargetUser">Target account username</param>
+	/// <param name="TargetUser">Target account username</param>
 	public SessionKeyRegeneratedResponse AdminAccountSessionStartAsUser(string TargetUser) {
 		var resultTask = AdminAccountSessionStartAsUserAsync(TargetUser);
 		resultTask.Wait();
@@ -232,7 +248,7 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// </summary>
-	/// \t<param name="Security">Updated account properties</param>
+	/// <param name="Security">Updated account properties</param>
 	public async Task<CometAPIResponseMessage> AdminAccountSetPropertiesAsync(AdminSecurityOptions Security) {
 		var data = new Dictionary<string,string>();
 
@@ -254,7 +270,7 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// </summary>
-	/// \t<param name="Security">Updated account properties</param>
+	/// <param name="Security">Updated account properties</param>
 	public CometAPIResponseMessage AdminAccountSetProperties(AdminSecurityOptions Security) {
 		var resultTask = AdminAccountSetPropertiesAsync(Security);
 		resultTask.Wait();
@@ -269,7 +285,7 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// </summary>
-	/// \t<param name="SelfAddress">External URL of this server, used as U2F AppID and Facet</param>
+	/// <param name="SelfAddress">External URL of this server, used as U2F AppID and Facet</param>
 	public async Task<U2FRegistrationChallengeResponse> AdminAccountU2fRequestRegistrationChallengeAsync(string SelfAddress) {
 		var data = new Dictionary<string,string>();
 
@@ -291,7 +307,7 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// </summary>
-	/// \t<param name="SelfAddress">External URL of this server, used as U2F AppID and Facet</param>
+	/// <param name="SelfAddress">External URL of this server, used as U2F AppID and Facet</param>
 	public U2FRegistrationChallengeResponse AdminAccountU2fRequestRegistrationChallenge(string SelfAddress) {
 		var resultTask = AdminAccountU2fRequestRegistrationChallengeAsync(SelfAddress);
 		resultTask.Wait();
@@ -306,11 +322,11 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// </summary>
-	/// \t<param name="U2FChallengeID">Associated value from AdminAccountU2fRequestRegistrationChallenge API</param>
-	/// \t<param name="U2FClientData">U2F response data supplied by hardware token</param>
-	/// \t<param name="U2FRegistrationData">U2F response data supplied by hardware token</param>
-	/// \t<param name="U2FVersion">U2F response data supplied by hardware token</param>
-	/// \t<param name="Description">(Optional) Description of the token</param>
+	/// <param name="U2FChallengeID">Associated value from AdminAccountU2fRequestRegistrationChallenge API</param>
+	/// <param name="U2FClientData">U2F response data supplied by hardware token</param>
+	/// <param name="U2FRegistrationData">U2F response data supplied by hardware token</param>
+	/// <param name="U2FVersion">U2F response data supplied by hardware token</param>
+	/// <param name="Description">(Optional) Description of the token</param>
 	public async Task<CometAPIResponseMessage> AdminAccountU2fSubmitChallengeResponseAsync(string U2FChallengeID, string U2FClientData, string U2FRegistrationData, string U2FVersion, string Description = null) {
 		var data = new Dictionary<string,string>();
 
@@ -338,11 +354,11 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// </summary>
-	/// \t<param name="U2FChallengeID">Associated value from AdminAccountU2fRequestRegistrationChallenge API</param>
-	/// \t<param name="U2FClientData">U2F response data supplied by hardware token</param>
-	/// \t<param name="U2FRegistrationData">U2F response data supplied by hardware token</param>
-	/// \t<param name="U2FVersion">U2F response data supplied by hardware token</param>
-	/// \t<param name="Description">(Optional) Description of the token</param>
+	/// <param name="U2FChallengeID">Associated value from AdminAccountU2fRequestRegistrationChallenge API</param>
+	/// <param name="U2FClientData">U2F response data supplied by hardware token</param>
+	/// <param name="U2FRegistrationData">U2F response data supplied by hardware token</param>
+	/// <param name="U2FVersion">U2F response data supplied by hardware token</param>
+	/// <param name="Description">(Optional) Description of the token</param>
 	public CometAPIResponseMessage AdminAccountU2fSubmitChallengeResponse(string U2FChallengeID, string U2FClientData, string U2FRegistrationData, string U2FVersion, string Description = null) {
 		var resultTask = AdminAccountU2fSubmitChallengeResponseAsync(U2FChallengeID, U2FClientData, U2FRegistrationData, U2FVersion, Description);
 		resultTask.Wait();
@@ -354,7 +370,7 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// </summary>
-	/// \t<param name="TOTPCode">Six-digit code after scanning barcode image</param>
+	/// <param name="TOTPCode">Six-digit code after scanning barcode image</param>
 	public async Task<CometAPIResponseMessage> AdminAccountValidateTotpAsync(string TOTPCode) {
 		var data = new Dictionary<string,string>();
 
@@ -373,7 +389,7 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// </summary>
-	/// \t<param name="TOTPCode">Six-digit code after scanning barcode image</param>
+	/// <param name="TOTPCode">Six-digit code after scanning barcode image</param>
 	public CometAPIResponseMessage AdminAccountValidateTotp(string TOTPCode) {
 		var resultTask = AdminAccountValidateTotpAsync(TOTPCode);
 		resultTask.Wait();
@@ -385,7 +401,7 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// </summary>
-	/// \t<param name="SelfAddress">External URL of this server, used as WebAuthn ID</param>
+	/// <param name="SelfAddress">External URL of this server, used as WebAuthn ID</param>
 	public async Task<WebAuthnRegistrationChallengeResponse> AdminAccountWebauthnRequestRegistrationChallengeAsync(string SelfAddress) {
 		var data = new Dictionary<string,string>();
 
@@ -404,7 +420,7 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// </summary>
-	/// \t<param name="SelfAddress">External URL of this server, used as WebAuthn ID</param>
+	/// <param name="SelfAddress">External URL of this server, used as WebAuthn ID</param>
 	public WebAuthnRegistrationChallengeResponse AdminAccountWebauthnRequestRegistrationChallenge(string SelfAddress) {
 		var resultTask = AdminAccountWebauthnRequestRegistrationChallengeAsync(SelfAddress);
 		resultTask.Wait();
@@ -416,9 +432,9 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// </summary>
-	/// \t<param name="SelfAddress">External URL of this server, used as WebAuthn ID</param>
-	/// \t<param name="ChallengeID">Associated value from AdminAccountWebAuthnRequestRegistrationChallenge API</param>
-	/// \t<param name="Credential">JSON-encoded credential</param>
+	/// <param name="SelfAddress">External URL of this server, used as WebAuthn ID</param>
+	/// <param name="ChallengeID">Associated value from AdminAccountWebAuthnRequestRegistrationChallenge API</param>
+	/// <param name="Credential">JSON-encoded credential</param>
 	public async Task<CometAPIResponseMessage> AdminAccountWebauthnSubmitChallengeResponseAsync(string SelfAddress, string ChallengeID, string Credential) {
 		var data = new Dictionary<string,string>();
 
@@ -439,9 +455,9 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// </summary>
-	/// \t<param name="SelfAddress">External URL of this server, used as WebAuthn ID</param>
-	/// \t<param name="ChallengeID">Associated value from AdminAccountWebAuthnRequestRegistrationChallenge API</param>
-	/// \t<param name="Credential">JSON-encoded credential</param>
+	/// <param name="SelfAddress">External URL of this server, used as WebAuthn ID</param>
+	/// <param name="ChallengeID">Associated value from AdminAccountWebAuthnRequestRegistrationChallenge API</param>
+	/// <param name="Credential">JSON-encoded credential</param>
 	public CometAPIResponseMessage AdminAccountWebauthnSubmitChallengeResponse(string SelfAddress, string ChallengeID, string Credential) {
 		var resultTask = AdminAccountWebauthnSubmitChallengeResponseAsync(SelfAddress, ChallengeID, Credential);
 		resultTask.Wait();
@@ -454,14 +470,14 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetUser">New account username</param>
-	/// \t<param name="TargetPassword">New account password</param>
-	/// \t<param name="StoreRecoveryCode">(Optional) If set to 1, store and keep a password recovery code for the generated
+	/// <param name="TargetUser">New account username</param>
+	/// <param name="TargetPassword">New account password</param>
+	/// <param name="StoreRecoveryCode">(Optional) If set to 1, store and keep a password recovery code for the generated
 	/// user (>= 18.3.9)</param>
-	/// \t<param name="RequirePasswordChange">(Optional) If set to 1, require to reset password at the first login for the
+	/// <param name="RequirePasswordChange">(Optional) If set to 1, require to reset password at the first login for the
 	/// generated user (>= 20.3.4)</param>
-	/// \t<param name="TargetOrganization">(Optional) If present, create the user account on behalf of another
-	/// organization. Only allowed for administrator accounts in the top-level organization. (>= 22.3.7)</param>
+	/// <param name="TargetOrganization">(Optional) If present, create the user account on behalf of another organization.
+	/// Only allowed for administrator accounts in the top-level organization. (>= 22.3.7)</param>
 	public async Task<CometAPIResponseMessage> AdminAddUserAsync(string TargetUser, string TargetPassword, Nullable<int> StoreRecoveryCode = null, Nullable<int> RequirePasswordChange = null, string TargetOrganization = null) {
 		var data = new Dictionary<string,string>();
 
@@ -491,14 +507,14 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetUser">New account username</param>
-	/// \t<param name="TargetPassword">New account password</param>
-	/// \t<param name="StoreRecoveryCode">(Optional) If set to 1, store and keep a password recovery code for the generated
+	/// <param name="TargetUser">New account username</param>
+	/// <param name="TargetPassword">New account password</param>
+	/// <param name="StoreRecoveryCode">(Optional) If set to 1, store and keep a password recovery code for the generated
 	/// user (>= 18.3.9)</param>
-	/// \t<param name="RequirePasswordChange">(Optional) If set to 1, require to reset password at the first login for the
+	/// <param name="RequirePasswordChange">(Optional) If set to 1, require to reset password at the first login for the
 	/// generated user (>= 20.3.4)</param>
-	/// \t<param name="TargetOrganization">(Optional) If present, create the user account on behalf of another
-	/// organization. Only allowed for administrator accounts in the top-level organization. (>= 22.3.7)</param>
+	/// <param name="TargetOrganization">(Optional) If present, create the user account on behalf of another organization.
+	/// Only allowed for administrator accounts in the top-level organization. (>= 22.3.7)</param>
 	public CometAPIResponseMessage AdminAddUser(string TargetUser, string TargetPassword, Nullable<int> StoreRecoveryCode = null, Nullable<int> RequirePasswordChange = null, string TargetOrganization = null) {
 		var resultTask = AdminAddUserAsync(TargetUser, TargetPassword, StoreRecoveryCode, RequirePasswordChange, TargetOrganization);
 		resultTask.Wait();
@@ -514,10 +530,10 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetUser">New account username</param>
-	/// \t<param name="ProfileData">New account profile</param>
-	/// \t<param name="TargetOrganization">(Optional) If present, create the user account on behalf of another
-	/// organization. Only allowed for administrator accounts in the top-level organization. (>= 22.3.7)</param>
+	/// <param name="TargetUser">New account username</param>
+	/// <param name="ProfileData">New account profile</param>
+	/// <param name="TargetOrganization">(Optional) If present, create the user account on behalf of another organization.
+	/// Only allowed for administrator accounts in the top-level organization. (>= 22.3.7)</param>
 	public async Task<CometAPIResponseMessage> AdminAddUserFromProfileAsync(string TargetUser, UserProfileConfig ProfileData, string TargetOrganization = null) {
 		var data = new Dictionary<string,string>();
 
@@ -544,10 +560,10 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetUser">New account username</param>
-	/// \t<param name="ProfileData">New account profile</param>
-	/// \t<param name="TargetOrganization">(Optional) If present, create the user account on behalf of another
-	/// organization. Only allowed for administrator accounts in the top-level organization. (>= 22.3.7)</param>
+	/// <param name="TargetUser">New account username</param>
+	/// <param name="ProfileData">New account profile</param>
+	/// <param name="TargetOrganization">(Optional) If present, create the user account on behalf of another organization.
+	/// Only allowed for administrator accounts in the top-level organization. (>= 22.3.7)</param>
 	public CometAPIResponseMessage AdminAddUserFromProfile(string TargetUser, UserProfileConfig ProfileData, string TargetOrganization = null) {
 		var resultTask = AdminAddUserFromProfileAsync(TargetUser, ProfileData, TargetOrganization);
 		resultTask.Wait();
@@ -561,7 +577,7 @@ public class CometAPI : IDisposable {
 	/// Access to this API may be prevented on a per-administrator basis.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
 	/// </summary>
-	/// \t<param name="TargetUser">the username of the admin to be deleted</param>
+	/// <param name="TargetUser">the username of the admin to be deleted</param>
 	public async Task<CometAPIResponseMessage> AdminAdminUserDeleteAsync(string TargetUser) {
 		var data = new Dictionary<string,string>();
 
@@ -582,7 +598,7 @@ public class CometAPI : IDisposable {
 	/// Access to this API may be prevented on a per-administrator basis.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
 	/// </summary>
-	/// \t<param name="TargetUser">the username of the admin to be deleted</param>
+	/// <param name="TargetUser">the username of the admin to be deleted</param>
 	public CometAPIResponseMessage AdminAdminUserDelete(string TargetUser) {
 		var resultTask = AdminAdminUserDeleteAsync(TargetUser);
 		resultTask.Wait();
@@ -625,9 +641,9 @@ public class CometAPI : IDisposable {
 	/// Access to this API may be prevented on a per-administrator basis.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
 	/// </summary>
-	/// \t<param name="TargetUser">the username for this new admin</param>
-	/// \t<param name="TargetPassword">the password for this new admin user</param>
-	/// \t<param name="TargetOrgID">(Optional) provide the organization ID for this user, it will default to the org of the
+	/// <param name="TargetUser">the username for this new admin</param>
+	/// <param name="TargetPassword">the password for this new admin user</param>
+	/// <param name="TargetOrgID">(Optional) provide the organization ID for this user, it will default to the org of the
 	/// authenticating user otherwise</param>
 	public async Task<CometAPIResponseMessage> AdminAdminUserNewAsync(string TargetUser, string TargetPassword, string TargetOrgID = null) {
 		var data = new Dictionary<string,string>();
@@ -653,9 +669,9 @@ public class CometAPI : IDisposable {
 	/// Access to this API may be prevented on a per-administrator basis.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
 	/// </summary>
-	/// \t<param name="TargetUser">the username for this new admin</param>
-	/// \t<param name="TargetPassword">the password for this new admin user</param>
-	/// \t<param name="TargetOrgID">(Optional) provide the organization ID for this user, it will default to the org of the
+	/// <param name="TargetUser">the username for this new admin</param>
+	/// <param name="TargetPassword">the password for this new admin user</param>
+	/// <param name="TargetOrgID">(Optional) provide the organization ID for this user, it will default to the org of the
 	/// authenticating user otherwise</param>
 	public CometAPIResponseMessage AdminAdminUserNew(string TargetUser, string TargetPassword, string TargetOrgID = null) {
 		var resultTask = AdminAdminUserNewAsync(TargetUser, TargetPassword, TargetOrgID);
@@ -702,8 +718,8 @@ public class CometAPI : IDisposable {
 	/// This API requires the Software Build Role to be enabled.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="Platform">The selected download platform, from the AdminBrandingAvailablePlatforms API</param>
-	/// \t<param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
+	/// <param name="Platform">The selected download platform, from the AdminBrandingAvailablePlatforms API</param>
+	/// <param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
 	public async Task<byte[]> AdminBrandingGenerateClientByPlatformAsync(Nullable<int> Platform, string SelfAddress = null) {
 		var data = new Dictionary<string,string>();
 
@@ -728,8 +744,8 @@ public class CometAPI : IDisposable {
 	/// This API requires the Software Build Role to be enabled.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="Platform">The selected download platform, from the AdminBrandingAvailablePlatforms API</param>
-	/// \t<param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
+	/// <param name="Platform">The selected download platform, from the AdminBrandingAvailablePlatforms API</param>
+	/// <param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
 	public byte[] AdminBrandingGenerateClientByPlatform(Nullable<int> Platform, string SelfAddress = null) {
 		var resultTask = AdminBrandingGenerateClientByPlatformAsync(Platform, SelfAddress);
 		resultTask.Wait();
@@ -744,7 +760,7 @@ public class CometAPI : IDisposable {
 	/// This API requires the Software Build Role to be enabled.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
+	/// <param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
 	public async Task<byte[]> AdminBrandingGenerateClientLinuxgenericAsync(string SelfAddress = null) {
 		var data = new Dictionary<string,string>();
 
@@ -768,7 +784,7 @@ public class CometAPI : IDisposable {
 	/// This API requires the Software Build Role to be enabled.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
+	/// <param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
 	public byte[] AdminBrandingGenerateClientLinuxgeneric(string SelfAddress = null) {
 		var resultTask = AdminBrandingGenerateClientLinuxgenericAsync(SelfAddress);
 		resultTask.Wait();
@@ -783,7 +799,7 @@ public class CometAPI : IDisposable {
 	/// This API requires the Software Build Role to be enabled.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
+	/// <param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
 	public async Task<byte[]> AdminBrandingGenerateClientMacosArm64Async(string SelfAddress = null) {
 		var data = new Dictionary<string,string>();
 
@@ -807,7 +823,7 @@ public class CometAPI : IDisposable {
 	/// This API requires the Software Build Role to be enabled.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
+	/// <param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
 	public byte[] AdminBrandingGenerateClientMacosArm64(string SelfAddress = null) {
 		var resultTask = AdminBrandingGenerateClientMacosArm64Async(SelfAddress);
 		resultTask.Wait();
@@ -822,7 +838,7 @@ public class CometAPI : IDisposable {
 	/// This API requires the Software Build Role to be enabled.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
+	/// <param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
 	public async Task<byte[]> AdminBrandingGenerateClientMacosX8664Async(string SelfAddress = null) {
 		var data = new Dictionary<string,string>();
 
@@ -846,7 +862,7 @@ public class CometAPI : IDisposable {
 	/// This API requires the Software Build Role to be enabled.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
+	/// <param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
 	public byte[] AdminBrandingGenerateClientMacosX8664(string SelfAddress = null) {
 		var resultTask = AdminBrandingGenerateClientMacosX8664Async(SelfAddress);
 		resultTask.Wait();
@@ -861,7 +877,7 @@ public class CometAPI : IDisposable {
 	/// This API requires the Software Build Role to be enabled.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
+	/// <param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
 	public async Task<byte[]> AdminBrandingGenerateClientSpkDsm6Async(string SelfAddress = null) {
 		var data = new Dictionary<string,string>();
 
@@ -885,7 +901,7 @@ public class CometAPI : IDisposable {
 	/// This API requires the Software Build Role to be enabled.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
+	/// <param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
 	public byte[] AdminBrandingGenerateClientSpkDsm6(string SelfAddress = null) {
 		var resultTask = AdminBrandingGenerateClientSpkDsm6Async(SelfAddress);
 		resultTask.Wait();
@@ -900,7 +916,7 @@ public class CometAPI : IDisposable {
 	/// This API requires the Software Build Role to be enabled.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
+	/// <param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
 	public async Task<byte[]> AdminBrandingGenerateClientSpkDsm7Async(string SelfAddress = null) {
 		var data = new Dictionary<string,string>();
 
@@ -924,7 +940,7 @@ public class CometAPI : IDisposable {
 	/// This API requires the Software Build Role to be enabled.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
+	/// <param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
 	public byte[] AdminBrandingGenerateClientSpkDsm7(string SelfAddress = null) {
 		var resultTask = AdminBrandingGenerateClientSpkDsm7Async(SelfAddress);
 		resultTask.Wait();
@@ -939,8 +955,8 @@ public class CometAPI : IDisposable {
 	/// This API requires the Software Build Role to be enabled.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="Platform">The selected download platform, from the AdminBrandingAvailablePlatforms API</param>
-	/// \t<param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
+	/// <param name="Platform">The selected download platform, from the AdminBrandingAvailablePlatforms API</param>
+	/// <param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
 	public async Task<CometAPIResponseMessage> AdminBrandingGenerateClientTestAsync(Nullable<int> Platform, string SelfAddress = null) {
 		var data = new Dictionary<string,string>();
 
@@ -963,8 +979,8 @@ public class CometAPI : IDisposable {
 	/// This API requires the Software Build Role to be enabled.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="Platform">The selected download platform, from the AdminBrandingAvailablePlatforms API</param>
-	/// \t<param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
+	/// <param name="Platform">The selected download platform, from the AdminBrandingAvailablePlatforms API</param>
+	/// <param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
 	public CometAPIResponseMessage AdminBrandingGenerateClientTest(Nullable<int> Platform, string SelfAddress = null) {
 		var resultTask = AdminBrandingGenerateClientTestAsync(Platform, SelfAddress);
 		resultTask.Wait();
@@ -981,7 +997,7 @@ public class CometAPI : IDisposable {
 	/// This API requires the Software Build Role to be enabled.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
+	/// <param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
 	public async Task<byte[]> AdminBrandingGenerateClientWindowsAnycpuExeAsync(string SelfAddress = null) {
 		var data = new Dictionary<string,string>();
 
@@ -1007,7 +1023,7 @@ public class CometAPI : IDisposable {
 	/// This API requires the Software Build Role to be enabled.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
+	/// <param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
 	public byte[] AdminBrandingGenerateClientWindowsAnycpuExe(string SelfAddress = null) {
 		var resultTask = AdminBrandingGenerateClientWindowsAnycpuExeAsync(SelfAddress);
 		resultTask.Wait();
@@ -1024,7 +1040,7 @@ public class CometAPI : IDisposable {
 	/// This API requires the Software Build Role to be enabled.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
+	/// <param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
 	public async Task<byte[]> AdminBrandingGenerateClientWindowsAnycpuZipAsync(string SelfAddress = null) {
 		var data = new Dictionary<string,string>();
 
@@ -1050,7 +1066,7 @@ public class CometAPI : IDisposable {
 	/// This API requires the Software Build Role to be enabled.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
+	/// <param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
 	public byte[] AdminBrandingGenerateClientWindowsAnycpuZip(string SelfAddress = null) {
 		var resultTask = AdminBrandingGenerateClientWindowsAnycpuZipAsync(SelfAddress);
 		resultTask.Wait();
@@ -1067,7 +1083,7 @@ public class CometAPI : IDisposable {
 	/// This API requires the Software Build Role to be enabled.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
+	/// <param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
 	public async Task<byte[]> AdminBrandingGenerateClientWindowsX8632ExeAsync(string SelfAddress = null) {
 		var data = new Dictionary<string,string>();
 
@@ -1093,7 +1109,7 @@ public class CometAPI : IDisposable {
 	/// This API requires the Software Build Role to be enabled.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
+	/// <param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
 	public byte[] AdminBrandingGenerateClientWindowsX8632Exe(string SelfAddress = null) {
 		var resultTask = AdminBrandingGenerateClientWindowsX8632ExeAsync(SelfAddress);
 		resultTask.Wait();
@@ -1110,7 +1126,7 @@ public class CometAPI : IDisposable {
 	/// This API requires the Software Build Role to be enabled.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
+	/// <param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
 	public async Task<byte[]> AdminBrandingGenerateClientWindowsX8632ZipAsync(string SelfAddress = null) {
 		var data = new Dictionary<string,string>();
 
@@ -1136,7 +1152,7 @@ public class CometAPI : IDisposable {
 	/// This API requires the Software Build Role to be enabled.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
+	/// <param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
 	public byte[] AdminBrandingGenerateClientWindowsX8632Zip(string SelfAddress = null) {
 		var resultTask = AdminBrandingGenerateClientWindowsX8632ZipAsync(SelfAddress);
 		resultTask.Wait();
@@ -1153,7 +1169,7 @@ public class CometAPI : IDisposable {
 	/// This API requires the Software Build Role to be enabled.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
+	/// <param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
 	public async Task<byte[]> AdminBrandingGenerateClientWindowsX8664ExeAsync(string SelfAddress = null) {
 		var data = new Dictionary<string,string>();
 
@@ -1179,7 +1195,7 @@ public class CometAPI : IDisposable {
 	/// This API requires the Software Build Role to be enabled.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
+	/// <param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
 	public byte[] AdminBrandingGenerateClientWindowsX8664Exe(string SelfAddress = null) {
 		var resultTask = AdminBrandingGenerateClientWindowsX8664ExeAsync(SelfAddress);
 		resultTask.Wait();
@@ -1196,7 +1212,7 @@ public class CometAPI : IDisposable {
 	/// This API requires the Software Build Role to be enabled.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
+	/// <param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
 	public async Task<byte[]> AdminBrandingGenerateClientWindowsX8664ZipAsync(string SelfAddress = null) {
 		var data = new Dictionary<string,string>();
 
@@ -1222,7 +1238,7 @@ public class CometAPI : IDisposable {
 	/// This API requires the Software Build Role to be enabled.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
+	/// <param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
 	public byte[] AdminBrandingGenerateClientWindowsX8664Zip(string SelfAddress = null) {
 		var resultTask = AdminBrandingGenerateClientWindowsX8664ZipAsync(SelfAddress);
 		resultTask.Wait();
@@ -1235,8 +1251,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="Subject">Bulletin subject line</param>
-	/// \t<param name="Content">Bulletin message content</param>
+	/// <param name="Subject">Bulletin subject line</param>
+	/// <param name="Content">Bulletin message content</param>
 	public async Task<CometAPIResponseMessage> AdminBulletinSubmitAsync(string Subject, string Content) {
 		var data = new Dictionary<string,string>();
 
@@ -1257,8 +1273,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="Subject">Bulletin subject line</param>
-	/// \t<param name="Content">Bulletin message content</param>
+	/// <param name="Subject">Bulletin subject line</param>
+	/// <param name="Content">Bulletin message content</param>
 	public CometAPIResponseMessage AdminBulletinSubmit(string Subject, string Content) {
 		var resultTask = AdminBulletinSubmitAsync(Subject, Content);
 		resultTask.Wait();
@@ -1381,7 +1397,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="Query">(No description available)</param>
+	/// <param name="Query">(No description available)</param>
 	public async Task<CountJobsResponse> AdminCountJobsForCustomSearchAsync(SearchClause Query) {
 		var data = new Dictionary<string,string>();
 
@@ -1401,7 +1417,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="Query">(No description available)</param>
+	/// <param name="Query">(No description available)</param>
 	public CountJobsResponse AdminCountJobsForCustomSearch(SearchClause Query) {
 		var resultTask = AdminCountJobsForCustomSearchAsync(Query);
 		resultTask.Wait();
@@ -1418,9 +1434,9 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetUser">Selected account username</param>
-	/// \t<param name="TargetPassword">Selected account password</param>
-	/// \t<param name="Server">(Optional) External URL of the authentication server that is different from the current
+	/// <param name="TargetUser">Selected account username</param>
+	/// <param name="TargetPassword">Selected account password</param>
+	/// <param name="Server">(Optional) External URL of the authentication server that is different from the current
 	/// server</param>
 	public async Task<InstallTokenResponse> AdminCreateInstallTokenAsync(string TargetUser, string TargetPassword, string Server = null) {
 		var data = new Dictionary<string,string>();
@@ -1449,9 +1465,9 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetUser">Selected account username</param>
-	/// \t<param name="TargetPassword">Selected account password</param>
-	/// \t<param name="Server">(Optional) External URL of the authentication server that is different from the current
+	/// <param name="TargetUser">Selected account username</param>
+	/// <param name="TargetPassword">Selected account password</param>
+	/// <param name="Server">(Optional) External URL of the authentication server that is different from the current
 	/// server</param>
 	public InstallTokenResponse AdminCreateInstallToken(string TargetUser, string TargetPassword, string Server = null) {
 		var resultTask = AdminCreateInstallTokenAsync(TargetUser, TargetPassword, Server);
@@ -1469,8 +1485,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetUser">Selected account username</param>
-	/// \t<param name="UninstallConfig">(Optional) Uninstall software configuration (>= 20.3.5)</param>
+	/// <param name="TargetUser">Selected account username</param>
+	/// <param name="UninstallConfig">(Optional) Uninstall software configuration (>= 20.3.5)</param>
 	public async Task<CometAPIResponseMessage> AdminDeleteUserAsync(string TargetUser, UninstallConfig UninstallConfig = null) {
 		var data = new Dictionary<string,string>();
 
@@ -1497,8 +1513,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetUser">Selected account username</param>
-	/// \t<param name="UninstallConfig">(Optional) Uninstall software configuration (>= 20.3.5)</param>
+	/// <param name="TargetUser">Selected account username</param>
+	/// <param name="UninstallConfig">(Optional) Uninstall software configuration (>= 20.3.5)</param>
 	public CometAPIResponseMessage AdminDeleteUser(string TargetUser, UninstallConfig UninstallConfig = null) {
 		var resultTask = AdminDeleteUserAsync(TargetUser, UninstallConfig);
 		resultTask.Wait();
@@ -1511,7 +1527,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetUser">Selected account username</param>
+	/// <param name="TargetUser">Selected account username</param>
 	public async Task<CometAPIResponseMessage> AdminDisableUserTotpAsync(string TargetUser) {
 		var data = new Dictionary<string,string>();
 
@@ -1531,7 +1547,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetUser">Selected account username</param>
+	/// <param name="TargetUser">Selected account username</param>
 	public CometAPIResponseMessage AdminDisableUserTotp(string TargetUser) {
 		var resultTask = AdminDisableUserTotpAsync(TargetUser);
 		resultTask.Wait();
@@ -1545,8 +1561,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Destination">The Storage Vault GUID</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Destination">The Storage Vault GUID</param>
 	public async Task<CometAPIResponseMessage> AdminDispatcherApplyRetentionRulesAsync(string TargetID, string Destination) {
 		var data = new Dictionary<string,string>();
 
@@ -1568,8 +1584,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Destination">The Storage Vault GUID</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Destination">The Storage Vault GUID</param>
 	public CometAPIResponseMessage AdminDispatcherApplyRetentionRules(string TargetID, string Destination) {
 		var resultTask = AdminDispatcherApplyRetentionRulesAsync(TargetID, Destination);
 		resultTask.Wait();
@@ -1583,8 +1599,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Destination">The Storage Vault GUID</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Destination">The Storage Vault GUID</param>
 	public async Task<CometAPIResponseMessage> AdminDispatcherDeepverifyStorageVaultAsync(string TargetID, string Destination) {
 		var data = new Dictionary<string,string>();
 
@@ -1606,8 +1622,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Destination">The Storage Vault GUID</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Destination">The Storage Vault GUID</param>
 	public CometAPIResponseMessage AdminDispatcherDeepverifyStorageVault(string TargetID, string Destination) {
 		var resultTask = AdminDispatcherDeepverifyStorageVaultAsync(TargetID, Destination);
 		resultTask.Wait();
@@ -1620,9 +1636,9 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="DestinationID">The Storage Vault GUID</param>
-	/// \t<param name="SnapshotID">The backup job snapshot ID to delete</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="DestinationID">The Storage Vault GUID</param>
+	/// <param name="SnapshotID">The backup job snapshot ID to delete</param>
 	public async Task<CometAPIResponseMessage> AdminDispatcherDeleteSnapshotAsync(string TargetID, string DestinationID, string SnapshotID) {
 		var data = new Dictionary<string,string>();
 
@@ -1644,9 +1660,9 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="DestinationID">The Storage Vault GUID</param>
-	/// \t<param name="SnapshotID">The backup job snapshot ID to delete</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="DestinationID">The Storage Vault GUID</param>
+	/// <param name="SnapshotID">The backup job snapshot ID to delete</param>
 	public CometAPIResponseMessage AdminDispatcherDeleteSnapshot(string TargetID, string DestinationID, string SnapshotID) {
 		var resultTask = AdminDispatcherDeleteSnapshotAsync(TargetID, DestinationID, SnapshotID);
 		resultTask.Wait();
@@ -1660,9 +1676,9 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="DestinationID">The Storage Vault GUID</param>
-	/// \t<param name="SnapshotIDs">The backup job snapshot IDs to delete</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="DestinationID">The Storage Vault GUID</param>
+	/// <param name="SnapshotIDs">The backup job snapshot IDs to delete</param>
 	public async Task<CometAPIResponseMessage> AdminDispatcherDeleteSnapshotsAsync(string TargetID, string DestinationID, string[] SnapshotIDs) {
 		var data = new Dictionary<string,string>();
 
@@ -1685,9 +1701,9 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="DestinationID">The Storage Vault GUID</param>
-	/// \t<param name="SnapshotIDs">The backup job snapshot IDs to delete</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="DestinationID">The Storage Vault GUID</param>
+	/// <param name="SnapshotIDs">The backup job snapshot IDs to delete</param>
 	public CometAPIResponseMessage AdminDispatcherDeleteSnapshots(string TargetID, string DestinationID, string[] SnapshotIDs) {
 		var resultTask = AdminDispatcherDeleteSnapshotsAsync(TargetID, DestinationID, SnapshotIDs);
 		resultTask.Wait();
@@ -1701,7 +1717,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
+	/// <param name="TargetID">The live connection GUID</param>
 	public async Task<CometAPIResponseMessage> AdminDispatcherDropConnectionAsync(string TargetID) {
 		var data = new Dictionary<string,string>();
 
@@ -1722,7 +1738,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
+	/// <param name="TargetID">The live connection GUID</param>
 	public CometAPIResponseMessage AdminDispatcherDropConnection(string TargetID) {
 		var resultTask = AdminDispatcherDropConnectionAsync(TargetID);
 		resultTask.Wait();
@@ -1736,10 +1752,10 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Snapshot">where the email belongs to</param>
-	/// \t<param name="Destination">The Storage Vault ID</param>
-	/// \t<param name="Path">of the email to view</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Snapshot">where the email belongs to</param>
+	/// <param name="Destination">The Storage Vault ID</param>
+	/// <param name="Path">of the email to view</param>
 	public async Task<EmailReportGeneratedPreview> AdminDispatcherEmailPreviewAsync(string TargetID, string Snapshot, string Destination, string Path) {
 		var data = new Dictionary<string,string>();
 
@@ -1763,10 +1779,10 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Snapshot">where the email belongs to</param>
-	/// \t<param name="Destination">The Storage Vault ID</param>
-	/// \t<param name="Path">of the email to view</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Snapshot">where the email belongs to</param>
+	/// <param name="Destination">The Storage Vault ID</param>
+	/// <param name="Path">of the email to view</param>
 	public EmailReportGeneratedPreview AdminDispatcherEmailPreview(string TargetID, string Snapshot, string Destination, string Path) {
 		var resultTask = AdminDispatcherEmailPreviewAsync(TargetID, Snapshot, Destination, Path);
 		resultTask.Wait();
@@ -1780,7 +1796,7 @@ public class CometAPI : IDisposable {
 	/// This API requires the Auth Role to be enabled.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
 	/// </summary>
-	/// \t<param name="OrganizationID">Target organization</param>
+	/// <param name="OrganizationID">Target organization</param>
 	public async Task<OrganizationLoginURLResponse> AdminDispatcherGetDefaultLoginUrlAsync(string OrganizationID) {
 		var data = new Dictionary<string,string>();
 
@@ -1801,7 +1817,7 @@ public class CometAPI : IDisposable {
 	/// This API requires the Auth Role to be enabled.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
 	/// </summary>
-	/// \t<param name="OrganizationID">Target organization</param>
+	/// <param name="OrganizationID">Target organization</param>
 	public OrganizationLoginURLResponse AdminDispatcherGetDefaultLoginUrl(string OrganizationID) {
 		var resultTask = AdminDispatcherGetDefaultLoginUrlAsync(OrganizationID);
 		resultTask.Wait();
@@ -1815,8 +1831,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="ImportSourceID">The selected import source, as found by the AdminDispatcherRequestImportSources
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="ImportSourceID">The selected import source, as found by the AdminDispatcherRequestImportSources
 	/// API</param>
 	public async Task<CometAPIResponseMessage> AdminDispatcherImportApplyAsync(string TargetID, string ImportSourceID) {
 		var data = new Dictionary<string,string>();
@@ -1839,8 +1855,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="ImportSourceID">The selected import source, as found by the AdminDispatcherRequestImportSources
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="ImportSourceID">The selected import source, as found by the AdminDispatcherRequestImportSources
 	/// API</param>
 	public CometAPIResponseMessage AdminDispatcherImportApply(string TargetID, string ImportSourceID) {
 		var resultTask = AdminDispatcherImportApplyAsync(TargetID, ImportSourceID);
@@ -1855,7 +1871,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
+	/// <param name="TargetID">The live connection GUID</param>
 	public async Task<CometAPIResponseMessage> AdminDispatcherKillProcessAsync(string TargetID) {
 		var data = new Dictionary<string,string>();
 
@@ -1876,7 +1892,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
+	/// <param name="TargetID">The live connection GUID</param>
 	public CometAPIResponseMessage AdminDispatcherKillProcess(string TargetID) {
 		var resultTask = AdminDispatcherKillProcessAsync(TargetID);
 		resultTask.Wait();
@@ -1889,7 +1905,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="UserNameFilter">(Optional) User name filter string</param>
+	/// <param name="UserNameFilter">(Optional) User name filter string</param>
 	public async Task<Dictionary<string,LiveUserConnection>> AdminDispatcherListActiveAsync(string UserNameFilter = null) {
 		var data = new Dictionary<string,string>();
 
@@ -1911,7 +1927,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="UserNameFilter">(Optional) User name filter string</param>
+	/// <param name="UserNameFilter">(Optional) User name filter string</param>
 	public Dictionary<string,LiveUserConnection> AdminDispatcherListActive(string UserNameFilter = null) {
 		var resultTask = AdminDispatcherListActiveAsync(UserNameFilter);
 		resultTask.Wait();
@@ -1926,8 +1942,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Credentials">The Office365 account credential</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The Office365 account credential</param>
 	public async Task<BrowseOffice365ListVirtualAccountsResponse> AdminDispatcherOffice365ListVirtualAccountsAsync(string TargetID, Office365Credential Credentials) {
 		var data = new Dictionary<string,string>();
 
@@ -1950,8 +1966,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Credentials">The Office365 account credential</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The Office365 account credential</param>
 	public BrowseOffice365ListVirtualAccountsResponse AdminDispatcherOffice365ListVirtualAccounts(string TargetID, Office365Credential Credentials) {
 		var resultTask = AdminDispatcherOffice365ListVirtualAccountsAsync(TargetID, Credentials);
 		resultTask.Wait();
@@ -1964,8 +1980,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="ExtraData">The destination location settings</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="ExtraData">The destination location settings</param>
 	public async Task<CometAPIResponseMessage> AdminDispatcherPingDestinationAsync(string TargetID, DestinationLocation ExtraData) {
 		var data = new Dictionary<string,string>();
 
@@ -1986,8 +2002,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="ExtraData">The destination location settings</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="ExtraData">The destination location settings</param>
 	public CometAPIResponseMessage AdminDispatcherPingDestination(string TargetID, DestinationLocation ExtraData) {
 		var resultTask = AdminDispatcherPingDestinationAsync(TargetID, ExtraData);
 		resultTask.Wait();
@@ -2001,7 +2017,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
+	/// <param name="TargetID">The live connection GUID</param>
 	public async Task<CometAPIResponseMessage> AdminDispatcherRefetchProfileAsync(string TargetID) {
 		var data = new Dictionary<string,string>();
 
@@ -2022,7 +2038,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
+	/// <param name="TargetID">The live connection GUID</param>
 	public CometAPIResponseMessage AdminDispatcherRefetchProfile(string TargetID) {
 		var resultTask = AdminDispatcherRefetchProfileAsync(TargetID);
 		resultTask.Wait();
@@ -2039,8 +2055,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="EmailAddress">The email address of the Azure AD administrator</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="EmailAddress">The email address of the Azure AD administrator</param>
 	public async Task<RegisterOfficeApplicationBeginResponse> AdminDispatcherRegisterOfficeApplicationBeginAsync(string TargetID, string EmailAddress) {
 		var data = new Dictionary<string,string>();
 
@@ -2065,8 +2081,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="EmailAddress">The email address of the Azure AD administrator</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="EmailAddress">The email address of the Azure AD administrator</param>
 	public RegisterOfficeApplicationBeginResponse AdminDispatcherRegisterOfficeApplicationBegin(string TargetID, string EmailAddress) {
 		var resultTask = AdminDispatcherRegisterOfficeApplicationBeginAsync(TargetID, EmailAddress);
 		resultTask.Wait();
@@ -2082,9 +2098,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Continuation">The ID returned from the AdminDispatcherRegisterOfficeApplicationBegin
-	/// endpoint</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Continuation">The ID returned from the AdminDispatcherRegisterOfficeApplicationBegin endpoint</param>
 	public async Task<RegisterOfficeApplicationCheckResponse> AdminDispatcherRegisterOfficeApplicationCheckAsync(string TargetID, string Continuation) {
 		var data = new Dictionary<string,string>();
 
@@ -2108,9 +2123,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Continuation">The ID returned from the AdminDispatcherRegisterOfficeApplicationBegin
-	/// endpoint</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Continuation">The ID returned from the AdminDispatcherRegisterOfficeApplicationBegin endpoint</param>
 	public RegisterOfficeApplicationCheckResponse AdminDispatcherRegisterOfficeApplicationCheck(string TargetID, string Continuation) {
 		var resultTask = AdminDispatcherRegisterOfficeApplicationCheckAsync(TargetID, Continuation);
 		resultTask.Wait();
@@ -2124,8 +2138,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Destination">The Storage Vault GUID</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Destination">The Storage Vault GUID</param>
 	public async Task<CometAPIResponseMessage> AdminDispatcherReindexStorageVaultAsync(string TargetID, string Destination) {
 		var data = new Dictionary<string,string>();
 
@@ -2147,8 +2161,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Destination">The Storage Vault GUID</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Destination">The Storage Vault GUID</param>
 	public CometAPIResponseMessage AdminDispatcherReindexStorageVault(string TargetID, string Destination) {
 		var resultTask = AdminDispatcherReindexStorageVaultAsync(TargetID, Destination);
 		resultTask.Wait();
@@ -2162,7 +2176,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
+	/// <param name="TargetID">The live connection GUID</param>
 	public async Task<BrowseDiskDrivesResponse> AdminDispatcherRequestBrowseDiskDrivesAsync(string TargetID) {
 		var data = new Dictionary<string,string>();
 
@@ -2183,7 +2197,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
+	/// <param name="TargetID">The live connection GUID</param>
 	public BrowseDiskDrivesResponse AdminDispatcherRequestBrowseDiskDrives(string TargetID) {
 		var resultTask = AdminDispatcherRequestBrowseDiskDrivesAsync(TargetID);
 		resultTask.Wait();
@@ -2196,7 +2210,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
+	/// <param name="TargetID">The live connection GUID</param>
 	public async Task<BrowseEDBResponse> AdminDispatcherRequestBrowseExchangeEdbAsync(string TargetID) {
 		var data = new Dictionary<string,string>();
 
@@ -2216,7 +2230,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
+	/// <param name="TargetID">The live connection GUID</param>
 	public BrowseEDBResponse AdminDispatcherRequestBrowseExchangeEdb(string TargetID) {
 		var resultTask = AdminDispatcherRequestBrowseExchangeEdbAsync(TargetID);
 		resultTask.Wait();
@@ -2229,7 +2243,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
+	/// <param name="TargetID">The live connection GUID</param>
 	public async Task<BrowseHVResponse> AdminDispatcherRequestBrowseHypervAsync(string TargetID) {
 		var data = new Dictionary<string,string>();
 
@@ -2249,7 +2263,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
+	/// <param name="TargetID">The live connection GUID</param>
 	public BrowseHVResponse AdminDispatcherRequestBrowseHyperv(string TargetID) {
 		var resultTask = AdminDispatcherRequestBrowseHypervAsync(TargetID);
 		resultTask.Wait();
@@ -2263,8 +2277,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Credentials">The Mongo database authentication settings</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The Mongo database authentication settings</param>
 	public async Task<BrowseSQLServerResponse> AdminDispatcherRequestBrowseMongodbAsync(string TargetID, MongoDBConnection Credentials) {
 		var data = new Dictionary<string,string>();
 
@@ -2286,8 +2300,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Credentials">The Mongo database authentication settings</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The Mongo database authentication settings</param>
 	public BrowseSQLServerResponse AdminDispatcherRequestBrowseMongodb(string TargetID, MongoDBConnection Credentials) {
 		var resultTask = AdminDispatcherRequestBrowseMongodbAsync(TargetID, Credentials);
 		resultTask.Wait();
@@ -2301,8 +2315,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Credentials">The MSSQL database authentication settings</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The MSSQL database authentication settings</param>
 	public async Task<BrowseSQLServerResponse> AdminDispatcherRequestBrowseMssqlAsync(string TargetID, MSSQLConnection Credentials) {
 		var data = new Dictionary<string,string>();
 
@@ -2324,8 +2338,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Credentials">The MSSQL database authentication settings</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The MSSQL database authentication settings</param>
 	public BrowseSQLServerResponse AdminDispatcherRequestBrowseMssql(string TargetID, MSSQLConnection Credentials) {
 		var resultTask = AdminDispatcherRequestBrowseMssqlAsync(TargetID, Credentials);
 		resultTask.Wait();
@@ -2339,8 +2353,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Credentials">The MySQL database authentication settings</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The MySQL database authentication settings</param>
 	public async Task<BrowseSQLServerResponse> AdminDispatcherRequestBrowseMysqlAsync(string TargetID, MySQLConnection Credentials) {
 		var data = new Dictionary<string,string>();
 
@@ -2362,8 +2376,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Credentials">The MySQL database authentication settings</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The MySQL database authentication settings</param>
 	public BrowseSQLServerResponse AdminDispatcherRequestBrowseMysql(string TargetID, MySQLConnection Credentials) {
 		var resultTask = AdminDispatcherRequestBrowseMysqlAsync(TargetID, Credentials);
 		resultTask.Wait();
@@ -2377,7 +2391,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
+	/// <param name="TargetID">The live connection GUID</param>
 	public async Task<BrowseVSSResponse> AdminDispatcherRequestBrowseVssAawAsync(string TargetID) {
 		var data = new Dictionary<string,string>();
 
@@ -2398,7 +2412,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
+	/// <param name="TargetID">The live connection GUID</param>
 	public BrowseVSSResponse AdminDispatcherRequestBrowseVssAaw(string TargetID) {
 		var resultTask = AdminDispatcherRequestBrowseVssAawAsync(TargetID);
 		resultTask.Wait();
@@ -2412,8 +2426,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Path">(Optional) Browse objects inside this path. If empty or not present, returns the top-level
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Path">(Optional) Browse objects inside this path. If empty or not present, returns the top-level
 	/// device paths</param>
 	public async Task<DispatcherStoredObjectsResponse> AdminDispatcherRequestFilesystemObjectsAsync(string TargetID, string Path = null) {
 		var data = new Dictionary<string,string>();
@@ -2438,8 +2452,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Path">(Optional) Browse objects inside this path. If empty or not present, returns the top-level
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Path">(Optional) Browse objects inside this path. If empty or not present, returns the top-level
 	/// device paths</param>
 	public DispatcherStoredObjectsResponse AdminDispatcherRequestFilesystemObjects(string TargetID, string Path = null) {
 		var resultTask = AdminDispatcherRequestFilesystemObjectsAsync(TargetID, Path);
@@ -2453,7 +2467,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
+	/// <param name="TargetID">The live connection GUID</param>
 	public async Task<DispatcherAdminSourcesResponse> AdminDispatcherRequestImportSourcesAsync(string TargetID) {
 		var data = new Dictionary<string,string>();
 
@@ -2473,7 +2487,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
+	/// <param name="TargetID">The live connection GUID</param>
 	public DispatcherAdminSourcesResponse AdminDispatcherRequestImportSources(string TargetID) {
 		var resultTask = AdminDispatcherRequestImportSourcesAsync(TargetID);
 		resultTask.Wait();
@@ -2487,8 +2501,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Credentials">The Office365 account credential</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The Office365 account credential</param>
 	public async Task<BrowseOffice365ObjectsResponse> AdminDispatcherRequestOffice365AccountsAsync(string TargetID, Office365Credential Credentials) {
 		var data = new Dictionary<string,string>();
 
@@ -2510,8 +2524,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Credentials">The Office365 account credential</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The Office365 account credential</param>
 	public BrowseOffice365ObjectsResponse AdminDispatcherRequestOffice365Accounts(string TargetID, Office365Credential Credentials) {
 		var resultTask = AdminDispatcherRequestOffice365AccountsAsync(TargetID, Credentials);
 		resultTask.Wait();
@@ -2525,8 +2539,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Credentials">The Office365 account credential</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The Office365 account credential</param>
 	public async Task<BrowseOffice365ObjectsResponse> AdminDispatcherRequestOffice365SitesAsync(string TargetID, Office365Credential Credentials) {
 		var data = new Dictionary<string,string>();
 
@@ -2548,8 +2562,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Credentials">The Office365 account credential</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The Office365 account credential</param>
 	public BrowseOffice365ObjectsResponse AdminDispatcherRequestOffice365Sites(string TargetID, Office365Credential Credentials) {
 		var resultTask = AdminDispatcherRequestOffice365SitesAsync(TargetID, Credentials);
 		resultTask.Wait();
@@ -2567,12 +2581,12 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Destination">The Storage Vault ID</param>
-	/// \t<param name="SnapshotID">The selected backup job snapshot</param>
-	/// \t<param name="TreeID">(Optional) Browse objects inside subdirectory of backup snapshot. If it is for VMDK single
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Destination">The Storage Vault ID</param>
+	/// <param name="SnapshotID">The selected backup job snapshot</param>
+	/// <param name="TreeID">(Optional) Browse objects inside subdirectory of backup snapshot. If it is for VMDK single
 	/// file restore, it should be the disk image's subtree ID.</param>
-	/// \t<param name="Options">(Optional) Request a list of stored objects in vmdk file</param>
+	/// <param name="Options">(Optional) Request a list of stored objects in vmdk file</param>
 	public async Task<DispatcherStoredObjectsResponse> AdminDispatcherRequestStoredObjectsAsync(string TargetID, string Destination, string SnapshotID, string TreeID = null, VMDKSnapshotViewOptions Options = null) {
 		var data = new Dictionary<string,string>();
 
@@ -2605,12 +2619,12 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Destination">The Storage Vault ID</param>
-	/// \t<param name="SnapshotID">The selected backup job snapshot</param>
-	/// \t<param name="TreeID">(Optional) Browse objects inside subdirectory of backup snapshot. If it is for VMDK single
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Destination">The Storage Vault ID</param>
+	/// <param name="SnapshotID">The selected backup job snapshot</param>
+	/// <param name="TreeID">(Optional) Browse objects inside subdirectory of backup snapshot. If it is for VMDK single
 	/// file restore, it should be the disk image's subtree ID.</param>
-	/// \t<param name="Options">(Optional) Request a list of stored objects in vmdk file</param>
+	/// <param name="Options">(Optional) Request a list of stored objects in vmdk file</param>
 	public DispatcherStoredObjectsResponse AdminDispatcherRequestStoredObjects(string TargetID, string Destination, string SnapshotID, string TreeID = null, VMDKSnapshotViewOptions Options = null) {
 		var resultTask = AdminDispatcherRequestStoredObjectsAsync(TargetID, Destination, SnapshotID, TreeID, Options);
 		resultTask.Wait();
@@ -2623,8 +2637,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Destination">The Storage Vault ID</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Destination">The Storage Vault ID</param>
 	public async Task<DispatcherVaultSnapshotsResponse> AdminDispatcherRequestVaultSnapshotsAsync(string TargetID, string Destination) {
 		var data = new Dictionary<string,string>();
 
@@ -2645,8 +2659,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Destination">The Storage Vault ID</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Destination">The Storage Vault ID</param>
 	public DispatcherVaultSnapshotsResponse AdminDispatcherRequestVaultSnapshots(string TargetID, string Destination) {
 		var resultTask = AdminDispatcherRequestVaultSnapshotsAsync(TargetID, Destination);
 		resultTask.Wait();
@@ -2660,9 +2674,9 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Destination">The Storage Vault ID</param>
-	/// \t<param name="SnapshotID">The Snapshot ID</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Destination">The Storage Vault ID</param>
+	/// <param name="SnapshotID">The Snapshot ID</param>
 	public async Task<DispatcherWindiskSnapshotResponse> AdminDispatcherRequestWindiskSnapshotAsync(string TargetID, string Destination, string SnapshotID) {
 		var data = new Dictionary<string,string>();
 
@@ -2685,9 +2699,9 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Destination">The Storage Vault ID</param>
-	/// \t<param name="SnapshotID">The Snapshot ID</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Destination">The Storage Vault ID</param>
+	/// <param name="SnapshotID">The Snapshot ID</param>
 	public DispatcherWindiskSnapshotResponse AdminDispatcherRequestWindiskSnapshot(string TargetID, string Destination, string SnapshotID) {
 		var resultTask = AdminDispatcherRequestWindiskSnapshotAsync(TargetID, Destination, SnapshotID);
 		resultTask.Wait();
@@ -2700,8 +2714,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="BackupRule">The schedule GUID</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="BackupRule">The schedule GUID</param>
 	public async Task<CometAPIResponseMessage> AdminDispatcherRunBackupAsync(string TargetID, string BackupRule) {
 		var data = new Dictionary<string,string>();
 
@@ -2722,8 +2736,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="BackupRule">The schedule GUID</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="BackupRule">The schedule GUID</param>
 	public CometAPIResponseMessage AdminDispatcherRunBackup(string TargetID, string BackupRule) {
 		var resultTask = AdminDispatcherRunBackupAsync(TargetID, BackupRule);
 		resultTask.Wait();
@@ -2736,10 +2750,10 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Source">The Protected Item GUID</param>
-	/// \t<param name="Destination">The Storage Vault GUID</param>
-	/// \t<param name="Options">(Optional) Extra job parameters (>= 19.3.6)</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Source">The Protected Item GUID</param>
+	/// <param name="Destination">The Storage Vault GUID</param>
+	/// <param name="Options">(Optional) Extra job parameters (>= 19.3.6)</param>
 	public async Task<CometAPIResponseMessage> AdminDispatcherRunBackupCustomAsync(string TargetID, string Source, string Destination, BackupJobAdvancedOptions Options = null) {
 		var data = new Dictionary<string,string>();
 
@@ -2764,10 +2778,10 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Source">The Protected Item GUID</param>
-	/// \t<param name="Destination">The Storage Vault GUID</param>
-	/// \t<param name="Options">(Optional) Extra job parameters (>= 19.3.6)</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Source">The Protected Item GUID</param>
+	/// <param name="Destination">The Storage Vault GUID</param>
+	/// <param name="Options">(Optional) Extra job parameters (>= 19.3.6)</param>
 	public CometAPIResponseMessage AdminDispatcherRunBackupCustom(string TargetID, string Source, string Destination, BackupJobAdvancedOptions Options = null) {
 		var resultTask = AdminDispatcherRunBackupCustomAsync(TargetID, Source, Destination, Options);
 		resultTask.Wait();
@@ -2781,13 +2795,13 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Path">The local path to restore to</param>
-	/// \t<param name="Source">The Protected Item ID</param>
-	/// \t<param name="Destination">The Storage Vault ID</param>
-	/// \t<param name="Snapshot">(Optional) If present, restore a specific snapshot. Otherwise, restore the latest snapshot
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Path">The local path to restore to</param>
+	/// <param name="Source">The Protected Item ID</param>
+	/// <param name="Destination">The Storage Vault ID</param>
+	/// <param name="Snapshot">(Optional) If present, restore a specific snapshot. Otherwise, restore the latest snapshot
 	/// for the selected Protected Item + Storage Vault pair</param>
-	/// \t<param name="Paths">(Optional) If present, restore these paths only. Otherwise, restore all data (>=
+	/// <param name="Paths">(Optional) If present, restore these paths only. Otherwise, restore all data (>=
 	/// 19.3.0)</param>
 	public async Task<CometAPIResponseMessage> AdminDispatcherRunRestoreAsync(string TargetID, string Path, string Source, string Destination, string Snapshot = null, string[] Paths = null) {
 		var data = new Dictionary<string,string>();
@@ -2818,13 +2832,13 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Path">The local path to restore to</param>
-	/// \t<param name="Source">The Protected Item ID</param>
-	/// \t<param name="Destination">The Storage Vault ID</param>
-	/// \t<param name="Snapshot">(Optional) If present, restore a specific snapshot. Otherwise, restore the latest snapshot
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Path">The local path to restore to</param>
+	/// <param name="Source">The Protected Item ID</param>
+	/// <param name="Destination">The Storage Vault ID</param>
+	/// <param name="Snapshot">(Optional) If present, restore a specific snapshot. Otherwise, restore the latest snapshot
 	/// for the selected Protected Item + Storage Vault pair</param>
-	/// \t<param name="Paths">(Optional) If present, restore these paths only. Otherwise, restore all data (>=
+	/// <param name="Paths">(Optional) If present, restore these paths only. Otherwise, restore all data (>=
 	/// 19.3.0)</param>
 	public CometAPIResponseMessage AdminDispatcherRunRestore(string TargetID, string Path, string Source, string Destination, string Snapshot = null, string[] Paths = null) {
 		var resultTask = AdminDispatcherRunRestoreAsync(TargetID, Path, Source, Destination, Snapshot, Paths);
@@ -2839,13 +2853,13 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Source">The Protected Item ID</param>
-	/// \t<param name="Destination">The Storage Vault ID</param>
-	/// \t<param name="Options">Restore targets</param>
-	/// \t<param name="Snapshot">(Optional) If present, restore a specific snapshot. Otherwise, restore the latest snapshot
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Source">The Protected Item ID</param>
+	/// <param name="Destination">The Storage Vault ID</param>
+	/// <param name="Options">Restore targets</param>
+	/// <param name="Snapshot">(Optional) If present, restore a specific snapshot. Otherwise, restore the latest snapshot
 	/// for the selected Protected Item + Storage Vault pair</param>
-	/// \t<param name="Paths">(Optional) If present, restore these paths only. Otherwise, restore all data</param>
+	/// <param name="Paths">(Optional) If present, restore these paths only. Otherwise, restore all data</param>
 	public async Task<CometAPIResponseMessage> AdminDispatcherRunRestoreCustomAsync(string TargetID, string Source, string Destination, RestoreJobAdvancedOptions Options, string Snapshot = null, string[] Paths = null) {
 		var data = new Dictionary<string,string>();
 
@@ -2875,13 +2889,13 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Source">The Protected Item ID</param>
-	/// \t<param name="Destination">The Storage Vault ID</param>
-	/// \t<param name="Options">Restore targets</param>
-	/// \t<param name="Snapshot">(Optional) If present, restore a specific snapshot. Otherwise, restore the latest snapshot
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Source">The Protected Item ID</param>
+	/// <param name="Destination">The Storage Vault ID</param>
+	/// <param name="Options">Restore targets</param>
+	/// <param name="Snapshot">(Optional) If present, restore a specific snapshot. Otherwise, restore the latest snapshot
 	/// for the selected Protected Item + Storage Vault pair</param>
-	/// \t<param name="Paths">(Optional) If present, restore these paths only. Otherwise, restore all data</param>
+	/// <param name="Paths">(Optional) If present, restore these paths only. Otherwise, restore all data</param>
 	public CometAPIResponseMessage AdminDispatcherRunRestoreCustom(string TargetID, string Source, string Destination, RestoreJobAdvancedOptions Options, string Snapshot = null, string[] Paths = null) {
 		var resultTask = AdminDispatcherRunRestoreCustomAsync(TargetID, Source, Destination, Options, Snapshot, Paths);
 		resultTask.Wait();
@@ -2894,10 +2908,10 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="DestinationID">The Storage Vault GUID</param>
-	/// \t<param name="SnapshotIDs">Snapshots to search</param>
-	/// \t<param name="Filter">The search filter</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="DestinationID">The Storage Vault GUID</param>
+	/// <param name="SnapshotIDs">Snapshots to search</param>
+	/// <param name="Filter">The search filter</param>
 	public async Task<SearchSnapshotsResponse> AdminDispatcherSearchSnapshotsAsync(string TargetID, string DestinationID, string[] SnapshotIDs, SearchClause Filter) {
 		var data = new Dictionary<string,string>();
 
@@ -2920,10 +2934,10 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="DestinationID">The Storage Vault GUID</param>
-	/// \t<param name="SnapshotIDs">Snapshots to search</param>
-	/// \t<param name="Filter">The search filter</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="DestinationID">The Storage Vault GUID</param>
+	/// <param name="SnapshotIDs">Snapshots to search</param>
+	/// <param name="Filter">The search filter</param>
 	public SearchSnapshotsResponse AdminDispatcherSearchSnapshots(string TargetID, string DestinationID, string[] SnapshotIDs, SearchClause Filter) {
 		var resultTask = AdminDispatcherSearchSnapshotsAsync(TargetID, DestinationID, SnapshotIDs, Filter);
 		resultTask.Wait();
@@ -2936,8 +2950,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="RemoveConfigFile">Determine if the config.dat file will be deleted at the same time</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="RemoveConfigFile">Determine if the config.dat file will be deleted at the same time</param>
 	public async Task<CometAPIResponseMessage> AdminDispatcherUninstallSoftwareAsync(string TargetID, Nullable<bool> RemoveConfigFile) {
 		var data = new Dictionary<string,string>();
 
@@ -2958,8 +2972,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="RemoveConfigFile">Determine if the config.dat file will be deleted at the same time</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="RemoveConfigFile">Determine if the config.dat file will be deleted at the same time</param>
 	public CometAPIResponseMessage AdminDispatcherUninstallSoftware(string TargetID, Nullable<bool> RemoveConfigFile) {
 		var resultTask = AdminDispatcherUninstallSoftwareAsync(TargetID, RemoveConfigFile);
 		resultTask.Wait();
@@ -2974,8 +2988,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Destination">The Storage Vault GUID</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Destination">The Storage Vault GUID</param>
 	public async Task<CometAPIResponseMessage> AdminDispatcherUnlockAsync(string TargetID, string Destination) {
 		var data = new Dictionary<string,string>();
 
@@ -2998,8 +3012,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Destination">The Storage Vault GUID</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Destination">The Storage Vault GUID</param>
 	public CometAPIResponseMessage AdminDispatcherUnlock(string TargetID, string Destination) {
 		var resultTask = AdminDispatcherUnlockAsync(TargetID, Destination);
 		resultTask.Wait();
@@ -3016,9 +3030,9 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="NewURL">The new external URL of this server</param>
-	/// \t<param name="Force">(Optional) No checks will be done using previous URL</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="NewURL">The new external URL of this server</param>
+	/// <param name="Force">(Optional) No checks will be done using previous URL</param>
 	public async Task<CometAPIResponseMessage> AdminDispatcherUpdateLoginUrlAsync(string TargetID, string NewURL, Nullable<bool> Force = null) {
 		var data = new Dictionary<string,string>();
 
@@ -3046,9 +3060,9 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="NewURL">The new external URL of this server</param>
-	/// \t<param name="Force">(Optional) No checks will be done using previous URL</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="NewURL">The new external URL of this server</param>
+	/// <param name="Force">(Optional) No checks will be done using previous URL</param>
 	public CometAPIResponseMessage AdminDispatcherUpdateLoginUrl(string TargetID, string NewURL, Nullable<bool> Force = null) {
 		var resultTask = AdminDispatcherUpdateLoginUrlAsync(TargetID, NewURL, Force);
 		resultTask.Wait();
@@ -3062,8 +3076,8 @@ public class CometAPI : IDisposable {
 	/// This API requires the Auth Role to be enabled.
 	/// This API requires the Software Build Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts (>=
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts (>=
 	/// 19.3.11)</param>
 	public async Task<CometAPIResponseMessage> AdminDispatcherUpdateSoftwareAsync(string TargetID, string SelfAddress = null) {
 		var data = new Dictionary<string,string>();
@@ -3086,8 +3100,8 @@ public class CometAPI : IDisposable {
 	/// This API requires the Auth Role to be enabled.
 	/// This API requires the Software Build Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts (>=
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts (>=
 	/// 19.3.11)</param>
 	public CometAPIResponseMessage AdminDispatcherUpdateSoftware(string TargetID, string SelfAddress = null) {
 		var resultTask = AdminDispatcherUpdateSoftwareAsync(TargetID, SelfAddress);
@@ -3101,7 +3115,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="JobID">Selected job ID</param>
+	/// <param name="JobID">Selected job ID</param>
 	public async Task<byte[]> AdminGetJobLogAsync(string JobID) {
 		var data = new Dictionary<string,string>();
 
@@ -3123,7 +3137,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="JobID">Selected job ID</param>
+	/// <param name="JobID">Selected job ID</param>
 	public byte[] AdminGetJobLog(string JobID) {
 		var resultTask = AdminGetJobLogAsync(JobID);
 		resultTask.Wait();
@@ -3136,9 +3150,9 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="JobID">Selected job ID</param>
-	/// \t<param name="MinSeverity">(Optional) Return only job log entries with equal or higher severity</param>
-	/// \t<param name="MessageContains">(Optional) Return only job log entries that contain exact string</param>
+	/// <param name="JobID">Selected job ID</param>
+	/// <param name="MinSeverity">(Optional) Return only job log entries with equal or higher severity</param>
+	/// <param name="MessageContains">(Optional) Return only job log entries that contain exact string</param>
 	public async Task<JobEntry[]> AdminGetJobLogEntriesAsync(string JobID, string MinSeverity = null, string MessageContains = null) {
 		var data = new Dictionary<string,string>();
 
@@ -3164,9 +3178,9 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="JobID">Selected job ID</param>
-	/// \t<param name="MinSeverity">(Optional) Return only job log entries with equal or higher severity</param>
-	/// \t<param name="MessageContains">(Optional) Return only job log entries that contain exact string</param>
+	/// <param name="JobID">Selected job ID</param>
+	/// <param name="MinSeverity">(Optional) Return only job log entries with equal or higher severity</param>
+	/// <param name="MessageContains">(Optional) Return only job log entries that contain exact string</param>
 	public JobEntry[] AdminGetJobLogEntries(string JobID, string MinSeverity = null, string MessageContains = null) {
 		var resultTask = AdminGetJobLogEntriesAsync(JobID, MinSeverity, MessageContains);
 		resultTask.Wait();
@@ -3179,7 +3193,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="JobID">Selected job ID</param>
+	/// <param name="JobID">Selected job ID</param>
 	public async Task<BackupJobDetail> AdminGetJobPropertiesAsync(string JobID) {
 		var data = new Dictionary<string,string>();
 
@@ -3199,7 +3213,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="JobID">Selected job ID</param>
+	/// <param name="JobID">Selected job ID</param>
 	public BackupJobDetail AdminGetJobProperties(string JobID) {
 		var resultTask = AdminGetJobPropertiesAsync(JobID);
 		resultTask.Wait();
@@ -3242,7 +3256,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="Query">(No description available)</param>
+	/// <param name="Query">(No description available)</param>
 	public async Task<BackupJobDetail[]> AdminGetJobsForCustomSearchAsync(SearchClause Query) {
 		var data = new Dictionary<string,string>();
 
@@ -3263,7 +3277,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="Query">(No description available)</param>
+	/// <param name="Query">(No description available)</param>
 	public BackupJobDetail[] AdminGetJobsForCustomSearch(SearchClause Query) {
 		var resultTask = AdminGetJobsForCustomSearchAsync(Query);
 		resultTask.Wait();
@@ -3287,8 +3301,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="Start">Timestamp (Unix)</param>
-	/// \t<param name="End">Timestamp (Unix)</param>
+	/// <param name="Start">Timestamp (Unix)</param>
+	/// <param name="End">Timestamp (Unix)</param>
 	public async Task<BackupJobDetail[]> AdminGetJobsForDateRangeAsync(Nullable<int> Start, Nullable<int> End) {
 		var data = new Dictionary<string,string>();
 
@@ -3320,8 +3334,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="Start">Timestamp (Unix)</param>
-	/// \t<param name="End">Timestamp (Unix)</param>
+	/// <param name="Start">Timestamp (Unix)</param>
+	/// <param name="End">Timestamp (Unix)</param>
 	public BackupJobDetail[] AdminGetJobsForDateRange(Nullable<int> Start, Nullable<int> End) {
 		var resultTask = AdminGetJobsForDateRangeAsync(Start, End);
 		resultTask.Wait();
@@ -3335,7 +3349,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetUser">Selected username</param>
+	/// <param name="TargetUser">Selected username</param>
 	public async Task<BackupJobDetail[]> AdminGetJobsForUserAsync(string TargetUser) {
 		var data = new Dictionary<string,string>();
 
@@ -3356,7 +3370,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetUser">Selected username</param>
+	/// <param name="TargetUser">Selected username</param>
 	public BackupJobDetail[] AdminGetJobsForUser(string TargetUser) {
 		var resultTask = AdminGetJobsForUserAsync(TargetUser);
 		resultTask.Wait();
@@ -3398,7 +3412,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetUser">Selected account username</param>
+	/// <param name="TargetUser">Selected account username</param>
 	public async Task<UserProfileConfig> AdminGetUserProfileAsync(string TargetUser) {
 		var data = new Dictionary<string,string>();
 
@@ -3418,7 +3432,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetUser">Selected account username</param>
+	/// <param name="TargetUser">Selected account username</param>
 	public UserProfileConfig AdminGetUserProfile(string TargetUser) {
 		var resultTask = AdminGetUserProfileAsync(TargetUser);
 		resultTask.Wait();
@@ -3435,7 +3449,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetUser">Selected account username</param>
+	/// <param name="TargetUser">Selected account username</param>
 	public async Task<GetProfileAndHashResponseMessage> AdminGetUserProfileAndHashAsync(string TargetUser) {
 		var data = new Dictionary<string,string>();
 
@@ -3459,7 +3473,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetUser">Selected account username</param>
+	/// <param name="TargetUser">Selected account username</param>
 	public GetProfileAndHashResponseMessage AdminGetUserProfileAndHash(string TargetUser) {
 		var resultTask = AdminGetUserProfileAndHashAsync(TargetUser);
 		resultTask.Wait();
@@ -3475,7 +3489,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetUser">Selected account username</param>
+	/// <param name="TargetUser">Selected account username</param>
 	public async Task<GetProfileHashResponseMessage> AdminGetUserProfileHashAsync(string TargetUser) {
 		var data = new Dictionary<string,string>();
 
@@ -3498,7 +3512,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetUser">Selected account username</param>
+	/// <param name="TargetUser">Selected account username</param>
 	public GetProfileHashResponseMessage AdminGetUserProfileHash(string TargetUser) {
 		var resultTask = AdminGetUserProfileHashAsync(TargetUser);
 		resultTask.Wait();
@@ -3517,8 +3531,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetUser">Username</param>
-	/// \t<param name="JobID">Job ID</param>
+	/// <param name="TargetUser">Username</param>
+	/// <param name="JobID">Job ID</param>
 	public async Task<CometAPIResponseMessage> AdminJobCancelAsync(string TargetUser, string JobID) {
 		var data = new Dictionary<string,string>();
 
@@ -3545,8 +3559,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetUser">Username</param>
-	/// \t<param name="JobID">Job ID</param>
+	/// <param name="TargetUser">Username</param>
+	/// <param name="JobID">Job ID</param>
 	public CometAPIResponseMessage AdminJobCancel(string TargetUser, string JobID) {
 		var resultTask = AdminJobCancelAsync(TargetUser, JobID);
 		resultTask.Wait();
@@ -3643,7 +3657,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
 	/// </summary>
-	/// \t<param name="BrandingConfig">Updated configuration content</param>
+	/// <param name="BrandingConfig">Updated configuration content</param>
 	public async Task<CometAPIResponseMessage> AdminMetaBrandingConfigSetAsync(BrandingOptions BrandingConfig) {
 		var data = new Dictionary<string,string>();
 
@@ -3666,7 +3680,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
 	/// </summary>
-	/// \t<param name="BrandingConfig">Updated configuration content</param>
+	/// <param name="BrandingConfig">Updated configuration content</param>
 	public CometAPIResponseMessage AdminMetaBrandingConfigSet(BrandingOptions BrandingConfig) {
 		var resultTask = AdminMetaBrandingConfigSetAsync(BrandingConfig);
 		resultTask.Wait();
@@ -3706,7 +3720,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
 	/// </summary>
-	/// \t<param name="SoftwareBuildRoleConfig">Updated configuration content</param>
+	/// <param name="SoftwareBuildRoleConfig">Updated configuration content</param>
 	public async Task<CometAPIResponseMessage> AdminMetaBuildConfigSetAsync(SoftwareBuildRoleOptions SoftwareBuildRoleConfig) {
 		var data = new Dictionary<string,string>();
 
@@ -3726,7 +3740,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
 	/// </summary>
-	/// \t<param name="SoftwareBuildRoleConfig">Updated configuration content</param>
+	/// <param name="SoftwareBuildRoleConfig">Updated configuration content</param>
 	public CometAPIResponseMessage AdminMetaBuildConfigSet(SoftwareBuildRoleOptions SoftwareBuildRoleConfig) {
 		var resultTask = AdminMetaBuildConfigSetAsync(SoftwareBuildRoleConfig);
 		resultTask.Wait();
@@ -3766,7 +3780,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Constellation Role to be enabled.
 	/// </summary>
-	/// \t<param name="ConstellationRoleOptions">Constellation role options to set</param>
+	/// <param name="ConstellationRoleOptions">Constellation role options to set</param>
 	public async Task<CometAPIResponseMessage> AdminMetaConstellationConfigSetAsync(ConstellationRoleOptions ConstellationRoleOptions) {
 		var data = new Dictionary<string,string>();
 
@@ -3786,7 +3800,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Constellation Role to be enabled.
 	/// </summary>
-	/// \t<param name="ConstellationRoleOptions">Constellation role options to set</param>
+	/// <param name="ConstellationRoleOptions">Constellation role options to set</param>
 	public CometAPIResponseMessage AdminMetaConstellationConfigSet(ConstellationRoleOptions ConstellationRoleOptions) {
 		var resultTask = AdminMetaConstellationConfigSetAsync(ConstellationRoleOptions);
 		resultTask.Wait();
@@ -3826,7 +3840,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
 	/// </summary>
-	/// \t<param name="EmailOptions">The replacement email reporting options.</param>
+	/// <param name="EmailOptions">The replacement email reporting options.</param>
 	public async Task<CometAPIResponseMessage> AdminMetaEmailOptionsSetAsync(EmailOptions EmailOptions) {
 		var data = new Dictionary<string,string>();
 
@@ -3846,7 +3860,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
 	/// </summary>
-	/// \t<param name="EmailOptions">The replacement email reporting options.</param>
+	/// <param name="EmailOptions">The replacement email reporting options.</param>
 	public CometAPIResponseMessage AdminMetaEmailOptionsSet(EmailOptions EmailOptions) {
 		var resultTask = AdminMetaEmailOptionsSetAsync(EmailOptions);
 		resultTask.Wait();
@@ -3910,7 +3924,7 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// </summary>
-	/// \t<param name="PSAConfigList">The replacement PSA configuration list</param>
+	/// <param name="PSAConfigList">The replacement PSA configuration list</param>
 	public async Task<CometAPIResponseMessage> AdminMetaPsaConfigListSetAsync(PSAConfig[] PSAConfigList) {
 		var data = new Dictionary<string,string>();
 
@@ -3929,7 +3943,7 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// </summary>
-	/// \t<param name="PSAConfigList">The replacement PSA configuration list</param>
+	/// <param name="PSAConfigList">The replacement PSA configuration list</param>
 	public CometAPIResponseMessage AdminMetaPsaConfigListSet(PSAConfig[] PSAConfigList) {
 		var resultTask = AdminMetaPsaConfigListSetAsync(PSAConfigList);
 		resultTask.Wait();
@@ -4012,7 +4026,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
 	/// </summary>
-	/// \t<param name="Log">A log day, selected from the options returned by the Get Log Files API</param>
+	/// <param name="Log">A log day, selected from the options returned by the Get Log Files API</param>
 	public async Task<byte[]> AdminMetaReadLogsAsync(Nullable<int> Log) {
 		var data = new Dictionary<string,string>();
 
@@ -4038,7 +4052,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
 	/// </summary>
-	/// \t<param name="Log">A log day, selected from the options returned by the Get Log Files API</param>
+	/// <param name="Log">A log day, selected from the options returned by the Get Log Files API</param>
 	public byte[] AdminMetaReadLogs(Nullable<int> Log) {
 		var resultTask = AdminMetaReadLogsAsync(Log);
 		resultTask.Wait();
@@ -4078,7 +4092,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
 	/// </summary>
-	/// \t<param name="RemoteStorageOptions">Updated configuration content</param>
+	/// <param name="RemoteStorageOptions">Updated configuration content</param>
 	public async Task<CometAPIResponseMessage> AdminMetaRemoteStorageVaultSetAsync(RemoteStorageOption[] RemoteStorageOptions) {
 		var data = new Dictionary<string,string>();
 
@@ -4098,7 +4112,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
 	/// </summary>
-	/// \t<param name="RemoteStorageOptions">Updated configuration content</param>
+	/// <param name="RemoteStorageOptions">Updated configuration content</param>
 	public CometAPIResponseMessage AdminMetaRemoteStorageVaultSet(RemoteStorageOption[] RemoteStorageOptions) {
 		var resultTask = AdminMetaRemoteStorageVaultSetAsync(RemoteStorageOptions);
 		resultTask.Wait();
@@ -4111,7 +4125,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
 	/// </summary>
-	/// \t<param name="TemplateOptions">Storage Template Vault Options</param>
+	/// <param name="TemplateOptions">Storage Template Vault Options</param>
 	public async Task<CometAPIResponseMessage> AdminMetaRemoteStorageVaultTestAsync(RemoteStorageOption TemplateOptions) {
 		var data = new Dictionary<string,string>();
 
@@ -4131,7 +4145,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
 	/// </summary>
-	/// \t<param name="TemplateOptions">Storage Template Vault Options</param>
+	/// <param name="TemplateOptions">Storage Template Vault Options</param>
 	public CometAPIResponseMessage AdminMetaRemoteStorageVaultTest(RemoteStorageOption TemplateOptions) {
 		var resultTask = AdminMetaRemoteStorageVaultTestAsync(TemplateOptions);
 		resultTask.Wait();
@@ -4144,7 +4158,7 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// </summary>
-	/// \t<param name="Hash">The resource identifier</param>
+	/// <param name="Hash">The resource identifier</param>
 	public async Task<byte[]> AdminMetaResourceGetAsync(string Hash) {
 		var data = new Dictionary<string,string>();
 
@@ -4166,7 +4180,7 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// </summary>
-	/// \t<param name="Hash">The resource identifier</param>
+	/// <param name="Hash">The resource identifier</param>
 	public byte[] AdminMetaResourceGet(string Hash) {
 		var resultTask = AdminMetaResourceGetAsync(Hash);
 		resultTask.Wait();
@@ -4183,7 +4197,7 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// </summary>
-	/// \t<param name="upload">The uploaded file contents, as a multipart/form-data part.</param>
+	/// <param name="upload">The uploaded file contents, as a multipart/form-data part.</param>
 	public async Task<AdminResourceResponse> AdminMetaResourceNewAsync(string upload) {
 		throw new NotImplementedException("Multipart uploads are currently not supported in the C# SDK");
 	}
@@ -4198,7 +4212,7 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// </summary>
-	/// \t<param name="upload">The uploaded file contents, as a multipart/form-data part.</param>
+	/// <param name="upload">The uploaded file contents, as a multipart/form-data part.</param>
 	public AdminResourceResponse AdminMetaResourceNew(string upload) {
 		var resultTask = AdminMetaResourceNewAsync(upload);
 		resultTask.Wait();
@@ -4249,8 +4263,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
 	/// </summary>
-	/// \t<param name="EmailOptions">Updated configuration content</param>
-	/// \t<param name="Recipient">Target email address to send test email</param>
+	/// <param name="EmailOptions">Updated configuration content</param>
+	/// <param name="Recipient">Target email address to send test email</param>
 	public async Task<CometAPIResponseMessage> AdminMetaSendTestEmailAsync(EmailOptions EmailOptions, string Recipient) {
 		var data = new Dictionary<string,string>();
 
@@ -4272,8 +4286,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
 	/// </summary>
-	/// \t<param name="EmailOptions">Updated configuration content</param>
-	/// \t<param name="Recipient">Target email address to send test email</param>
+	/// <param name="EmailOptions">Updated configuration content</param>
+	/// <param name="Recipient">Target email address to send test email</param>
 	public CometAPIResponseMessage AdminMetaSendTestEmail(EmailOptions EmailOptions, string Recipient) {
 		var resultTask = AdminMetaSendTestEmailAsync(EmailOptions, Recipient);
 		resultTask.Wait();
@@ -4287,7 +4301,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
 	/// </summary>
-	/// \t<param name="EmailReportingOption">Test email reporting option for sending</param>
+	/// <param name="EmailReportingOption">Test email reporting option for sending</param>
 	public async Task<CometAPIResponseMessage> AdminMetaSendTestReportAsync(EmailReportingOption EmailReportingOption) {
 		var data = new Dictionary<string,string>();
 
@@ -4308,7 +4322,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
 	/// </summary>
-	/// \t<param name="EmailReportingOption">Test email reporting option for sending</param>
+	/// <param name="EmailReportingOption">Test email reporting option for sending</param>
 	public CometAPIResponseMessage AdminMetaSendTestReport(EmailReportingOption EmailReportingOption) {
 		var resultTask = AdminMetaSendTestReportAsync(EmailReportingOption);
 		resultTask.Wait();
@@ -4386,7 +4400,7 @@ public class CometAPI : IDisposable {
 	/// Access to this API may be prevented on a per-administrator basis.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
 	/// </summary>
-	/// \t<param name="Config">Updated configuration content</param>
+	/// <param name="Config">Updated configuration content</param>
 	public async Task<CometAPIResponseMessage> AdminMetaServerConfigSetAsync(ServerConfigOptions Config) {
 		var data = new Dictionary<string,string>();
 
@@ -4411,7 +4425,7 @@ public class CometAPI : IDisposable {
 	/// Access to this API may be prevented on a per-administrator basis.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
 	/// </summary>
-	/// \t<param name="Config">Updated configuration content</param>
+	/// <param name="Config">Updated configuration content</param>
 	public CometAPIResponseMessage AdminMetaServerConfigSet(ServerConfigOptions Config) {
 		var resultTask = AdminMetaServerConfigSetAsync(Config);
 		resultTask.Wait();
@@ -4486,7 +4500,7 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// </summary>
-	/// \t<param name="Simple">Remove redundant statistics</param>
+	/// <param name="Simple">Remove redundant statistics</param>
 	public async Task<Dictionary<long,StatResult>> AdminMetaStatsAsync(Nullable<bool> Simple) {
 		var data = new Dictionary<string,string>();
 
@@ -4506,7 +4520,7 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// </summary>
-	/// \t<param name="Simple">Remove redundant statistics</param>
+	/// <param name="Simple">Remove redundant statistics</param>
 	public Dictionary<long,StatResult> AdminMetaStats(Nullable<bool> Simple) {
 		var resultTask = AdminMetaStatsAsync(Simple);
 		resultTask.Wait();
@@ -4574,7 +4588,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
 	/// </summary>
-	/// \t<param name="WebhookOptions">The replacement webhook target options.</param>
+	/// <param name="WebhookOptions">The replacement webhook target options.</param>
 	public async Task<CometAPIResponseMessage> AdminMetaWebhookOptionsSetAsync(Dictionary<string,WebhookOption> WebhookOptions) {
 		var data = new Dictionary<string,string>();
 
@@ -4595,7 +4609,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
 	/// </summary>
-	/// \t<param name="WebhookOptions">The replacement webhook target options.</param>
+	/// <param name="WebhookOptions">The replacement webhook target options.</param>
 	public CometAPIResponseMessage AdminMetaWebhookOptionsSet(Dictionary<string,WebhookOption> WebhookOptions) {
 		var resultTask = AdminMetaWebhookOptionsSetAsync(WebhookOptions);
 		resultTask.Wait();
@@ -4635,7 +4649,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="NewsItem">Selected news item GUID</param>
+	/// <param name="NewsItem">Selected news item GUID</param>
 	public async Task<CometAPIResponseMessage> AdminNewsRemoveAsync(string NewsItem) {
 		var data = new Dictionary<string,string>();
 
@@ -4655,7 +4669,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="NewsItem">Selected news item GUID</param>
+	/// <param name="NewsItem">Selected news item GUID</param>
 	public CometAPIResponseMessage AdminNewsRemove(string NewsItem) {
 		var resultTask = AdminNewsRemoveAsync(NewsItem);
 		resultTask.Wait();
@@ -4668,7 +4682,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="NewsContent">Content of news item</param>
+	/// <param name="NewsContent">Content of news item</param>
 	public async Task<CometAPIResponseMessage> AdminNewsSubmitAsync(string NewsContent) {
 		var data = new Dictionary<string,string>();
 
@@ -4688,7 +4702,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="NewsContent">Content of news item</param>
+	/// <param name="NewsContent">Content of news item</param>
 	public CometAPIResponseMessage AdminNewsSubmit(string NewsContent) {
 		var resultTask = AdminNewsSubmitAsync(NewsContent);
 		resultTask.Wait();
@@ -4704,8 +4718,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
 	/// </summary>
-	/// \t<param name="OrganizationID">(Optional) (No description available)</param>
-	/// \t<param name="UninstallConfig">(Optional) Uninstall software configuration</param>
+	/// <param name="OrganizationID">(Optional) (No description available)</param>
+	/// <param name="UninstallConfig">(Optional) Uninstall software configuration</param>
 	public async Task<CometAPIResponseMessage> AdminOrganizationDeleteAsync(string OrganizationID = null, UninstallConfig UninstallConfig = null) {
 		var data = new Dictionary<string,string>();
 
@@ -4733,8 +4747,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
 	/// </summary>
-	/// \t<param name="OrganizationID">(Optional) (No description available)</param>
-	/// \t<param name="UninstallConfig">(Optional) Uninstall software configuration</param>
+	/// <param name="OrganizationID">(Optional) (No description available)</param>
+	/// <param name="UninstallConfig">(Optional) Uninstall software configuration</param>
 	public CometAPIResponseMessage AdminOrganizationDelete(string OrganizationID = null, UninstallConfig UninstallConfig = null) {
 		var resultTask = AdminOrganizationDeleteAsync(OrganizationID, UninstallConfig);
 		resultTask.Wait();
@@ -4747,7 +4761,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
 	/// </summary>
-	/// \t<param name="Options">The export config options</param>
+	/// <param name="Options">The export config options</param>
 	public async Task<CometAPIResponseMessage> AdminOrganizationExportAsync(SelfBackupExportOptions Options) {
 		var data = new Dictionary<string,string>();
 
@@ -4767,7 +4781,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
 	/// </summary>
-	/// \t<param name="Options">The export config options</param>
+	/// <param name="Options">The export config options</param>
 	public CometAPIResponseMessage AdminOrganizationExport(SelfBackupExportOptions Options) {
 		var resultTask = AdminOrganizationExportAsync(Options);
 		resultTask.Wait();
@@ -4809,8 +4823,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
 	/// </summary>
-	/// \t<param name="OrganizationID">(Optional) (No description available)</param>
-	/// \t<param name="Organization">(Optional) (No description available)</param>
+	/// <param name="OrganizationID">(Optional) (No description available)</param>
+	/// <param name="Organization">(Optional) (No description available)</param>
 	public async Task<OrganizationResponse> AdminOrganizationSetAsync(string OrganizationID = null, Organization Organization = null) {
 		var data = new Dictionary<string,string>();
 
@@ -4837,8 +4851,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
 	/// </summary>
-	/// \t<param name="OrganizationID">(Optional) (No description available)</param>
-	/// \t<param name="Organization">(Optional) (No description available)</param>
+	/// <param name="OrganizationID">(Optional) (No description available)</param>
+	/// <param name="Organization">(Optional) (No description available)</param>
 	public OrganizationResponse AdminOrganizationSet(string OrganizationID = null, Organization Organization = null) {
 		var resultTask = AdminOrganizationSetAsync(OrganizationID, Organization);
 		resultTask.Wait();
@@ -4851,7 +4865,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="PolicyID">The policy ID to update or create</param>
+	/// <param name="PolicyID">The policy ID to update or create</param>
 	public async Task<CometAPIResponseMessage> AdminPoliciesDeleteAsync(string PolicyID) {
 		var data = new Dictionary<string,string>();
 
@@ -4871,7 +4885,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="PolicyID">The policy ID to update or create</param>
+	/// <param name="PolicyID">The policy ID to update or create</param>
 	public CometAPIResponseMessage AdminPoliciesDelete(string PolicyID) {
 		var resultTask = AdminPoliciesDeleteAsync(PolicyID);
 		resultTask.Wait();
@@ -4885,7 +4899,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="PolicyID">The policy ID to retrieve</param>
+	/// <param name="PolicyID">The policy ID to retrieve</param>
 	public async Task<GetGroupPolicyResponse> AdminPoliciesGetAsync(string PolicyID) {
 		var data = new Dictionary<string,string>();
 
@@ -4906,7 +4920,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="PolicyID">The policy ID to retrieve</param>
+	/// <param name="PolicyID">The policy ID to retrieve</param>
 	public GetGroupPolicyResponse AdminPoliciesGet(string PolicyID) {
 		var resultTask = AdminPoliciesGetAsync(PolicyID);
 		resultTask.Wait();
@@ -4921,7 +4935,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetOrganization">(Optional) If present, list the policies belonging to another organization. Only
+	/// <param name="TargetOrganization">(Optional) If present, list the policies belonging to another organization. Only
 	/// allowed for administrator accounts in the top-level organization. (>= 22.3.7)</param>
 	public async Task<Dictionary<string,string>> AdminPoliciesListAsync(string TargetOrganization = null) {
 		var data = new Dictionary<string,string>();
@@ -4946,7 +4960,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetOrganization">(Optional) If present, list the policies belonging to another organization. Only
+	/// <param name="TargetOrganization">(Optional) If present, list the policies belonging to another organization. Only
 	/// allowed for administrator accounts in the top-level organization. (>= 22.3.7)</param>
 	public Dictionary<string,string> AdminPoliciesList(string TargetOrganization = null) {
 		var resultTask = AdminPoliciesListAsync(TargetOrganization);
@@ -4962,7 +4976,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetOrganization">(Optional) If present, list the policies belonging to another organization. Only
+	/// <param name="TargetOrganization">(Optional) If present, list the policies belonging to another organization. Only
 	/// allowed for administrator accounts in the top-level organization. (>= 22.3.7)</param>
 	public async Task<Dictionary<string,GroupPolicy>> AdminPoliciesListFullAsync(string TargetOrganization = null) {
 		var data = new Dictionary<string,string>();
@@ -4987,7 +5001,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetOrganization">(Optional) If present, list the policies belonging to another organization. Only
+	/// <param name="TargetOrganization">(Optional) If present, list the policies belonging to another organization. Only
 	/// allowed for administrator accounts in the top-level organization. (>= 22.3.7)</param>
 	public Dictionary<string,GroupPolicy> AdminPoliciesListFull(string TargetOrganization = null) {
 		var resultTask = AdminPoliciesListFullAsync(TargetOrganization);
@@ -5001,7 +5015,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="Policy">The policy data</param>
+	/// <param name="Policy">The policy data</param>
 	public async Task<CreateGroupPolicyResponse> AdminPoliciesNewAsync(GroupPolicy Policy) {
 		var data = new Dictionary<string,string>();
 
@@ -5021,7 +5035,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="Policy">The policy data</param>
+	/// <param name="Policy">The policy data</param>
 	public CreateGroupPolicyResponse AdminPoliciesNew(GroupPolicy Policy) {
 		var resultTask = AdminPoliciesNewAsync(Policy);
 		resultTask.Wait();
@@ -5036,9 +5050,9 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="PolicyID">The policy ID to update or create</param>
-	/// \t<param name="Policy">The policy data</param>
-	/// \t<param name="CheckPolicyHash">(Optional) An atomic verification hash as supplied by the AdminPoliciesGet
+	/// <param name="PolicyID">The policy ID to update or create</param>
+	/// <param name="Policy">The policy data</param>
+	/// <param name="CheckPolicyHash">(Optional) An atomic verification hash as supplied by the AdminPoliciesGet
 	/// API</param>
 	public async Task<CometAPIResponseMessage> AdminPoliciesSetAsync(string PolicyID, GroupPolicy Policy, string CheckPolicyHash = null) {
 		var data = new Dictionary<string,string>();
@@ -5065,9 +5079,9 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="PolicyID">The policy ID to update or create</param>
-	/// \t<param name="Policy">The policy data</param>
-	/// \t<param name="CheckPolicyHash">(Optional) An atomic verification hash as supplied by the AdminPoliciesGet
+	/// <param name="PolicyID">The policy ID to update or create</param>
+	/// <param name="Policy">The policy data</param>
+	/// <param name="CheckPolicyHash">(Optional) An atomic verification hash as supplied by the AdminPoliciesGet
 	/// API</param>
 	public CometAPIResponseMessage AdminPoliciesSet(string PolicyID, GroupPolicy Policy, string CheckPolicyHash = null) {
 		var resultTask = AdminPoliciesSetAsync(PolicyID, Policy, CheckPolicyHash);
@@ -5081,9 +5095,9 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetUser">Selected account username</param>
-	/// \t<param name="EmailReportConfig">Email report configuration to preview</param>
-	/// \t<param name="EmailAddress">(Optional) Email address that may be included in the report body (>= 20.3.3)</param>
+	/// <param name="TargetUser">Selected account username</param>
+	/// <param name="EmailReportConfig">Email report configuration to preview</param>
+	/// <param name="EmailAddress">(Optional) Email address that may be included in the report body (>= 20.3.3)</param>
 	public async Task<EmailReportGeneratedPreview> AdminPreviewUserEmailReportAsync(string TargetUser, EmailReportConfig EmailReportConfig, string EmailAddress = null) {
 		var data = new Dictionary<string,string>();
 
@@ -5107,9 +5121,9 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetUser">Selected account username</param>
-	/// \t<param name="EmailReportConfig">Email report configuration to preview</param>
-	/// \t<param name="EmailAddress">(Optional) Email address that may be included in the report body (>= 20.3.3)</param>
+	/// <param name="TargetUser">Selected account username</param>
+	/// <param name="EmailReportConfig">Email report configuration to preview</param>
+	/// <param name="EmailAddress">(Optional) Email address that may be included in the report body (>= 20.3.3)</param>
 	public EmailReportGeneratedPreview AdminPreviewUserEmailReport(string TargetUser, EmailReportConfig EmailReportConfig, string EmailAddress = null) {
 		var resultTask = AdminPreviewUserEmailReportAsync(TargetUser, EmailReportConfig, EmailAddress);
 		resultTask.Wait();
@@ -5153,9 +5167,9 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetUser">The user to receive the new Storage Vault</param>
-	/// \t<param name="StorageProvider">ID for the storage template destination</param>
-	/// \t<param name="SelfAddress">(Optional) The external URL for this server. Used to resolve conflicts</param>
+	/// <param name="TargetUser">The user to receive the new Storage Vault</param>
+	/// <param name="StorageProvider">ID for the storage template destination</param>
+	/// <param name="SelfAddress">(Optional) The external URL for this server. Used to resolve conflicts</param>
 	public async Task<RequestStorageVaultResponseMessage> AdminRequestStorageVaultAsync(string TargetUser, string StorageProvider, string SelfAddress = null) {
 		var data = new Dictionary<string,string>();
 
@@ -5181,9 +5195,9 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetUser">The user to receive the new Storage Vault</param>
-	/// \t<param name="StorageProvider">ID for the storage template destination</param>
-	/// \t<param name="SelfAddress">(Optional) The external URL for this server. Used to resolve conflicts</param>
+	/// <param name="TargetUser">The user to receive the new Storage Vault</param>
+	/// <param name="StorageProvider">ID for the storage template destination</param>
+	/// <param name="SelfAddress">(Optional) The external URL for this server. Used to resolve conflicts</param>
 	public RequestStorageVaultResponseMessage AdminRequestStorageVault(string TargetUser, string StorageProvider, string SelfAddress = null) {
 		var resultTask = AdminRequestStorageVaultAsync(TargetUser, StorageProvider, SelfAddress);
 		resultTask.Wait();
@@ -5196,7 +5210,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetOrganization">(Optional) If present, list the storage template options belonging to another
+	/// <param name="TargetOrganization">(Optional) If present, list the storage template options belonging to another
 	/// organization. Only allowed for administrator accounts in the top-level organization. (>= 22.3.7)</param>
 	public async Task<Dictionary<string,string>> AdminRequestStorageVaultProvidersAsync(string TargetOrganization = null) {
 		var data = new Dictionary<string,string>();
@@ -5219,7 +5233,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetOrganization">(Optional) If present, list the storage template options belonging to another
+	/// <param name="TargetOrganization">(Optional) If present, list the storage template options belonging to another
 	/// organization. Only allowed for administrator accounts in the top-level organization. (>= 22.3.7)</param>
 	public Dictionary<string,string> AdminRequestStorageVaultProviders(string TargetOrganization = null) {
 		var resultTask = AdminRequestStorageVaultProvidersAsync(TargetOrganization);
@@ -5235,9 +5249,9 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetUser">Selected account username</param>
-	/// \t<param name="NewPassword">New account password</param>
-	/// \t<param name="OldPassword">(Optional) Old account password. Required if no recovery code is present for the user
+	/// <param name="TargetUser">Selected account username</param>
+	/// <param name="NewPassword">New account password</param>
+	/// <param name="OldPassword">(Optional) Old account password. Required if no recovery code is present for the user
 	/// account.</param>
 	public async Task<CometAPIResponseMessage> AdminResetUserPasswordAsync(string TargetUser, string NewPassword, string OldPassword = null) {
 		var data = new Dictionary<string,string>();
@@ -5264,9 +5278,9 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetUser">Selected account username</param>
-	/// \t<param name="NewPassword">New account password</param>
-	/// \t<param name="OldPassword">(Optional) Old account password. Required if no recovery code is present for the user
+	/// <param name="TargetUser">Selected account username</param>
+	/// <param name="NewPassword">New account password</param>
+	/// <param name="OldPassword">(Optional) Old account password. Required if no recovery code is present for the user
 	/// account.</param>
 	public CometAPIResponseMessage AdminResetUserPassword(string TargetUser, string NewPassword, string OldPassword = null) {
 		var resultTask = AdminResetUserPasswordAsync(TargetUser, NewPassword, OldPassword);
@@ -5282,8 +5296,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetUser">Selected account username</param>
-	/// \t<param name="TargetDevice">Selected Device ID</param>
+	/// <param name="TargetUser">Selected account username</param>
+	/// <param name="TargetDevice">Selected Device ID</param>
 	public async Task<CometAPIResponseMessage> AdminRevokeDeviceAsync(string TargetUser, string TargetDevice) {
 		var data = new Dictionary<string,string>();
 
@@ -5306,8 +5320,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetUser">Selected account username</param>
-	/// \t<param name="TargetDevice">Selected Device ID</param>
+	/// <param name="TargetUser">Selected account username</param>
+	/// <param name="TargetDevice">Selected Device ID</param>
 	public CometAPIResponseMessage AdminRevokeDevice(string TargetUser, string TargetDevice) {
 		var resultTask = AdminRevokeDeviceAsync(TargetUser, TargetDevice);
 		resultTask.Wait();
@@ -5347,8 +5361,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetUser">Selected account username</param>
-	/// \t<param name="ProfileData">Modified user profile</param>
+	/// <param name="TargetUser">Selected account username</param>
+	/// <param name="ProfileData">Modified user profile</param>
 	public async Task<CometAPIResponseMessage> AdminSetUserProfileAsync(string TargetUser, UserProfileConfig ProfileData) {
 		var data = new Dictionary<string,string>();
 
@@ -5369,8 +5383,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetUser">Selected account username</param>
-	/// \t<param name="ProfileData">Modified user profile</param>
+	/// <param name="TargetUser">Selected account username</param>
+	/// <param name="ProfileData">Modified user profile</param>
 	public CometAPIResponseMessage AdminSetUserProfile(string TargetUser, UserProfileConfig ProfileData) {
 		var resultTask = AdminSetUserProfileAsync(TargetUser, ProfileData);
 		resultTask.Wait();
@@ -5387,9 +5401,9 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetUser">Selected account username</param>
-	/// \t<param name="ProfileData">Modified user profile</param>
-	/// \t<param name="RequireHash">Previous hash parameter</param>
+	/// <param name="TargetUser">Selected account username</param>
+	/// <param name="ProfileData">Modified user profile</param>
+	/// <param name="RequireHash">Previous hash parameter</param>
 	public async Task<CometAPIResponseMessage> AdminSetUserProfileHashAsync(string TargetUser, UserProfileConfig ProfileData, string RequireHash) {
 		var data = new Dictionary<string,string>();
 
@@ -5415,9 +5429,9 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetUser">Selected account username</param>
-	/// \t<param name="ProfileData">Modified user profile</param>
-	/// \t<param name="RequireHash">Previous hash parameter</param>
+	/// <param name="TargetUser">Selected account username</param>
+	/// <param name="ProfileData">Modified user profile</param>
+	/// <param name="RequireHash">Previous hash parameter</param>
 	public CometAPIResponseMessage AdminSetUserProfileHash(string TargetUser, UserProfileConfig ProfileData, string RequireHash) {
 		var resultTask = AdminSetUserProfileHashAsync(TargetUser, ProfileData, RequireHash);
 		resultTask.Wait();
@@ -5432,8 +5446,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Storage Role to be enabled.
 	/// </summary>
-	/// \t<param name="BucketID">Bucket ID</param>
-	/// \t<param name="AfterTimestamp">(Optional) Allow a stale size measurement if it is at least as new as the supplied
+	/// <param name="BucketID">Bucket ID</param>
+	/// <param name="AfterTimestamp">(Optional) Allow a stale size measurement if it is at least as new as the supplied
 	/// Unix timestamp. Timestamps in the future may produce a result clamped down to the Comet Server's current time. If
 	/// not present, the size measurement may be arbitrarily stale.</param>
 	public async Task<BucketProperties> AdminStorageBucketPropertiesAsync(string BucketID, Nullable<int> AfterTimestamp = null) {
@@ -5460,8 +5474,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Storage Role to be enabled.
 	/// </summary>
-	/// \t<param name="BucketID">Bucket ID</param>
-	/// \t<param name="AfterTimestamp">(Optional) Allow a stale size measurement if it is at least as new as the supplied
+	/// <param name="BucketID">Bucket ID</param>
+	/// <param name="AfterTimestamp">(Optional) Allow a stale size measurement if it is at least as new as the supplied
 	/// Unix timestamp. Timestamps in the future may produce a result clamped down to the Comet Server's current time. If
 	/// not present, the size measurement may be arbitrarily stale.</param>
 	public BucketProperties AdminStorageBucketProperties(string BucketID, Nullable<int> AfterTimestamp = null) {
@@ -5477,7 +5491,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Storage Role to be enabled.
 	/// </summary>
-	/// \t<param name="BucketID">Selected bucket name</param>
+	/// <param name="BucketID">Selected bucket name</param>
 	public async Task<CometAPIResponseMessage> AdminStorageDeleteBucketAsync(string BucketID) {
 		var data = new Dictionary<string,string>();
 
@@ -5498,7 +5512,7 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Storage Role to be enabled.
 	/// </summary>
-	/// \t<param name="BucketID">Selected bucket name</param>
+	/// <param name="BucketID">Selected bucket name</param>
 	public CometAPIResponseMessage AdminStorageDeleteBucket(string BucketID) {
 		var resultTask = AdminStorageDeleteBucketAsync(BucketID);
 		resultTask.Wait();
@@ -5513,7 +5527,7 @@ public class CometAPI : IDisposable {
 	/// This API requires the Storage Role to be enabled.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
 	/// </summary>
-	/// \t<param name="BucketID">(Optional) (This parameter is not used)</param>
+	/// <param name="BucketID">(Optional) (This parameter is not used)</param>
 	public async Task<StorageFreeSpaceInfo> AdminStorageFreeSpaceAsync(string BucketID = null) {
 		var data = new Dictionary<string,string>();
 
@@ -5537,7 +5551,7 @@ public class CometAPI : IDisposable {
 	/// This API requires the Storage Role to be enabled.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
 	/// </summary>
-	/// \t<param name="BucketID">(Optional) (This parameter is not used)</param>
+	/// <param name="BucketID">(Optional) (This parameter is not used)</param>
 	public StorageFreeSpaceInfo AdminStorageFreeSpace(string BucketID = null) {
 		var resultTask = AdminStorageFreeSpaceAsync(BucketID);
 		resultTask.Wait();
@@ -5579,7 +5593,7 @@ public class CometAPI : IDisposable {
 	/// This API requires the Storage Role to be enabled.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
 	/// </summary>
-	/// \t<param name="ExtraData">The destination location settings</param>
+	/// <param name="ExtraData">The destination location settings</param>
 	public async Task<CometAPIResponseMessage> AdminStoragePingDestinationAsync(DestinationLocation ExtraData) {
 		var data = new Dictionary<string,string>();
 
@@ -5601,7 +5615,7 @@ public class CometAPI : IDisposable {
 	/// This API requires the Storage Role to be enabled.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
 	/// </summary>
-	/// \t<param name="ExtraData">The destination location settings</param>
+	/// <param name="ExtraData">The destination location settings</param>
 	public CometAPIResponseMessage AdminStoragePingDestination(DestinationLocation ExtraData) {
 		var resultTask = AdminStoragePingDestinationAsync(ExtraData);
 		resultTask.Wait();
@@ -5617,10 +5631,10 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Storage Role to be enabled.
 	/// </summary>
-	/// \t<param name="SetBucketValue">(Optional) Bucket ID</param>
-	/// \t<param name="SetKeyHashFormat">(Optional) Bucket key hashing format</param>
-	/// \t<param name="SetKeyHashValue">(Optional) Bucket key hash</param>
-	/// \t<param name="SetOrganizationID">(Optional) Target organization ID (>= 20.9.0)</param>
+	/// <param name="SetBucketValue">(Optional) Bucket ID</param>
+	/// <param name="SetKeyHashFormat">(Optional) Bucket key hashing format</param>
+	/// <param name="SetKeyHashValue">(Optional) Bucket key hash</param>
+	/// <param name="SetOrganizationID">(Optional) Target organization ID (>= 20.9.0)</param>
 	public async Task<AddBucketResponseMessage> AdminStorageRegisterBucketAsync(string SetBucketValue = null, string SetKeyHashFormat = null, string SetKeyHashValue = null, string SetOrganizationID = null) {
 		var data = new Dictionary<string,string>();
 
@@ -5654,10 +5668,10 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Storage Role to be enabled.
 	/// </summary>
-	/// \t<param name="SetBucketValue">(Optional) Bucket ID</param>
-	/// \t<param name="SetKeyHashFormat">(Optional) Bucket key hashing format</param>
-	/// \t<param name="SetKeyHashValue">(Optional) Bucket key hash</param>
-	/// \t<param name="SetOrganizationID">(Optional) Target organization ID (>= 20.9.0)</param>
+	/// <param name="SetBucketValue">(Optional) Bucket ID</param>
+	/// <param name="SetKeyHashFormat">(Optional) Bucket key hashing format</param>
+	/// <param name="SetKeyHashValue">(Optional) Bucket key hash</param>
+	/// <param name="SetOrganizationID">(Optional) Target organization ID (>= 20.9.0)</param>
 	public AddBucketResponseMessage AdminStorageRegisterBucket(string SetBucketValue = null, string SetKeyHashFormat = null, string SetKeyHashValue = null, string SetOrganizationID = null) {
 		var resultTask = AdminStorageRegisterBucketAsync(SetBucketValue, SetKeyHashFormat, SetKeyHashValue, SetOrganizationID);
 		resultTask.Wait();
@@ -5672,7 +5686,7 @@ public class CometAPI : IDisposable {
 	/// This API requires the Software Build Role to be enabled.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="Options">Configure targets for the software update campaign</param>
+	/// <param name="Options">Configure targets for the software update campaign</param>
 	public async Task<CometAPIResponseMessage> AdminUpdateCampaignStartAsync(UpdateCampaignOptions Options) {
 		var data = new Dictionary<string,string>();
 
@@ -5694,7 +5708,7 @@ public class CometAPI : IDisposable {
 	/// This API requires the Software Build Role to be enabled.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="Options">Configure targets for the software update campaign</param>
+	/// <param name="Options">Configure targets for the software update campaign</param>
 	public CometAPIResponseMessage AdminUpdateCampaignStart(UpdateCampaignOptions Options) {
 		var resultTask = AdminUpdateCampaignStartAsync(Options);
 		resultTask.Wait();
@@ -5788,10 +5802,10 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Snapshot">where the email belongs to</param>
-	/// \t<param name="Destination">The Storage Vault ID</param>
-	/// \t<param name="Path">of the email to view</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Snapshot">where the email belongs to</param>
+	/// <param name="Destination">The Storage Vault ID</param>
+	/// <param name="Path">of the email to view</param>
 	public async Task<EmailReportGeneratedPreview> UserDispatcherEmailPreviewAsync(string TargetID, string Snapshot, string Destination, string Path) {
 		var data = new Dictionary<string,string>();
 
@@ -5816,10 +5830,10 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Snapshot">where the email belongs to</param>
-	/// \t<param name="Destination">The Storage Vault ID</param>
-	/// \t<param name="Path">of the email to view</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Snapshot">where the email belongs to</param>
+	/// <param name="Destination">The Storage Vault ID</param>
+	/// <param name="Path">of the email to view</param>
 	public EmailReportGeneratedPreview UserDispatcherEmailPreview(string TargetID, string Snapshot, string Destination, string Path) {
 		var resultTask = UserDispatcherEmailPreviewAsync(TargetID, Snapshot, Destination, Path);
 		resultTask.Wait();
@@ -5835,7 +5849,7 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="ProfileHash">Previous account profile hash</param>
+	/// <param name="ProfileHash">Previous account profile hash</param>
 	public async Task<TotpRegeneratedResponse> UserWebAccountRegenerateTotpAsync(string ProfileHash) {
 		var data = new Dictionary<string,string>();
 
@@ -5858,7 +5872,7 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="ProfileHash">Previous account profile hash</param>
+	/// <param name="ProfileHash">Previous account profile hash</param>
 	public TotpRegeneratedResponse UserWebAccountRegenerateTotp(string ProfileHash) {
 		var resultTask = UserWebAccountRegenerateTotpAsync(ProfileHash);
 		resultTask.Wait();
@@ -5873,9 +5887,9 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="ProfileHash">Previous account profile hash</param>
-	/// \t<param name="OldPassword">Current account password</param>
-	/// \t<param name="NewPassword">New account password</param>
+	/// <param name="ProfileHash">Previous account profile hash</param>
+	/// <param name="OldPassword">Current account password</param>
+	/// <param name="NewPassword">New account password</param>
 	public async Task<CometAPIResponseMessage> UserWebAccountResetPasswordAsync(string ProfileHash, string OldPassword, string NewPassword) {
 		var data = new Dictionary<string,string>();
 
@@ -5899,9 +5913,9 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="ProfileHash">Previous account profile hash</param>
-	/// \t<param name="OldPassword">Current account password</param>
-	/// \t<param name="NewPassword">New account password</param>
+	/// <param name="ProfileHash">Previous account profile hash</param>
+	/// <param name="OldPassword">Current account password</param>
+	/// <param name="NewPassword">New account password</param>
 	public CometAPIResponseMessage UserWebAccountResetPassword(string ProfileHash, string OldPassword, string NewPassword) {
 		var resultTask = UserWebAccountResetPasswordAsync(ProfileHash, OldPassword, NewPassword);
 		resultTask.Wait();
@@ -5915,8 +5929,8 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="ProfileHash">Previous account profile hash</param>
-	/// \t<param name="TOTPCode">Six-digit code after scanning barcode image</param>
+	/// <param name="ProfileHash">Previous account profile hash</param>
+	/// <param name="TOTPCode">Six-digit code after scanning barcode image</param>
 	public async Task<CometAPIResponseMessage> UserWebAccountValidateTotpAsync(string ProfileHash, string TOTPCode) {
 		var data = new Dictionary<string,string>();
 
@@ -5938,8 +5952,8 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="ProfileHash">Previous account profile hash</param>
-	/// \t<param name="TOTPCode">Six-digit code after scanning barcode image</param>
+	/// <param name="ProfileHash">Previous account profile hash</param>
+	/// <param name="TOTPCode">Six-digit code after scanning barcode image</param>
 	public CometAPIResponseMessage UserWebAccountValidateTotp(string ProfileHash, string TOTPCode) {
 		var resultTask = UserWebAccountValidateTotpAsync(ProfileHash, TOTPCode);
 		resultTask.Wait();
@@ -5953,9 +5967,9 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="DestinationID">The Storage Vault GUID</param>
-	/// \t<param name="SnapshotID">The backup job snapshot ID to delete</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="DestinationID">The Storage Vault GUID</param>
+	/// <param name="SnapshotID">The backup job snapshot ID to delete</param>
 	public async Task<CometAPIResponseMessage> UserWebDispatcherDeleteSnapshotAsync(string TargetID, string DestinationID, string SnapshotID) {
 		var data = new Dictionary<string,string>();
 
@@ -5978,9 +5992,9 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="DestinationID">The Storage Vault GUID</param>
-	/// \t<param name="SnapshotID">The backup job snapshot ID to delete</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="DestinationID">The Storage Vault GUID</param>
+	/// <param name="SnapshotID">The backup job snapshot ID to delete</param>
 	public CometAPIResponseMessage UserWebDispatcherDeleteSnapshot(string TargetID, string DestinationID, string SnapshotID) {
 		var resultTask = UserWebDispatcherDeleteSnapshotAsync(TargetID, DestinationID, SnapshotID);
 		resultTask.Wait();
@@ -5995,9 +6009,9 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="DestinationID">The Storage Vault GUID</param>
-	/// \t<param name="SnapshotIDs">The backup job snapshot IDs to delete</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="DestinationID">The Storage Vault GUID</param>
+	/// <param name="SnapshotIDs">The backup job snapshot IDs to delete</param>
 	public async Task<CometAPIResponseMessage> UserWebDispatcherDeleteSnapshotsAsync(string TargetID, string DestinationID, string[] SnapshotIDs) {
 		var data = new Dictionary<string,string>();
 
@@ -6021,9 +6035,9 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="DestinationID">The Storage Vault GUID</param>
-	/// \t<param name="SnapshotIDs">The backup job snapshot IDs to delete</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="DestinationID">The Storage Vault GUID</param>
+	/// <param name="SnapshotIDs">The backup job snapshot IDs to delete</param>
 	public CometAPIResponseMessage UserWebDispatcherDeleteSnapshots(string TargetID, string DestinationID, string[] SnapshotIDs) {
 		var resultTask = UserWebDispatcherDeleteSnapshotsAsync(TargetID, DestinationID, SnapshotIDs);
 		resultTask.Wait();
@@ -6067,8 +6081,8 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Credentials">The Office365 account credential</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The Office365 account credential</param>
 	public async Task<BrowseOffice365ListVirtualAccountsResponse> UserWebDispatcherOffice365ListVirtualAccountsAsync(string TargetID, Office365Credential Credentials) {
 		var data = new Dictionary<string,string>();
 
@@ -6091,8 +6105,8 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Credentials">The Office365 account credential</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The Office365 account credential</param>
 	public BrowseOffice365ListVirtualAccountsResponse UserWebDispatcherOffice365ListVirtualAccounts(string TargetID, Office365Credential Credentials) {
 		var resultTask = UserWebDispatcherOffice365ListVirtualAccountsAsync(TargetID, Credentials);
 		resultTask.Wait();
@@ -6106,8 +6120,8 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="ExtraData">The destination location settings</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="ExtraData">The destination location settings</param>
 	public async Task<CometAPIResponseMessage> UserWebDispatcherPingDestinationAsync(string TargetID, DestinationLocation ExtraData) {
 		var data = new Dictionary<string,string>();
 
@@ -6129,8 +6143,8 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="ExtraData">The destination location settings</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="ExtraData">The destination location settings</param>
 	public CometAPIResponseMessage UserWebDispatcherPingDestination(string TargetID, DestinationLocation ExtraData) {
 		var resultTask = UserWebDispatcherPingDestinationAsync(TargetID, ExtraData);
 		resultTask.Wait();
@@ -6148,8 +6162,8 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="EmailAddress">The email address of the Azure AD administrator</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="EmailAddress">The email address of the Azure AD administrator</param>
 	public async Task<RegisterOfficeApplicationBeginResponse> UserWebDispatcherRegisterOfficeApplicationBeginAsync(string TargetID, string EmailAddress) {
 		var data = new Dictionary<string,string>();
 
@@ -6175,8 +6189,8 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="EmailAddress">The email address of the Azure AD administrator</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="EmailAddress">The email address of the Azure AD administrator</param>
 	public RegisterOfficeApplicationBeginResponse UserWebDispatcherRegisterOfficeApplicationBegin(string TargetID, string EmailAddress) {
 		var resultTask = UserWebDispatcherRegisterOfficeApplicationBeginAsync(TargetID, EmailAddress);
 		resultTask.Wait();
@@ -6193,9 +6207,8 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Continuation">The ID returned from the AdminDispatcherRegisterOfficeApplicationBegin
-	/// endpoint</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Continuation">The ID returned from the AdminDispatcherRegisterOfficeApplicationBegin endpoint</param>
 	public async Task<RegisterOfficeApplicationCheckResponse> UserWebDispatcherRegisterOfficeApplicationCheckAsync(string TargetID, string Continuation) {
 		var data = new Dictionary<string,string>();
 
@@ -6220,9 +6233,8 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Continuation">The ID returned from the AdminDispatcherRegisterOfficeApplicationBegin
-	/// endpoint</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Continuation">The ID returned from the AdminDispatcherRegisterOfficeApplicationBegin endpoint</param>
 	public RegisterOfficeApplicationCheckResponse UserWebDispatcherRegisterOfficeApplicationCheck(string TargetID, string Continuation) {
 		var resultTask = UserWebDispatcherRegisterOfficeApplicationCheckAsync(TargetID, Continuation);
 		resultTask.Wait();
@@ -6237,7 +6249,7 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
+	/// <param name="TargetID">The live connection GUID</param>
 	public async Task<BrowseDiskDrivesResponse> UserWebDispatcherRequestBrowseDiskDrivesAsync(string TargetID) {
 		var data = new Dictionary<string,string>();
 
@@ -6259,7 +6271,7 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
+	/// <param name="TargetID">The live connection GUID</param>
 	public BrowseDiskDrivesResponse UserWebDispatcherRequestBrowseDiskDrives(string TargetID) {
 		var resultTask = UserWebDispatcherRequestBrowseDiskDrivesAsync(TargetID);
 		resultTask.Wait();
@@ -6274,7 +6286,7 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
+	/// <param name="TargetID">The live connection GUID</param>
 	public async Task<BrowseEDBResponse> UserWebDispatcherRequestBrowseExchangeEdbAsync(string TargetID) {
 		var data = new Dictionary<string,string>();
 
@@ -6295,7 +6307,7 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
+	/// <param name="TargetID">The live connection GUID</param>
 	public BrowseEDBResponse UserWebDispatcherRequestBrowseExchangeEdb(string TargetID) {
 		var resultTask = UserWebDispatcherRequestBrowseExchangeEdbAsync(TargetID);
 		resultTask.Wait();
@@ -6309,7 +6321,7 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
+	/// <param name="TargetID">The live connection GUID</param>
 	public async Task<BrowseHVResponse> UserWebDispatcherRequestBrowseHypervAsync(string TargetID) {
 		var data = new Dictionary<string,string>();
 
@@ -6330,7 +6342,7 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
+	/// <param name="TargetID">The live connection GUID</param>
 	public BrowseHVResponse UserWebDispatcherRequestBrowseHyperv(string TargetID) {
 		var resultTask = UserWebDispatcherRequestBrowseHypervAsync(TargetID);
 		resultTask.Wait();
@@ -6344,8 +6356,8 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Credentials">The MongoDB database authentication settings</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The MongoDB database authentication settings</param>
 	public async Task<BrowseSQLServerResponse> UserWebDispatcherRequestBrowseMongodbAsync(string TargetID, MongoDBConnection Credentials) {
 		var data = new Dictionary<string,string>();
 
@@ -6367,8 +6379,8 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Credentials">The MongoDB database authentication settings</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The MongoDB database authentication settings</param>
 	public BrowseSQLServerResponse UserWebDispatcherRequestBrowseMongodb(string TargetID, MongoDBConnection Credentials) {
 		var resultTask = UserWebDispatcherRequestBrowseMongodbAsync(TargetID, Credentials);
 		resultTask.Wait();
@@ -6382,8 +6394,8 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Credentials">The MSSQL database authentication settings</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The MSSQL database authentication settings</param>
 	public async Task<BrowseSQLServerResponse> UserWebDispatcherRequestBrowseMssqlAsync(string TargetID, MSSQLConnection Credentials) {
 		var data = new Dictionary<string,string>();
 
@@ -6405,8 +6417,8 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Credentials">The MSSQL database authentication settings</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The MSSQL database authentication settings</param>
 	public BrowseSQLServerResponse UserWebDispatcherRequestBrowseMssql(string TargetID, MSSQLConnection Credentials) {
 		var resultTask = UserWebDispatcherRequestBrowseMssqlAsync(TargetID, Credentials);
 		resultTask.Wait();
@@ -6420,8 +6432,8 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Credentials">The MySQL database authentication settings</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The MySQL database authentication settings</param>
 	public async Task<BrowseSQLServerResponse> UserWebDispatcherRequestBrowseMysqlAsync(string TargetID, MySQLConnection Credentials) {
 		var data = new Dictionary<string,string>();
 
@@ -6443,8 +6455,8 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Credentials">The MySQL database authentication settings</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The MySQL database authentication settings</param>
 	public BrowseSQLServerResponse UserWebDispatcherRequestBrowseMysql(string TargetID, MySQLConnection Credentials) {
 		var resultTask = UserWebDispatcherRequestBrowseMysqlAsync(TargetID, Credentials);
 		resultTask.Wait();
@@ -6459,7 +6471,7 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
+	/// <param name="TargetID">The live connection GUID</param>
 	public async Task<BrowseVSSResponse> UserWebDispatcherRequestBrowseVssAawAsync(string TargetID) {
 		var data = new Dictionary<string,string>();
 
@@ -6481,7 +6493,7 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
+	/// <param name="TargetID">The live connection GUID</param>
 	public BrowseVSSResponse UserWebDispatcherRequestBrowseVssAaw(string TargetID) {
 		var resultTask = UserWebDispatcherRequestBrowseVssAawAsync(TargetID);
 		resultTask.Wait();
@@ -6495,8 +6507,8 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Credentials">The Office365 account credential</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The Office365 account credential</param>
 	public async Task<BrowseOffice365ObjectsResponse> UserWebDispatcherRequestOffice365AccountsAsync(string TargetID, Office365Credential Credentials) {
 		var data = new Dictionary<string,string>();
 
@@ -6518,8 +6530,8 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Credentials">The Office365 account credential</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The Office365 account credential</param>
 	public BrowseOffice365ObjectsResponse UserWebDispatcherRequestOffice365Accounts(string TargetID, Office365Credential Credentials) {
 		var resultTask = UserWebDispatcherRequestOffice365AccountsAsync(TargetID, Credentials);
 		resultTask.Wait();
@@ -6533,8 +6545,8 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Credentials">The Office365 account credential</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The Office365 account credential</param>
 	public async Task<BrowseOffice365ObjectsResponse> UserWebDispatcherRequestOffice365SitesAsync(string TargetID, Office365Credential Credentials) {
 		var data = new Dictionary<string,string>();
 
@@ -6556,8 +6568,8 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Credentials">The Office365 account credential</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The Office365 account credential</param>
 	public BrowseOffice365ObjectsResponse UserWebDispatcherRequestOffice365Sites(string TargetID, Office365Credential Credentials) {
 		var resultTask = UserWebDispatcherRequestOffice365SitesAsync(TargetID, Credentials);
 		resultTask.Wait();
@@ -6572,12 +6584,12 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Destination">The Storage Vault ID</param>
-	/// \t<param name="SnapshotID">The selected backup job snapshot</param>
-	/// \t<param name="TreeID">(Optional) Browse objects inside subdirectory of backup snapshot. If it is for VMDK single
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Destination">The Storage Vault ID</param>
+	/// <param name="SnapshotID">The selected backup job snapshot</param>
+	/// <param name="TreeID">(Optional) Browse objects inside subdirectory of backup snapshot. If it is for VMDK single
 	/// file restore, it should be the disk image's subtree ID.</param>
-	/// \t<param name="Options">(Optional) Request a list of stored objects in vmdk file</param>
+	/// <param name="Options">(Optional) Request a list of stored objects in vmdk file</param>
 	public async Task<DispatcherStoredObjectsResponse> UserWebDispatcherRequestStoredObjectsAsync(string TargetID, string Destination, string SnapshotID, string TreeID = null, VMDKSnapshotViewOptions Options = null) {
 		var data = new Dictionary<string,string>();
 
@@ -6607,12 +6619,12 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Destination">The Storage Vault ID</param>
-	/// \t<param name="SnapshotID">The selected backup job snapshot</param>
-	/// \t<param name="TreeID">(Optional) Browse objects inside subdirectory of backup snapshot. If it is for VMDK single
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Destination">The Storage Vault ID</param>
+	/// <param name="SnapshotID">The selected backup job snapshot</param>
+	/// <param name="TreeID">(Optional) Browse objects inside subdirectory of backup snapshot. If it is for VMDK single
 	/// file restore, it should be the disk image's subtree ID.</param>
-	/// \t<param name="Options">(Optional) Request a list of stored objects in vmdk file</param>
+	/// <param name="Options">(Optional) Request a list of stored objects in vmdk file</param>
 	public DispatcherStoredObjectsResponse UserWebDispatcherRequestStoredObjects(string TargetID, string Destination, string SnapshotID, string TreeID = null, VMDKSnapshotViewOptions Options = null) {
 		var resultTask = UserWebDispatcherRequestStoredObjectsAsync(TargetID, Destination, SnapshotID, TreeID, Options);
 		resultTask.Wait();
@@ -6626,8 +6638,8 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Destination">The Storage Vault ID</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Destination">The Storage Vault ID</param>
 	public async Task<DispatcherVaultSnapshotsResponse> UserWebDispatcherRequestVaultSnapshotsAsync(string TargetID, string Destination) {
 		var data = new Dictionary<string,string>();
 
@@ -6649,8 +6661,8 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Destination">The Storage Vault ID</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Destination">The Storage Vault ID</param>
 	public DispatcherVaultSnapshotsResponse UserWebDispatcherRequestVaultSnapshots(string TargetID, string Destination) {
 		var resultTask = UserWebDispatcherRequestVaultSnapshotsAsync(TargetID, Destination);
 		resultTask.Wait();
@@ -6665,9 +6677,9 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Destination">The Storage Vault ID</param>
-	/// \t<param name="SnapshotID">The Snapshot ID</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Destination">The Storage Vault ID</param>
+	/// <param name="SnapshotID">The Snapshot ID</param>
 	public async Task<DispatcherWindiskSnapshotResponse> UserWebDispatcherRequestWindiskSnapshotAsync(string TargetID, string Destination, string SnapshotID) {
 		var data = new Dictionary<string,string>();
 
@@ -6691,9 +6703,9 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Destination">The Storage Vault ID</param>
-	/// \t<param name="SnapshotID">The Snapshot ID</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Destination">The Storage Vault ID</param>
+	/// <param name="SnapshotID">The Snapshot ID</param>
 	public DispatcherWindiskSnapshotResponse UserWebDispatcherRequestWindiskSnapshot(string TargetID, string Destination, string SnapshotID) {
 		var resultTask = UserWebDispatcherRequestWindiskSnapshotAsync(TargetID, Destination, SnapshotID);
 		resultTask.Wait();
@@ -6707,8 +6719,8 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="BackupRule">The schedule GUID</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="BackupRule">The schedule GUID</param>
 	public async Task<CometAPIResponseMessage> UserWebDispatcherRunBackupAsync(string TargetID, string BackupRule) {
 		var data = new Dictionary<string,string>();
 
@@ -6730,8 +6742,8 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="BackupRule">The schedule GUID</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="BackupRule">The schedule GUID</param>
 	public CometAPIResponseMessage UserWebDispatcherRunBackup(string TargetID, string BackupRule) {
 		var resultTask = UserWebDispatcherRunBackupAsync(TargetID, BackupRule);
 		resultTask.Wait();
@@ -6745,10 +6757,10 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Source">The Protected Item GUID</param>
-	/// \t<param name="Destination">The Storage Vault GUID</param>
-	/// \t<param name="Options">(Optional) Extra job parameters (>= 19.3.6)</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Source">The Protected Item GUID</param>
+	/// <param name="Destination">The Storage Vault GUID</param>
+	/// <param name="Options">(Optional) Extra job parameters (>= 19.3.6)</param>
 	public async Task<CometAPIResponseMessage> UserWebDispatcherRunBackupCustomAsync(string TargetID, string Source, string Destination, BackupJobAdvancedOptions Options = null) {
 		var data = new Dictionary<string,string>();
 
@@ -6774,10 +6786,10 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Source">The Protected Item GUID</param>
-	/// \t<param name="Destination">The Storage Vault GUID</param>
-	/// \t<param name="Options">(Optional) Extra job parameters (>= 19.3.6)</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Source">The Protected Item GUID</param>
+	/// <param name="Destination">The Storage Vault GUID</param>
+	/// <param name="Options">(Optional) Extra job parameters (>= 19.3.6)</param>
 	public CometAPIResponseMessage UserWebDispatcherRunBackupCustom(string TargetID, string Source, string Destination, BackupJobAdvancedOptions Options = null) {
 		var resultTask = UserWebDispatcherRunBackupCustomAsync(TargetID, Source, Destination, Options);
 		resultTask.Wait();
@@ -6791,13 +6803,13 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Path">The local path to restore to</param>
-	/// \t<param name="Source">The Protected Item ID</param>
-	/// \t<param name="Destination">The Storage Vault ID</param>
-	/// \t<param name="Snapshot">(Optional) If present, restore a specific snapshot. Otherwise, restore the latest snapshot
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Path">The local path to restore to</param>
+	/// <param name="Source">The Protected Item ID</param>
+	/// <param name="Destination">The Storage Vault ID</param>
+	/// <param name="Snapshot">(Optional) If present, restore a specific snapshot. Otherwise, restore the latest snapshot
 	/// for the selected Protected Item + Storage Vault pair</param>
-	/// \t<param name="Paths">(Optional) If present, restore these paths only. Otherwise, restore all data (>=
+	/// <param name="Paths">(Optional) If present, restore these paths only. Otherwise, restore all data (>=
 	/// 19.3.0)</param>
 	public async Task<CometAPIResponseMessage> UserWebDispatcherRunRestoreAsync(string TargetID, string Path, string Source, string Destination, string Snapshot = null, string[] Paths = null) {
 		var data = new Dictionary<string,string>();
@@ -6828,13 +6840,13 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Path">The local path to restore to</param>
-	/// \t<param name="Source">The Protected Item ID</param>
-	/// \t<param name="Destination">The Storage Vault ID</param>
-	/// \t<param name="Snapshot">(Optional) If present, restore a specific snapshot. Otherwise, restore the latest snapshot
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Path">The local path to restore to</param>
+	/// <param name="Source">The Protected Item ID</param>
+	/// <param name="Destination">The Storage Vault ID</param>
+	/// <param name="Snapshot">(Optional) If present, restore a specific snapshot. Otherwise, restore the latest snapshot
 	/// for the selected Protected Item + Storage Vault pair</param>
-	/// \t<param name="Paths">(Optional) If present, restore these paths only. Otherwise, restore all data (>=
+	/// <param name="Paths">(Optional) If present, restore these paths only. Otherwise, restore all data (>=
 	/// 19.3.0)</param>
 	public CometAPIResponseMessage UserWebDispatcherRunRestore(string TargetID, string Path, string Source, string Destination, string Snapshot = null, string[] Paths = null) {
 		var resultTask = UserWebDispatcherRunRestoreAsync(TargetID, Path, Source, Destination, Snapshot, Paths);
@@ -6850,13 +6862,13 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Source">The Protected Item ID</param>
-	/// \t<param name="Destination">The Storage Vault ID</param>
-	/// \t<param name="Options">Restore targets</param>
-	/// \t<param name="Snapshot">(Optional) If present, restore a specific snapshot. Otherwise, restore the latest snapshot
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Source">The Protected Item ID</param>
+	/// <param name="Destination">The Storage Vault ID</param>
+	/// <param name="Options">Restore targets</param>
+	/// <param name="Snapshot">(Optional) If present, restore a specific snapshot. Otherwise, restore the latest snapshot
 	/// for the selected Protected Item + Storage Vault pair</param>
-	/// \t<param name="Paths">(Optional) If present, restore these paths only. Otherwise, restore all data (>=
+	/// <param name="Paths">(Optional) If present, restore these paths only. Otherwise, restore all data (>=
 	/// 19.3.0)</param>
 	public async Task<CometAPIResponseMessage> UserWebDispatcherRunRestoreCustomAsync(string TargetID, string Source, string Destination, RestoreJobAdvancedOptions Options, string Snapshot = null, string[] Paths = null) {
 		var data = new Dictionary<string,string>();
@@ -6888,13 +6900,13 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Source">The Protected Item ID</param>
-	/// \t<param name="Destination">The Storage Vault ID</param>
-	/// \t<param name="Options">Restore targets</param>
-	/// \t<param name="Snapshot">(Optional) If present, restore a specific snapshot. Otherwise, restore the latest snapshot
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Source">The Protected Item ID</param>
+	/// <param name="Destination">The Storage Vault ID</param>
+	/// <param name="Options">Restore targets</param>
+	/// <param name="Snapshot">(Optional) If present, restore a specific snapshot. Otherwise, restore the latest snapshot
 	/// for the selected Protected Item + Storage Vault pair</param>
-	/// \t<param name="Paths">(Optional) If present, restore these paths only. Otherwise, restore all data (>=
+	/// <param name="Paths">(Optional) If present, restore these paths only. Otherwise, restore all data (>=
 	/// 19.3.0)</param>
 	public CometAPIResponseMessage UserWebDispatcherRunRestoreCustom(string TargetID, string Source, string Destination, RestoreJobAdvancedOptions Options, string Snapshot = null, string[] Paths = null) {
 		var resultTask = UserWebDispatcherRunRestoreCustomAsync(TargetID, Source, Destination, Options, Snapshot, Paths);
@@ -6909,10 +6921,10 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="DestinationID">The Storage Vault GUID</param>
-	/// \t<param name="SnapshotIDs">Snapshots to search</param>
-	/// \t<param name="Filter">The search filter</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="DestinationID">The Storage Vault GUID</param>
+	/// <param name="SnapshotIDs">Snapshots to search</param>
+	/// <param name="Filter">The search filter</param>
 	public async Task<SearchSnapshotsResponse> UserWebDispatcherSearchSnapshotsAsync(string TargetID, string DestinationID, string[] SnapshotIDs, SearchClause Filter) {
 		var data = new Dictionary<string,string>();
 
@@ -6936,10 +6948,10 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="DestinationID">The Storage Vault GUID</param>
-	/// \t<param name="SnapshotIDs">Snapshots to search</param>
-	/// \t<param name="Filter">The search filter</param>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="DestinationID">The Storage Vault GUID</param>
+	/// <param name="SnapshotIDs">Snapshots to search</param>
+	/// <param name="Filter">The search filter</param>
 	public SearchSnapshotsResponse UserWebDispatcherSearchSnapshots(string TargetID, string DestinationID, string[] SnapshotIDs, SearchClause Filter) {
 		var resultTask = UserWebDispatcherSearchSnapshotsAsync(TargetID, DestinationID, SnapshotIDs, Filter);
 		resultTask.Wait();
@@ -6953,7 +6965,7 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="JobID">Selected job GUID</param>
+	/// <param name="JobID">Selected job GUID</param>
 	public async Task<byte[]> UserWebGetJobLogAsync(string JobID) {
 		var data = new Dictionary<string,string>();
 
@@ -6976,7 +6988,7 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="JobID">Selected job GUID</param>
+	/// <param name="JobID">Selected job GUID</param>
 	public byte[] UserWebGetJobLog(string JobID) {
 		var resultTask = UserWebGetJobLogAsync(JobID);
 		resultTask.Wait();
@@ -6990,9 +7002,9 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="JobID">Selected job GUID</param>
-	/// \t<param name="MinSeverity">(Optional) Return only job log entries with equal or higher severity</param>
-	/// \t<param name="MessageContains">(Optional) Return only job log entries that contain exact string</param>
+	/// <param name="JobID">Selected job GUID</param>
+	/// <param name="MinSeverity">(Optional) Return only job log entries with equal or higher severity</param>
+	/// <param name="MessageContains">(Optional) Return only job log entries that contain exact string</param>
 	public async Task<JobEntry[]> UserWebGetJobLogEntriesAsync(string JobID, string MinSeverity = null, string MessageContains = null) {
 		var data = new Dictionary<string,string>();
 
@@ -7019,9 +7031,9 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="JobID">Selected job GUID</param>
-	/// \t<param name="MinSeverity">(Optional) Return only job log entries with equal or higher severity</param>
-	/// \t<param name="MessageContains">(Optional) Return only job log entries that contain exact string</param>
+	/// <param name="JobID">Selected job GUID</param>
+	/// <param name="MinSeverity">(Optional) Return only job log entries with equal or higher severity</param>
+	/// <param name="MessageContains">(Optional) Return only job log entries that contain exact string</param>
 	public JobEntry[] UserWebGetJobLogEntries(string JobID, string MinSeverity = null, string MessageContains = null) {
 		var resultTask = UserWebGetJobLogEntriesAsync(JobID, MinSeverity, MessageContains);
 		resultTask.Wait();
@@ -7035,7 +7047,7 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="JobID">Selected job GUID</param>
+	/// <param name="JobID">Selected job GUID</param>
 	public async Task<BackupJobDetail> UserWebGetJobPropertiesAsync(string JobID) {
 		var data = new Dictionary<string,string>();
 
@@ -7056,7 +7068,7 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="JobID">Selected job GUID</param>
+	/// <param name="JobID">Selected job GUID</param>
 	public BackupJobDetail UserWebGetJobProperties(string JobID) {
 		var resultTask = UserWebGetJobPropertiesAsync(JobID);
 		resultTask.Wait();
@@ -7165,7 +7177,7 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="JobID">Job ID</param>
+	/// <param name="JobID">Job ID</param>
 	public async Task<CometAPIResponseMessage> UserWebJobCancelAsync(string JobID) {
 		var data = new Dictionary<string,string>();
 
@@ -7192,7 +7204,7 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="JobID">Job ID</param>
+	/// <param name="JobID">Job ID</param>
 	public CometAPIResponseMessage UserWebJobCancel(string JobID) {
 		var resultTask = UserWebJobCancelAsync(JobID);
 		resultTask.Wait();
@@ -7236,8 +7248,8 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Path">(Optional) Browse objects inside this path. If empty or not present, returns the top-level
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Path">(Optional) Browse objects inside this path. If empty or not present, returns the top-level
 	/// device paths</param>
 	public async Task<DispatcherStoredObjectsResponse> UserWebRequestFilesystemObjectsAsync(string TargetID, string Path = null) {
 		var data = new Dictionary<string,string>();
@@ -7263,8 +7275,8 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="TargetID">The live connection GUID</param>
-	/// \t<param name="Path">(Optional) Browse objects inside this path. If empty or not present, returns the top-level
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Path">(Optional) Browse objects inside this path. If empty or not present, returns the top-level
 	/// device paths</param>
 	public DispatcherStoredObjectsResponse UserWebRequestFilesystemObjects(string TargetID, string Path = null) {
 		var resultTask = UserWebRequestFilesystemObjectsAsync(TargetID, Path);
@@ -7282,8 +7294,8 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="StorageProvider">ID for the storage template destination</param>
-	/// \t<param name="SelfAddress">(Optional) The external URL for this server. Used to resolve conflicts</param>
+	/// <param name="StorageProvider">ID for the storage template destination</param>
+	/// <param name="SelfAddress">(Optional) The external URL for this server. Used to resolve conflicts</param>
 	public async Task<RequestStorageVaultResponseMessage> UserWebRequestStorageVaultAsync(string StorageProvider, string SelfAddress = null) {
 		var data = new Dictionary<string,string>();
 
@@ -7308,8 +7320,8 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="StorageProvider">ID for the storage template destination</param>
-	/// \t<param name="SelfAddress">(Optional) The external URL for this server. Used to resolve conflicts</param>
+	/// <param name="StorageProvider">ID for the storage template destination</param>
+	/// <param name="SelfAddress">(Optional) The external URL for this server. Used to resolve conflicts</param>
 	public RequestStorageVaultResponseMessage UserWebRequestStorageVault(string StorageProvider, string SelfAddress = null) {
 		var resultTask = UserWebRequestStorageVaultAsync(StorageProvider, SelfAddress);
 		resultTask.Wait();
@@ -7410,8 +7422,8 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="ProfileData">Updated account profile</param>
-	/// \t<param name="ProfileHash">Previous account profile hash</param>
+	/// <param name="ProfileData">Updated account profile</param>
+	/// <param name="ProfileHash">Previous account profile hash</param>
 	public async Task<CometAPIResponseMessage> UserWebSetProfileHashAsync(UserProfileConfig ProfileData, string ProfileHash) {
 		var data = new Dictionary<string,string>();
 
@@ -7433,8 +7445,8 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// \t<param name="ProfileData">Updated account profile</param>
-	/// \t<param name="ProfileHash">Previous account profile hash</param>
+	/// <param name="ProfileData">Updated account profile</param>
+	/// <param name="ProfileHash">Previous account profile hash</param>
 	public CometAPIResponseMessage UserWebSetProfileHash(UserProfileConfig ProfileData, string ProfileHash) {
 		var resultTask = UserWebSetProfileHashAsync(ProfileData, ProfileHash);
 		resultTask.Wait();
