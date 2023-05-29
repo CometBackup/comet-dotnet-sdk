@@ -2,6 +2,7 @@
 
 [![@CometBackup on Twitter](http://img.shields.io/badge/twitter-%40CometBackup-blue.svg?style=flat)](https://twitter.com/CometBackup)
 ![MIT License](https://img.shields.io/github/license/CometBackup/comet-go-sdk)
+![Nuget](https://img.shields.io/nuget/v/CometBackup.CometAPI.SDK)
 
 This project is a SDK and base client for Comet Server API using .NET, coded in C#.
 
