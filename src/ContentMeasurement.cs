@@ -10,7 +10,9 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>ContentMeasurement</c>
 /// </summary>
 public class ContentMeasurement {
+	//Unix timestamp in seconds
 	public long MeasureStarted { get; set; }
+	//Unix timestamp in seconds
 	public long MeasureCompleted { get; set; }
 	public List<ContentMeasurementComponent> Components { get; set; }
 

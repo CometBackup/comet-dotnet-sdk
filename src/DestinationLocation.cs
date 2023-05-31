@@ -7,10 +7,14 @@ using System.Text.Json.Serialization;
 
 namespace CometBackup.CometAPI.SDK {
 /// <summary>
-/// Class <c>DestinationLocation</c>
+/// Class <c>DestinationLocation</c> DestinationLocation describes the underlying storage location for a Storage Vault.
+/// Prior to Comet 17.3.3 this was an embedded part of the DestinationConfig type.
+/// Since Version : 17.3.3
 /// </summary>
 public class DestinationLocation {
+	//One of the DESTINATIONTYPE_ constants
 	public ulong DestinationType { get; set; }
+	//The URL for the target Comet Server Storage Role, including http/https and trailing slash
 	public string CometServer { get; set; } = string.Empty;
 	public string CometBucket { get; set; } = string.Empty;
 	public string CometBucketKey { get; set; } = string.Empty;
@@ -27,21 +31,31 @@ public class DestinationLocation {
 	public long S3ObjectLockDays { get; set; }
 	public string SFTPServer { get; set; } = string.Empty;
 	public string SFTPUsername { get; set; } = string.Empty;
+	//The directory on the SFTP server in which data is stored.
 	public string SFTPRemotePath { get; set; } = string.Empty;
 	//One of the DESTINATION_SFTP_AUTHMODE_ constants
 	public ulong SFTPAuthMode { get; set; }
+	//For use with DESTINATION_SFTP_AUTHMODE_PASSWORD only: the SSH password to connect with
 	public string SFTPPassword { get; set; } = string.Empty;
+	//For use with DESTINATION_SFTP_AUTHMODE_PRIVATEKEY only: the SSH private key to connect with, in OpenSSH format.
 	public string SFTPPrivateKey { get; set; } = string.Empty;
+	//If true, then the SFTPCustomAuth_KnownHostsFile will be used to verify the remote SSH server's host key, using Trust
+	//On First Use (TOFU).
 	public bool SFTPCustomAuth_UseKnownHostsFile { get; set; }
+	//If SFTPCustomAuth_UseKnownHostFile is true, the path to the SSH known_hosts file.
 	public string SFTPCustomAuth_KnownHostsFile { get; set; } = string.Empty;
 	public string FTPServer { get; set; } = string.Empty;
 	public string FTPUsername { get; set; } = string.Empty;
 	public string FTPPassword { get; set; } = string.Empty;
+	//If true, store data in the default home directory given by the FTP server. If false, store data in the
+	//FTPCustomBaseDirectory path.
 	public bool FTPBaseUseHomeDirectory { get; set; }
+	//If FTPBaseUseHomeDirectory is false, this field controls the path where data is stored.
 	public string FTPCustomBaseDirectory { get; set; } = string.Empty;
-	//One of the FTPS_MODE_ constants.
+	//Control whether this is plaintext FTP or secure FTPS by using one of the FTPS_MODE_ constants.
 	public long FTPSMode { get; set; }
 	public long FTPPort { get; set; }
+	//If set to zero, uses a system default value that is not unlimited.
 	public long FTPMaxConnections { get; set; }
 	public bool FTPAcceptInvalidSSL { get; set; }
 	public string AZBAccountName { get; set; } = string.Empty;
@@ -51,13 +65,28 @@ public class DestinationLocation {
 	public string AZBRealm { get; set; } = string.Empty;
 	public string AZBPrefix { get; set; } = string.Empty;
 	public string LocalcopyPath { get; set; } = string.Empty;
+	//If logging in to a Windows network share (SMB/CIFS) is required, enter the username here.
 	public string LocalcopyWinSMBUsername { get; set; } = string.Empty;
+	//If logging in to a Windows network share (SMB/CIFS) is required, enter the password here. The password may be hashed
+	//as per the LocalcopyWinSMBPasswordFormat field.
 	public string LocalcopyWinSMBPassword { get; set; } = string.Empty;
+	//One of the PASSWORD_FORMAT_ constants. It controls the hash format of the LocalcopyWinSMBPassword field.
 	public ulong LocalcopyWinSMBPasswordFormat { get; set; }
 	public SwiftDestinationLocation Swift { get; set; }
 	public B2DestinationLocation B2 { get; set; }
 	public StorjDestinationLocation Storj { get; set; }
+	//A list of underlying destinations, that will be combined and presented as one.
 	public List<DestinationLocation> SpanTargets { get; set; }
+	//If true, this Spanned destination will use a consistent hashing scheme
+	//to immediately find specific files on exactly one of the target destinations.
+	//In the Static Slots mode, the span targets cannot be moved or merged, and
+	//the files must always remain in their original location.
+	//
+	//If false, the Spanned destination system will search all targets to find
+	//the requested file. This is slightly slower, but allows you to freely merge,
+	//split, and reorder the underlying destination locations.
+	//
+	//The default option is false.
 	public bool SpanUseStaticSlots { get; set; }
 
 	public DestinationLocation(){ }

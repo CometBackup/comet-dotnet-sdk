@@ -10,6 +10,7 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>RestoreJobAdvancedOptions</c>
 /// </summary>
 public class RestoreJobAdvancedOptions {
+	//One of the RESTORETYPE_ constants
 	public long Type { get; set; }
 	//For RESTORETYPE_FILE
 	public bool OverwriteExistingFiles { get; set; }

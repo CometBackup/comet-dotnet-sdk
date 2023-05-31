@@ -12,12 +12,18 @@ namespace CometBackup.CometAPI.SDK {
 public class SFTPDestinationLocation {
 	public string SFTPServer { get; set; } = string.Empty;
 	public string SFTPUsername { get; set; } = string.Empty;
+	//The directory on the SFTP server in which data is stored.
 	public string SFTPRemotePath { get; set; } = string.Empty;
 	//One of the DESTINATION_SFTP_AUTHMODE_ constants
 	public ulong SFTPAuthMode { get; set; }
+	//For use with DESTINATION_SFTP_AUTHMODE_PASSWORD only: the SSH password to connect with
 	public string SFTPPassword { get; set; } = string.Empty;
+	//For use with DESTINATION_SFTP_AUTHMODE_PRIVATEKEY only: the SSH private key to connect with, in OpenSSH format.
 	public string SFTPPrivateKey { get; set; } = string.Empty;
+	//If true, then the SFTPCustomAuth_KnownHostsFile will be used to verify the remote SSH server's host key, using Trust
+	//On First Use (TOFU).
 	public bool SFTPCustomAuth_UseKnownHostsFile { get; set; }
+	//If SFTPCustomAuth_UseKnownHostFile is true, the path to the SSH known_hosts file.
 	public string SFTPCustomAuth_KnownHostsFile { get; set; } = string.Empty;
 
 	public SFTPDestinationLocation(){ }

@@ -7,7 +7,9 @@ using System.Text.Json.Serialization;
 
 namespace CometBackup.CometAPI.SDK {
 /// <summary>
-/// Class <c>BackupJobAdvancedOptions</c>
+/// Class <c>BackupJobAdvancedOptions</c> BackupJobAdvancedOptions control additional advanced options for running a
+/// backup job. They can be specified as part of a schedule in the BackupRuleConfig type, or supplied immediately when
+/// running a job.
 /// </summary>
 public class BackupJobAdvancedOptions {
 	public bool SkipAlreadyRunning { get; set; }

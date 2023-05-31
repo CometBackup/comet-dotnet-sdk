@@ -22,19 +22,28 @@ public class ServerConfigOptions {
 	//will not be respected during the import process.
 	public ConstellationRoleOptions ConstellationRole_Legacy { get; set; }
 	public EmailOptions Email { get; set; }
+	//An array of GUIDs that can enable additional early-access functionality
 	public List<string> ExperimentalOptions { get; set; }
 	public Dictionary<string, ExternalAuthenticationSource> ExternalAdminUserSources { get; set; }
 	public RatelimitOptions IPRateLimit { get; set; }
 	public LicenseOptions License { get; set; }
+	//Configure ip, port, and SSL settings for this self-hosted Comet Server.
 	public List<HTTPConnectorOptions> ListenAddresses { get; set; }
+	//Tenants
 	public Dictionary<string, Organization> Organizations { get; set; }
 	public List<PSAConfig> PSAConfigs { get; set; }
+	//Automatically create backup zip files of this Comet Server's configuration
 	public SelfBackupOptions SelfBackup { get; set; }
+	//Control how long admin accounts can remain logged in to the Comet Server web interface
 	public SessionOptions SessionSettings { get; set; }
 	public SoftwareBuildRoleOptions SoftwareBuildRole { get; set; }
 	public StorageRoleOptions StorageRole { get; set; }
+	//If true, the X-Forwarded-For header will be trusted for the purposes of IP allowlisting. This should only be enabled
+	//when you explicitly configure Comet Server behind a reverse proxy, otherwise it could allow malicious users to bypass
+	//the IP allowlist.
 	public bool TrustXForwardedFor { get; set; }
 	public Dictionary<string, WebhookOption> WebhookOptions { get; set; }
+	public Dictionary<string, FileOption> AuditFileOptions { get; set; }
 
 	public ServerConfigOptions(){ }
 

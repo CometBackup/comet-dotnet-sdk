@@ -11,6 +11,7 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 public class DeviceConfig {
 	public string FriendlyName { get; set; } = string.Empty;
+	//Unix timestamp in seconds
 	public long RegistrationTime { get; set; }
 	//The operating system that the device uses.
 	public OSInfo PlatformVersion { get; set; }

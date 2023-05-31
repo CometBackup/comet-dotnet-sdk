@@ -10,6 +10,8 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>SessionOptions</c>
 /// </summary>
 public class SessionOptions {
+	//The number of seconds, after which an administrator should be automatically logged out of the Comet Server web
+	//interface. If zero, will be replaced with DEFAULT_SESSIONTIMEOUT.
 	public ulong ExpiredInSeconds { get; set; }
 
 	public SessionOptions(){ }

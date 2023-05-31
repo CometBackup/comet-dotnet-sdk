@@ -12,6 +12,7 @@ namespace CometBackup.CometAPI.SDK {
 public class SourceBasicInfo {
 	public string Description { get; set; } = string.Empty;
 	public long O365AccountCount { get; set; }
+	//Bytes
 	public long Size { get; set; }
 	public Dictionary<string, RetentionPolicy> OverrideDestinationRetention { get; set; }
 

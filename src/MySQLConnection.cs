@@ -12,7 +12,9 @@ namespace CometBackup.CometAPI.SDK {
 public class MySQLConnection {
 	public string Host { get; set; } = string.Empty;
 	public string Port { get; set; } = string.Empty;
+	//Optional
 	public string Username { get; set; } = string.Empty;
+	//Optional
 	public string Password { get; set; } = string.Empty;
 	public bool UseTLS { get; set; }
 	public bool TLSSkipVerify { get; set; }

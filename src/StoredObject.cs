@@ -12,9 +12,11 @@ namespace CometBackup.CometAPI.SDK {
 public class StoredObject {
 
 	[JsonPropertyName("name")]
+	//The name of the stored object. It is unique within this directory tree.
 	public string Name { get; set; } = string.Empty;
 
 	[JsonPropertyName("mtime")]
+	//Unix timestamp in seconds
 	public long ModifyTime { get; set; }
 
 	[JsonPropertyName("type")]
@@ -22,9 +24,11 @@ public class StoredObject {
 	public string Type { get; set; } = string.Empty;
 
 	[JsonPropertyName("subtree")]
+	//If this StoredObject represents a directory, this value can be used to recursively select the directory contents.
 	public string Subtree { get; set; } = string.Empty;
 
 	[JsonPropertyName("size")]
+	//Bytes
 	public ulong Size { get; set; }
 
 	[JsonPropertyName("dname")]
@@ -46,9 +50,11 @@ public class StoredObject {
 	public bool HasAttachments { get; set; }
 
 	[JsonPropertyName("stime")]
+	//Unix timestamp in seconds
 	public long StartTime { get; set; }
 
 	[JsonPropertyName("etime")]
+	//Unix timestamp in seconds
 	public long EndTime { get; set; }
 
 	[JsonPropertyName("r")]

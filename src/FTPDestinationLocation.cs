@@ -13,11 +13,15 @@ public class FTPDestinationLocation {
 	public string FTPServer { get; set; } = string.Empty;
 	public string FTPUsername { get; set; } = string.Empty;
 	public string FTPPassword { get; set; } = string.Empty;
+	//If true, store data in the default home directory given by the FTP server. If false, store data in the
+	//FTPCustomBaseDirectory path.
 	public bool FTPBaseUseHomeDirectory { get; set; }
+	//If FTPBaseUseHomeDirectory is false, this field controls the path where data is stored.
 	public string FTPCustomBaseDirectory { get; set; } = string.Empty;
-	//One of the FTPS_MODE_ constants.
+	//Control whether this is plaintext FTP or secure FTPS by using one of the FTPS_MODE_ constants.
 	public long FTPSMode { get; set; }
 	public long FTPPort { get; set; }
+	//If set to zero, uses a system default value that is not unlimited.
 	public long FTPMaxConnections { get; set; }
 	public bool FTPAcceptInvalidSSL { get; set; }
 

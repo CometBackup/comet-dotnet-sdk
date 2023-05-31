@@ -15,6 +15,8 @@ public class MSSQLLoginArgs {
 	public string Username { get; set; } = string.Empty;
 	public string Password { get; set; } = string.Empty;
 	public bool MethodIsOledb32Bit { get; set; }
+	//If this MSSQLLoginArgs structure is used for a restore job (RestoreJobAdvancedOptions) using RESTORETYPE_MSSQL, then,
+	//this field controls the RECOVERY / NO RECOVERY option state.
 	public bool RestoreNoRecovery { get; set; }
 
 	public MSSQLLoginArgs(){ }

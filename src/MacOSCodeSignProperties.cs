@@ -10,6 +10,7 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>MacOSCodeSignProperties</c>
 /// </summary>
 public class MacOSCodeSignProperties {
+	//One of the MACOSCODESIGN_LEVEL_ constants
 	public long Level { get; set; }
 	public bool SignLocally { get; set; }
 	public SSHConnection SSHServer { get; set; }

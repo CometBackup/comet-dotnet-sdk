@@ -10,9 +10,12 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>BackupJobProgress</c>
 /// </summary>
 public class BackupJobProgress {
+	//This field will always increase monotonically, exactly once, for every change to the BackupJobProgress for a given
+	//backup job.
 	public long Counter { get; set; }
+	//Unix timestamp in seconds
 	public long SentTime { get; set; }
-	//The typo is preserved for backwards-compatibility reasons.
+	//Unix timestamp in seconds. The typo is preserved for backwards-compatibility reasons.
 	public long RecievedTime { get; set; }
 	public long BytesDone { get; set; }
 	public long ItemsDone { get; set; }

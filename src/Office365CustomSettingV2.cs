@@ -7,11 +7,19 @@ using System.Text.Json.Serialization;
 
 namespace CometBackup.CometAPI.SDK {
 /// <summary>
-/// Class <c>Office365CustomSettingV2</c>
+/// Class <c>Office365CustomSettingV2</c> Office365CustomSettingV2 is used in the EngineProps for an Office 365
+/// Protected Item (see ENGINE_BUILTIN_MSOFFICE).
+/// Since Version : 21.9.xx
 /// </summary>
 public class Office365CustomSettingV2 {
+	//If true, then backup the entire Office 365 Tenant except the selected members. If false, backup the selected members
+	//only.
 	public bool Organization { get; set; }
+	//Key can be the ID of user, group or SharePoint
+	//Value is a bitset of the SERVICE_ constants, to select which services to back up for this member.
 	public Dictionary<string, long> BackupOptions { get; set; }
+	//Key must be a group ID
+	//Value is a bitset of the SERVICE_ constants, to select which services to back up for this member.
 	public Dictionary<string, long> MemberBackupOptions { get; set; }
 
 	public Office365CustomSettingV2(){ }

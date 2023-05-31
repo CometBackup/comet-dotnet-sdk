@@ -7,7 +7,9 @@ using System.Text.Json.Serialization;
 
 namespace CometBackup.CometAPI.SDK {
 /// <summary>
-/// Class <c>Office365CustomSetting</c>
+/// Class <c>Office365CustomSetting</c> Office365CustomSetting is used in the EngineProps for an Office 365 Protected
+/// Item (see ENGINE_BUILTIN_MSOFFICE).
+/// If present, it will be automatically converted to the replacement Office365CustomSettingV2 type.
 /// </summary>
 [Obsolete("Deprecated since Comet version 21.9.xx")]
 public class Office365CustomSetting {

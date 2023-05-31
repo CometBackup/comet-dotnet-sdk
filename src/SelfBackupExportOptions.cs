@@ -13,7 +13,10 @@ public class SelfBackupExportOptions {
 	public DestinationLocation Location { get; set; }
 	public string EncryptionKey { get; set; } = string.Empty;
 	public ulong EncryptionKeyFormat { get; set; }
+	//One of the COMPRESS_LVL_ constants
 	public long Compression { get; set; }
+	//The jobs database is often the largest component of the Server Self-Backup archive. By excluding it, you could run
+	//the Server Self-Backup more often.
 	public bool ExcludeJobsDB { get; set; }
 	public bool IncludeServerLogs { get; set; }
 	public string RestrictToSingleOrgID { get; set; } = string.Empty;

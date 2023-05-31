@@ -43,6 +43,7 @@ public class BackupJobDetail {
 	public long TotalLicensedMailsCount { get; set; }
 	//For Office 365 backup jobs, the number of unlicensed mailboxes.
 	public long TotalUnlicensedMailsCount { get; set; }
+	//If this field is present, it is possible to request cancellation of this job via the API.
 	public string CancellationID { get; set; } = string.Empty;
 	//If this backup job is still running, additional partial-progress information may be present in this field.
 	public BackupJobProgress Progress { get; set; }

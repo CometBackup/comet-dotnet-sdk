@@ -10,6 +10,7 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>WebInterfaceBrandingProperties</c>
 /// </summary>
 public class WebInterfaceBrandingProperties {
+	//One of the BRANDINGSTYLETYPE_ constants
 	public long BrandingStyleType { get; set; }
 	public string BrandName { get; set; } = string.Empty;
 	public string LogoImage { get; set; } = string.Empty;

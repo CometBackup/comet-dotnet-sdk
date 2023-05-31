@@ -22,7 +22,9 @@ public class BackupRuleConfig {
 	public List<string> ThawExec { get; set; }
 	//Custom commands to run after the job
 	public List<string> PostExec { get; set; }
+	//The source Protected Item ID to back up from, during this schedule
 	public string Source { get; set; } = string.Empty;
+	//The destination Storage Vault ID to back up to, during this schedule
 	public string Destination { get; set; } = string.Empty;
 	public bool SkipAlreadyRunning { get; set; }
 	//If Zero: disabled
@@ -37,7 +39,9 @@ public class BackupRuleConfig {
 	public bool AllowZeroFilesSuccess { get; set; }
 	//If Zero: default Automatic (BACKUPJOBAUTORETENTION_AUTOMATIC)
 	public long AutoRetentionLevel { get; set; }
+	//Scheduled start times
 	public List<ScheduleConfig> Schedules { get; set; }
+	//Other events that will cause this scheduled job to start
 	public BackupRuleEventTriggers EventTriggers { get; set; }
 
 	public BackupRuleConfig(){ }

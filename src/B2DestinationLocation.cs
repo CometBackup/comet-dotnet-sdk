@@ -7,7 +7,8 @@ using System.Text.Json.Serialization;
 
 namespace CometBackup.CometAPI.SDK {
 /// <summary>
-/// Class <c>B2DestinationLocation</c>
+/// Class <c>B2DestinationLocation</c> B2DestinationLocation allows configuring connection settings for storage
+/// locations using the Backblaze B2 native API (DESTINATIONTYPE_B2).
 /// </summary>
 public class B2DestinationLocation {
 	//Key ID

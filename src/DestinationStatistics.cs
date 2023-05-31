@@ -13,7 +13,9 @@ public class DestinationStatistics {
 	public SizeMeasurement ClientProvidedSize { get; set; }
 	public ContentMeasurement ClientProvidedContent { get; set; }
 	public string LastSuccessfulDeepVerify_GUID { get; set; } = string.Empty;
+	//Unix timestamp in seconds
 	public long LastSuccessfulDeepVerify_StartTime { get; set; }
+	//Unix timestamp in seconds
 	public long LastSuccessfulDeepVerify_EndTime { get; set; }
 
 	public DestinationStatistics(){ }

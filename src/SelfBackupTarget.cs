@@ -11,12 +11,16 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 public class SelfBackupTarget {
 	public List<ScheduleConfig> Schedule { get; set; }
+	//Timezone in IANA format
 	public string ScheduleTimezone { get; set; } = string.Empty;
 	public RetentionPolicy RetentionPolicy { get; set; }
 	public DestinationLocation Location { get; set; }
 	public string EncryptionKey { get; set; } = string.Empty;
 	public ulong EncryptionKeyFormat { get; set; }
+	//One of the COMPRESS_LVL_ constants
 	public long Compression { get; set; }
+	//The jobs database is often the largest component of the Server Self-Backup archive. By excluding it, you could run
+	//the Server Self-Backup more often.
 	public bool ExcludeJobsDB { get; set; }
 	public bool IncludeServerLogs { get; set; }
 	public string RestrictToSingleOrgID { get; set; } = string.Empty;

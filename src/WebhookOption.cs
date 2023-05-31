@@ -7,12 +7,21 @@ using System.Text.Json.Serialization;
 
 namespace CometBackup.CometAPI.SDK {
 /// <summary>
-/// Class <c>WebhookOption</c>
+/// Class <c>WebhookOption</c> WebhookOption defines the configuration of a webhook target. The Comet Server will send a
+/// live HTTP POST event to the webhook URL when certain events happen.
 /// </summary>
 public class WebhookOption {
+	//The target URL to POST the event data to
 	public string URL { get; set; } = string.Empty;
-	public List<long> WhiteListedEventTypes { get; set; }
+	//CustomHeaders allows specifying custom headers which are added to the outgoing POST request
+	//from Comet Server. Custom headers are specified as (header name, header value) pairs. If a
+	//custom header conflicts with a header required by HTTP or the Comet tracing ID header
+	//(`x-Comet-Tracing-Id`), it will be ignored.
 	public Dictionary<string, string> CustomHeaders { get; set; }
+	//One of the STREAM_LEVEL_ constants. This controls how much data is sent in the webhook event.
+	public string Level { get; set; } = string.Empty;
+	//Configure a subset of allowed event types (see SEVT_ constants). If the array is empty, all events will be sent
+	public List<long> WhiteListedEventTypes { get; set; }
 
 	public WebhookOption(){ }
 

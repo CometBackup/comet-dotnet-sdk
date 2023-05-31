@@ -7,33 +7,44 @@ using System.Text.Json.Serialization;
 
 namespace CometBackup.CometAPI.SDK {
 /// <summary>
-/// Class <c>SearchResultFileInfo</c>
+/// Class <c>SearchResultFileInfo</c> SearchResultFileInfo describes a single result entry when searching for files
+/// within a Storage Vault snapshot.
 /// </summary>
 public class SearchResultFileInfo {
 
 	[JsonPropertyName("path")]
+	//Path to the file within the selected snapshot, using forwardslash (/) separators
 	public string Path { get; set; } = string.Empty;
 
 	[JsonPropertyName("name")]
+	//Filename
 	public string Name { get; set; } = string.Empty;
 
 	[JsonPropertyName("type")]
+	//One of the STOREDOBJECTTYPE_ constants
 	public string Type { get; set; } = string.Empty;
 
 	[JsonPropertyName("mode")]
 	public string Mode { get; set; } = string.Empty;
 
 	[JsonPropertyName("mtime")]
-	public string Mtime { get; set; } = string.Empty;
+	//Timestamp in RFC3339 format with subsecond precision and time zone offset. See the Golang time.RFC3339Nano for more
+	//information.
+	public string ModTime { get; set; } = string.Empty;
 
 	[JsonPropertyName("atime")]
-	public string Atime { get; set; } = string.Empty;
+	//Timestamp in RFC3339 format with subsecond precision and time zone offset. See the Golang time.RFC3339Nano for more
+	//information.
+	public string AccessTime { get; set; } = string.Empty;
 
 	[JsonPropertyName("ctime")]
-	public string Ctime { get; set; } = string.Empty;
+	//Timestamp in RFC3339 format with subsecond precision and time zone offset. See the Golang time.RFC3339Nano for more
+	//information.
+	public string ChangeTime { get; set; } = string.Empty;
 
 	[JsonPropertyName("size")]
-	public long Size { get; set; }
+	//Bytes
+	public ulong Size { get; set; }
 
 	public SearchResultFileInfo(){ }
 

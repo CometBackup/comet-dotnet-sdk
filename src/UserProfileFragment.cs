@@ -9,6 +9,7 @@ namespace CometBackup.CometAPI.SDK {
 /// <summary>
 /// Class <c>UserProfileFragment</c>
 /// </summary>
+[Obsolete("Deprecated since Comet version 23.3.5")]
 public class UserProfileFragment {
 	public string Username { get; set; } = string.Empty;
 

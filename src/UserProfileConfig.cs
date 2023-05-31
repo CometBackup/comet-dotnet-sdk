@@ -31,12 +31,17 @@ public class UserProfileConfig {
 	//This option can be used to control whether any email reports are sent.
 	public bool SendEmailReports { get; set; }
 	//Storage Vaults
+	//The string keys can be any unique key. Using a GUID is recommended, but optional.
 	public Dictionary<string, DestinationConfig> Destinations { get; set; }
 	//Protected Items
+	//The string keys can be any unique key. Using a GUID is recommended, but optional.
 	public Dictionary<string, SourceConfig> Sources { get; set; }
 	//Schedules
+	//The string keys can be any unique key. Using a GUID is recommended, but optional.
 	public Dictionary<string, BackupRuleConfig> BackupRules { get; set; }
 	//Devices
+	//The string keys are the device's ID. The device ID is generated automatically based on a mix of hardware and software
+	//identifiers on the installed PC.
 	//To revoke a device, use the AdminRevokeDevice API instead of accessing these fields directly. This API can also
 	//remove associated Protected Items, uninstall the remote device, and disconnect its live connection.
 	public Dictionary<string, DeviceConfig> Devices { get; set; }
@@ -60,6 +65,7 @@ public class UserProfileConfig {
 	public string PolicyID { get; set; } = string.Empty;
 	//The Policy field contains a read-only copy of the effective Policy that is applied to this user account.
 	public UserPolicy Policy { get; set; }
+	//One of the PASSWORD_FORMAT_ constants
 	//To change the user's password, use the AdminResetUserPassword API instead of accessing these fields directly.
 	//Otherwise, other encrypted fields in the user profile may become corrupted.
 	public long PasswordFormat { get; set; }
@@ -68,7 +74,10 @@ public class UserProfileConfig {
 	//filled, it contains a cryptographic root of trust that can decrypt and re-encrypt other secrets in this profile.
 	public string PasswordRecovery { get; set; } = string.Empty;
 	public bool AllowPasswordLogin { get; set; }
+	//If true, then TOTP is required to open the desktop app or the Comet Server web interface with this user's
+	//credentials.
 	public bool AllowPasswordAndTOTPLogin { get; set; }
+	//One of the ENCRYPTIONMETHOD_ constants
 	public long TOTPKeyEncryptionFormat { get; set; }
 	public string TOTPKey { get; set; } = string.Empty;
 	public bool RequirePasswordChange { get; set; }

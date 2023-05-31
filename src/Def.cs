@@ -3,13 +3,13 @@
 
 namespace CometBackup.CometAPI.SDK {
 public static class Def {
-	public const string APPLICATION_VERSION = "23.3.7";
+	public const string APPLICATION_VERSION = "23.5.0";
 
 	public const long APPLICATION_VERSION_MAJOR = 23;
 
-	public const long APPLICATION_VERSION_MINOR = 3;
+	public const long APPLICATION_VERSION_MINOR = 5;
 
-	public const long APPLICATION_VERSION_REVISION = 7;
+	public const long APPLICATION_VERSION_REVISION = 0;
 
 	/// AutoRetentionLevel: The system will automatically choose how often to run an automatic Retention Pass after each
 	/// backup job.
@@ -25,12 +25,17 @@ public static class Def {
 	/// AutoRetentionLevel: The system will follow the automatic ruleset for a 'Low Power' device.
 	public const long BACKUPJOBAUTORETENTION_LESS_OFTEN = 3;
 
+	/// If set, will be automatically replaced with one of the other BRANDINGSTYLETYPE_ constants after next server
+	/// upgrade.
 	public const long BRANDINGSTYLETYPE_AUTO_LEGACY = 0;
 
+	/// Use Comet company branding and colours for all web interface branding
 	public const long BRANDINGSTYLETYPE_DEFAULT = 1;
 
+	/// Use custom branding and colours, with text in the main logo area.
 	public const long BRANDINGSTYLETYPE_CUSTOM_TEXT = 2;
 
+	/// Use custom branding and colours, with a supplied image in the main logo area.
 	public const long BRANDINGSTYLETYPE_CUSTOM_LOGO = 3;
 
 	/// ClientBrandingBuildMode: The software client will be custom-built by this Comet Server, allowing custom branding,
@@ -81,28 +86,42 @@ public static class Def {
 
 	public const ulong DESTINATIONTYPE___INVALID = 0;
 
+	/// S3-compatible, or a specific S3 service such as AWS S3, Wasabi, or iDrive e2
 	public const ulong DESTINATIONTYPE_S3 = 1000;
 
+	/// SFTP protocol
 	public const ulong DESTINATIONTYPE_SFTP = 1001;
 
+	/// Local Path
 	public const ulong DESTINATIONTYPE_LOCALCOPY = 1002;
 
+	/// The Comet Server Storage Role protocol
 	public const ulong DESTINATIONTYPE_COMET = 1003;
 
+	/// FTP protocol
 	public const ulong DESTINATIONTYPE_FTP = 1004;
 
+	/// Azure Blob Storage
 	public const ulong DESTINATIONTYPE_AZUREBLOB = 1005;
 
+	/// Spanned
 	public const ulong DESTINATIONTYPE_SPANNED = 1006;
 
+	/// Openstack Swift
 	public const ulong DESTINATIONTYPE_SWIFT = 1007;
 
+	/// Backblaze B2 (Native API)
 	public const ulong DESTINATIONTYPE_B2 = 1008;
 
+	/// Storj
 	public const ulong DESTINATIONTYPE_STORJ = 1009;
 
+	/// When defining a schedule via policy, use this option to dynamically select the Storage Vault that was created most
+	/// recently.
 	public const ulong DESTINATIONTYPE_LATEST = 1100;
 
+	/// When defining a schedule via policy, use this option to create a schedule for each Storage Vault in the user's
+	/// profile.
 	public const ulong DESTINATIONTYPE_ALL = 1101;
 
 	/// The Comet Server is still starting up and has not yet checked whether any email reports are due to be sent.
@@ -193,25 +212,27 @@ public static class Def {
 	/// Office 365
 	public const string ENGINE_BUILTIN_MSOFFICE = "engine1/winmsofficemail";
 
-	/// FtpsModeType
+	/// FtpsModeType: Use plain FTP, do not use FTPS.
 	public const long FTPS_MODE_PLAINTEXT = 0;
 
-	/// FtpsModeType
+	/// FtpsModeType: Use implicit FTPS, immediately creating a secure SSL/TLS channel before any data is sent. This
+	/// usually requires a different port on the FTP server. It is generally advised to use explicit mode instead.
 	public const long FTPS_MODE_IMPLICIT = 1;
 
-	/// FtpsModeType
+	/// FtpsModeType: Use explicit FTPS, first creating an insecure connection and then upgrading to SSL/TLS using AUTH TLS
+	/// (like STARTTLS).
 	public const long FTPS_MODE_EXPLICIT = 2;
 
-	/// JobClassification
+	/// JobClassification: All BackupJobDetail.Classification fields will fall in the 4xxx range.
 	public const ulong JOB_CLASSIFICATION__MIN = 4000;
 
 	/// JobClassification
 	public const ulong JOB_CLASSIFICATION_UNKNOWN = 4000;
 
-	/// JobClassification
+	/// JobClassification: This is a backup job.
 	public const ulong JOB_CLASSIFICATION_BACKUP = 4001;
 
-	/// JobClassification
+	/// JobClassification: This is a restore job.
 	public const ulong JOB_CLASSIFICATION_RESTORE = 4002;
 
 	/// JobClassification: Automatic or manual retention cleaning pass.
@@ -230,13 +251,13 @@ public static class Def {
 	/// JobClassification: Software update
 	public const ulong JOB_CLASSIFICATION_UPDATE = 4007;
 
-	/// JobClassification
+	/// JobClassification: Importing settings from another installed product
 	public const ulong JOB_CLASSIFICATION_IMPORT = 4008;
 
 	/// JobClassification: Repair indexes
 	public const ulong JOB_CLASSIFICATION_REINDEX = 4009;
 
-	/// JobClassification
+	/// JobClassification: Deep Verify
 	public const ulong JOB_CLASSIFICATION_DEEPVERIFY = 4010;
 
 	/// JobClassification: Software uninstall
@@ -245,7 +266,7 @@ public static class Def {
 	/// JobClassification
 	public const ulong JOB_CLASSIFICATION__MAX = 4999;
 
-	/// JobStatus
+	/// JobStatus: If the BackupJobDetail.Status field is a 5xxx code, the job has stopped for a successful reason.
 	public const ulong JOB_STATUS_STOP_SUCCESS__MIN = 5000;
 
 	/// JobStatus
@@ -254,7 +275,7 @@ public static class Def {
 	/// JobStatus
 	public const ulong JOB_STATUS_STOP_SUCCESS__MAX = 5999;
 
-	/// JobStatus
+	/// JobStatus: If the BackupJobDetail.Status field is a 6xxx code, the job is still running.
 	public const ulong JOB_STATUS_RUNNING__MIN = 6000;
 
 	/// JobStatus: Unused
@@ -269,7 +290,7 @@ public static class Def {
 	/// JobStatus
 	public const ulong JOB_STATUS_RUNNING__MAX = 6999;
 
-	/// JobStatus
+	/// JobStatus: If the BackupJobDetail.Status field is a 7xxx code, the job has stopped for an unsuccessful reason.
 	public const ulong JOB_STATUS_FAILED__MIN = 7000;
 
 	/// JobStatus
@@ -308,13 +329,13 @@ public static class Def {
 	/// LDAPSecurityMethod
 	public const string LDAPSECURITYMETHOD_STARTTLS = "starttls";
 
-	/// MacOSCodesignLevel
+	/// MacOSCodesignLevel: Sign only
 	public const long MACOSCODESIGN_LEVEL_SIGN = 0;
 
-	/// MacOSCodesignLevel
+	/// MacOSCodesignLevel: Sign and notarize
 	public const long MACOSCODESIGN_LEVEL_SIGN_NOTARISE = 1;
 
-	/// MacOSCodesignLevel
+	/// MacOSCodesignLevel: Sign, notarize, and staple
 	public const long MACOSCODESIGN_LEVEL_SIGN_NOTARISE_STAPLE = 2;
 
 	public const long MIXED_VIRTUAL_ACCOUNT_TYPE_USER = 1;
@@ -383,7 +404,7 @@ public static class Def {
 	/// PSAType
 	public const long PSA_TYPE_GRADIENT = 1;
 
-	public const string RELEASE_CODENAME = "Voyager";
+	public const string RELEASE_CODENAME = "Thebe";
 
 	/// RemoteServerType
 	public const string REMOTESERVER_COMET = "comet";
@@ -433,58 +454,63 @@ public static class Def {
 	/// ReplicatorDisplayClass
 	public const long REPLICATOR_DISPLAYCLASS_USER = 101;
 
-	/// RestoreArchiveFormat
+	/// RestoreArchiveFormat: Tar file format
 	public const long RESTOREARCHIVEFORMAT_TAR = 0;
 
-	/// RestoreArchiveFormat
+	/// RestoreArchiveFormat: Compressed Tar.gz (.tgz) file format
 	public const long RESTOREARCHIVEFORMAT_TARGZ = 1;
 
-	/// RestoreArchiveFormat
+	/// RestoreArchiveFormat: Zip file format
 	public const long RESTOREARCHIVEFORMAT_ZIP = 2;
 
 	/// RestoreArchiveFormat: SquashFS container
 	public const long RESTOREARCHIVEFORMAT_SQFS = 3;
 
-	/// RestoreArchiveFormat
+	/// RestoreArchiveFormat: Compressed Tar.zstd (.tzst) file format
 	public const long RESTOREARCHIVEFORMAT_TARZSTD = 4;
 
 	/// RestoreType
 	public const long RESTORETYPE_INVALID = -1;
 
-	/// RestoreType
+	/// RestoreType: Restore as files and folders
 	public const long RESTORETYPE_FILE = 0;
 
-	/// RestoreType
+	/// RestoreType: Download and reconstruct files, but do not save them (for test purposes)
 	public const long RESTORETYPE_NULL = 1;
 
-	/// RestoreType
+	/// RestoreType: Stream each restored file into the target command stdin. The target command may be executed multiple
+	/// times, once for each restored file.
 	public const long RESTORETYPE_PROCESS_PERFILE = 2;
 
-	/// RestoreType
+	/// RestoreType: Stream an archive of each restored file into the target command stdin. The target command will be
+	/// executed only once.
 	public const long RESTORETYPE_PROCESS_ARCHIVE = 3;
 
-	/// RestoreType
+	/// RestoreType: Restore partitions back to the physical disk
 	public const long RESTORETYPE_WINDISK = 4;
 
-	/// RestoreType
+	/// RestoreType: Restore selected files and folders as a single compressed archive
 	public const long RESTORETYPE_FILE_ARCHIVE = 5;
 
-	/// RestoreType
+	/// RestoreType: Restore selected Office 365 emails, contacts, calendars, and SharePoint/OneDrive data directly to the
+	/// Office 365 cloud service
 	public const long RESTORETYPE_OFFICE365_CLOUD = 6;
 
-	/// RestoreType
+	/// RestoreType: Granular restore of single files from within a Disk Image or Hyper-V backup
 	public const long RESTORETYPE_VMDK_FILE = 7;
 
-	/// RestoreType
+	/// RestoreType: Granular restore of single files from within a Disk Image or Hyper-V backup, downloading and
+	/// reconstructing files, but without saving them (for test purposes)
 	public const long RESTORETYPE_VMDK_FILE_NULL = 8;
 
-	/// RestoreType
+	/// RestoreType: Granular restore of single files from within a Disk Image or Hyper-V backup, creating an archive file
+	/// of all selected files
 	public const long RESTORETYPE_VMDK_FILE_ARCHIVE = 9;
 
-	/// RestoreType
+	/// RestoreType: Stream restore as SQL statements into a target MySQL server
 	public const long RESTORETYPE_MYSQL = 10;
 
-	/// RestoreType
+	/// RestoreType: Stream restore as T-SQL BACKUP output into a target Microsoft SQL Server
 	public const long RESTORETYPE_MSSQL = 11;
 
 	/// RestoreType: Legacy name alias - Prefer to use RESTORETYPE_PROCESS_ARCHIVE since multiple archive file formats are
@@ -629,14 +655,19 @@ public static class Def {
 
 	public const string SEARCHOPERATOR_BOOL_NIS = "bool_nis";
 
+	/// 0000 0001. If this value is present in the bitset, then the Calendar service is selected for backup.
 	public const long SERVICE_CALENDAR = 1;
 
+	/// 0000 0010. If this value is present in the bitset, then the Contact service is selected for backup.
 	public const long SERVICE_CONTACT = 2;
 
+	/// 0000 0100. If this value is present in the bitset, then the Mail service is selected for backup.
 	public const long SERVICE_MAIL = 4;
 
+	/// 0000 1000. If this value is present in the bitset, then the SharePoint service is selected for backup.
 	public const long SERVICE_SHAREPOINT = 8;
 
+	/// 0001 0000. If this value is present in the bitset, then the OneDrive service is selected for backup.
 	public const long SERVICE_ONEDRIVE = 16;
 
 	/// DefaultSettingMode
@@ -666,27 +697,112 @@ public static class Def {
 	/// StreamableEventType
 	public const long SEVT__MIN = 4000;
 
-	/// StreamableEventType: This event is emitted when the webhook is registered, or when the server starts up. The Data
-	/// associated is ServerMetaVersionInfo
+	/// StreamableEventType: New websocket connection. Data is typically ServerMetaVersionInfo
 	public const long SEVT_META_HELLO = 4000;
 
-	/// StreamableEventType: Data is the profile object
+	/// StreamableEventType: User created. Data is the profile object
 	public const long SEVT_ACCOUNT_NEW = 4100;
 
-	/// StreamableEventType: Data is the username
+	/// StreamableEventType: User deleted
 	public const long SEVT_ACCOUNT_REMOVED = 4101;
 
-	/// StreamableEventType: Data is the profile object
+	/// StreamableEventType: User updated. Data is the profile object
 	public const long SEVT_ACCOUNT_UPDATED = 4102;
 
-	/// StreamableEventType
+	/// StreamableEventType: User authentication succeeded. Only emitted for non-session requests. Resource is the
+	/// requested path
+	public const long SEVT_ACCOUNT_LOGIN = 4103;
+
+	/// StreamableEventType: User authentication failed. Only emitted if the user exists. Resource is the requested path
+	public const long SEVT_ACCOUNT_LOGIN_FAILED = 4104;
+
+	/// StreamableEventType: User session token created. Data is the session object
+	public const long SEVT_ACCOUNT_SESSION_START = 4105;
+
+	/// StreamableEventType: User session token deleted
+	public const long SEVT_ACCOUNT_SESSION_REVOKE = 4106;
+
+	/// StreamableEventType: User session token expired
+	public const long SEVT_ACCOUNT_SESSION_EXPIRE = 4107;
+
+	/// StreamableEventType: Admin created. Data is the profile object
+	public const long SEVT_ACCOUNT_ADMIN_NEW = 4150;
+
+	/// StreamableEventType: Admin deleted
+	public const long SEVT_ACCOUNT_ADMIN_REMOVED = 4151;
+
+	/// StreamableEventType: Admin updated
+	public const long SEVT_ACCOUNT_ADMIN_UPDATED = 4152;
+
+	/// StreamableEventType: Admin authentication suceeded. Only emitted for non-session requests. Resource is the
+	/// requested path
+	public const long SEVT_ACCOUNT_ADMIN_LOGIN = 4153;
+
+	/// StreamableEventType: Admin authentication failed. Only emitted if the admin exists. Resource is the request path
+	public const long SEVT_ACCOUNT_ADMIN_LOGIN_FAILED = 4154;
+
+	/// StreamableEventType: Admin session token created. Data is the session object
+	public const long SEVT_ACCOUNT_ADMIN_SESSION_START = 4155;
+
+	/// StreamableEventType: Admin session token deleted
+	public const long SEVT_ACCOUNT_ADMIN_SESSION_REVOKE = 4156;
+
+	/// StreamableEventType: Admin session token expired
+	public const long SEVT_ACCOUNT_ADMIN_SESSION_EXPIRE = 4157;
+
+	/// StreamableEventType: New backup job started. Data is the job object
 	public const long SEVT_JOB_NEW = 4200;
 
-	/// StreamableEventType
+	/// StreamableEventType: Backup job completed. Data is the job object
 	public const long SEVT_JOB_COMPLETED = 4201;
 
-	/// StreamableEventType: Data is the string bucket ref
+	/// StreamableEventType: New bucket created
 	public const long SEVT_BUCKET_NEW = 4300;
+
+	/// StreamableEventType: Bucket deleted
+	public const long SEVT_BUCKET_REMOVED = 4301;
+
+	/// StreamableEventType: Server started
+	public const long SEVT_SERVER_STARTED = 4400;
+
+	/// StreamableEventType: Server restarting (pending)
+	public const long SEVT_SERVER_RESTARTED = 4401;
+
+	/// StreamableEventType: Server shutting down (pending)
+	public const long SEVT_SERVER_SHUTDOWN = 4402;
+
+	/// StreamableEventType: Server configuration has been updated. Data is the server config object
+	public const long SEVT_SERVER_UPDATED = 4403;
+
+	/// StreamableEventType: Tenant created. Data is the tenant object
+	public const long SEVT_TENANT_NEW = 4500;
+
+	/// StreamableEventType: Tenant deleted
+	public const long SEVT_TENANT_REMOVED = 4501;
+
+	/// StreamableEventType: Tenant updated. Data is the tenant object
+	public const long SEVT_TENANT_UPDATED = 4502;
+
+	/// StreamableEventType: Policy created. Data is the policy object
+	public const long SEVT_POLICY_NEW = 4600;
+
+	/// StreamableEventType: Policy deleted
+	public const long SEVT_POLICY_REMOVED = 4601;
+
+	/// StreamableEventType: Policy updated. Data is the policy object
+	public const long SEVT_POLICY_UPDATED = 4602;
+
+	/// StreamableEventType: Device created. Data is device object
+	public const long SEVT_DEVICE_NEW = 4700;
+
+	/// StreamableEventType: Device deleted
+	public const long SEVT_DEVICE_REMOVED = 4701;
+
+	/// StreamableEventType: Device live connection started
+	public const long SEVT_DEVICE_LIVE_CONNECT = 4702;
+
+	/// StreamableEventType: Device live connection ended
+	public const long SEVT_DEVICE_LIVE_DISCONNECT = 4703;
 
 	/// StreamableEventType
 	public const long SEVT__MAX = 4999;
@@ -778,6 +894,24 @@ public static class Def {
 	/// StoredObjectType
 	public const string STOREDOBJECTTYPE_VHDX_MBR_PARTITION = "vhdxpartitionmbr";
 
+	/// StreamLevel: Event data contains full data types
+	public const string STREAM_LEVEL_FULL = "full";
+
+	/// StreamLevel: Event data contains nothing
+	public const string STREAM_LEVEL_NONE = "none";
+
+	/// StreamerType
+	public const string STREAMER_TYPE_INTERNAL = "internal";
+
+	/// StreamerType
+	public const string STREAMER_TYPE_WEBHOOK = "webhook";
+
+	/// StreamerType
+	public const string STREAMER_TYPE_WEBSOCKET = "websocket";
+
+	/// StreamerType
+	public const string STREAMER_TYPE_FILE = "file";
+
 	/// If an API response returns in failure, but it includes this value in the CometAPIResponseMessage->Message
 	/// parameter, it indicates that your supplied authentication was insufficient, and you must supply additional
 	/// two-factor authentication credentials.
@@ -835,7 +969,7 @@ public static class Def {
 	public const long WEBAUTHN_DEVICE_TYPE__TPM_LINUX = 6;
 
 	/// WindowsCodesignMethod: When upgrading from a version of Comet Server prior to 22.12.7, this option will be
-	/// automatically converted to a more specific type..
+	/// automatically converted to a more specific type.
 	public const long WINDOWSCODESIGN_METHOD_AUTO = 0;
 
 	/// WindowsCodesignMethod: Do not perform Authenticode codesigning

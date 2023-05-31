@@ -7,7 +7,8 @@ using System.Text.Json.Serialization;
 
 namespace CometBackup.CometAPI.SDK {
 /// <summary>
-/// Class <c>AzureDestinationLocation</c>
+/// Class <c>AzureDestinationLocation</c> AzureDestinationLocation allows configuring connection settings for storage
+/// locations using the Azure Blob Storage API (DESTINATIONTYPE_AZURE).
 /// </summary>
 public class AzureDestinationLocation {
 	public string AZBAccountName { get; set; } = string.Empty;
