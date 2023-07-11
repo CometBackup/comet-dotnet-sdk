@@ -10,16 +10,34 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>MySQLConnection</c>
 /// </summary>
 public class MySQLConnection {
+
+	[JsonPropertyName("Host")]
 	public string Host { get; set; } = string.Empty;
+
+	[JsonPropertyName("Port")]
 	public string Port { get; set; } = string.Empty;
+
+	[JsonPropertyName("Username")]
 	//Optional
 	public string Username { get; set; } = string.Empty;
+
+	[JsonPropertyName("Password")]
 	//Optional
 	public string Password { get; set; } = string.Empty;
+
+	[JsonPropertyName("UseTLS")]
 	public bool UseTLS { get; set; }
+
+	[JsonPropertyName("TLSSkipVerify")]
 	public bool TLSSkipVerify { get; set; }
+
+	[JsonPropertyName("TLSCustomServerCAPath")]
 	public string TLSCustomServerCAPath { get; set; } = string.Empty;
+
+	[JsonPropertyName("TLSCustomClientCrtPath")]
 	public string TLSCustomClientCrtPath { get; set; } = string.Empty;
+
+	[JsonPropertyName("TLSCustomClientKeyPath")]
 	public string TLSCustomClientKeyPath { get; set; } = string.Empty;
 
 	public MySQLConnection(){ }

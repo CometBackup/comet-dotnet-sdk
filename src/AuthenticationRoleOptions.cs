@@ -10,14 +10,34 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>AuthenticationRoleOptions</c>
 /// </summary>
 public class AuthenticationRoleOptions {
+
+	[JsonPropertyName("RoleEnabled")]
 	public bool RoleEnabled { get; set; }
+
+	[JsonPropertyName("DatabaseCheckLevel")]
+	//One of the INTEGRITYCHECK_ constants
 	public long DatabaseCheckLevel { get; set; }
+
+	[JsonPropertyName("GenerateMissedBackupEvents")]
 	public bool GenerateMissedBackupEvents { get; set; }
+
+	[JsonPropertyName("NoMissedBackupEventsBefore")]
+	//Unix timestamp in seconds, before which no Missed jobs are created
 	public long NoMissedBackupEventsBefore { get; set; }
+
+	[JsonPropertyName("GenerateScheduledEmails")]
 	public bool GenerateScheduledEmails { get; set; }
+
+	[JsonPropertyName("PruneLogsAfterDays")]
 	public long PruneLogsAfterDays { get; set; }
+
+	[JsonPropertyName("RemoteStorage")]
 	public List<RemoteStorageOption> RemoteStorage { get; set; }
+
+	[JsonPropertyName("ReplicateTo")]
 	public List<ReplicaServer> ReplicateTo { get; set; }
+
+	[JsonPropertyName("GlobalOverrides")]
 	public GlobalOverrideOptions GlobalOverrides { get; set; }
 
 	public AuthenticationRoleOptions(){ }

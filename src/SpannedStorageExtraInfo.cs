@@ -10,6 +10,8 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>SpannedStorageExtraInfo</c>
 /// </summary>
 public class SpannedStorageExtraInfo {
+
+	[JsonPropertyName("Targets")]
 	public List<StorageFreeSpaceInfo> Targets { get; set; }
 
 	public SpannedStorageExtraInfo(){ }

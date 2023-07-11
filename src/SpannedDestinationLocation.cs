@@ -10,8 +10,12 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>SpannedDestinationLocation</c>
 /// </summary>
 public class SpannedDestinationLocation {
+
+	[JsonPropertyName("SpanTargets")]
 	//A list of underlying destinations, that will be combined and presented as one.
 	public List<DestinationLocation> SpanTargets { get; set; }
+
+	[JsonPropertyName("SpanUseStaticSlots")]
 	//If true, this Spanned destination will use a consistent hashing scheme
 	//to immediately find specific files on exactly one of the target destinations.
 	//In the Static Slots mode, the span targets cannot be moved or merged, and

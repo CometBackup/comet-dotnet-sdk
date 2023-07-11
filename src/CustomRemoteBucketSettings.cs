@@ -10,6 +10,8 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>CustomRemoteBucketSettings</c>
 /// </summary>
 public class CustomRemoteBucketSettings {
+
+	[JsonPropertyName("URL")]
 	public string URL { get; set; } = string.Empty;
 
 	public CustomRemoteBucketSettings(){ }

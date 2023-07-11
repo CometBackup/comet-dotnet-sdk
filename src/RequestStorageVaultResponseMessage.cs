@@ -10,9 +10,15 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>RequestStorageVaultResponseMessage</c>
 /// </summary>
 public class RequestStorageVaultResponseMessage {
+
+	[JsonPropertyName("Status")]
 	//If the operation was successful, the status will be in the 200-299 range.
 	public long Status { get; set; }
+
+	[JsonPropertyName("Message")]
 	public string Message { get; set; } = string.Empty;
+
+	[JsonPropertyName("DestinationID")]
 	public string DestinationID { get; set; } = string.Empty;
 
 	public RequestStorageVaultResponseMessage(){ }

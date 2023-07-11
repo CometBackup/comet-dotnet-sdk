@@ -13,10 +13,20 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 [Obsolete("Deprecated since Comet version 21.9.xx")]
 public class Office365CustomSetting {
+
+	[JsonPropertyName("MailboxStrategy")]
 	public string MailboxStrategy { get; set; } = string.Empty;
+
+	[JsonPropertyName("SiteStrategy")]
 	public string SiteStrategy { get; set; } = string.Empty;
+
+	[JsonPropertyName("MailboxUserIDs")]
 	public List<string> MailboxUserIDs { get; set; }
+
+	[JsonPropertyName("MailboxGroupIDs")]
 	public List<string> MailboxGroupIDs { get; set; }
+
+	[JsonPropertyName("SiteIDs")]
 	public List<string> SiteIDs { get; set; }
 
 	public Office365CustomSetting(){ }

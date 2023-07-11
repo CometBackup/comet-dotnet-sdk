@@ -10,14 +10,51 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>AdminUserPermissions</c>
 /// </summary>
 public class AdminUserPermissions {
+
+	[JsonPropertyName("PreventEditServerSettings")]
 	public bool PreventEditServerSettings { get; set; }
+
+	[JsonPropertyName("PreventServerShutdown")]
 	public bool PreventServerShutdown { get; set; }
+
+	[JsonPropertyName("PreventChangePassword")]
 	public bool PreventChangePassword { get; set; }
+
+	[JsonPropertyName("AllowEditBranding")]
 	public bool AllowEditBranding { get; set; }
+
+	[JsonPropertyName("AllowEditEmailOptions")]
 	public bool AllowEditEmailOptions { get; set; }
+
+	[JsonPropertyName("AllowEditRemoteStorage")]
 	public bool AllowEditRemoteStorage { get; set; }
+
+	[JsonPropertyName("AllowEditWebhooks")]
 	public bool AllowEditWebhooks { get; set; }
+
+	[JsonPropertyName("DenyConstellationRole")]
 	public bool DenyConstellationRole { get; set; }
+
+	[JsonPropertyName("DenyViewServerHistory")]
+	public bool DenyViewServerHistory { get; set; }
+
+	[JsonPropertyName("DenyViewServerInfo")]
+	public bool DenyViewServerInfo { get; set; }
+
+	[JsonPropertyName("PreventRequestStorageVault")]
+	public bool PreventRequestStorageVault { get; set; }
+
+	[JsonPropertyName("PreventAddCustomStorageVault")]
+	public bool PreventAddCustomStorageVault { get; set; }
+
+	[JsonPropertyName("HideCloudStorageBranding")]
+	public bool HideCloudStorageBranding { get; set; }
+
+	[JsonPropertyName("ShouldRestrictProviderList")]
+	public bool ShouldRestrictProviderList { get; set; }
+
+	[JsonPropertyName("AllowedProvidersWhenRestricted")]
+	public List<ulong> AllowedProvidersWhenRestricted { get; set; }
 
 	public AdminUserPermissions(){ }
 

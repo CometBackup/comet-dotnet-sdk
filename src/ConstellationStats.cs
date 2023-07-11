@@ -10,9 +10,21 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>ConstellationStats</c>
 /// </summary>
 public class ConstellationStats {
+
+	[JsonPropertyName("LastCheckStart")]
+	//Unix timestamp, in seconds.
 	public long LastCheckStart { get; set; }
+
+	[JsonPropertyName("TotalChecksStarted")]
+	//The total number of Constellation bucket report scans that have been performed since this Comet Server was last
+	//restarted
 	public long TotalChecksStarted { get; set; }
+
+	[JsonPropertyName("TotalBucketsDeleted")]
+	//The total number of buckets that Constellation has successfully deleted since this Comet Server was last restarted
 	public long TotalBucketsDeleted { get; set; }
+
+	[JsonPropertyName("ChecksCurrentlyActive")]
 	public long ChecksCurrentlyActive { get; set; }
 
 	public ConstellationStats(){ }

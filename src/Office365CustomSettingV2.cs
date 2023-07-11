@@ -12,12 +12,18 @@ namespace CometBackup.CometAPI.SDK {
 /// Since Version : 21.9.xx
 /// </summary>
 public class Office365CustomSettingV2 {
+
+	[JsonPropertyName("Organization")]
 	//If true, then backup the entire Office 365 Tenant except the selected members. If false, backup the selected members
 	//only.
 	public bool Organization { get; set; }
+
+	[JsonPropertyName("BackupOptions")]
 	//Key can be the ID of user, group or SharePoint
 	//Value is a bitset of the SERVICE_ constants, to select which services to back up for this member.
 	public Dictionary<string, long> BackupOptions { get; set; }
+
+	[JsonPropertyName("MemberBackupOptions")]
 	//Key must be a group ID
 	//Value is a bitset of the SERVICE_ constants, to select which services to back up for this member.
 	public Dictionary<string, long> MemberBackupOptions { get; set; }

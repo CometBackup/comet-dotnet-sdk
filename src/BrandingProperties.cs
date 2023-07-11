@@ -10,41 +10,114 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>BrandingProperties</c>
 /// </summary>
 public class BrandingProperties {
+
+	[JsonPropertyName("ProductName")]
 	public string ProductName { get; set; } = string.Empty;
+
+	[JsonPropertyName("CompanyName")]
 	public string CompanyName { get; set; } = string.Empty;
+
+	[JsonPropertyName("HelpURL")]
 	public string HelpURL { get; set; } = string.Empty;
+
+	[JsonPropertyName("HelpIsPopup")]
 	public bool HelpIsPopup { get; set; }
+
+	[JsonPropertyName("DefaultLoginServerURL")]
 	public string DefaultLoginServerURL { get; set; } = string.Empty;
+
+	[JsonPropertyName("TileBackgroundColor")]
 	public string TileBackgroundColor { get; set; } = string.Empty;
+
+	[JsonPropertyName("AccountRegisterURL")]
 	public string AccountRegisterURL { get; set; } = string.Empty;
+
+	[JsonPropertyName("HideBackgroundLogo")]
 	public bool HideBackgroundLogo { get; set; }
+
+	[JsonPropertyName("BuildMode")]
+	//One of the CLIENTBRANDINGBUILD_ constants
 	public long BuildMode { get; set; }
+
+	[JsonPropertyName("PathIcoFile")]
 	public string PathIcoFile { get; set; } = string.Empty;
+
+	[JsonPropertyName("PathIcnsFile")]
 	public string PathIcnsFile { get; set; } = string.Empty;
+
+	[JsonPropertyName("PathMenuBarIcnsFile")]
 	public string PathMenuBarIcnsFile { get; set; } = string.Empty;
+
+	[JsonPropertyName("PathEulaRtf")]
 	public string PathEulaRtf { get; set; } = string.Empty;
+
+	[JsonPropertyName("PathTilePng")]
 	public string PathTilePng { get; set; } = string.Empty;
+
+	[JsonPropertyName("PathHeaderImage")]
 	public string PathHeaderImage { get; set; } = string.Empty;
+
+	[JsonPropertyName("PathAppIconImage")]
 	public string PathAppIconImage { get; set; } = string.Empty;
+
+	[JsonPropertyName("PackageIdentifier")]
 	public string PackageIdentifier { get; set; } = string.Empty;
+
+	[JsonPropertyName("WindowsCodeSignMethod")]
+	//One of the WINDOWSCODESIGN_METHOD_ constants
 	public long WindowsCodeSignMethod { get; set; }
+
+	[JsonPropertyName("WindowsCodeSignPKCS12FilePath")]
 	public string WindowsCodeSignPKCS12FilePath { get; set; } = string.Empty;
+
+	[JsonPropertyName("WindowsCodeSignPKCS12PasswordFormat")]
+	//One of the ENCRYPTIONMETHOD_ constants
 	public ulong WindowsCodeSignPKCS12PasswordFormat { get; set; }
+
+	[JsonPropertyName("WindowsCodeSignPKCS12Password")]
 	public string WindowsCodeSignPKCS12Password { get; set; } = string.Empty;
+
+	[JsonPropertyName("WindowsCodeSignPKCS11Engine")]
 	public string WindowsCodeSignPKCS11Engine { get; set; } = string.Empty;
+
+	[JsonPropertyName("WindowsCodeSignPKCS11Module")]
 	public string WindowsCodeSignPKCS11Module { get; set; } = string.Empty;
 
 	[Obsolete("Deprecated since Comet version 22.12.7")]
+
+	[JsonPropertyName("WindowsCodeSignPKCS11Certfile")]
 	public string WindowsCodeSignPKCS11Certfile { get; set; } = string.Empty;
+
+	[JsonPropertyName("WindowsCodeSignPKCS11KeyID")]
 	public string WindowsCodeSignPKCS11KeyID { get; set; } = string.Empty;
+
+	[JsonPropertyName("WindowsCodeSignPKCS11PasswordFormat")]
+	//One of the ENCRYPTIONMETHOD_ constants
 	public ulong WindowsCodeSignPKCS11PasswordFormat { get; set; }
+
+	[JsonPropertyName("WindowsCodeSignPKCS11Password")]
 	public string WindowsCodeSignPKCS11Password { get; set; } = string.Empty;
+
+	[JsonPropertyName("WindowsCodeSignAzureVaultName")]
 	public string WindowsCodeSignAzureVaultName { get; set; } = string.Empty;
+
+	[JsonPropertyName("WindowsCodeSignAzureCertName")]
 	public string WindowsCodeSignAzureCertName { get; set; } = string.Empty;
+
+	[JsonPropertyName("WindowsCodeSignAzureAppID")]
 	public string WindowsCodeSignAzureAppID { get; set; } = string.Empty;
+
+	[JsonPropertyName("WindowsCodeSignAzureAppSecretFormat")]
+	//One of the ENCRYPTIONMETHOD_ constants
 	public ulong WindowsCodeSignAzureAppSecretFormat { get; set; }
+
+	[JsonPropertyName("WindowsCodeSignAzureAppSecret")]
 	public string WindowsCodeSignAzureAppSecret { get; set; } = string.Empty;
+
+	[JsonPropertyName("WindowsCodeSignAzureTenantID")]
 	public string WindowsCodeSignAzureTenantID { get; set; } = string.Empty;
+
+	[JsonPropertyName("MacOSCodeSign")]
 	public MacOSCodeSignProperties MacOSCodeSign { get; set; }
 
 	public BrandingProperties(){ }

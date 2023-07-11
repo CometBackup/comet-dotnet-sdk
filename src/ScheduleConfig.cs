@@ -10,14 +10,32 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>ScheduleConfig</c>
 /// </summary>
 public class ScheduleConfig {
+
+	[JsonPropertyName("FrequencyType")]
 	public ulong FrequencyType { get; set; }
+
+	[JsonPropertyName("SecondsPast")]
 	public ulong SecondsPast { get; set; }
+
+	[JsonPropertyName("Offset")]
 	public long Offset { get; set; }
+
+	[JsonPropertyName("RestrictRuntime")]
 	public bool RestrictRuntime { get; set; }
+
+	[JsonPropertyName("FromTime")]
 	public HourSchedConfig FromTime { get; set; }
+
+	[JsonPropertyName("ToTime")]
 	public HourSchedConfig ToTime { get; set; }
+
+	[JsonPropertyName("RestrictDays")]
 	public bool RestrictDays { get; set; }
+
+	[JsonPropertyName("DaysSelect")]
 	public DaysOfWeekConfig DaysSelect { get; set; }
+
+	[JsonPropertyName("RandomDelaySecs")]
 	public ulong RandomDelaySecs { get; set; }
 
 	public ScheduleConfig(){ }

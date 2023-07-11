@@ -10,10 +10,21 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>SingleFieldSource</c>
 /// </summary>
 public class SingleFieldSource {
+
+	[JsonPropertyName("FieldName")]
 	public string FieldName { get; set; } = string.Empty;
+
+	[JsonPropertyName("FieldType")]
+	//One of "bool" / "int" / "string"
 	public string FieldType { get; set; } = string.Empty;
+
+	[JsonPropertyName("BoolVal")]
 	public bool BoolVal { get; set; }
+
+	[JsonPropertyName("IntVal")]
 	public long IntVal { get; set; }
+
+	[JsonPropertyName("StrVal")]
 	public string StrVal { get; set; } = string.Empty;
 
 	public SingleFieldSource(){ }

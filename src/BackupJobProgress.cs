@@ -10,14 +10,24 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>BackupJobProgress</c>
 /// </summary>
 public class BackupJobProgress {
+
+	[JsonPropertyName("Counter")]
 	//This field will always increase monotonically, exactly once, for every change to the BackupJobProgress for a given
 	//backup job.
 	public long Counter { get; set; }
+
+	[JsonPropertyName("SentTime")]
 	//Unix timestamp in seconds
 	public long SentTime { get; set; }
+
+	[JsonPropertyName("RecievedTime")]
 	//Unix timestamp in seconds. The typo is preserved for backwards-compatibility reasons.
 	public long RecievedTime { get; set; }
+
+	[JsonPropertyName("BytesDone")]
 	public long BytesDone { get; set; }
+
+	[JsonPropertyName("ItemsDone")]
 	public long ItemsDone { get; set; }
 
 	public BackupJobProgress(){ }

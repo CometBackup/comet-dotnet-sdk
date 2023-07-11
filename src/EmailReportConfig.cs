@@ -10,12 +10,20 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>EmailReportConfig</c>
 /// </summary>
 public class EmailReportConfig {
+
+	[JsonPropertyName("ReportType")]
 	//One of the EMAILREPORTTYPE_ constants
 	public long ReportType { get; set; }
+
+	[JsonPropertyName("SummaryFrequency")]
 	//Used as a list of scheduled times to send
 	public List<ScheduleConfig> SummaryFrequency { get; set; }
+
+	[JsonPropertyName("TimeSpan")]
 	//Used to the determine the time bounds of a report
 	public TimeSpan TimeSpan { get; set; }
+
+	[JsonPropertyName("Filter")]
 	public SearchClause Filter { get; set; }
 
 	public EmailReportConfig(){ }

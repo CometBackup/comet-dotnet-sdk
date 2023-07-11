@@ -10,20 +10,38 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>SourceConfig</c>
 /// </summary>
 public class SourceConfig {
+
+	[JsonPropertyName("Engine")]
 	//One of the ENGINE_BUILTIN_ constants
 	public string Engine { get; set; } = string.Empty;
+
+	[JsonPropertyName("Description")]
 	public string Description { get; set; } = string.Empty;
+
+	[JsonPropertyName("OwnerDevice")]
 	public string OwnerDevice { get; set; } = string.Empty;
+
+	[JsonPropertyName("CreateTime")]
 	//Unix timestamp in seconds
 	public long CreateTime { get; set; }
+
+	[JsonPropertyName("ModifyTime")]
 	//Unix timestamp in seconds
 	public long ModifyTime { get; set; }
+
+	[JsonPropertyName("PreExec")]
 	//Custom commands to run before the job
 	public List<string> PreExec { get; set; }
+
+	[JsonPropertyName("ThawExec")]
 	//Custom commands to run after taking a disk snapshot
 	public List<string> ThawExec { get; set; }
+
+	[JsonPropertyName("PostExec")]
 	//Custom commands to run after the job
 	public List<string> PostExec { get; set; }
+
+	[JsonPropertyName("EngineProps")]
 	//Configuration for the selected Protected Item type. Each "Engine" supports
 	//different configuration options for the EngineProps values.
 	//
@@ -62,10 +80,22 @@ public class SourceConfig {
 	//- LOGNOTRUNC: If present, take a "Log (no truncation)" backup job. Otherwise, take a "Full (copy only)" backup job.
 	//
 	public Dictionary<string, string> EngineProps { get; set; }
+
+	[JsonPropertyName("PolicySourceID")]
+	//If set, this SourceConfig was added from a Policy with the specified ID.
+	public string PolicySourceID { get; set; } = string.Empty;
+
+	[JsonPropertyName("ExistingUserUpdate")]
+	//For a Policy-defined SourceConfig, this field controls whether the Protected Item will stay linked with the policy.
+	public bool ExistingUserUpdate { get; set; }
+
+	[JsonPropertyName("OverrideDestinationRetention")]
 	//By default, backup jobs from this Protected Item will be subject
 	//to the overall retention policy for the Storage Vault. You can override the policy
 	//for specific Storage Vaults by putting their destination ID as a key here.
 	public Dictionary<string, RetentionPolicy> OverrideDestinationRetention { get; set; }
+
+	[JsonPropertyName("Statistics")]
 	public SourceStatistics Statistics { get; set; }
 
 	public SourceConfig(){ }

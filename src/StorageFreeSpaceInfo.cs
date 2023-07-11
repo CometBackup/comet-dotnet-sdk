@@ -10,10 +10,20 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>StorageFreeSpaceInfo</c>
 /// </summary>
 public class StorageFreeSpaceInfo {
+
+	[JsonPropertyName("Unlimited")]
 	public bool Unlimited { get; set; }
+
+	[JsonPropertyName("UsedPercent")]
 	public double UsedPercent { get; set; }
+
+	[JsonPropertyName("AvailableBytes")]
 	public ulong AvailableBytes { get; set; }
+
+	[JsonPropertyName("Spanned")]
 	public SpannedStorageExtraInfo Spanned { get; set; }
+
+	[JsonPropertyName("B2")]
 	public B2StorageExtraInfo B2 { get; set; }
 
 	public StorageFreeSpaceInfo(){ }

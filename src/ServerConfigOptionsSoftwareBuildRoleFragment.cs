@@ -10,6 +10,8 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>ServerConfigOptionsSoftwareBuildRoleFragment</c>
 /// </summary>
 public class ServerConfigOptionsSoftwareBuildRoleFragment {
+
+	[JsonPropertyName("SoftwareBuildRole")]
 	public SoftwareBuildRoleOptions SoftwareBuildRole { get; set; }
 
 	public ServerConfigOptionsSoftwareBuildRoleFragment(){ }

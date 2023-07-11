@@ -11,8 +11,15 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 [Obsolete("Deprecated since Comet version 21.12.0")]
 public class AdminU2FRegistration {
+
+	[JsonPropertyName("Description")]
 	public string Description { get; set; } = string.Empty;
+
+	[JsonPropertyName("RegisterTime")]
+	//Unix timestamp, in seconds.
 	public long RegisterTime { get; set; }
+
+	[JsonPropertyName("Registration")]
 	public byte[] Registration { get; set; }
 
 	public AdminU2FRegistration(){ }

@@ -10,19 +10,35 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>SFTPDestinationLocation</c>
 /// </summary>
 public class SFTPDestinationLocation {
+
+	[JsonPropertyName("SFTPServer")]
 	public string SFTPServer { get; set; } = string.Empty;
+
+	[JsonPropertyName("SFTPUsername")]
 	public string SFTPUsername { get; set; } = string.Empty;
+
+	[JsonPropertyName("SFTPRemotePath")]
 	//The directory on the SFTP server in which data is stored.
 	public string SFTPRemotePath { get; set; } = string.Empty;
+
+	[JsonPropertyName("SFTPAuthMode")]
 	//One of the DESTINATION_SFTP_AUTHMODE_ constants
 	public ulong SFTPAuthMode { get; set; }
+
+	[JsonPropertyName("SFTPPassword")]
 	//For use with DESTINATION_SFTP_AUTHMODE_PASSWORD only: the SSH password to connect with
 	public string SFTPPassword { get; set; } = string.Empty;
+
+	[JsonPropertyName("SFTPPrivateKey")]
 	//For use with DESTINATION_SFTP_AUTHMODE_PRIVATEKEY only: the SSH private key to connect with, in OpenSSH format.
 	public string SFTPPrivateKey { get; set; } = string.Empty;
+
+	[JsonPropertyName("SFTPCustomAuth_UseKnownHostsFile")]
 	//If true, then the SFTPCustomAuth_KnownHostsFile will be used to verify the remote SSH server's host key, using Trust
 	//On First Use (TOFU).
 	public bool SFTPCustomAuth_UseKnownHostsFile { get; set; }
+
+	[JsonPropertyName("SFTPCustomAuth_KnownHostsFile")]
 	//If SFTPCustomAuth_UseKnownHostFile is true, the path to the SSH known_hosts file.
 	public string SFTPCustomAuth_KnownHostsFile { get; set; } = string.Empty;
 

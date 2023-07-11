@@ -10,11 +10,21 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>DestinationStatistics</c>
 /// </summary>
 public class DestinationStatistics {
+
+	[JsonPropertyName("ClientProvidedSize")]
 	public SizeMeasurement ClientProvidedSize { get; set; }
+
+	[JsonPropertyName("ClientProvidedContent")]
 	public ContentMeasurement ClientProvidedContent { get; set; }
+
+	[JsonPropertyName("LastSuccessfulDeepVerify_GUID")]
 	public string LastSuccessfulDeepVerify_GUID { get; set; } = string.Empty;
+
+	[JsonPropertyName("LastSuccessfulDeepVerify_StartTime")]
 	//Unix timestamp in seconds
 	public long LastSuccessfulDeepVerify_StartTime { get; set; }
+
+	[JsonPropertyName("LastSuccessfulDeepVerify_EndTime")]
 	//Unix timestamp in seconds
 	public long LastSuccessfulDeepVerify_EndTime { get; set; }
 

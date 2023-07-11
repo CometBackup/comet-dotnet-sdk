@@ -12,8 +12,12 @@ namespace CometBackup.CometAPI.SDK {
 /// It should be marshalled as JSON and then stored in the PINCLUDE / RINCLUDE EngineProp keys.
 /// </summary>
 public class SourceIncludePattern {
+
+	[JsonPropertyName("TopDirectory")]
 	//The filesystem path to search within, for matches
 	public string TopDirectory { get; set; } = string.Empty;
+
+	[JsonPropertyName("Value")]
 	//The pattern (glob or regex format) to match
 	public string Value { get; set; } = string.Empty;
 

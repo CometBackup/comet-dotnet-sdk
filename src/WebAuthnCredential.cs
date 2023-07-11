@@ -10,10 +10,20 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>WebAuthnCredential</c>
 /// </summary>
 public class WebAuthnCredential {
+
+	[JsonPropertyName("PublicKey")]
 	public byte[] PublicKey { get; set; }
+
+	[JsonPropertyName("AttestationType")]
 	public string AttestationType { get; set; } = string.Empty;
+
+	[JsonPropertyName("AAGUID")]
 	public byte[] AAGUID { get; set; }
+
+	[JsonPropertyName("SignCount")]
 	public uint SignCount { get; set; }
+
+	[JsonPropertyName("CloneWarning")]
 	public bool CloneWarning { get; set; }
 
 	public WebAuthnCredential(){ }

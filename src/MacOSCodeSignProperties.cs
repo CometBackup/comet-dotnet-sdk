@@ -10,21 +10,57 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>MacOSCodeSignProperties</c>
 /// </summary>
 public class MacOSCodeSignProperties {
+
+	[JsonPropertyName("Level")]
 	//One of the MACOSCODESIGN_LEVEL_ constants
 	public long Level { get; set; }
+
+	[JsonPropertyName("SignLocally")]
 	public bool SignLocally { get; set; }
+
+	[JsonPropertyName("SSHServer")]
 	public SSHConnection SSHServer { get; set; }
+
+	[JsonPropertyName("CertificateName")]
+	//"Developer ID Installer" certificate, either a local filepath or a resource:// URI. Used for signing the final flat
+	//*.pkg.
 	public string CertificateName { get; set; } = string.Empty;
+
+	[JsonPropertyName("AppCertificateName")]
+	//"Developer ID Application" certificate, either a local filepath or a resource:// URI. Used for signing internal
+	//binaries if Notary is enabled
 	public string AppCertificateName { get; set; } = string.Empty;
+
+	[JsonPropertyName("AppleID")]
 	public string AppleID { get; set; } = string.Empty;
+
+	[JsonPropertyName("AppleIDPass")]
 	public string AppleIDPass { get; set; } = string.Empty;
+
+	[JsonPropertyName("AppleIDPassFormat")]
+	//One of the ENCRYPTIONMETHOD_ constants
 	public ulong AppleIDPassFormat { get; set; }
+
+	[JsonPropertyName("CertificateFile")]
 	public string CertificateFile { get; set; } = string.Empty;
+
+	[JsonPropertyName("AppCertificateFile")]
 	public string AppCertificateFile { get; set; } = string.Empty;
+
+	[JsonPropertyName("PfxFilePassword")]
 	public string PfxFilePassword { get; set; } = string.Empty;
+
+	[JsonPropertyName("PfxFilePasswordFormat")]
+	//One of the ENCRYPTIONMETHOD_ constants
 	public ulong PfxFilePasswordFormat { get; set; }
+
+	[JsonPropertyName("NotaryAPIIssuerID")]
 	public string NotaryAPIIssuerID { get; set; } = string.Empty;
+
+	[JsonPropertyName("NotaryAPIKeyID")]
 	public string NotaryAPIKeyID { get; set; } = string.Empty;
+
+	[JsonPropertyName("NotaryAPIKeyFile")]
 	public string NotaryAPIKeyFile { get; set; } = string.Empty;
 
 	public MacOSCodeSignProperties(){ }

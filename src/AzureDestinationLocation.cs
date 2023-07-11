@@ -11,11 +11,21 @@ namespace CometBackup.CometAPI.SDK {
 /// locations using the Azure Blob Storage API (DESTINATIONTYPE_AZURE).
 /// </summary>
 public class AzureDestinationLocation {
+
+	[JsonPropertyName("AZBAccountName")]
 	public string AZBAccountName { get; set; } = string.Empty;
+
+	[JsonPropertyName("AZBAccountKey")]
 	public string AZBAccountKey { get; set; } = string.Empty;
+
+	[JsonPropertyName("AZBContainer")]
 	public string AZBContainer { get; set; } = string.Empty;
+
+	[JsonPropertyName("AZBRealm")]
 	//The base URL for the Azure Blob Storage service. Leave blank to use the global default URL.
 	public string AZBRealm { get; set; } = string.Empty;
+
+	[JsonPropertyName("AZBPrefix")]
 	public string AZBPrefix { get; set; } = string.Empty;
 
 	public AzureDestinationLocation(){ }

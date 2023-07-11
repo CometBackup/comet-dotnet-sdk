@@ -11,15 +11,27 @@ namespace CometBackup.CometAPI.SDK {
 /// locations using the Backblaze B2 native API (DESTINATIONTYPE_B2).
 /// </summary>
 public class B2DestinationLocation {
+
+	[JsonPropertyName("AccountID")]
 	//Key ID
 	public string AccountID { get; set; } = string.Empty;
+
+	[JsonPropertyName("Key")]
 	//Application Key
 	public string Key { get; set; } = string.Empty;
+
+	[JsonPropertyName("Bucket")]
 	public string Bucket { get; set; } = string.Empty;
+
+	[JsonPropertyName("Prefix")]
 	public string Prefix { get; set; } = string.Empty;
 
 	[Obsolete("Deprecated since Comet version 21.9.7")]
+
+	[JsonPropertyName("MaxConnections")]
 	public long MaxConnections { get; set; }
+
+	[JsonPropertyName("HideDeletedFiles")]
 	//Hide files instead of deleting them. This can be used for ransomware protection if (A) the B2 credentials have the
 	//hideFile permission but not the deleteFile permission, and (B) you use the Backblaze B2 server-side lifecycle
 	//policies to clean up old hidden files.

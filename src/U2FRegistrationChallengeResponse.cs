@@ -11,12 +11,24 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 [Obsolete("Deprecated since Comet version 21.12.0")]
 public class U2FRegistrationChallengeResponse {
+
+	[JsonPropertyName("Status")]
 	//If the operation was successful, the status will be in the 200-299 range.
 	public long Status { get; set; }
+
+	[JsonPropertyName("Message")]
 	public string Message { get; set; } = string.Empty;
+
+	[JsonPropertyName("ChallengeID")]
 	public string ChallengeID { get; set; } = string.Empty;
+
+	[JsonPropertyName("AppID")]
 	public string AppID { get; set; } = string.Empty;
+
+	[JsonPropertyName("RegisteredKeys")]
 	public List<U2FRegisteredKey> RegisteredKeys { get; set; }
+
+	[JsonPropertyName("RegisterRequests")]
 	public List<U2FRegisterRequest> RegisterRequests { get; set; }
 
 	public U2FRegistrationChallengeResponse(){ }

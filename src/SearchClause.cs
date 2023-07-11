@@ -10,10 +10,33 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>SearchClause</c>
 /// </summary>
 public class SearchClause {
+
+	[JsonPropertyName("ClauseType")]
+	//One of the SEARCHCLAUSE_ constants (e.g. empty-string if this is a rule, or "and"/"or" if there are ClauseChildren)
 	public string ClauseType { get; set; } = string.Empty;
+
+	[JsonPropertyName("RuleField")]
+	//The field name to search. Check the specific API for more information about which fields are available for searching.
+	//For use with ClauseType = SEARCHCLAUSE_RULE.
 	public string RuleField { get; set; } = string.Empty;
+
+	[JsonPropertyName("RuleOperator")]
+	//One of the SEARCHOPERATOR_ constants. The operator must match the type of the particular field. For use with
+	//ClauseType = SEARCHCLAUSE_RULE.
 	public string RuleOperator { get; set; } = string.Empty;
+
+	[JsonPropertyName("RuleValue")]
+	//The value to compare the field against.
+	//- If the field is a string, any string is permissable.
+	//- If the field is an integer, the integer should be cast to a base-10 string. There is currently no support for
+	//fractional or floating-point numbers.
+	//- If the field is a boolean, the following values can be used for true ("1", "t", "T", "true", "TRUE", "True") and
+	//the following values can be used for false ("0", "f", "F", "false", "FALSE", "False").
+	//For use with ClauseType = SEARCHCLAUSE_RULE.
 	public string RuleValue { get; set; } = string.Empty;
+
+	[JsonPropertyName("ClauseChildren")]
+	//If ClauseType is not SEARCHCLAUSE_RULE, the child rules will be applied according to the ClauseType (e.g. "and"/"or")
 	public List<SearchClause> ClauseChildren { get; set; }
 
 	public SearchClause(){ }

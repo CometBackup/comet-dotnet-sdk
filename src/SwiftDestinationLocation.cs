@@ -10,25 +10,51 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>SwiftDestinationLocation</c>
 /// </summary>
 public class SwiftDestinationLocation {
+
+	[JsonPropertyName("Username")]
 	//Username or UserID or Application Credential name or Application Credential ID, or blank for token authentication
 	public string Username { get; set; } = string.Empty;
+
+	[JsonPropertyName("APIKey")]
 	//User Password, or Application Credential Key, or token if the Username field is blank
 	public string APIKey { get; set; } = string.Empty;
+
+	[JsonPropertyName("Region")]
 	public string Region { get; set; } = string.Empty;
+
+	[JsonPropertyName("AuthURL")]
 	//Mandatory
 	public string AuthURL { get; set; } = string.Empty;
+
+	[JsonPropertyName("Domain")]
 	public string Domain { get; set; } = string.Empty;
+
+	[JsonPropertyName("Tenant")]
 	//Tenant name (v2) or Project name (v3)
 	public string Tenant { get; set; } = string.Empty;
+
+	[JsonPropertyName("TenantDomain")]
 	//Project domain name (v3)
 	public string TenantDomain { get; set; } = string.Empty;
+
+	[JsonPropertyName("TenantID")]
 	public string TenantID { get; set; } = string.Empty;
+
+	[JsonPropertyName("TrustID")]
 	public string TrustID { get; set; } = string.Empty;
 
 	[Obsolete("Deprecated since Comet version 17.8.0")]
+
+	[JsonPropertyName("AuthToken")]
 	public string AuthToken { get; set; } = string.Empty;
+
+	[JsonPropertyName("Prefix")]
 	public string Prefix { get; set; } = string.Empty;
+
+	[JsonPropertyName("Container")]
 	public string Container { get; set; } = string.Empty;
+
+	[JsonPropertyName("DefaultContainerPolicy")]
 	public string DefaultContainerPolicy { get; set; } = string.Empty;
 
 	public SwiftDestinationLocation(){ }

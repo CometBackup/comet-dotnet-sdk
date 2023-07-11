@@ -10,12 +10,20 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>LocalDestinationLocation</c>
 /// </summary>
 public class LocalDestinationLocation {
+
+	[JsonPropertyName("LocalcopyPath")]
 	public string LocalcopyPath { get; set; } = string.Empty;
+
+	[JsonPropertyName("LocalcopyWinSMBUsername")]
 	//If logging in to a Windows network share (SMB/CIFS) is required, enter the username here.
 	public string LocalcopyWinSMBUsername { get; set; } = string.Empty;
+
+	[JsonPropertyName("LocalcopyWinSMBPassword")]
 	//If logging in to a Windows network share (SMB/CIFS) is required, enter the password here. The password may be hashed
 	//as per the LocalcopyWinSMBPasswordFormat field.
 	public string LocalcopyWinSMBPassword { get; set; } = string.Empty;
+
+	[JsonPropertyName("LocalcopyWinSMBPasswordFormat")]
 	//One of the PASSWORD_FORMAT_ constants. It controls the hash format of the LocalcopyWinSMBPassword field.
 	public ulong LocalcopyWinSMBPasswordFormat { get; set; }
 

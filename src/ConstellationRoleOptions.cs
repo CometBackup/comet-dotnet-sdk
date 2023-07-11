@@ -10,8 +10,14 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>ConstellationRoleOptions</c>
 /// </summary>
 public class ConstellationRoleOptions {
+
+	[JsonPropertyName("RoleEnabled")]
 	public bool RoleEnabled { get; set; }
+
+	[JsonPropertyName("DeleteUnusedData")]
 	public bool DeleteUnusedData { get; set; }
+
+	[JsonPropertyName("Servers")]
 	public List<RemoteServerAddress> Servers { get; set; }
 
 	public ConstellationRoleOptions(){ }

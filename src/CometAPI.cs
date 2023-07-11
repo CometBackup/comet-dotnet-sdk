@@ -2860,7 +2860,15 @@ public class CometAPI : IDisposable {
 	/// <param name="Snapshot">(Optional) If present, restore a specific snapshot. Otherwise, restore the latest snapshot
 	/// for the selected Protected Item + Storage Vault pair</param>
 	/// <param name="Paths">(Optional) If present, restore these paths only. Otherwise, restore all data</param>
-	public async Task<CometAPIResponseMessage> AdminDispatcherRunRestoreCustomAsync(string TargetID, string Source, string Destination, RestoreJobAdvancedOptions Options, string Snapshot = null, string[] Paths = null) {
+	/// <param name="KnownFileCount">(Optional) The number of files to restore, if known. Supplying this means we don't
+	/// need to walk the entire tree just to find the file count and will speed up the restoration process.</param>
+	/// <param name="KnownByteCount">(Optional) The total size in bytes of files to restore, if known. Supplying this means
+	/// we don't need to walk the entire tree just to find the total file size and will speed up the restoration
+	/// process.</param>
+	/// <param name="KnownDirCount">(Optional) The number of directories to restore, if known. Supplying this means we
+	/// don't need to walk the entire tree just to find the number of directories and will speed up the restoration
+	/// process.</param>
+	public async Task<CometAPIResponseMessage> AdminDispatcherRunRestoreCustomAsync(string TargetID, string Source, string Destination, RestoreJobAdvancedOptions Options, string Snapshot = null, string[] Paths = null, Nullable<int> KnownFileCount = null, Nullable<int> KnownByteCount = null, Nullable<int> KnownDirCount = null) {
 		var data = new Dictionary<string,string>();
 
 		data["TargetID"] = TargetID;
@@ -2872,6 +2880,15 @@ public class CometAPI : IDisposable {
 		}
 		if (Paths != null) {
 			data["Paths"] = JsonSerializer.Serialize(Paths);
+		}
+		if (KnownFileCount != null) {
+			data["KnownFileCount"] = JsonSerializer.Serialize(KnownFileCount);
+		}
+		if (KnownByteCount != null) {
+			data["KnownByteCount"] = JsonSerializer.Serialize(KnownByteCount);
+		}
+		if (KnownDirCount != null) {
+			data["KnownDirCount"] = JsonSerializer.Serialize(KnownDirCount);
 		}
 
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/dispatcher/run-restore-custom", data)){
@@ -2896,8 +2913,16 @@ public class CometAPI : IDisposable {
 	/// <param name="Snapshot">(Optional) If present, restore a specific snapshot. Otherwise, restore the latest snapshot
 	/// for the selected Protected Item + Storage Vault pair</param>
 	/// <param name="Paths">(Optional) If present, restore these paths only. Otherwise, restore all data</param>
-	public CometAPIResponseMessage AdminDispatcherRunRestoreCustom(string TargetID, string Source, string Destination, RestoreJobAdvancedOptions Options, string Snapshot = null, string[] Paths = null) {
-		var resultTask = AdminDispatcherRunRestoreCustomAsync(TargetID, Source, Destination, Options, Snapshot, Paths);
+	/// <param name="KnownFileCount">(Optional) The number of files to restore, if known. Supplying this means we don't
+	/// need to walk the entire tree just to find the file count and will speed up the restoration process.</param>
+	/// <param name="KnownByteCount">(Optional) The total size in bytes of files to restore, if known. Supplying this means
+	/// we don't need to walk the entire tree just to find the total file size and will speed up the restoration
+	/// process.</param>
+	/// <param name="KnownDirCount">(Optional) The number of directories to restore, if known. Supplying this means we
+	/// don't need to walk the entire tree just to find the number of directories and will speed up the restoration
+	/// process.</param>
+	public CometAPIResponseMessage AdminDispatcherRunRestoreCustom(string TargetID, string Source, string Destination, RestoreJobAdvancedOptions Options, string Snapshot = null, string[] Paths = null, Nullable<int> KnownFileCount = null, Nullable<int> KnownByteCount = null, Nullable<int> KnownDirCount = null) {
+		var resultTask = AdminDispatcherRunRestoreCustomAsync(TargetID, Source, Destination, Options, Snapshot, Paths, KnownFileCount, KnownByteCount, KnownDirCount);
 		resultTask.Wait();
 		return resultTask.Result;
 	}
@@ -6870,7 +6895,15 @@ public class CometAPI : IDisposable {
 	/// for the selected Protected Item + Storage Vault pair</param>
 	/// <param name="Paths">(Optional) If present, restore these paths only. Otherwise, restore all data (>=
 	/// 19.3.0)</param>
-	public async Task<CometAPIResponseMessage> UserWebDispatcherRunRestoreCustomAsync(string TargetID, string Source, string Destination, RestoreJobAdvancedOptions Options, string Snapshot = null, string[] Paths = null) {
+	/// <param name="KnownFileCount">(Optional) The number of files to restore, if known. Supplying this means we don't
+	/// need to walk the entire tree just to find the file count and will speed up the restoration process.</param>
+	/// <param name="KnownByteCount">(Optional) The total size in bytes of files to restore, if known. Supplying this means
+	/// we don't need to walk the entire tree just to find the total file size and will speed up the restoration
+	/// process.</param>
+	/// <param name="KnownDirCount">(Optional) The number of directories to restore, if known. Supplying this means we
+	/// don't need to walk the entire tree just to find the number of directories and will speed up the restoration
+	/// process.</param>
+	public async Task<CometAPIResponseMessage> UserWebDispatcherRunRestoreCustomAsync(string TargetID, string Source, string Destination, RestoreJobAdvancedOptions Options, string Snapshot = null, string[] Paths = null, Nullable<int> KnownFileCount = null, Nullable<int> KnownByteCount = null, Nullable<int> KnownDirCount = null) {
 		var data = new Dictionary<string,string>();
 
 		data["TargetID"] = TargetID;
@@ -6882,6 +6915,15 @@ public class CometAPI : IDisposable {
 		}
 		if (Paths != null) {
 			data["Paths"] = JsonSerializer.Serialize(Paths);
+		}
+		if (KnownFileCount != null) {
+			data["KnownFileCount"] = JsonSerializer.Serialize(KnownFileCount);
+		}
+		if (KnownByteCount != null) {
+			data["KnownByteCount"] = JsonSerializer.Serialize(KnownByteCount);
+		}
+		if (KnownDirCount != null) {
+			data["KnownDirCount"] = JsonSerializer.Serialize(KnownDirCount);
 		}
 
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/user/web/dispatcher/run-restore-custom", data)){
@@ -6908,8 +6950,16 @@ public class CometAPI : IDisposable {
 	/// for the selected Protected Item + Storage Vault pair</param>
 	/// <param name="Paths">(Optional) If present, restore these paths only. Otherwise, restore all data (>=
 	/// 19.3.0)</param>
-	public CometAPIResponseMessage UserWebDispatcherRunRestoreCustom(string TargetID, string Source, string Destination, RestoreJobAdvancedOptions Options, string Snapshot = null, string[] Paths = null) {
-		var resultTask = UserWebDispatcherRunRestoreCustomAsync(TargetID, Source, Destination, Options, Snapshot, Paths);
+	/// <param name="KnownFileCount">(Optional) The number of files to restore, if known. Supplying this means we don't
+	/// need to walk the entire tree just to find the file count and will speed up the restoration process.</param>
+	/// <param name="KnownByteCount">(Optional) The total size in bytes of files to restore, if known. Supplying this means
+	/// we don't need to walk the entire tree just to find the total file size and will speed up the restoration
+	/// process.</param>
+	/// <param name="KnownDirCount">(Optional) The number of directories to restore, if known. Supplying this means we
+	/// don't need to walk the entire tree just to find the number of directories and will speed up the restoration
+	/// process.</param>
+	public CometAPIResponseMessage UserWebDispatcherRunRestoreCustom(string TargetID, string Source, string Destination, RestoreJobAdvancedOptions Options, string Snapshot = null, string[] Paths = null, Nullable<int> KnownFileCount = null, Nullable<int> KnownByteCount = null, Nullable<int> KnownDirCount = null) {
+		var resultTask = UserWebDispatcherRunRestoreCustomAsync(TargetID, Source, Destination, Options, Snapshot, Paths, KnownFileCount, KnownByteCount, KnownDirCount);
 		resultTask.Wait();
 		return resultTask.Result;
 	}

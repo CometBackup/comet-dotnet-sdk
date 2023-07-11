@@ -10,9 +10,15 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>BrowseVSSResponse</c>
 /// </summary>
 public class BrowseVSSResponse {
+
+	[JsonPropertyName("Status")]
 	//If the operation was successful, the status will be in the 200-299 range.
 	public long Status { get; set; }
+
+	[JsonPropertyName("Message")]
 	public string Message { get; set; } = string.Empty;
+
+	[JsonPropertyName("VSSWriters")]
 	public Dictionary<string, VSSWriterInfo> VSSWriters { get; set; }
 
 	public BrowseVSSResponse(){ }

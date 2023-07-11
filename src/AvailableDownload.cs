@@ -10,8 +10,14 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>AvailableDownload</c>
 /// </summary>
 public class AvailableDownload {
+
+	[JsonPropertyName("Category")]
 	public string Category { get; set; } = string.Empty;
+
+	[JsonPropertyName("Description")]
 	public string Description { get; set; } = string.Empty;
+
+	[JsonPropertyName("Recommended")]
 	public bool Recommended { get; set; }
 
 	public AvailableDownload(){ }

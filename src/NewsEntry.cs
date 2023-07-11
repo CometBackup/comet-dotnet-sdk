@@ -10,8 +10,15 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>NewsEntry</c>
 /// </summary>
 public class NewsEntry {
+
+	[JsonPropertyName("OrganizationID")]
 	public string OrganizationID { get; set; } = string.Empty;
+
+	[JsonPropertyName("DateTime")]
+	//Unix timestamp, in seconds.
 	public long DateTime { get; set; }
+
+	[JsonPropertyName("TextContent")]
 	public string TextContent { get; set; } = string.Empty;
 
 	public NewsEntry(){ }

@@ -10,10 +10,22 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>BucketProperties</c>
 /// </summary>
 public class BucketProperties {
+
+	[JsonPropertyName("OrganizationID")]
 	public string OrganizationID { get; set; } = string.Empty;
+
+	[JsonPropertyName("CreateTime")]
+	//Unix timestamp, in seconds.
 	public long CreateTime { get; set; }
+
+	[JsonPropertyName("ReadWriteKeyFormat")]
+	//One of the PASSWORD_FORMAT_ constants
 	public long ReadWriteKeyFormat { get; set; }
+
+	[JsonPropertyName("ReadWriteKey")]
 	public string ReadWriteKey { get; set; } = string.Empty;
+
+	[JsonPropertyName("Size")]
 	public SizeMeasurement Size { get; set; }
 
 	public BucketProperties(){ }

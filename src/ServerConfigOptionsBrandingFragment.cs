@@ -10,6 +10,8 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>ServerConfigOptionsBrandingFragment</c>
 /// </summary>
 public class ServerConfigOptionsBrandingFragment {
+
+	[JsonPropertyName("Branding")]
 	public BrandingOptions Branding { get; set; }
 
 	public ServerConfigOptionsBrandingFragment(){ }

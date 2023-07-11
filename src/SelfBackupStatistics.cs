@@ -10,10 +10,20 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>SelfBackupStatistics</c>
 /// </summary>
 public class SelfBackupStatistics {
+
+	[JsonPropertyName("CurrentRunStart")]
 	public long CurrentRunStart { get; set; }
+
+	[JsonPropertyName("LastRunStart")]
 	public long LastRunStart { get; set; }
+
+	[JsonPropertyName("LastRunEnd")]
 	public long LastRunEnd { get; set; }
+
+	[JsonPropertyName("LastRunSuccess")]
 	public bool LastRunSuccess { get; set; }
+
+	[JsonPropertyName("LastRunSize")]
 	public long LastRunSize { get; set; }
 
 	public SelfBackupStatistics(){ }

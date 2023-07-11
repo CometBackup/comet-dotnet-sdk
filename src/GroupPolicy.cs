@@ -10,14 +10,26 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>GroupPolicy</c>
 /// </summary>
 public class GroupPolicy {
+
+	[JsonPropertyName("Description")]
 	public string Description { get; set; } = string.Empty;
+
+	[JsonPropertyName("OrganizationID")]
 	public string OrganizationID { get; set; } = string.Empty;
+
+	[JsonPropertyName("Policy")]
 	public UserPolicy Policy { get; set; }
+
+	[JsonPropertyName("DefaultUserPolicy")]
 	//DefaultUserPolicy marks that this UserPolicy should be applied to all new users. The Comet Server will ensure that
 	//only one policy can be set as default.
 	public bool DefaultUserPolicy { get; set; }
+
+	[JsonPropertyName("CreatedDate")]
 	//Unix timestamp in seconds. May be zero for Policies created prior to Comet 23.3.3.
 	public long CreatedDate { get; set; }
+
+	[JsonPropertyName("ModifiedDate")]
 	//Unix timestamp in seconds. May be zero for Policies created prior to Comet 23.3.3.
 	public long ModifiedDate { get; set; }
 

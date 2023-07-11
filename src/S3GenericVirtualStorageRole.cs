@@ -10,13 +10,29 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>S3GenericVirtualStorageRole</c>
 /// </summary>
 public class S3GenericVirtualStorageRole {
+
+	[JsonPropertyName("S3Endpoint")]
 	public string S3Endpoint { get; set; } = string.Empty;
+
+	[JsonPropertyName("IAMEndpoint")]
 	public string IAMEndpoint { get; set; } = string.Empty;
+
+	[JsonPropertyName("MasterBucket")]
 	public string MasterBucket { get; set; } = string.Empty;
+
+	[JsonPropertyName("AccessKey")]
 	public string AccessKey { get; set; } = string.Empty;
+
+	[JsonPropertyName("SecretKey")]
 	public string SecretKey { get; set; } = string.Empty;
+
+	[JsonPropertyName("UseObjectLock")]
 	public bool UseObjectLock { get; set; }
+
+	[JsonPropertyName("ObjectLockDays")]
 	public long ObjectLockDays { get; set; }
+
+	[JsonPropertyName("RemoveDeleted")]
 	public bool RemoveDeleted { get; set; }
 
 	public S3GenericVirtualStorageRole(){ }

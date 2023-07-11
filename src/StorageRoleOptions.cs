@@ -10,11 +10,19 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>StorageRoleOptions</c>
 /// </summary>
 public class StorageRoleOptions {
+
+	[JsonPropertyName("RoleEnabled")]
 	public bool RoleEnabled { get; set; }
+
+	[JsonPropertyName("Storage")]
 	public DestinationLocation Storage { get; set; }
+
+	[Obsolete("Deprecated since Comet version 17.3.5")]
 
 	[JsonPropertyName("LocalStorage")]
 	public List<LocalStorageDirectory> LocalStorage_Legacy { get; set; }
+
+	[JsonPropertyName("ReplicateTo")]
 	public List<ReplicaServer> ReplicateTo { get; set; }
 
 	public StorageRoleOptions(){ }

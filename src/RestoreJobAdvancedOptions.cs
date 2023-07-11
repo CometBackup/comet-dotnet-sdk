@@ -10,40 +10,84 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>RestoreJobAdvancedOptions</c>
 /// </summary>
 public class RestoreJobAdvancedOptions {
+
+	[JsonPropertyName("Type")]
 	//One of the RESTORETYPE_ constants
 	public long Type { get; set; }
+
+	[JsonPropertyName("OverwriteExistingFiles")]
 	//For RESTORETYPE_FILE
 	public bool OverwriteExistingFiles { get; set; }
+
+	[JsonPropertyName("OverwriteIfNewer")]
 	//For RESTORETYPE_FILE. If set, OverwriteExistingFiles must be true
 	public bool OverwriteIfNewer { get; set; }
+
+	[JsonPropertyName("DestIsOriginalLocation")]
 	//For RESTORETYPE_FILE. If set, DestPath must be blank
 	public bool DestIsOriginalLocation { get; set; }
+
+	[JsonPropertyName("DestPath")]
 	//For RESTORETYPE_FILE or RESTORETYPE_PROCESS_xxx
 	public string DestPath { get; set; } = string.Empty;
+
+	[JsonPropertyName("ExactDestPaths")]
 	//For RESTORETYPE_WINDISK only. Must have one entry for each selected restore path
 	public List<string> ExactDestPaths { get; set; }
+
+	[JsonPropertyName("ArchiveFormat")]
 	//For RESTORETYPE_FILE_ARCHIVE or RESTORETYPE_PROCESS_ARCHIVE. Default 0 is *.tar, for backward compatibility
 	public long ArchiveFormat { get; set; }
+
+	[JsonPropertyName("SkipUnreadableChunks")]
+	//Corresponds to the "Allow partial file restores (zero-out unrecoverable data)" option
+	public bool SkipUnreadableChunks { get; set; }
+
+	[JsonPropertyName("OnDiskIndexesKey")]
+	//Corresponds to the "Prefer temporary files instead of RAM (slower)" option
+	public bool OnDiskIndexesKey { get; set; }
+
+	[JsonPropertyName("Office365Credential")]
 	//For RESTORETYPE_OFFICE365_CLOUD.
 	public Office365Credential Office365Credential { get; set; }
+
+	[JsonPropertyName("Username")]
 	//For RESTORETYPE_MYSQL
 	public string Username { get; set; } = string.Empty;
+
+	[JsonPropertyName("Password")]
 	//For RESTORETYPE_MYSQL
 	public string Password { get; set; } = string.Empty;
+
+	[JsonPropertyName("Host")]
 	//For RESTORETYPE_MYSQL
 	public string Host { get; set; } = string.Empty;
+
+	[JsonPropertyName("Port")]
 	//For RESTORETYPE_MYSQL
 	public string Port { get; set; } = string.Empty;
+
+	[JsonPropertyName("UseSsl")]
 	//For RESTORETYPE_MYSQL
 	public bool UseSsl { get; set; }
+
+	[JsonPropertyName("SslAllowInvalid")]
 	//For RESTORETYPE_MYSQL i.e.: Self signed certs
 	public bool SslAllowInvalid { get; set; }
+
+	[JsonPropertyName("SslCaFile")]
 	//For RESTORETYPE_MYSQL
 	public string SslCaFile { get; set; } = string.Empty;
+
+	[JsonPropertyName("SslCrtFile")]
 	//For RESTORETYPE_MYSQL
 	public string SslCrtFile { get; set; } = string.Empty;
+
+	[JsonPropertyName("SslKeyFile")]
 	//For RESTORETYPE_MYSQL
 	public string SslKeyFile { get; set; } = string.Empty;
+
+	[JsonPropertyName("MsSqlConnection")]
 	//For RESTORETYPE_MSSQL.
 	public MSSQLLoginArgs MsSqlConnection { get; set; }
 

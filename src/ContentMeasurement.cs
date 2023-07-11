@@ -10,10 +10,16 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>ContentMeasurement</c>
 /// </summary>
 public class ContentMeasurement {
+
+	[JsonPropertyName("MeasureStarted")]
 	//Unix timestamp in seconds
 	public long MeasureStarted { get; set; }
+
+	[JsonPropertyName("MeasureCompleted")]
 	//Unix timestamp in seconds
 	public long MeasureCompleted { get; set; }
+
+	[JsonPropertyName("Components")]
 	public List<ContentMeasurementComponent> Components { get; set; }
 
 	public ContentMeasurement(){ }

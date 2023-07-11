@@ -10,27 +10,65 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>MongoDBConnection</c>
 /// </summary>
 public class MongoDBConnection {
+
+	[JsonPropertyName("Server")]
 	public string Server { get; set; } = string.Empty;
+
+	[JsonPropertyName("Port")]
 	public long Port { get; set; }
+
+	[JsonPropertyName("Username")]
 	public string Username { get; set; } = string.Empty;
+
+	[JsonPropertyName("Password")]
 	public string Password { get; set; } = string.Empty;
+
+	[JsonPropertyName("AuthenticationDB")]
 	public string AuthenticationDB { get; set; } = string.Empty;
 
 	[Obsolete("Deprecated since Comet version 22.12.3")]
+
+	[JsonPropertyName("MongoShellPath")]
 	//Prior to Comet 22.12.3, must be a filesystem path to `mongo` (n.b. not `mongosh`). In Comet >= 22.12.3, not used.
 	public string MongoShellPath { get; set; } = string.Empty;
+
+	[JsonPropertyName("MongodumpPath")]
 	public string MongodumpPath { get; set; } = string.Empty;
+
+	[JsonPropertyName("ReadPreference")]
 	public string ReadPreference { get; set; } = string.Empty;
+
+	[JsonPropertyName("UseReplica")]
 	public bool UseReplica { get; set; }
+
+	[JsonPropertyName("ReplicaName")]
 	public string ReplicaName { get; set; } = string.Empty;
+
+	[JsonPropertyName("ReplicaMembers")]
 	public List<string> ReplicaMembers { get; set; }
+
+	[JsonPropertyName("UseSSL")]
 	public bool UseSSL { get; set; }
+
+	[JsonPropertyName("ClientSSLPEMPath")]
 	public string ClientSSLPEMPath { get; set; } = string.Empty;
+
+	[JsonPropertyName("ServerSSLPEMPath")]
 	public string ServerSSLPEMPath { get; set; } = string.Empty;
+
+	[JsonPropertyName("SSLClientKeyPassword")]
 	public string SSLClientKeyPassword { get; set; } = string.Empty;
+
+	[JsonPropertyName("AllowInvalidCertificate")]
 	public bool AllowInvalidCertificate { get; set; }
+
+	[JsonPropertyName("AllowInvalidHostname")]
 	public bool AllowInvalidHostname { get; set; }
+
+	[JsonPropertyName("UseSSH")]
 	public bool UseSSH { get; set; }
+
+	[JsonPropertyName("SSHConnection")]
 	public SSHConnection SSHConnection { get; set; }
 
 	public MongoDBConnection(){ }

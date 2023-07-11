@@ -12,15 +12,19 @@ namespace CometBackup.CometAPI.SDK {
 public class SoftwareUpdateNewsResponse {
 
 	[JsonPropertyName("latest_stable")]
+	//The latest "Quarterly" release version of Comet known to the account.cometbackup.com system.
 	public string LatestStable { get; set; } = string.Empty;
 
 	[JsonPropertyName("latest_prerelease")]
+	//The latest "Voyager" release version of Comet known to the account.cometbackup.com system.
 	public string LatestPrerelease { get; set; } = string.Empty;
 
 	[JsonPropertyName("downloads_url")]
+	//A URL linking to the Comet Server downloads page.
 	public string DownloadsURL { get; set; } = string.Empty;
 
 	[JsonPropertyName("updates_info")]
+	//An array of recent news items written by Comet Backup staff. Entries are english plaintext.
 	public List<string> WhatsNew { get; set; }
 
 	public SoftwareUpdateNewsResponse(){ }

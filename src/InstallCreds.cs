@@ -10,9 +10,17 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>InstallCreds</c>
 /// </summary>
 public class InstallCreds {
+
+	[JsonPropertyName("Username")]
 	public string Username { get; set; } = string.Empty;
+
+	[JsonPropertyName("Password")]
 	public string Password { get; set; } = string.Empty;
+
+	[JsonPropertyName("Server")]
 	public string Server { get; set; } = string.Empty;
+
+	[JsonPropertyName("AutoLogin")]
 	public bool AutoLogin { get; set; }
 
 	public InstallCreds(){ }

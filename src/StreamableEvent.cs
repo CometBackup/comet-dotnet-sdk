@@ -10,12 +10,26 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>StreamableEvent</c>
 /// </summary>
 public class StreamableEvent {
+
+	[JsonPropertyName("Actor")]
 	public string Actor { get; set; } = string.Empty;
+
+	[JsonPropertyName("OwnerOrganizationID")]
 	public string OwnerOrganizationID { get; set; } = string.Empty;
+
+	[JsonPropertyName("ResourceID")]
 	public string ResourceID { get; set; } = string.Empty;
+
+	[JsonPropertyName("Type")]
 	public long Type { get; set; }
+
+	[JsonPropertyName("Timestamp")]
 	public long Timestamp { get; set; }
+
+	[JsonPropertyName("TypeString")]
 	public string TypeString { get; set; } = string.Empty;
+
+	[JsonPropertyName("Data")]
 	public Object Data { get; set; }
 
 	public StreamableEvent(){ }

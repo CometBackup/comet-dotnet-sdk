@@ -10,13 +10,21 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>GetProfileAndHashResponseMessage</c>
 /// </summary>
 public class GetProfileAndHashResponseMessage {
+
+	[JsonPropertyName("Status")]
 	//If the operation was successful, the status will be in the 200-299 range.
 	public long Status { get; set; }
+
+	[JsonPropertyName("Message")]
 	public string Message { get; set; } = string.Empty;
+
+	[JsonPropertyName("ProfileHash")]
 	//A hash identifier for the current state of the user's profile. If you supply this in the AdminSetUserProfileHash API,
 	//the server can safely reject your change if another change has happened concurrently. This allows you to retry the
 	//request.
 	public string ProfileHash { get; set; } = string.Empty;
+
+	[JsonPropertyName("Profile")]
 	public UserProfileConfig Profile { get; set; }
 
 	public GetProfileAndHashResponseMessage(){ }

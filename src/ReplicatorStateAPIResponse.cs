@@ -10,17 +10,41 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>ReplicatorStateAPIResponse</c>
 /// </summary>
 public class ReplicatorStateAPIResponse {
+
+	[JsonPropertyName("Description")]
 	public string Description { get; set; } = string.Empty;
+
+	[JsonPropertyName("RemoteServerID")]
 	public string RemoteServerID { get; set; } = string.Empty;
+
+	[JsonPropertyName("DisplayClass")]
 	public long DisplayClass { get; set; }
+
+	[JsonPropertyName("ActiveWorkers")]
 	public int ActiveWorkers { get; set; }
+
+	[JsonPropertyName("TotalWorkers")]
 	public long TotalWorkers { get; set; }
+
+	[JsonPropertyName("State")]
 	public long State { get; set; }
+
+	[JsonPropertyName("ItemsQueued")]
 	public long ItemsQueued { get; set; }
+
+	[JsonPropertyName("BytesQueued")]
 	public long BytesQueued { get; set; }
+
+	[JsonPropertyName("LastWorkerSubmitTime")]
 	public long LastWorkerSubmitTime { get; set; }
+
+	[JsonPropertyName("CurrentTime")]
 	public long CurrentTime { get; set; }
+
+	[JsonPropertyName("ItemsReplicated")]
 	public long ItemsReplicated { get; set; }
+
+	[JsonPropertyName("BytesReplicated")]
 	public long BytesReplicated { get; set; }
 
 	public ReplicatorStateAPIResponse(){ }

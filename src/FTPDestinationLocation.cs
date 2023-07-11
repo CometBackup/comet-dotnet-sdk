@@ -10,19 +10,37 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>FTPDestinationLocation</c>
 /// </summary>
 public class FTPDestinationLocation {
+
+	[JsonPropertyName("FTPServer")]
 	public string FTPServer { get; set; } = string.Empty;
+
+	[JsonPropertyName("FTPUsername")]
 	public string FTPUsername { get; set; } = string.Empty;
+
+	[JsonPropertyName("FTPPassword")]
 	public string FTPPassword { get; set; } = string.Empty;
+
+	[JsonPropertyName("FTPBaseUseHomeDirectory")]
 	//If true, store data in the default home directory given by the FTP server. If false, store data in the
 	//FTPCustomBaseDirectory path.
 	public bool FTPBaseUseHomeDirectory { get; set; }
+
+	[JsonPropertyName("FTPCustomBaseDirectory")]
 	//If FTPBaseUseHomeDirectory is false, this field controls the path where data is stored.
 	public string FTPCustomBaseDirectory { get; set; } = string.Empty;
+
+	[JsonPropertyName("FTPSMode")]
 	//Control whether this is plaintext FTP or secure FTPS by using one of the FTPS_MODE_ constants.
 	public long FTPSMode { get; set; }
+
+	[JsonPropertyName("FTPPort")]
 	public long FTPPort { get; set; }
+
+	[JsonPropertyName("FTPMaxConnections")]
 	//If set to zero, uses a system default value that is not unlimited.
 	public long FTPMaxConnections { get; set; }
+
+	[JsonPropertyName("FTPAcceptInvalidSSL")]
 	public bool FTPAcceptInvalidSSL { get; set; }
 
 	public FTPDestinationLocation(){ }

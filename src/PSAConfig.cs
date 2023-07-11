@@ -10,10 +10,24 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>PSAConfig</c>
 /// </summary>
 public class PSAConfig {
+
+	[JsonPropertyName("AlertsDisabled")]
+	//For PSA_TYPE_GRADIENT. Defaults to enabled
 	public bool AlertsDisabled { get; set; }
+
+	[JsonPropertyName("CustomHeaders")]
 	public Dictionary<string, string> CustomHeaders { get; set; }
+
+	[JsonPropertyName("PartnerKey")]
+	//Specified credentials for the target PSA
 	public string PartnerKey { get; set; } = string.Empty;
+
+	[JsonPropertyName("Type")]
+	//One of the PSA_TYPE_ constants
 	public long Type { get; set; }
+
+	[JsonPropertyName("URL")]
+	//For PSA_TYPE_GENERIC
 	public string URL { get; set; } = string.Empty;
 
 	public PSAConfig(){ }

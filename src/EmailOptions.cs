@@ -10,16 +10,36 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>EmailOptions</c>
 /// </summary>
 public class EmailOptions {
+
+	[JsonPropertyName("FromEmail")]
 	public string FromEmail { get; set; } = string.Empty;
+
+	[JsonPropertyName("FromName")]
 	public string FromName { get; set; } = string.Empty;
+
+	[JsonPropertyName("Mode")]
 	//One of the EMAIL_DELIVERY_ constants
 	public string Mode { get; set; } = string.Empty;
+
+	[JsonPropertyName("EmailReportingOptions")]
 	public List<EmailReportingOption> EmailReportingOptions { get; set; }
+
+	[JsonPropertyName("SMTPHost")]
 	public string SMTPHost { get; set; } = string.Empty;
+
+	[JsonPropertyName("SMTPPort")]
 	public long SMTPPort { get; set; }
+
+	[JsonPropertyName("SMTPUsername")]
 	public string SMTPUsername { get; set; } = string.Empty;
+
+	[JsonPropertyName("SMTPPassword")]
 	public string SMTPPassword { get; set; } = string.Empty;
+
+	[JsonPropertyName("SMTPAllowInvalidCertificate")]
 	public bool SMTPAllowInvalidCertificate { get; set; }
+
+	[JsonPropertyName("SMTPAllowUnencrypted")]
 	public bool SMTPAllowUnencrypted { get; set; }
 
 	public EmailOptions(){ }

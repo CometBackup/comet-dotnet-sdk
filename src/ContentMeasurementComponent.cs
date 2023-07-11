@@ -10,7 +10,11 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>ContentMeasurementComponent</c>
 /// </summary>
 public class ContentMeasurementComponent {
+
+	[JsonPropertyName("Bytes")]
 	public long Bytes { get; set; }
+
+	[JsonPropertyName("UsedBy")]
 	//A list of strings describing which groups of snapshots rely on reaching this component of data.
 	//The strings may take the following formats:
 	//- source_id/CURRENT - this data is required by the most recent backup job snapshot for the listed Protected Item

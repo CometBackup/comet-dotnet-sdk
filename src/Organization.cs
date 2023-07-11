@@ -10,17 +10,41 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>Organization</c>
 /// </summary>
 public class Organization {
+
+	[JsonPropertyName("AuditFileOptions")]
 	public Dictionary<string, FileOption> AuditFileOptions { get; set; }
+
+	[JsonPropertyName("Branding")]
 	public BrandingOptions Branding { get; set; }
+
+	[JsonPropertyName("ConstellationRole")]
 	public ConstellationRoleOptions ConstellationRole { get; set; }
+
+	[JsonPropertyName("Email")]
 	public EmailOptions Email { get; set; }
+
+	[JsonPropertyName("ExperimentalOptions")]
 	public List<string> ExperimentalOptions { get; set; }
+
+	[JsonPropertyName("Hosts")]
 	public List<string> Hosts { get; set; }
+
+	[JsonPropertyName("Name")]
 	public string Name { get; set; } = string.Empty;
+
+	[JsonPropertyName("IsSuspended")]
 	public bool IsSuspended { get; set; }
+
+	[JsonPropertyName("PSAConfigs")]
 	public List<PSAConfig> PSAConfigs { get; set; }
+
+	[JsonPropertyName("RemoteStorage")]
 	public List<RemoteStorageOption> RemoteStorage { get; set; }
+
+	[JsonPropertyName("SoftwareBuildRole")]
 	public SoftwareBuildRoleOptions SoftwareBuildRole { get; set; }
+
+	[JsonPropertyName("WebhookOptions")]
 	public Dictionary<string, WebhookOption> WebhookOptions { get; set; }
 
 	public Organization(){ }

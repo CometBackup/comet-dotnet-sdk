@@ -10,7 +10,11 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>SoftwareBuildRoleOptions</c>
 /// </summary>
 public class SoftwareBuildRoleOptions {
+
+	[JsonPropertyName("RoleEnabled")]
 	public bool RoleEnabled { get; set; }
+
+	[JsonPropertyName("AllowUnauthenticatedDownloads")]
 	public bool AllowUnauthenticatedDownloads { get; set; }
 
 	public SoftwareBuildRoleOptions(){ }

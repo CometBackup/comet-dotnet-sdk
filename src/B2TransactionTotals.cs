@@ -10,8 +10,14 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>B2TransactionTotals</c>
 /// </summary>
 public class B2TransactionTotals {
+
+	[JsonPropertyName("ClassA")]
 	public long ClassA { get; set; }
+
+	[JsonPropertyName("ClassB")]
 	public long ClassB { get; set; }
+
+	[JsonPropertyName("ClassC")]
 	public long ClassC { get; set; }
 
 	public B2TransactionTotals(){ }

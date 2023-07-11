@@ -10,6 +10,8 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>GlobalOverrideOptions</c>
 /// </summary>
 public class GlobalOverrideOptions {
+
+	[JsonPropertyName("RandomDelaySecs")]
 	public ulong RandomDelaySecs { get; set; }
 
 	public GlobalOverrideOptions(){ }

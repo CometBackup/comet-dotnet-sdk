@@ -10,10 +10,16 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>ConstellationCheckReport</c>
 /// </summary>
 public class ConstellationCheckReport {
+
+	[JsonPropertyName("CheckStarted")]
 	//Unix timestamp in seconds
 	public long CheckStarted { get; set; }
+
+	[JsonPropertyName("CheckCompleted")]
 	//Unix timestamp in seconds
 	public long CheckCompleted { get; set; }
+
+	[JsonPropertyName("Usage")]
 	public Dictionary<string, BucketUsageInfo> Usage { get; set; }
 
 	public ConstellationCheckReport(){ }

@@ -10,10 +10,16 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>ExtraFileExclusion</c>
 /// </summary>
 public class ExtraFileExclusion {
+
+	[JsonPropertyName("Exclude")]
 	//The glob or regular expression to exclude from backup jobs
 	public string Exclude { get; set; } = string.Empty;
+
+	[JsonPropertyName("Regex")]
 	//Choose whether the 'Exclude' parameter will be treated as a regular expression (true) or a glob (false)
 	public bool Regex { get; set; }
+
+	[JsonPropertyName("RestrictOS")]
 	//Either OS_ANY or one of the OS_ONLY constants
 	public long RestrictOS { get; set; }
 

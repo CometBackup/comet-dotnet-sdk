@@ -10,20 +10,43 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>SelfBackupTarget</c>
 /// </summary>
 public class SelfBackupTarget {
+
+	[JsonPropertyName("Schedule")]
 	public List<ScheduleConfig> Schedule { get; set; }
+
+	[JsonPropertyName("ScheduleTimezone")]
 	//Timezone in IANA format
 	public string ScheduleTimezone { get; set; } = string.Empty;
+
+	[JsonPropertyName("RetentionPolicy")]
 	public RetentionPolicy RetentionPolicy { get; set; }
+
+	[JsonPropertyName("Location")]
 	public DestinationLocation Location { get; set; }
+
+	[JsonPropertyName("EncryptionKey")]
 	public string EncryptionKey { get; set; } = string.Empty;
+
+	[JsonPropertyName("EncryptionKeyFormat")]
+	//One of the ENCRYPTIONMETHOD_ constants
 	public ulong EncryptionKeyFormat { get; set; }
+
+	[JsonPropertyName("Compression")]
 	//One of the COMPRESS_LVL_ constants
 	public long Compression { get; set; }
+
+	[JsonPropertyName("ExcludeJobsDB")]
 	//The jobs database is often the largest component of the Server Self-Backup archive. By excluding it, you could run
 	//the Server Self-Backup more often.
 	public bool ExcludeJobsDB { get; set; }
+
+	[JsonPropertyName("IncludeServerLogs")]
 	public bool IncludeServerLogs { get; set; }
+
+	[JsonPropertyName("RestrictToSingleOrgID")]
 	public string RestrictToSingleOrgID { get; set; } = string.Empty;
+
+	[JsonPropertyName("Index")]
 	public long Index { get; set; }
 
 	public SelfBackupTarget(){ }

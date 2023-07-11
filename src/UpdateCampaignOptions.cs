@@ -12,15 +12,29 @@ namespace CometBackup.CometAPI.SDK {
 /// criteria (ApplyDeviceFilter/DeviceFilter) must be met in order for the remote upgrade to be applied.
 /// </summary>
 public class UpdateCampaignOptions {
+
+	[JsonPropertyName("Active")]
 	public bool Active { get; set; }
+
+	[JsonPropertyName("UpgradeOlder")]
 	public bool UpgradeOlder { get; set; }
+
+	[JsonPropertyName("ReinstallCurrentVer")]
 	public bool ReinstallCurrentVer { get; set; }
+
+	[JsonPropertyName("DowngradeNewer")]
 	public bool DowngradeNewer { get; set; }
+
+	[JsonPropertyName("ForceUpgradeRunning")]
 	//Choose whether this bulk upgrade campaign is allowed to interrupt a running backup job.
 	public bool ForceUpgradeRunning { get; set; }
+
+	[JsonPropertyName("ApplyDeviceFilter")]
 	//If true, then the UserFilter will be used to restrict which accounts and devices will be eligible for the software
 	//update. If false, all users and devices will be eligible for the software update.
 	public bool ApplyDeviceFilter { get; set; }
+
+	[JsonPropertyName("DeviceFilter")]
 	public SearchClause DeviceFilter { get; set; }
 
 	public UpdateCampaignOptions(){ }

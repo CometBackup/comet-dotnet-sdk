@@ -10,7 +10,11 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>StorageVaultProviderPolicy</c>
 /// </summary>
 public class StorageVaultProviderPolicy {
+
+	[JsonPropertyName("ShouldRestrictProviderList")]
 	public bool ShouldRestrictProviderList { get; set; }
+
+	[JsonPropertyName("AllowedProvidersWhenRestricted")]
 	public List<ulong> AllowedProvidersWhenRestricted { get; set; }
 
 	public StorageVaultProviderPolicy(){ }

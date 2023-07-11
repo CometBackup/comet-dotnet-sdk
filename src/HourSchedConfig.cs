@@ -10,7 +10,11 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>HourSchedConfig</c>
 /// </summary>
 public class HourSchedConfig {
+
+	[JsonPropertyName("Hour")]
 	public ulong Hour { get; set; }
+
+	[JsonPropertyName("Minutes")]
 	public ulong Minutes { get; set; }
 
 	public HourSchedConfig(){ }

@@ -10,7 +10,11 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>VSSWriterInfo</c>
 /// </summary>
 public class VSSWriterInfo {
+
+	[JsonPropertyName("DisplayName")]
 	public string DisplayName { get; set; } = string.Empty;
+
+	[JsonPropertyName("Components")]
 	public List<VSSComponent> Components { get; set; }
 
 	public VSSWriterInfo(){ }

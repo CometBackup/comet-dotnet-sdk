@@ -11,36 +11,70 @@ namespace CometBackup.CometAPI.SDK {
 /// with multiple time schedules or event triggers
 /// </summary>
 public class BackupRuleConfig {
+
+	[JsonPropertyName("Description")]
 	public string Description { get; set; } = string.Empty;
+
+	[JsonPropertyName("CreateTime")]
 	//Unix timestamp in seconds
 	public long CreateTime { get; set; }
+
+	[JsonPropertyName("ModifyTime")]
 	//Unix timestamp in seconds. The caller is responsible for updating this themselves.
 	public long ModifyTime { get; set; }
+
+	[JsonPropertyName("PreExec")]
 	//Custom commands to run before the job
 	public List<string> PreExec { get; set; }
+
+	[JsonPropertyName("ThawExec")]
 	//Custom commands to run after taking a disk snapshot
 	public List<string> ThawExec { get; set; }
+
+	[JsonPropertyName("PostExec")]
 	//Custom commands to run after the job
 	public List<string> PostExec { get; set; }
+
+	[JsonPropertyName("Source")]
 	//The source Protected Item ID to back up from, during this schedule
 	public string Source { get; set; } = string.Empty;
+
+	[JsonPropertyName("Destination")]
 	//The destination Storage Vault ID to back up to, during this schedule
 	public string Destination { get; set; } = string.Empty;
+
+	[JsonPropertyName("SkipAlreadyRunning")]
 	public bool SkipAlreadyRunning { get; set; }
+
+	[JsonPropertyName("StopAfter")]
 	//If Zero: disabled
 	public long StopAfter { get; set; }
+
+	[JsonPropertyName("LimitVaultSpeedBps")]
 	//If Zero: disabled
 	public long LimitVaultSpeedBps { get; set; }
+
+	[JsonPropertyName("ReduceDiskConcurrency")]
 	//Default disabled
 	public bool ReduceDiskConcurrency { get; set; }
+
+	[JsonPropertyName("UseOnDiskIndexes")]
 	//Default disabled
 	public bool UseOnDiskIndexes { get; set; }
+
+	[JsonPropertyName("AllowZeroFilesSuccess")]
 	//Default disabled
 	public bool AllowZeroFilesSuccess { get; set; }
+
+	[JsonPropertyName("AutoRetentionLevel")]
 	//If Zero: default Automatic (BACKUPJOBAUTORETENTION_AUTOMATIC)
 	public long AutoRetentionLevel { get; set; }
+
+	[JsonPropertyName("Schedules")]
 	//Scheduled start times
 	public List<ScheduleConfig> Schedules { get; set; }
+
+	[JsonPropertyName("EventTriggers")]
 	//Other events that will cause this scheduled job to start
 	public BackupRuleEventTriggers EventTriggers { get; set; }
 

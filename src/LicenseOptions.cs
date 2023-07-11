@@ -10,7 +10,11 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>LicenseOptions</c>
 /// </summary>
 public class LicenseOptions {
+
+	[JsonPropertyName("Email")]
 	public string Email { get; set; } = string.Empty;
+
+	[JsonPropertyName("SerialNumber")]
 	public string SerialNumber { get; set; } = string.Empty;
 
 	public LicenseOptions(){ }

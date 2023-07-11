@@ -10,8 +10,14 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>RegisterOfficeApplicationBeginResponse</c>
 /// </summary>
 public class RegisterOfficeApplicationBeginResponse {
+
+	[JsonPropertyName("Continuation")]
 	public string Continuation { get; set; } = string.Empty;
+
+	[JsonPropertyName("VerificationURL")]
 	public string VerificationURL { get; set; } = string.Empty;
+
+	[JsonPropertyName("UserCode")]
 	public string UserCode { get; set; } = string.Empty;
 
 	public RegisterOfficeApplicationBeginResponse(){ }

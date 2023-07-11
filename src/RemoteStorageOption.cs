@@ -10,21 +10,51 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>RemoteStorageOption</c>
 /// </summary>
 public class RemoteStorageOption {
+
+	[JsonPropertyName("Type")]
 	public string Type { get; set; } = string.Empty;
+
+	[JsonPropertyName("Description")]
 	public string Description { get; set; } = string.Empty;
+
+	[JsonPropertyName("RemoteAddress")]
 	public string RemoteAddress { get; set; } = string.Empty;
+
+	[JsonPropertyName("Username")]
 	public string Username { get; set; } = string.Empty;
+
+	[JsonPropertyName("Password")]
 	public string Password { get; set; } = string.Empty;
+
+	[JsonPropertyName("LDAP")]
 	public ExternalLDAPAuthenticationSourceSettings LDAP { get; set; }
+
+	[JsonPropertyName("B2")]
 	public B2VirtualStorageRoleSettings B2 { get; set; }
+
+	[JsonPropertyName("Wasabi")]
 	public WasabiVirtualStorageRoleSettings Wasabi { get; set; }
+
+	[JsonPropertyName("Custom")]
 	public CustomRemoteBucketSettings Custom { get; set; }
+
+	[JsonPropertyName("S3")]
 	public S3GenericVirtualStorageRole S3 { get; set; }
+
+	[JsonPropertyName("AWS")]
 	//Amazon AWS - Virtual Storage Role
 	public AmazonAWSVirtualStorageRoleSettings AWS { get; set; }
+
+	[JsonPropertyName("Storj")]
 	public StorjVirtualStorageRoleSetting Storj { get; set; }
+
+	[JsonPropertyName("StorageLimitEnabled")]
 	public bool StorageLimitEnabled { get; set; }
+
+	[JsonPropertyName("StorageLimitBytes")]
 	public long StorageLimitBytes { get; set; }
+
+	[JsonPropertyName("RebrandStorage")]
 	public bool RebrandStorage { get; set; }
 
 	public RemoteStorageOption(){ }

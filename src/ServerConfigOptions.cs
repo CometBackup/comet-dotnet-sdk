@@ -10,9 +10,17 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>ServerConfigOptions</c>
 /// </summary>
 public class ServerConfigOptions {
+
+	[JsonPropertyName("AdminUsers")]
 	public List<AllowedAdminUser> AdminUsers { get; set; }
+
+	[JsonPropertyName("AuthenticationRole")]
 	public AuthenticationRoleOptions AuthenticationRole { get; set; }
+
+	[JsonPropertyName("Branding")]
 	public BrandingOptions Branding { get; set; }
+
+	[JsonPropertyName("ConstellationRole")]
 	public ConstellationRoleOptions ConstellationRole { get; set; }
 
 	[JsonPropertyName("OverseerRole")]
@@ -21,28 +29,59 @@ public class ServerConfigOptions {
 	//that you are upgrading this Comet Server from a 17.x.x version. In Comet 23.3.x and later, this field is ignored and
 	//will not be respected during the import process.
 	public ConstellationRoleOptions ConstellationRole_Legacy { get; set; }
+
+	[JsonPropertyName("Email")]
 	public EmailOptions Email { get; set; }
+
+	[JsonPropertyName("ExperimentalOptions")]
 	//An array of GUIDs that can enable additional early-access functionality
 	public List<string> ExperimentalOptions { get; set; }
+
+	[JsonPropertyName("ExternalAdminUserSources")]
 	public Dictionary<string, ExternalAuthenticationSource> ExternalAdminUserSources { get; set; }
+
+	[JsonPropertyName("IPRateLimit")]
+	//The Comet Server can enforce a bandwidth limit based on the target IP address
 	public RatelimitOptions IPRateLimit { get; set; }
+
+	[JsonPropertyName("License")]
 	public LicenseOptions License { get; set; }
+
+	[JsonPropertyName("ListenAddresses")]
 	//Configure ip, port, and SSL settings for this self-hosted Comet Server.
 	public List<HTTPConnectorOptions> ListenAddresses { get; set; }
+
+	[JsonPropertyName("Organizations")]
 	//Tenants
 	public Dictionary<string, Organization> Organizations { get; set; }
+
+	[JsonPropertyName("PSAConfigs")]
 	public List<PSAConfig> PSAConfigs { get; set; }
+
+	[JsonPropertyName("SelfBackup")]
 	//Automatically create backup zip files of this Comet Server's configuration
 	public SelfBackupOptions SelfBackup { get; set; }
+
+	[JsonPropertyName("SessionSettings")]
 	//Control how long admin accounts can remain logged in to the Comet Server web interface
 	public SessionOptions SessionSettings { get; set; }
+
+	[JsonPropertyName("SoftwareBuildRole")]
 	public SoftwareBuildRoleOptions SoftwareBuildRole { get; set; }
+
+	[JsonPropertyName("StorageRole")]
 	public StorageRoleOptions StorageRole { get; set; }
+
+	[JsonPropertyName("TrustXForwardedFor")]
 	//If true, the X-Forwarded-For header will be trusted for the purposes of IP allowlisting. This should only be enabled
 	//when you explicitly configure Comet Server behind a reverse proxy, otherwise it could allow malicious users to bypass
 	//the IP allowlist.
 	public bool TrustXForwardedFor { get; set; }
+
+	[JsonPropertyName("WebhookOptions")]
 	public Dictionary<string, WebhookOption> WebhookOptions { get; set; }
+
+	[JsonPropertyName("AuditFileOptions")]
 	public Dictionary<string, FileOption> AuditFileOptions { get; set; }
 
 	public ServerConfigOptions(){ }

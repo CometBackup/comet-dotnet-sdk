@@ -10,9 +10,18 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>VSSComponent</c>
 /// </summary>
 public class VSSComponent {
+
+	[JsonPropertyName("Path")]
 	public string Path { get; set; } = string.Empty;
+
+	[JsonPropertyName("Name")]
 	public string Name { get; set; } = string.Empty;
+
+	[JsonPropertyName("CType")]
+	//"VSS_CT_DATABASE" or "VSS_CT_FILEGROUP"
 	public string CType { get; set; } = string.Empty;
+
+	[JsonPropertyName("Selectable")]
 	public bool Selectable { get; set; }
 
 	public VSSComponent(){ }

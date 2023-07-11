@@ -10,16 +10,36 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>S3DestinationLocation</c>
 /// </summary>
 public class S3DestinationLocation {
+
+	[JsonPropertyName("S3Server")]
 	public string S3Server { get; set; } = string.Empty;
+
+	[JsonPropertyName("S3UsesTLS")]
 	public bool S3UsesTLS { get; set; }
+
+	[JsonPropertyName("S3AccessKey")]
 	public string S3AccessKey { get; set; } = string.Empty;
+
+	[JsonPropertyName("S3SecretKey")]
 	public string S3SecretKey { get; set; } = string.Empty;
+
+	[JsonPropertyName("S3BucketName")]
 	public string S3BucketName { get; set; } = string.Empty;
+
+	[JsonPropertyName("S3Subdir")]
 	public string S3Subdir { get; set; } = string.Empty;
+
+	[JsonPropertyName("S3CustomRegion")]
 	public string S3CustomRegion { get; set; } = string.Empty;
+
+	[JsonPropertyName("S3UsesV2Signing")]
 	//If true, use legacy v2 signing. If false (default), use modern v4 signing
 	public bool S3UsesV2Signing { get; set; }
+
+	[JsonPropertyName("S3RemoveDeleted")]
 	public bool S3RemoveDeleted { get; set; }
+
+	[JsonPropertyName("S3ObjectLockDays")]
 	public long S3ObjectLockDays { get; set; }
 
 	public S3DestinationLocation(){ }

@@ -10,6 +10,8 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>CountJobsResponse</c>
 /// </summary>
 public class CountJobsResponse {
+
+	[JsonPropertyName("Count")]
 	public long Count { get; set; }
 
 	public CountJobsResponse(){ }

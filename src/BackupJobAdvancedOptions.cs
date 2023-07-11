@@ -12,17 +12,31 @@ namespace CometBackup.CometAPI.SDK {
 /// running a job.
 /// </summary>
 public class BackupJobAdvancedOptions {
+
+	[JsonPropertyName("SkipAlreadyRunning")]
 	public bool SkipAlreadyRunning { get; set; }
+
+	[JsonPropertyName("StopAfter")]
 	//If Zero: disabled
 	public long StopAfter { get; set; }
+
+	[JsonPropertyName("LimitVaultSpeedBps")]
 	//If Zero: disabled
 	public long LimitVaultSpeedBps { get; set; }
+
+	[JsonPropertyName("ReduceDiskConcurrency")]
 	//Default disabled
 	public bool ReduceDiskConcurrency { get; set; }
+
+	[JsonPropertyName("UseOnDiskIndexes")]
 	//Default disabled
 	public bool UseOnDiskIndexes { get; set; }
+
+	[JsonPropertyName("AllowZeroFilesSuccess")]
 	//Default disabled
 	public bool AllowZeroFilesSuccess { get; set; }
+
+	[JsonPropertyName("AutoRetentionLevel")]
 	//If Zero: default Automatic (BACKUPJOBAUTORETENTION_AUTOMATIC)
 	public long AutoRetentionLevel { get; set; }
 

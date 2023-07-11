@@ -10,6 +10,8 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>UserServerConfig</c>
 /// </summary>
 public class UserServerConfig {
+
+	[JsonPropertyName("RandomDelaySecs")]
 	public ulong RandomDelaySecs { get; set; }
 
 	public UserServerConfig(){ }

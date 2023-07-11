@@ -10,11 +10,21 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>Office365ObjectInfo</c>
 /// </summary>
 public class Office365ObjectInfo {
+
+	[JsonPropertyName("GUID")]
 	public string GUID { get; set; } = string.Empty;
+
+	[JsonPropertyName("Name")]
 	public string Name { get; set; } = string.Empty;
+
+	[JsonPropertyName("Type")]
 	public string Type { get; set; } = string.Empty;
+
+	[JsonPropertyName("Value")]
 	//May be an email address or a SharePoint site URL
 	public string Value { get; set; } = string.Empty;
+
+	[JsonPropertyName("Members")]
 	public List<string> Members { get; set; }
 
 	public Office365ObjectInfo(){ }

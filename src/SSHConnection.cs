@@ -10,17 +10,31 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>SSHConnection</c>
 /// </summary>
 public class SSHConnection {
+
+	[JsonPropertyName("SSHServer")]
 	public string SSHServer { get; set; } = string.Empty;
+
+	[JsonPropertyName("SSHUsername")]
 	public string SSHUsername { get; set; } = string.Empty;
+
+	[JsonPropertyName("SSHAuthMode")]
 	//One of the SSHCONNECTION_AUTHMODE_ constants
 	public ulong SSHAuthMode { get; set; }
+
+	[JsonPropertyName("SSHPassword")]
 	//For use with SSHCONNECTION_AUTHMODE_PASSWORD only: the SSH password to connect with
 	public string SSHPassword { get; set; } = string.Empty;
+
+	[JsonPropertyName("SSHPrivateKey")]
 	//For use with SSHCONNECTION_AUTHMODE_PRIVATEKEY only: the SSH private key to connect with, in OpenSSH format.
 	public string SSHPrivateKey { get; set; } = string.Empty;
+
+	[JsonPropertyName("SSHCustomAuth_UseKnownHostsFile")]
 	//If true, then the SSHCustomAuth_KnownHostsFile will be used to verify the remote SSH server's host key, using Trust
 	//On First Use (TOFU).
 	public bool SSHCustomAuth_UseKnownHostsFile { get; set; }
+
+	[JsonPropertyName("SSHCustomAuth_KnownHostsFile")]
 	//If SSHCustomAuth_UseKnownHostsFile is true, the path to the SSH known_hosts file.
 	public string SSHCustomAuth_KnownHostsFile { get; set; } = string.Empty;
 

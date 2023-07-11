@@ -10,12 +10,26 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>DaysOfWeekConfig</c>
 /// </summary>
 public class DaysOfWeekConfig {
+
+	[JsonPropertyName("Sunday")]
 	public bool Sunday { get; set; }
+
+	[JsonPropertyName("Monday")]
 	public bool Monday { get; set; }
+
+	[JsonPropertyName("Tuesday")]
 	public bool Tuesday { get; set; }
+
+	[JsonPropertyName("Wednesday")]
 	public bool Wednesday { get; set; }
+
+	[JsonPropertyName("Thursday")]
 	public bool Thursday { get; set; }
+
+	[JsonPropertyName("Friday")]
 	public bool Friday { get; set; }
+
+	[JsonPropertyName("Saturday")]
 	public bool Saturday { get; set; }
 
 	public DaysOfWeekConfig(){ }

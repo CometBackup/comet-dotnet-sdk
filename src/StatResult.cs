@@ -10,10 +10,20 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>StatResult</c>
 /// </summary>
 public class StatResult {
+
+	[JsonPropertyName("Buckets")]
 	public long Buckets { get; set; }
+
+	[JsonPropertyName("Users")]
 	public long Users { get; set; }
+
+	[JsonPropertyName("Devices")]
 	public long Devices { get; set; }
+
+	[JsonPropertyName("Boosters")]
 	public long Boosters { get; set; }
+
+	[JsonPropertyName("NetworkDevices")]
 	public long NetworkDevices { get; set; }
 
 	public StatResult(){ }

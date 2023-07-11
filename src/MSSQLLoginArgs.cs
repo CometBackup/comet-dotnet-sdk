@@ -10,11 +10,23 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>MSSQLLoginArgs</c>
 /// </summary>
 public class MSSQLLoginArgs {
+
+	[JsonPropertyName("Instance")]
 	public string Instance { get; set; } = string.Empty;
+
+	[JsonPropertyName("AuthMode")]
 	public string AuthMode { get; set; } = string.Empty;
+
+	[JsonPropertyName("Username")]
 	public string Username { get; set; } = string.Empty;
+
+	[JsonPropertyName("Password")]
 	public string Password { get; set; } = string.Empty;
+
+	[JsonPropertyName("MethodIsOledb32Bit")]
 	public bool MethodIsOledb32Bit { get; set; }
+
+	[JsonPropertyName("RestoreNoRecovery")]
 	//If this MSSQLLoginArgs structure is used for a restore job (RestoreJobAdvancedOptions) using RESTORETYPE_MSSQL, then,
 	//this field controls the RECOVERY / NO RECOVERY option state.
 	public bool RestoreNoRecovery { get; set; }

@@ -10,16 +10,29 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>DeviceConfig</c>
 /// </summary>
 public class DeviceConfig {
+
+	[JsonPropertyName("FriendlyName")]
 	public string FriendlyName { get; set; } = string.Empty;
+
+	[JsonPropertyName("RegistrationTime")]
 	//Unix timestamp in seconds
 	public long RegistrationTime { get; set; }
+
+	[JsonPropertyName("PlatformVersion")]
 	//The operating system that the device uses.
 	public OSInfo PlatformVersion { get; set; }
+
+	[JsonPropertyName("Sources")]
 	//Minimal information about the device's private Protected Items, so that other devices can safely run retention passes
 	//on a shared Storage Vault.
 	public Dictionary<string, SourceBasicInfo> Sources { get; set; }
+
+	[JsonPropertyName("DeviceTimezone")]
 	//The device's reported timezone in IANA format.
 	public string DeviceTimezone { get; set; } = string.Empty;
+
+	[JsonPropertyName("ClientVersion")]
+	public string ClientVersion { get; set; } = string.Empty;
 
 	public DeviceConfig(){ }
 

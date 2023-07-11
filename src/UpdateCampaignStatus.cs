@@ -10,18 +10,39 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>UpdateCampaignStatus</c>
 /// </summary>
 public class UpdateCampaignStatus {
+
+	[JsonPropertyName("Active")]
 	public bool Active { get; set; }
+
+	[JsonPropertyName("UpgradeOlder")]
 	public bool UpgradeOlder { get; set; }
+
+	[JsonPropertyName("ReinstallCurrentVer")]
 	public bool ReinstallCurrentVer { get; set; }
+
+	[JsonPropertyName("DowngradeNewer")]
 	public bool DowngradeNewer { get; set; }
+
+	[JsonPropertyName("ForceUpgradeRunning")]
 	//Choose whether this bulk upgrade campaign is allowed to interrupt a running backup job.
 	public bool ForceUpgradeRunning { get; set; }
+
+	[JsonPropertyName("ApplyDeviceFilter")]
 	//If true, then the UserFilter will be used to restrict which accounts and devices will be eligible for the software
 	//update. If false, all users and devices will be eligible for the software update.
 	public bool ApplyDeviceFilter { get; set; }
+
+	[JsonPropertyName("DeviceFilter")]
 	public SearchClause DeviceFilter { get; set; }
+
+	[JsonPropertyName("StartTime")]
+	//Unix timestamp, in seconds
 	public long StartTime { get; set; }
+
+	[JsonPropertyName("TargetVersion")]
 	public string TargetVersion { get; set; } = string.Empty;
+
+	[JsonPropertyName("Devices")]
 	public List<UpdateCampaignStatusDeviceEntry> Devices { get; set; }
 
 	public UpdateCampaignStatus(){ }

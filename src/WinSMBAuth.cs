@@ -10,12 +10,20 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>WinSMBAuth</c>
 /// </summary>
 public class WinSMBAuth {
+
+	[JsonPropertyName("SharePath")]
 	//The UNC path for the Windows network share (SMB).
 	public string SharePath { get; set; } = string.Empty;
+
+	[JsonPropertyName("Username")]
 	//The username to log in to the Windows network share (SMB).
 	public string Username { get; set; } = string.Empty;
+
+	[JsonPropertyName("Password")]
 	//The password might be hashed. To set this in cleartext, set PasswordFormat to 0 (PASSWORD_FORMAT_PLAINTEXT).
 	public string Password { get; set; } = string.Empty;
+
+	[JsonPropertyName("PasswordFormat")]
 	//The hash algorithm that is used for the Password field. It is one of the PASSWORD_FORMAT_ constants.
 	public ulong PasswordFormat { get; set; }
 

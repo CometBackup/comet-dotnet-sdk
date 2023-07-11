@@ -10,11 +10,27 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>MSSQLConnection</c>
 /// </summary>
 public class MSSQLConnection {
+
+	[JsonPropertyName("Type")]
+	//One of the MSSQL_AUTH_ constants (e.g. "windows" or "native")
 	public string Type { get; set; } = string.Empty;
+
+	[JsonPropertyName("Username")]
 	public string Username { get; set; } = string.Empty;
+
+	[JsonPropertyName("Password")]
 	public string Password { get; set; } = string.Empty;
+
+	[Obsolete("Deprecated since Comet version Unused")]
+
+	[JsonPropertyName("Hostname")]
 	public string Hostname { get; set; } = string.Empty;
+
+	[JsonPropertyName("InstanceName")]
 	public string InstanceName { get; set; } = string.Empty;
+
+	[JsonPropertyName("Method")]
+	//One of the MSSQL_METHOD_ constants, to control using x86_32 or x86_64 OLEDB drivers
 	public string Method { get; set; } = string.Empty;
 
 	public MSSQLConnection(){ }

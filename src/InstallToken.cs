@@ -10,11 +10,28 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>InstallToken</c>
 /// </summary>
 public class InstallToken {
+
+	[JsonPropertyName("Username")]
 	public string Username { get; set; } = string.Empty;
+
+	[JsonPropertyName("Server")]
+	//The URL of the Comet Server (Auth Role) for the target user to log in to.
 	public string Server { get; set; } = string.Empty;
+
+	[JsonPropertyName("Token")]
+	//The token for use with the "/TOKEN=" silent install flag.
 	public string Token { get; set; } = string.Empty;
+
+	[JsonPropertyName("CreateTime")]
+	//Unix timestamp, in seconds.
 	public long CreateTime { get; set; }
+
+	[JsonPropertyName("Used")]
+	//If the token has been used, it cannot be used again.
 	public bool Used { get; set; }
+
+	[JsonPropertyName("ExpireTime")]
+	//Unix timestamp, in seconds.
 	public long ExpireTime { get; set; }
 
 	public InstallToken(){ }

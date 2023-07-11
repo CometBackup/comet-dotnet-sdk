@@ -13,11 +13,23 @@ public class HTTPConnectorOptions {
 
 	[JsonPropertyName("ListenAddress")]
 	public string ListenAddress__DONOTUSEDIRECTLY { get; set; } = string.Empty;
+
+	[JsonPropertyName("SSLCertPath")]
 	public string SSLCertPath { get; set; } = string.Empty;
+
+	[JsonPropertyName("SSLIntermediate")]
 	public string SSLIntermediate { get; set; } = string.Empty;
+
+	[JsonPropertyName("SSLCertKey")]
 	public string SSLCertKey { get; set; } = string.Empty;
+
+	[JsonPropertyName("AutoSSLDomains")]
 	public string AutoSSLDomains { get; set; } = string.Empty;
+
+	[JsonPropertyName("SSLPfxPath")]
 	public string SSLPfxPath { get; set; } = string.Empty;
+
+	[JsonPropertyName("SSLPfxPassword")]
 	public string SSLPfxPassword { get; set; } = string.Empty;
 
 	public HTTPConnectorOptions(){ }

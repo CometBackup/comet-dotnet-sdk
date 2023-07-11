@@ -7,13 +7,22 @@ using System.Text.Json.Serialization;
 
 namespace CometBackup.CometAPI.SDK {
 /// <summary>
-/// Class <c>SourceBasicInfo</c>
+/// Class <c>SourceBasicInfo</c> SourceBasicInfo is the minimal amount of information one device knows about another
+/// device's Protected Items, in order to safely perform retention passes on their behalf.
 /// </summary>
 public class SourceBasicInfo {
+
+	[JsonPropertyName("Description")]
 	public string Description { get; set; } = string.Empty;
+
+	[JsonPropertyName("O365AccountCount")]
 	public long O365AccountCount { get; set; }
+
+	[JsonPropertyName("Size")]
 	//Bytes
 	public long Size { get; set; }
+
+	[JsonPropertyName("OverrideDestinationRetention")]
 	public Dictionary<string, RetentionPolicy> OverrideDestinationRetention { get; set; }
 
 	public SourceBasicInfo(){ }

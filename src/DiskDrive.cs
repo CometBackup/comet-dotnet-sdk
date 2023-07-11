@@ -10,17 +10,41 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>DiskDrive</c>
 /// </summary>
 public class DiskDrive {
+
+	[JsonPropertyName("ID")]
 	public string ID { get; set; } = string.Empty;
+
+	[JsonPropertyName("DeviceName")]
 	public string DeviceName { get; set; } = string.Empty;
+
+	[JsonPropertyName("Caption")]
 	public string Caption { get; set; } = string.Empty;
+
+	[JsonPropertyName("Model")]
 	public string Model { get; set; } = string.Empty;
+
+	[JsonPropertyName("SerialNumber")]
 	public string SerialNumber { get; set; } = string.Empty;
+
+	[JsonPropertyName("Size")]
 	public long Size { get; set; }
+
+	[JsonPropertyName("Partitions")]
 	public List<Partition> Partitions { get; set; }
+
+	[JsonPropertyName("Flags")]
 	public long Flags { get; set; }
+
+	[JsonPropertyName("Cylinders")]
 	public long Cylinders { get; set; }
+
+	[JsonPropertyName("Heads")]
 	public long Heads { get; set; }
+
+	[JsonPropertyName("Sectors")]
 	public long Sectors { get; set; }
+
+	[JsonPropertyName("SectorSize")]
 	public long SectorSize { get; set; }
 
 	public DiskDrive(){ }

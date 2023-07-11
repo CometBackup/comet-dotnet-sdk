@@ -7,18 +7,29 @@ using System.Text.Json.Serialization;
 
 namespace CometBackup.CometAPI.SDK {
 /// <summary>
-/// Class <c>OSInfo</c>
+/// Class <c>OSInfo</c> OSInfo represents the common set of version information between all operating systems
 /// </summary>
 public class OSInfo {
 
 	[JsonPropertyName("version")]
+	//The primary version number (e.g. on Windows: 1703 / 2009, on Linux: 20.04 / 22.04)
 	public string Version { get; set; } = string.Empty;
 
 	[JsonPropertyName("distribution")]
+	//The primary presentation name (e.g. "Windows 10 Pro", "debian", "Synology DSM")
 	public string Distribution { get; set; } = string.Empty;
 
 	[JsonPropertyName("build")]
+	//The detailed build number (e.g. 19043)
 	public string Build { get; set; } = string.Empty;
+
+	[JsonPropertyName("os")]
+	//The GOOS value
+	public string OS { get; set; } = string.Empty;
+
+	[JsonPropertyName("arch")]
+	//The GOARCH value
+	public string Arch { get; set; } = string.Empty;
 
 	public OSInfo(){ }
 

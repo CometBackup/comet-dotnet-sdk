@@ -7,17 +7,40 @@ using System.Text.Json.Serialization;
 
 namespace CometBackup.CometAPI.SDK {
 /// <summary>
-/// Class <c>RetentionRange</c>
+/// Class <c>RetentionRange</c> The Type field controls which fields of this data type are used. For additional
+/// information, see the notes on the RETENTIONRANGE_ constants.
 /// </summary>
 public class RetentionRange {
+
+	[JsonPropertyName("Type")]
+	//One of the RETENTIONRANGE_ constants
 	public long Type { get; set; }
+
+	[JsonPropertyName("Timestamp")]
+	//Unix timestamp, in seconds. Used by RETENTIONRANGE_NEWER_THAN_X.
 	public long Timestamp { get; set; }
+
+	[JsonPropertyName("Jobs")]
 	public long Jobs { get; set; }
+
+	[JsonPropertyName("Days")]
 	public long Days { get; set; }
+
+	[JsonPropertyName("Weeks")]
 	public long Weeks { get; set; }
+
+	[JsonPropertyName("Months")]
 	public long Months { get; set; }
+
+	[JsonPropertyName("WeekOffset")]
 	//0: Sunday, 6: Saturday
 	public long WeekOffset { get; set; }
+
+	[JsonPropertyName("MonthOffset")]
+	//1: 1st, 31: 31st
+	//Prior to Comet version 23.6.2, 31 was treated as 30.
+	//For months that do not have a day equal to the specified offset, no backup will be retained.
+	//For example, if the offset is set to 30, no backup will be kept for February.
 	public long MonthOffset { get; set; }
 
 	public RetentionRange(){ }

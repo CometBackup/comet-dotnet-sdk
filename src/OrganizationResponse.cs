@@ -10,9 +10,17 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>OrganizationResponse</c>
 /// </summary>
 public class OrganizationResponse {
+
+	[JsonPropertyName("Status")]
 	public long Status { get; set; }
+
+	[JsonPropertyName("Message")]
 	public string Message { get; set; } = string.Empty;
+
+	[JsonPropertyName("ID")]
 	public string ID { get; set; } = string.Empty;
+
+	[JsonPropertyName("Organization")]
 	public Organization Organization { get; set; }
 
 	public OrganizationResponse(){ }

@@ -10,9 +10,17 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>ConstellationStatusAPIResponse</c>
 /// </summary>
 public class ConstellationStatusAPIResponse {
+
+	[JsonPropertyName("DeletionEnabled")]
 	public bool DeletionEnabled { get; set; }
+
+	[JsonPropertyName("Targets")]
 	public List<string> Targets { get; set; }
+
+	[JsonPropertyName("TargetNames")]
 	public List<string> TargetNames { get; set; }
+
+	[JsonPropertyName("Stats")]
 	public ConstellationStats Stats { get; set; }
 
 	public ConstellationStatusAPIResponse(){ }

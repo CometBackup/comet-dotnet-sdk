@@ -10,11 +10,24 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>AdminWebAuthnRegistration</c>
 /// </summary>
 public class AdminWebAuthnRegistration {
+
+	[JsonPropertyName("Description")]
 	public string Description { get; set; } = string.Empty;
+
+	[JsonPropertyName("RegisterTime")]
+	//Unix timestamp, in seconds.
 	public long RegisterTime { get; set; }
+
+	[JsonPropertyName("Type")]
 	public long Type { get; set; }
+
+	[JsonPropertyName("IsLegacyU2F")]
 	public bool IsLegacyU2F { get; set; }
+
+	[JsonPropertyName("ID")]
 	public byte[] ID { get; set; }
+
+	[JsonPropertyName("Credential")]
 	public WebAuthnCredential Credential { get; set; }
 
 	public AdminWebAuthnRegistration(){ }

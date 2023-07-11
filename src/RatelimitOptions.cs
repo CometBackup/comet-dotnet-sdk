@@ -10,6 +10,8 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>RatelimitOptions</c>
 /// </summary>
 public class RatelimitOptions {
+
+	[JsonPropertyName("Rules")]
 	public List<RatelimitRule> Rules { get; set; }
 
 	public RatelimitOptions(){ }

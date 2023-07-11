@@ -10,19 +10,43 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>ServerMetaBrandingProperties</c>
 /// </summary>
 public class ServerMetaBrandingProperties {
+
+	[JsonPropertyName("BrandName")]
 	public string BrandName { get; set; } = string.Empty;
+
+	[JsonPropertyName("ProductName")]
 	public string ProductName { get; set; } = string.Empty;
+
+	[JsonPropertyName("HasImage")]
 	//If true, this Comet Server has an image configured for its main logo. You can access it from the /gen/logo.img
 	//endpoint. If false, this Comet Server has text configured for its main logo.
 	public bool HasImage { get; set; }
+
+	[JsonPropertyName("ImageEtag")]
 	//A value that will change if the branding image (/gen/logo.img) changes. You can use this as a cache key.
 	public string ImageEtag { get; set; } = string.Empty;
+
+	[JsonPropertyName("TopColor")]
+	//Colour in RGB hex format (e.g. "#FFFFFF")
 	public string TopColor { get; set; } = string.Empty;
+
+	[JsonPropertyName("AccentColor")]
+	//Colour in RGB hex format (e.g. "#FFFFFF")
 	public string AccentColor { get; set; } = string.Empty;
+
+	[JsonPropertyName("HideNewsArea")]
 	public bool HideNewsArea { get; set; }
+
+	[JsonPropertyName("AllowUnauthenticatedDownloads")]
 	public bool AllowUnauthenticatedDownloads { get; set; }
+
+	[JsonPropertyName("AllowAuthenticatedDownloads")]
 	public bool AllowAuthenticatedDownloads { get; set; }
+
+	[JsonPropertyName("PruneLogsAfterDays")]
 	public long PruneLogsAfterDays { get; set; }
+
+	[JsonPropertyName("ExpiredInSeconds")]
 	public long ExpiredInSeconds { get; set; }
 
 	public ServerMetaBrandingProperties(){ }

@@ -10,82 +10,144 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>UserProfileConfig</c> This is the main data structure for a user's profile.
 /// </summary>
 public class UserProfileConfig {
+
+	[JsonPropertyName("Username")]
 	//The name for this account. It uniquely identifies this UserProfileConfig across the entire Comet Server. It cannot be
 	//changed directly.
 	public string Username { get; set; } = string.Empty;
+
+	[JsonPropertyName("AccountName")]
 	//A longer descriptive name for this account. It is not necessarily unique to the Comet Server. The end-user might be
 	//able to change it inside the Comet Backup desktop app.
 	public string AccountName { get; set; } = string.Empty;
+
+	[JsonPropertyName("LocalTimezone")]
 	//Timezone in IANA format. Individual devices may declare a more specific timezone in the Devices field.
 	public string LocalTimezone { get; set; } = string.Empty;
+
+	[JsonPropertyName("LanguageCode")]
 	//One of the supported languages, such as en_US (DEFAULT_LANGUAGE).
 	public string LanguageCode { get; set; } = string.Empty;
+
+	[JsonPropertyName("OrganizationID")]
 	//Tenant
 	public string OrganizationID { get; set; } = string.Empty;
+
+	[JsonPropertyName("Emails")]
 	//A list of email addresses to send reports to.
 	public List<string> Emails { get; set; }
+
+	[JsonPropertyName("OverrideEmailSettings")]
 	//By default, all the email addresses in the Emails field will receieve the policy-default or server-wide-default style
 	//of email report. Add an override for a specific email address in here to allow customizing the email report that will
 	//be received.
 	public Dictionary<string, UserCustomEmailSettings> OverrideEmailSettings { get; set; }
+
+	[JsonPropertyName("SendEmailReports")]
 	//This option can be used to control whether any email reports are sent.
 	public bool SendEmailReports { get; set; }
+
+	[JsonPropertyName("Destinations")]
 	//Storage Vaults
 	//The string keys can be any unique key. Using a GUID is recommended, but optional.
 	public Dictionary<string, DestinationConfig> Destinations { get; set; }
+
+	[JsonPropertyName("Sources")]
 	//Protected Items
 	//The string keys can be any unique key. Using a GUID is recommended, but optional.
 	public Dictionary<string, SourceConfig> Sources { get; set; }
+
+	[JsonPropertyName("BackupRules")]
 	//Schedules
 	//The string keys can be any unique key. Using a GUID is recommended, but optional.
 	public Dictionary<string, BackupRuleConfig> BackupRules { get; set; }
+
+	[JsonPropertyName("Devices")]
 	//Devices
 	//The string keys are the device's ID. The device ID is generated automatically based on a mix of hardware and software
 	//identifiers on the installed PC.
 	//To revoke a device, use the AdminRevokeDevice API instead of accessing these fields directly. This API can also
 	//remove associated Protected Items, uninstall the remote device, and disconnect its live connection.
 	public Dictionary<string, DeviceConfig> Devices { get; set; }
+
+	[JsonPropertyName("IsSuspended")]
 	public bool IsSuspended { get; set; }
+
+	[JsonPropertyName("LastSuspended")]
 	//Unix timestamp in seconds. Zero if the device is not suspended.
 	public long LastSuspended { get; set; }
+
+	[JsonPropertyName("AllProtectedItemsQuotaEnabled")]
 	//A limit on the total Size of all Protected Items in this account. The number of bytes should be configured in
 	//AllProtectedItemsQuotaBytes.
 	public bool AllProtectedItemsQuotaEnabled { get; set; }
+
+	[JsonPropertyName("AllProtectedItemsQuotaBytes")]
 	//A limit on the total Size of all Protected Items in this account. It is enforced if AllProtectedItemsQuotaEnabled is
 	//true.
 	public long AllProtectedItemsQuotaBytes { get; set; }
+
+	[JsonPropertyName("MaximumDevices")]
 	//A limit on the total number of devices registered in this account. Set to zero to allow unlimited devices.
 	public long MaximumDevices { get; set; }
+
+	[JsonPropertyName("QuotaOffice365ProtectedAccounts")]
 	//A limit on the total number of Office 365 Protected Accounts across all Office 365 Protected Items in this account.
 	//Set to zero to allow unlimited Office 365 Protected Accounts.
 	public long QuotaOffice365ProtectedAccounts { get; set; }
+
+	[JsonPropertyName("PolicyID")]
 	//If the PolicyID field is set to a non-empty string, the Comet Server will enforce the contents of the Policy field
 	//based on the matching server's policy. Otherwise if the PolicyID field is set to an empty string, the administrator
 	//may configure any custom values in the Policy field.
 	public string PolicyID { get; set; } = string.Empty;
+
+	[JsonPropertyName("Policy")]
 	//The Policy field contains a read-only copy of the effective Policy that is applied to this user account.
 	public UserPolicy Policy { get; set; }
+
+	[JsonPropertyName("PasswordFormat")]
 	//One of the PASSWORD_FORMAT_ constants
 	//To change the user's password, use the AdminResetUserPassword API instead of accessing these fields directly.
 	//Otherwise, other encrypted fields in the user profile may become corrupted.
 	public long PasswordFormat { get; set; }
+
+	[JsonPropertyName("PasswordHash")]
 	public string PasswordHash { get; set; } = string.Empty;
+
+	[JsonPropertyName("PasswordRecovery")]
 	//If this field is empty, the "Allow administrator to reset my password" feature is turned off. If this field is
 	//filled, it contains a cryptographic root of trust that can decrypt and re-encrypt other secrets in this profile.
 	public string PasswordRecovery { get; set; } = string.Empty;
+
+	[JsonPropertyName("AllowPasswordLogin")]
 	public bool AllowPasswordLogin { get; set; }
+
+	[JsonPropertyName("AllowPasswordAndTOTPLogin")]
 	//If true, then TOTP is required to open the desktop app or the Comet Server web interface with this user's
 	//credentials.
 	public bool AllowPasswordAndTOTPLogin { get; set; }
+
+	[JsonPropertyName("TOTPKeyEncryptionFormat")]
 	//One of the ENCRYPTIONMETHOD_ constants
 	public long TOTPKeyEncryptionFormat { get; set; }
+
+	[JsonPropertyName("TOTPKey")]
 	public string TOTPKey { get; set; } = string.Empty;
+
+	[JsonPropertyName("RequirePasswordChange")]
 	public bool RequirePasswordChange { get; set; }
+
+	[JsonPropertyName("CreateTime")]
 	//Unix timestamp in seconds
 	public long CreateTime { get; set; }
+
+	[JsonPropertyName("CreationGUID")]
 	//A random GUID that is allocated when the user profile is created for the first time. You can use this to help
 	//disambiguate users with the same username across multiple Comet Servers.
 	public string CreationGUID { get; set; } = string.Empty;
+
+	[JsonPropertyName("ServerConfig")]
 	//Additional server-wide settings that are enforced for this user profile
 	public UserServerConfig ServerConfig { get; set; }
 

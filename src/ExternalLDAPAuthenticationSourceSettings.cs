@@ -10,14 +10,33 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>ExternalLDAPAuthenticationSourceSettings</c>
 /// </summary>
 public class ExternalLDAPAuthenticationSourceSettings {
+
+	[JsonPropertyName("Hostname")]
 	public string Hostname { get; set; } = string.Empty;
+
+	[JsonPropertyName("Port")]
 	public long Port { get; set; }
+
+	[JsonPropertyName("SecurityMethod")]
+	//One of the LDAPSECURITYMETHOD_ constants (e.g. "plain" / "ldaps" / "starttls")
 	public string SecurityMethod { get; set; } = string.Empty;
+
+	[JsonPropertyName("AcceptInvalidSSL")]
 	public bool AcceptInvalidSSL { get; set; }
+
+	[JsonPropertyName("FallbackServers")]
 	public List<ExternalLDAPAuthenticationSourceServer> FallbackServers { get; set; }
+
+	[JsonPropertyName("BindUser")]
 	public string BindUser { get; set; } = string.Empty;
+
+	[JsonPropertyName("BindPassword")]
 	public string BindPassword { get; set; } = string.Empty;
+
+	[JsonPropertyName("SearchDN")]
 	public string SearchDN { get; set; } = string.Empty;
+
+	[JsonPropertyName("SearchFilter")]
 	public string SearchFilter { get; set; } = string.Empty;
 
 	public ExternalLDAPAuthenticationSourceSettings(){ }

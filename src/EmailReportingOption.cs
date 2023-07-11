@@ -10,9 +10,19 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>EmailReportingOption</c>
 /// </summary>
 public class EmailReportingOption {
+
+	[JsonPropertyName("EmailReportConfig")]
 	public EmailReportConfig EmailReportConfig { get; set; }
+
+	[JsonPropertyName("LanguageCode")]
+	//A supported language code (e.g. "en_US" or the DEFAULT_LANGUAGE constant)
 	public string LanguageCode { get; set; } = string.Empty;
+
+	[JsonPropertyName("LocalTimezone")]
+	//The timezone in IANA format (e.g. "Pacific/Auckland" or the DEFAULT_TIMEZONE constant)
 	public string LocalTimezone { get; set; } = string.Empty;
+
+	[JsonPropertyName("Recipients")]
 	public List<string> Recipients { get; set; }
 
 	public EmailReportingOption(){ }

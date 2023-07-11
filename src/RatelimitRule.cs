@@ -10,7 +10,11 @@ namespace CometBackup.CometAPI.SDK {
 /// Class <c>RatelimitRule</c>
 /// </summary>
 public class RatelimitRule {
+
+	[JsonPropertyName("MatchRegex")]
 	public string MatchRegex { get; set; } = string.Empty;
+
+	[JsonPropertyName("BytesPerSecond")]
 	public ulong BytesPerSecond { get; set; }
 
 	public RatelimitRule(){ }
