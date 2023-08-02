@@ -32,6 +32,9 @@ public class AdminUserPermissions {
 	[JsonPropertyName("AllowEditWebhooks")]
 	public bool AllowEditWebhooks { get; set; }
 
+	[JsonPropertyName("AllowEditExternalAuthSources")]
+	public bool AllowEditExternalAuthSources { get; set; }
+
 	[JsonPropertyName("DenyConstellationRole")]
 	public bool DenyConstellationRole { get; set; }
 

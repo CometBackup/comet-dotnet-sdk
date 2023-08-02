@@ -29,6 +29,9 @@ public class RemoteStorageOption {
 	[JsonPropertyName("LDAP")]
 	public ExternalLDAPAuthenticationSourceSettings LDAP { get; set; }
 
+	[JsonPropertyName("OIDC")]
+	public OidcConfig OIDC { get; set; }
+
 	[JsonPropertyName("B2")]
 	public B2VirtualStorageRoleSettings B2 { get; set; }
 
@@ -74,6 +77,7 @@ public class RemoteStorageOption {
 		Username = this.Username,
 		Password = this.Password,
 		LDAP = this.LDAP,
+		OIDC = this.OIDC,
 		B2 = this.B2,
 		Wasabi = this.Wasabi,
 		Custom = this.Custom,
@@ -89,6 +93,7 @@ public class RemoteStorageOption {
 		this.Username = other.Username;
 		this.Password = other.Password;
 		this.LDAP = other.LDAP;
+		this.OIDC = other.OIDC;
 		this.B2 = other.B2;
 		this.Wasabi = other.Wasabi;
 		this.Custom = other.Custom;

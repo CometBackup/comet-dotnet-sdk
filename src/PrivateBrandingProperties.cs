@@ -59,9 +59,8 @@ public class PrivateBrandingProperties {
 	[JsonPropertyName("WindowsCodeSignPKCS11Module")]
 	public string WindowsCodeSignPKCS11Module { get; set; } = string.Empty;
 
-	[Obsolete("Deprecated since Comet version 22.12.7")]
-
 	[JsonPropertyName("WindowsCodeSignPKCS11Certfile")]
+	//This field was deprecated between 23.3.0 and 23.6.x, but is now used again.
 	public string WindowsCodeSignPKCS11Certfile { get; set; } = string.Empty;
 
 	[JsonPropertyName("WindowsCodeSignPKCS11KeyID")]

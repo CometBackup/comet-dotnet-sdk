@@ -3,13 +3,13 @@
 
 namespace CometBackup.CometAPI.SDK {
 public static class Def {
-	public const string APPLICATION_VERSION = "23.6.5";
+	public const string APPLICATION_VERSION = "23.6.9";
 
 	public const long APPLICATION_VERSION_MAJOR = 23;
 
 	public const long APPLICATION_VERSION_MINOR = 6;
 
-	public const long APPLICATION_VERSION_REVISION = 5;
+	public const long APPLICATION_VERSION_REVISION = 9;
 
 	/// AutoRetentionLevel: The system will automatically choose how often to run an automatic Retention Pass after each
 	/// backup job.
@@ -398,6 +398,15 @@ public static class Def {
 	/// credential automatically.
 	public const long PASSWORD_FORMAT_PLAINTEXT = 0;
 
+	/// OidcProvider
+	public const string PROVIDER_GENERIC = "oidc";
+
+	/// OidcProvider
+	public const string PROVIDER_AZUREADV2 = "azure-ad-v2";
+
+	/// OidcProvider
+	public const string PROVIDER_GOOGLE = "google";
+
 	/// PSAType
 	public const long PSA_TYPE_GENERIC = 0;
 
@@ -411,6 +420,9 @@ public static class Def {
 
 	/// RemoteServerType
 	public const string REMOTESERVER_LDAP = "ldap";
+
+	/// RemoteServerType
+	public const string REMOTESERVER_OIDC = "oidc";
 
 	/// RemoteServerType
 	public const string REMOTESERVER_B2 = "b2";
@@ -994,7 +1006,7 @@ public static class Def {
 	/// WebAuthnDeviceType
 	public const long WEBAUTHN_DEVICE_TYPE__TPM_LINUX = 6;
 
-	/// WindowsCodesignMethod: When upgrading from a version of Comet Server prior to 22.12.7, this option will be
+	/// WindowsCodesignMethod: When upgrading from a version of Comet Server prior to 23.3.0, this option will be
 	/// automatically converted to a more specific type.
 	public const long WINDOWSCODESIGN_METHOD_AUTO = 0;
 

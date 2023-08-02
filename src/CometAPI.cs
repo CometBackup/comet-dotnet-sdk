@@ -241,6 +241,37 @@ public class CometAPI : IDisposable {
 	}
 
 	/// <summary>
+	/// AdminAccountSessionUpgradeAsync: Upgrade a session key which is pending an MFA upgrade to a full session key
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// </summary>
+	/// <param name="SessionKey">The session key to upgrade</param>
+	public async Task<CometAPIResponseMessage> AdminAccountSessionUpgradeAsync(string SessionKey) {
+		var data = new Dictionary<string,string>();
+
+		data["SessionKey"] = SessionKey;
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/account/session-upgrade", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<CometAPIResponseMessage>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// AdminAccountSessionUpgrade: Upgrade a session key which is pending an MFA upgrade to a full session key
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// </summary>
+	/// <param name="SessionKey">The session key to upgrade</param>
+	public CometAPIResponseMessage AdminAccountSessionUpgrade(string SessionKey) {
+		var resultTask = AdminAccountSessionUpgradeAsync(SessionKey);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
 	/// AdminAccountSetPropertiesAsync: Update settings for your own admin account
 	/// Updating your account password requires you to supply your current password.
 	/// To set a new plaintext password, use a password format of 0 (PASSWORD_FORMAT_PLAINTEXT).
@@ -3130,6 +3161,132 @@ public class CometAPI : IDisposable {
 	/// 19.3.11)</param>
 	public CometAPIResponseMessage AdminDispatcherUpdateSoftware(string TargetID, string SelfAddress = null) {
 		var resultTask = AdminDispatcherUpdateSoftwareAsync(TargetID, SelfAddress);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
+	/// AdminExternalAuthSourcesDeleteAsync: Delete an external admin authentication source
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// </summary>
+	/// <param name="SourceID">(No description available)</param>
+	public async Task<CometAPIResponseMessage> AdminExternalAuthSourcesDeleteAsync(string SourceID) {
+		var data = new Dictionary<string,string>();
+
+		data["SourceID"] = SourceID;
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/external-auth-sources/delete", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<CometAPIResponseMessage>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// AdminExternalAuthSourcesDelete: Delete an external admin authentication source
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// </summary>
+	/// <param name="SourceID">(No description available)</param>
+	public CometAPIResponseMessage AdminExternalAuthSourcesDelete(string SourceID) {
+		var resultTask = AdminExternalAuthSourcesDeleteAsync(SourceID);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
+	/// AdminExternalAuthSourcesGetAsync: Get a map of all external admin authentication sources
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// </summary>
+	public async Task<Dictionary<string,ExternalAuthenticationSource>> AdminExternalAuthSourcesGetAsync() {
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/external-auth-sources/get", null)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<Dictionary<string,ExternalAuthenticationSource>>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// AdminExternalAuthSourcesGet: Get a map of all external admin authentication sources
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// </summary>
+	public Dictionary<string,ExternalAuthenticationSource> AdminExternalAuthSourcesGet() {
+		var resultTask = AdminExternalAuthSourcesGetAsync();
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
+	/// AdminExternalAuthSourcesNewAsync: Create an external admin authentication source
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// </summary>
+	/// <param name="Source">(No description available)</param>
+	/// <param name="SourceID">(Optional) (No description available)</param>
+	public async Task<ExternalAuthenticationSourceResponse> AdminExternalAuthSourcesNewAsync(ExternalAuthenticationSource Source, string SourceID = null) {
+		var data = new Dictionary<string,string>();
+
+		data["Source"] = JsonSerializer.Serialize(Source);
+		if (SourceID != null) {
+			data["SourceID"] = SourceID;
+		}
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/external-auth-sources/new", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<ExternalAuthenticationSourceResponse>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// AdminExternalAuthSourcesNew: Create an external admin authentication source
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// </summary>
+	/// <param name="Source">(No description available)</param>
+	/// <param name="SourceID">(Optional) (No description available)</param>
+	public ExternalAuthenticationSourceResponse AdminExternalAuthSourcesNew(ExternalAuthenticationSource Source, string SourceID = null) {
+		var resultTask = AdminExternalAuthSourcesNewAsync(Source, SourceID);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
+	/// AdminExternalAuthSourcesSetAsync: Updates the current tenant's external admin authentication sources. This will set
+	/// all
+	/// sources for the tenant; none will be preserved.
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// </summary>
+	/// <param name="Sources">(No description available)</param>
+	public async Task<CometAPIResponseMessage> AdminExternalAuthSourcesSetAsync(Dictionary<string,ExternalAuthenticationSource> Sources) {
+		var data = new Dictionary<string,string>();
+
+		data["Sources"] = JsonSerializer.Serialize(Sources);
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/external-auth-sources/set", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<CometAPIResponseMessage>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// AdminExternalAuthSourcesSet: Updates the current tenant's external admin authentication sources. This will set all
+	/// sources for the tenant; none will be preserved.
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// </summary>
+	/// <param name="Sources">(No description available)</param>
+	public CometAPIResponseMessage AdminExternalAuthSourcesSet(Dictionary<string,ExternalAuthenticationSource> Sources) {
+		var resultTask = AdminExternalAuthSourcesSetAsync(Sources);
 		resultTask.Wait();
 		return resultTask.Result;
 	}

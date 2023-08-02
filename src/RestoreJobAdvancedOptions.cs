@@ -40,10 +40,13 @@ public class RestoreJobAdvancedOptions {
 	public long ArchiveFormat { get; set; }
 
 	[JsonPropertyName("SkipUnreadableChunks")]
+	//Default disabled. For RESTORETYPE_FILE and RESTORETYPE_WINDISK. Used to continue the restore job when unreadable data
+	//chunks are found.
 	//Corresponds to the "Allow partial file restores (zero-out unrecoverable data)" option
 	public bool SkipUnreadableChunks { get; set; }
 
 	[JsonPropertyName("OnDiskIndexesKey")]
+	//Default disabled. Used to store the index files on disk instead of in memory.
 	//Corresponds to the "Prefer temporary files instead of RAM (slower)" option
 	public bool OnDiskIndexesKey { get; set; }
 

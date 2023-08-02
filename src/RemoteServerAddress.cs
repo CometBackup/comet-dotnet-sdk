@@ -29,6 +29,9 @@ public class RemoteServerAddress {
 	[JsonPropertyName("LDAP")]
 	public ExternalLDAPAuthenticationSourceSettings LDAP { get; set; }
 
+	[JsonPropertyName("OIDC")]
+	public OidcConfig OIDC { get; set; }
+
 	[JsonPropertyName("B2")]
 	public B2VirtualStorageRoleSettings B2 { get; set; }
 

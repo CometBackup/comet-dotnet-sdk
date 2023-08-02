@@ -98,6 +98,9 @@ public class UserPolicy {
 	[JsonPropertyName("PreventProtectedItemRetention")]
 	public bool PreventProtectedItemRetention { get; set; }
 
+	[JsonPropertyName("AllowEditObjectLockRetention")]
+	public bool AllowEditObjectLockRetention { get; set; }
+
 	[JsonPropertyName("DefaultSources")]
 	public Dictionary<string, SourceConfig> DefaultSources { get; set; }
 

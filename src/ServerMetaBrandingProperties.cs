@@ -49,6 +49,9 @@ public class ServerMetaBrandingProperties {
 	[JsonPropertyName("ExpiredInSeconds")]
 	public long ExpiredInSeconds { get; set; }
 
+	[JsonPropertyName("ExternalAuthenticationSources")]
+	public List<ExternalAuthenticationSourceDisplay> ExternalAuthenticationSources { get; set; }
+
 	public ServerMetaBrandingProperties(){ }
 
 	public string ToJson() {
