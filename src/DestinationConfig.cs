@@ -180,6 +180,9 @@ public class DestinationConfig {
 	[JsonPropertyName("B2")]
 	public B2DestinationLocation B2 { get; set; }
 
+	[JsonPropertyName("WebDav")]
+	public WebDavDestinationLocation WebDav { get; set; }
+
 	[JsonPropertyName("Storj")]
 	public StorjDestinationLocation Storj { get; set; }
 
@@ -284,6 +287,7 @@ public class DestinationConfig {
 		LocalcopyWinSMBPasswordFormat = this.LocalcopyWinSMBPasswordFormat,
 		Swift = this.Swift,
 		B2 = this.B2,
+		WebDav = this.WebDav,
 		Storj = this.Storj,
 		SpanTargets = this.SpanTargets,
 		SpanUseStaticSlots = this.SpanUseStaticSlots,
@@ -332,6 +336,7 @@ public class DestinationConfig {
 		this.LocalcopyWinSMBPasswordFormat = other.LocalcopyWinSMBPasswordFormat;
 		this.Swift = other.Swift;
 		this.B2 = other.B2;
+		this.WebDav = other.WebDav;
 		this.Storj = other.Storj;
 		this.SpanTargets = other.SpanTargets;
 		this.SpanUseStaticSlots = other.SpanUseStaticSlots;

@@ -159,6 +159,9 @@ public class DestinationLocation {
 	[JsonPropertyName("B2")]
 	public B2DestinationLocation B2 { get; set; }
 
+	[JsonPropertyName("WebDav")]
+	public WebDavDestinationLocation WebDav { get; set; }
+
 	[JsonPropertyName("Storj")]
 	public StorjDestinationLocation Storj { get; set; }
 

@@ -116,6 +116,8 @@ public static class Def {
 	/// Storj
 	public const ulong DESTINATIONTYPE_STORJ = 1009;
 
+	public const ulong DESTINATIONTYPE_WEBDAV = 1010;
+
 	/// When defining a schedule via policy, use this option to dynamically select the Storage Vault that was created most
 	/// recently.
 	public const ulong DESTINATIONTYPE_LATEST = 1100;

@@ -5772,7 +5772,6 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
-	/// This API requires the Storage Role to be enabled.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
 	/// </summary>
 	/// <param name="ExtraData">The destination location settings</param>
@@ -5794,7 +5793,6 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
-	/// This API requires the Storage Role to be enabled.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
 	/// </summary>
 	/// <param name="ExtraData">The destination location settings</param>
