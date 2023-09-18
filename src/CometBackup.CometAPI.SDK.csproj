@@ -5,7 +5,7 @@
     <LangVersion>7.3</LangVersion>
     <NoWarn>CS0618</NoWarn>
     <PackageId>CometBackup.CometAPI.SDK</PackageId>
-    <Version>0.6.0</Version>
+    <Version>0.7.0</Version>
     <Authors>hello@cometbackup.com</Authors>
     <Company>Comet</Company>
     <Title>.NET SDK for Comet Backup</Title>    
