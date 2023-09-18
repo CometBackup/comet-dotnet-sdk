@@ -3,13 +3,13 @@
 
 namespace CometBackup.CometAPI.SDK {
 public static class Def {
-	public const string APPLICATION_VERSION = "23.8.0";
+	public const string APPLICATION_VERSION = "23.9.2";
 
 	public const long APPLICATION_VERSION_MAJOR = 23;
 
-	public const long APPLICATION_VERSION_MINOR = 8;
+	public const long APPLICATION_VERSION_MINOR = 9;
 
-	public const long APPLICATION_VERSION_REVISION = 0;
+	public const long APPLICATION_VERSION_REVISION = 2;
 
 	/// AutoRetentionLevel: The system will automatically choose how often to run an automatic Retention Pass after each
 	/// backup job.
@@ -370,6 +370,12 @@ public static class Def {
 	/// MSSQLRestoreOpt
 	public const string MSSQL_RESTORE_NORECOVERY = "NO_RECOVERY";
 
+	public const byte OBJECT_LOCK_LEGACY = 0;
+
+	public const byte OBJECT_LOCK_ON = 1;
+
+	public const byte OBJECT_LOCK_OFF = 2;
+
 	public const string OFFICE365_REGION_PUBLIC = "GlobalPublicCloud";
 
 	public const string OFFICE365_REGION_CHINA = "ChinaCloud";
@@ -417,7 +423,7 @@ public static class Def {
 	/// PSAType
 	public const long PSA_TYPE_GRADIENT = 1;
 
-	public const string RELEASE_CODENAME = "Adrastea";
+	public const string RELEASE_CODENAME = "Voyager";
 
 	/// RemoteServerType
 	public const string REMOTESERVER_COMET = "comet";
@@ -846,6 +852,12 @@ public static class Def {
 	/// StreamableEventType: Device live connection ended
 	public const long SEVT_DEVICE_LIVE_DISCONNECT = 4703;
 
+	/// StreamableEventType: Device connected to registration lobby
+	public const long SEVT_DEVICE_LOBBY_CONNECT = 4704;
+
+	/// StreamableEventType: Device disconnected from registration lobby
+	public const long SEVT_DEVICE_LOBBY_DISCONNECT = 4705;
+
 	/// StreamableEventType
 	public const long SEVT__MAX = 4999;
 
@@ -978,6 +990,8 @@ public static class Def {
 
 	/// UpdateStatus: The device has successfully updated to the target version.
 	public const long UPDATESTATUS_UPDATE_CONFIRMED = 5;
+
+	public const long USERNAME_MAX_LENGTH = 255;
 
 	/// If an API response returns in failure, but it includes this value in the CometAPIResponseMessage->Message
 	/// parameter, it indicates that the specified Device ID was invalid or not found.

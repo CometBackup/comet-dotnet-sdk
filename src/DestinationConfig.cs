@@ -76,6 +76,9 @@ public class DestinationConfig {
 	[JsonPropertyName("S3RemoveDeleted")]
 	public bool S3RemoveDeleted { get; set; }
 
+	[JsonPropertyName("S3ObjectLockMode")]
+	public byte S3ObjectLockMode { get; set; }
+
 	[JsonPropertyName("S3ObjectLockDays")]
 	public long S3ObjectLockDays { get; set; }
 
@@ -258,6 +261,7 @@ public class DestinationConfig {
 		S3CustomRegion = this.S3CustomRegion,
 		S3UsesV2Signing = this.S3UsesV2Signing,
 		S3RemoveDeleted = this.S3RemoveDeleted,
+		S3ObjectLockMode = this.S3ObjectLockMode,
 		S3ObjectLockDays = this.S3ObjectLockDays,
 		SFTPServer = this.SFTPServer,
 		SFTPUsername = this.SFTPUsername,
@@ -307,6 +311,7 @@ public class DestinationConfig {
 		this.S3CustomRegion = other.S3CustomRegion;
 		this.S3UsesV2Signing = other.S3UsesV2Signing;
 		this.S3RemoveDeleted = other.S3RemoveDeleted;
+		this.S3ObjectLockMode = other.S3ObjectLockMode;
 		this.S3ObjectLockDays = other.S3ObjectLockDays;
 		this.SFTPServer = other.SFTPServer;
 		this.SFTPUsername = other.SFTPUsername;

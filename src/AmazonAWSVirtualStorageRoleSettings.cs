@@ -21,7 +21,10 @@ public class AmazonAWSVirtualStorageRoleSettings {
 	public string SecretKey { get; set; } = string.Empty;
 
 	[JsonPropertyName("UseObjectLock")]
-	public bool UseObjectLock { get; set; }
+	public bool UseObjectLock_Legacy_DoNotUse { get; set; }
+
+	[JsonPropertyName("ObjectLockMode")]
+	public byte ObjectLockMode { get; set; }
 
 	[JsonPropertyName("ObjectLockDays")]
 	public long ObjectLockDays { get; set; }

@@ -39,6 +39,9 @@ public class S3DestinationLocation {
 	[JsonPropertyName("S3RemoveDeleted")]
 	public bool S3RemoveDeleted { get; set; }
 
+	[JsonPropertyName("S3ObjectLockMode")]
+	public byte S3ObjectLockMode { get; set; }
+
 	[JsonPropertyName("S3ObjectLockDays")]
 	public long S3ObjectLockDays { get; set; }
 

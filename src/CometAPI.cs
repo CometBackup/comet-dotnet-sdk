@@ -3702,6 +3702,156 @@ public class CometAPI : IDisposable {
 	}
 
 	/// <summary>
+	/// AdminInstallationDispatchDropConnectionAsync: Instruct a live connected device to disconnect
+	/// The device will terminate its live-connection process and will not reconnect.
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="DeviceID">The live connection Device GUID</param>
+	public async Task<CometAPIResponseMessage> AdminInstallationDispatchDropConnectionAsync(string DeviceID) {
+		var data = new Dictionary<string,string>();
+
+		data["DeviceID"] = DeviceID;
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/installation/dispatch/drop-connection", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<CometAPIResponseMessage>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// AdminInstallationDispatchDropConnection: Instruct a live connected device to disconnect
+	/// The device will terminate its live-connection process and will not reconnect.
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="DeviceID">The live connection Device GUID</param>
+	public CometAPIResponseMessage AdminInstallationDispatchDropConnection(string DeviceID) {
+		var resultTask = AdminInstallationDispatchDropConnectionAsync(DeviceID);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
+	/// AdminInstallationDispatchRegisterDeviceAsync: Instruct an unregistered device to authenticate with a given user
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="DeviceID">The live connection Device GUID</param>
+	/// <param name="TargetUser">Selected account username</param>
+	/// <param name="TargetPassword">Selected account password</param>
+	/// <param name="TargetTOTPCode">(Optional) Selected account TOTP code</param>
+	public async Task<string> AdminInstallationDispatchRegisterDeviceAsync(string DeviceID, string TargetUser, string TargetPassword, string TargetTOTPCode = null) {
+		var data = new Dictionary<string,string>();
+
+		data["DeviceID"] = DeviceID;
+		data["TargetUser"] = TargetUser;
+		data["TargetPassword"] = TargetPassword;
+		if (TargetTOTPCode != null) {
+			data["TargetTOTPCode"] = TargetTOTPCode;
+		}
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/installation/dispatch/register-device", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<string>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// AdminInstallationDispatchRegisterDevice: Instruct an unregistered device to authenticate with a given user
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="DeviceID">The live connection Device GUID</param>
+	/// <param name="TargetUser">Selected account username</param>
+	/// <param name="TargetPassword">Selected account password</param>
+	/// <param name="TargetTOTPCode">(Optional) Selected account TOTP code</param>
+	public string AdminInstallationDispatchRegisterDevice(string DeviceID, string TargetUser, string TargetPassword, string TargetTOTPCode = null) {
+		var resultTask = AdminInstallationDispatchRegisterDeviceAsync(DeviceID, TargetUser, TargetPassword, TargetTOTPCode);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
+	/// AdminInstallationListActiveAsync: List live connected devices in lobby mode
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	public async Task<Dictionary<string,RegistrationLobbyConnection>> AdminInstallationListActiveAsync() {
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/installation/list-active", null)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<Dictionary<string,RegistrationLobbyConnection>>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// AdminInstallationListActive: List live connected devices in lobby mode
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	public Dictionary<string,RegistrationLobbyConnection> AdminInstallationListActive() {
+		var resultTask = AdminInstallationListActiveAsync();
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
+	/// AdminJobAbandonAsync: Mark a running job as abandoned
+	/// This will change the status of a running job to abandoned.
+	/// This is intended to be used on jobs which are definitely no longer running but are stuck in the running state; it
+	/// will not attempt to cancel the job. If the job is detected to still be running after being marked as abandoned, it
+	/// will be revived.
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetUser">Username</param>
+	/// <param name="JobID">Job ID</param>
+	public async Task<CometAPIResponseMessage> AdminJobAbandonAsync(string TargetUser, string JobID) {
+		var data = new Dictionary<string,string>();
+
+		data["TargetUser"] = TargetUser;
+		data["JobID"] = JobID;
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/job/abandon", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<CometAPIResponseMessage>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// AdminJobAbandon: Mark a running job as abandoned
+	/// This will change the status of a running job to abandoned.
+	/// This is intended to be used on jobs which are definitely no longer running but are stuck in the running state; it
+	/// will not attempt to cancel the job. If the job is detected to still be running after being marked as abandoned, it
+	/// will be revived.
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetUser">Username</param>
+	/// <param name="JobID">Job ID</param>
+	public CometAPIResponseMessage AdminJobAbandon(string TargetUser, string JobID) {
+		var resultTask = AdminJobAbandonAsync(TargetUser, JobID);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
 	/// AdminJobCancelAsync: Cancel a running job
 	/// A request is sent to the live-connected device, asking it to cancel the operation. This may fail if there is no
 	/// live-connection.

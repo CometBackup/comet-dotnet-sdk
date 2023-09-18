@@ -30,6 +30,9 @@ public class PSAConfig {
 	//For PSA_TYPE_GENERIC
 	public string URL { get; set; } = string.Empty;
 
+	[JsonPropertyName("GroupedBy")]
+	public PSAGroupedBy GroupedBy { get; set; }
+
 	public PSAConfig(){ }
 
 	public string ToJson() {

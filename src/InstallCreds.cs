@@ -17,6 +17,9 @@ public class InstallCreds {
 	[JsonPropertyName("Password")]
 	public string Password { get; set; } = string.Empty;
 
+	[JsonPropertyName("TOTPCode")]
+	public string TOTPCode { get; set; } = string.Empty;
+
 	[JsonPropertyName("Server")]
 	public string Server { get; set; } = string.Empty;
 
