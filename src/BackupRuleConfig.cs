@@ -70,6 +70,9 @@ public class BackupRuleConfig {
 	//If Zero: default Automatic (BACKUPJOBAUTORETENTION_AUTOMATIC)
 	public long AutoRetentionLevel { get; set; }
 
+	[JsonPropertyName("LogLevel")]
+	public string LogLevel { get; set; } = string.Empty;
+
 	[JsonPropertyName("Schedules")]
 	//Scheduled start times
 	public List<ScheduleConfig> Schedules { get; set; }
@@ -96,6 +99,7 @@ public class BackupRuleConfig {
 		UseOnDiskIndexes = this.UseOnDiskIndexes,
 		AllowZeroFilesSuccess = this.AllowZeroFilesSuccess,
 		AutoRetentionLevel = this.AutoRetentionLevel,
+		LogLevel = this.LogLevel,
 	};
 
 	public void SetEmbeddedBackupJobAdvancedOptions(BackupJobAdvancedOptions other){
@@ -106,6 +110,7 @@ public class BackupRuleConfig {
 		this.UseOnDiskIndexes = other.UseOnDiskIndexes;
 		this.AllowZeroFilesSuccess = other.AllowZeroFilesSuccess;
 		this.AutoRetentionLevel = other.AutoRetentionLevel;
+		this.LogLevel = other.LogLevel;
 	}
 
 }

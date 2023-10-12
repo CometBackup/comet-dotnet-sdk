@@ -40,6 +40,9 @@ public class BackupJobAdvancedOptions {
 	//If Zero: default Automatic (BACKUPJOBAUTORETENTION_AUTOMATIC)
 	public long AutoRetentionLevel { get; set; }
 
+	[JsonPropertyName("LogLevel")]
+	public string LogLevel { get; set; } = string.Empty;
+
 	public BackupJobAdvancedOptions(){ }
 
 	public string ToJson() {

@@ -3,13 +3,13 @@
 
 namespace CometBackup.CometAPI.SDK {
 public static class Def {
-	public const string APPLICATION_VERSION = "23.9.2";
+	public const string APPLICATION_VERSION = "23.9.5";
 
 	public const long APPLICATION_VERSION_MAJOR = 23;
 
 	public const long APPLICATION_VERSION_MINOR = 9;
 
-	public const long APPLICATION_VERSION_REVISION = 2;
+	public const long APPLICATION_VERSION_REVISION = 5;
 
 	/// AutoRetentionLevel: The system will automatically choose how often to run an automatic Retention Pass after each
 	/// backup job.
@@ -535,6 +535,9 @@ public static class Def {
 	/// RestoreType: Stream restore as T-SQL BACKUP output into a target Microsoft SQL Server
 	public const long RESTORETYPE_MSSQL = 11;
 
+	/// RestoreType: Restore disk image backup as VMware-compatible virtual disks
+	public const long RESTORETYPE_WINDISK_ESXI = 12;
+
 	/// RestoreType: Legacy name alias - Prefer to use RESTORETYPE_PROCESS_ARCHIVE since multiple archive file formats are
 	/// supported within this single RESTORETYPE_
 	public const long RESTORETYPE_PROCESS_TARBALL = 3;
@@ -745,7 +748,7 @@ public static class Def {
 	/// StreamableEventType
 	public const long SEVT__MIN = 4000;
 
-	/// StreamableEventType: New websocket connection. Data is typically ServerMetaVersionInfo
+	/// StreamableEventType: New event stream connection. Data is typically ServerMetaVersionInfo
 	public const long SEVT_META_HELLO = 4000;
 
 	/// StreamableEventType: User created. Data is the profile object
@@ -782,7 +785,7 @@ public static class Def {
 	/// StreamableEventType: Admin updated
 	public const long SEVT_ACCOUNT_ADMIN_UPDATED = 4152;
 
-	/// StreamableEventType: Admin authentication suceeded. Only emitted for non-session requests. Resource is the
+	/// StreamableEventType: Admin authentication succeeded. Only emitted for non-session requests. Resource is the
 	/// requested path
 	public const long SEVT_ACCOUNT_ADMIN_LOGIN = 4153;
 
