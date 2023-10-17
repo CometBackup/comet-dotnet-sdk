@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 2023-10-18 v0.9.0
+
+- Based on Comet 23.9.6
+- Added Comet Storage Remote Server Type
+
 ## 2023-10-12 v0.8.0
 
 - Based on Comet 23.9.5
