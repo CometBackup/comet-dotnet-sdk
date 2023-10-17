@@ -185,6 +185,9 @@ public class DestinationLocation {
 	//The default option is false.
 	public bool SpanUseStaticSlots { get; set; }
 
+	[JsonPropertyName("Tag")]
+	public string Tag { get; set; } = string.Empty;
+
 	public DestinationLocation(){ }
 
 	public string ToJson() {

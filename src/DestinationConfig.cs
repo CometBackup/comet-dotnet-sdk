@@ -206,6 +206,9 @@ public class DestinationConfig {
 	//The default option is false.
 	public bool SpanUseStaticSlots { get; set; }
 
+	[JsonPropertyName("Tag")]
+	public string Tag { get; set; } = string.Empty;
+
 	[JsonPropertyName("EncryptionKeyEncryptionMethod")]
 	//One of the ENCRYPTIONMETHOD_ constants
 	public ulong EncryptionKeyEncryptionMethod { get; set; }
@@ -295,6 +298,7 @@ public class DestinationConfig {
 		Storj = this.Storj,
 		SpanTargets = this.SpanTargets,
 		SpanUseStaticSlots = this.SpanUseStaticSlots,
+		Tag = this.Tag,
 	};
 
 	public void SetEmbeddedDestinationLocation(DestinationLocation other){
@@ -345,6 +349,7 @@ public class DestinationConfig {
 		this.Storj = other.Storj;
 		this.SpanTargets = other.SpanTargets;
 		this.SpanUseStaticSlots = other.SpanUseStaticSlots;
+		this.Tag = other.Tag;
 	}
 
 }

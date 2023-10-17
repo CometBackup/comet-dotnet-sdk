@@ -3,13 +3,13 @@
 
 namespace CometBackup.CometAPI.SDK {
 public static class Def {
-	public const string APPLICATION_VERSION = "23.9.5";
+	public const string APPLICATION_VERSION = "23.9.6";
 
 	public const long APPLICATION_VERSION_MAJOR = 23;
 
 	public const long APPLICATION_VERSION_MINOR = 9;
 
-	public const long APPLICATION_VERSION_REVISION = 5;
+	public const long APPLICATION_VERSION_REVISION = 6;
 
 	/// AutoRetentionLevel: The system will automatically choose how often to run an automatic Retention Pass after each
 	/// backup job.
@@ -427,6 +427,9 @@ public static class Def {
 
 	/// RemoteServerType
 	public const string REMOTESERVER_COMET = "comet";
+
+	/// RemoteServerType
+	public const string REMOTESERVER_COMET_STORAGE = "cometstorage";
 
 	/// RemoteServerType
 	public const string REMOTESERVER_LDAP = "ldap";
