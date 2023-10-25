@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 2023-10-25 v0.10.0
+
+- Based on Comet 23.9.7
+- Add VMware support
+
 ## 2023-10-18 v0.9.0
 
 - Based on Comet 23.9.6
