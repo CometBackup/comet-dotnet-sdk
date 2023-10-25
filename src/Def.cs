@@ -3,13 +3,13 @@
 
 namespace CometBackup.CometAPI.SDK {
 public static class Def {
-	public const string APPLICATION_VERSION = "23.9.6";
+	public const string APPLICATION_VERSION = "23.9.7";
 
 	public const long APPLICATION_VERSION_MAJOR = 23;
 
 	public const long APPLICATION_VERSION_MINOR = 9;
 
-	public const long APPLICATION_VERSION_REVISION = 6;
+	public const long APPLICATION_VERSION_REVISION = 7;
 
 	/// AutoRetentionLevel: The system will automatically choose how often to run an automatic Retention Pass after each
 	/// backup job.
@@ -214,6 +214,9 @@ public static class Def {
 	/// Office 365
 	public const string ENGINE_BUILTIN_MSOFFICE = "engine1/winmsofficemail";
 
+	/// VMware
+	public const string ENGINE_BUILTIN_VMWARE = "engine1/vmware";
+
 	/// FtpsModeType: Use plain FTP, do not use FTPS.
 	public const long FTPS_MODE_PLAINTEXT = 0;
 
@@ -224,6 +227,15 @@ public static class Def {
 	/// FtpsModeType: Use explicit FTPS, first creating an insecure connection and then upgrading to SSL/TLS using AUTH TLS
 	/// (like STARTTLS).
 	public const long FTPS_MODE_EXPLICIT = 2;
+
+	/// Back up Hyper-V virtual machines using VSS mode. This includes all previous snapshots.
+	public const string HYPERV_METHOD_VSS = "vss";
+
+	/// Back up Hyper-V virtual machines using WMI mode. This includes the latest snapshot data only.
+	public const string HYPERV_METHOD_WMI_COPY = "copy";
+
+	/// Back up Hyper-V virtual machines using WMI mode with RCT acceleration. This includes the latest snapshot data only.
+	public const string HYPERV_METHOD_WMI_CBT = "wmi";
 
 	/// JobClassification: All BackupJobDetail.Classification fields will fall in the 4xxx range.
 	public const ulong JOB_CLASSIFICATION__MIN = 4000;
@@ -1006,6 +1018,30 @@ public static class Def {
 	public const string UnsupportVhdxFileSystem = "ERR_UNSUPPORT_VHDX_FILE_SYSTEM";
 
 	public const string UnsupportVmdkFileSystem = "ERR_UNSUPPORT_VMDK_FILE_SYSTEM";
+
+	/// VMwareConnectionType
+	public const string VMWARE_CONNECTION_SSH = "ssh";
+
+	/// VMwareConnectionType
+	public const string VMWARE_CONNECTION_VSPHERE = "vsphere";
+
+	/// VmwareSnapshotType
+	public const string VMWARE_SNAPSHOT_FAST = "";
+
+	/// VmwareSnapshotType
+	public const string VMWARE_SNAPSHOT_QUIESCE = "quiesce";
+
+	/// VmwareSnapshotType
+	public const string VMWARE_SNAPSHOT_MEMORY = "memory";
+
+	/// VmwareBackupType
+	public const string VMWARE_BACKUP_FULL = "full";
+
+	/// VmwareBackupType
+	public const string VMWARE_BACKUP_CBT = "cbt";
+
+	/// VmwareBackupType
+	public const string VMWARE_BACKUP_COPY = "copy";
 
 	public const string VhdxPartitonReadErrMsg = "ERR_VHDX_PARTITION";
 

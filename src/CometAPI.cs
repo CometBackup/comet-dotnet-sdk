@@ -2416,6 +2416,44 @@ public class CometAPI : IDisposable {
 	}
 
 	/// <summary>
+	/// AdminDispatcherRequestBrowseVmwareAsync: Request a list of VMware vSphere virtual machines
+	/// The remote device must have given consent for an MSP to browse their files.
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The VMware vSphere connection settings</param>
+	public async Task<BrowseVMwareResponse> AdminDispatcherRequestBrowseVmwareAsync(string TargetID, VMwareConnection Credentials) {
+		var data = new Dictionary<string,string>();
+
+		data["TargetID"] = TargetID;
+		data["Credentials"] = JsonSerializer.Serialize(Credentials);
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/dispatcher/request-browse-vmware", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<BrowseVMwareResponse>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// AdminDispatcherRequestBrowseVmware: Request a list of VMware vSphere virtual machines
+	/// The remote device must have given consent for an MSP to browse their files.
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The VMware vSphere connection settings</param>
+	public BrowseVMwareResponse AdminDispatcherRequestBrowseVmware(string TargetID, VMwareConnection Credentials) {
+		var resultTask = AdminDispatcherRequestBrowseVmwareAsync(TargetID, Credentials);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
 	/// AdminDispatcherRequestBrowseVssAawAsync: Request a list of installed VSS Writers (Application-Aware Writers) from a
 	/// live connected device
 	/// 
@@ -6789,6 +6827,44 @@ public class CometAPI : IDisposable {
 	/// <param name="Credentials">The MySQL database authentication settings</param>
 	public BrowseSQLServerResponse UserWebDispatcherRequestBrowseMysql(string TargetID, MySQLConnection Credentials) {
 		var resultTask = UserWebDispatcherRequestBrowseMysqlAsync(TargetID, Credentials);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
+	/// UserWebDispatcherRequestBrowseVmwareAsync: Request a list of VMware vSphere virtual machines
+	/// 
+	/// You must supply user authentication credentials to use this API, and the user account must be authorized for web
+	/// access.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The VMWare ESXi connection settings</param>
+	public async Task<BrowseVMwareResponse> UserWebDispatcherRequestBrowseVmwareAsync(string TargetID, VMwareConnection Credentials) {
+		var data = new Dictionary<string,string>();
+
+		data["TargetID"] = TargetID;
+		data["Credentials"] = JsonSerializer.Serialize(Credentials);
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/user/web/dispatcher/request-browse-vmware", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<BrowseVMwareResponse>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// UserWebDispatcherRequestBrowseVmware: Request a list of VMware vSphere virtual machines
+	/// 
+	/// You must supply user authentication credentials to use this API, and the user account must be authorized for web
+	/// access.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The VMWare ESXi connection settings</param>
+	public BrowseVMwareResponse UserWebDispatcherRequestBrowseVmware(string TargetID, VMwareConnection Credentials) {
+		var resultTask = UserWebDispatcherRequestBrowseVmwareAsync(TargetID, Credentials);
 		resultTask.Wait();
 		return resultTask.Result;
 	}
