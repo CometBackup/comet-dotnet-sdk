@@ -3,13 +3,13 @@
 
 namespace CometBackup.CometAPI.SDK {
 public static class Def {
-	public const string APPLICATION_VERSION = "23.9.8";
+	public const string APPLICATION_VERSION = "23.9.9";
 
 	public const long APPLICATION_VERSION_MAJOR = 23;
 
 	public const long APPLICATION_VERSION_MINOR = 9;
 
-	public const long APPLICATION_VERSION_REVISION = 8;
+	public const long APPLICATION_VERSION_REVISION = 9;
 
 	/// AutoRetentionLevel: The system will automatically choose how often to run an automatic Retention Pass after each
 	/// backup job.
@@ -434,6 +434,9 @@ public static class Def {
 
 	/// PSAType
 	public const long PSA_TYPE_GRADIENT = 1;
+
+	/// PSAType
+	public const long PSA_TYPE_SYNCRO = 2;
 
 	public const string RELEASE_CODENAME = "Voyager";
 

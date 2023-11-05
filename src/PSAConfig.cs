@@ -16,10 +16,11 @@ public class PSAConfig {
 	public bool AlertsDisabled { get; set; }
 
 	[JsonPropertyName("CustomHeaders")]
+	//Custom headers to send with each PSA request
 	public Dictionary<string, string> CustomHeaders { get; set; }
 
 	[JsonPropertyName("PartnerKey")]
-	//Specified credentials for the target PSA
+	//Specified API key for the target PSA
 	public string PartnerKey { get; set; } = string.Empty;
 
 	[JsonPropertyName("Type")]
@@ -27,7 +28,7 @@ public class PSAConfig {
 	public long Type { get; set; }
 
 	[JsonPropertyName("URL")]
-	//For PSA_TYPE_GENERIC
+	//The URL or subdomain for outbound PSA requests
 	public string URL { get; set; } = string.Empty;
 
 	[JsonPropertyName("GroupedBy")]

@@ -34,6 +34,9 @@ public class DeviceConfig {
 	[JsonPropertyName("ClientVersion")]
 	public string ClientVersion { get; set; } = string.Empty;
 
+	[JsonPropertyName("SyncroUUID")]
+	public string SyncroUUID { get; set; } = string.Empty;
+
 	public DeviceConfig(){ }
 
 	public string ToJson() {
