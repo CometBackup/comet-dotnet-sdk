@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## 2023-11-08 v0.13.0
+
+- Based on Comet 23.9.9
+- Add Syncro support
+
+## 2023-11-03 v0.12.0
+
+- (This release is identical to the v0.11.0 release version.)
+
 ## 2023-11-03 v0.11.0
 
 - Based on Comet 23.9.8
