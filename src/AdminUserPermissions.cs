@@ -59,6 +59,9 @@ public class AdminUserPermissions {
 	[JsonPropertyName("AllowedProvidersWhenRestricted")]
 	public List<ulong> AllowedProvidersWhenRestricted { get; set; }
 
+	[JsonPropertyName("AllowedUserPolicies")]
+	public List<string> AllowedUserPolicies { get; set; }
+
 	public AdminUserPermissions(){ }
 
 	public string ToJson() {

@@ -15,6 +15,8 @@ public class VMwareConnection {
 	//One of the VMWARE_CONNECTION_ constants
 	public string ConnectionType { get; set; } = string.Empty;
 
+	[Obsolete("Deprecated since Comet version 23.9.11")]
+
 	[JsonPropertyName("SSH")]
 	public SSHConnection SSH { get; set; }
 
