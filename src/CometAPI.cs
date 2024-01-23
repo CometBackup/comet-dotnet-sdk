@@ -784,6 +784,45 @@ public class CometAPI : IDisposable {
 	}
 
 	/// <summary>
+	/// AdminBrandingGenerateClientLinuxDebAsync: Download software (Linux Debian Package)
+	/// 
+	/// This API requires administrator authentication credentials, unless the server is configured to allow
+	/// unauthenticated software downloads.
+	/// This API requires the Software Build Role to be enabled.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
+	public async Task<byte[]> AdminBrandingGenerateClientLinuxDebAsync(string SelfAddress = null) {
+		var data = new Dictionary<string,string>();
+
+		data["SelfAddress"] = SelfAddress ?? this.ServerURL;
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/branding/generate-client/linux-deb", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				MemoryStream mStream = new MemoryStream();
+				await stream.CopyToAsync(mStream);
+				return mStream.ToArray();
+			}
+		}
+	}
+
+	/// <summary>
+	/// AdminBrandingGenerateClientLinuxDeb: Download software (Linux Debian Package)
+	/// 
+	/// This API requires administrator authentication credentials, unless the server is configured to allow
+	/// unauthenticated software downloads.
+	/// This API requires the Software Build Role to be enabled.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts</param>
+	public byte[] AdminBrandingGenerateClientLinuxDeb(string SelfAddress = null) {
+		var resultTask = AdminBrandingGenerateClientLinuxDebAsync(SelfAddress);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
 	/// AdminBrandingGenerateClientLinuxgenericAsync: Download software (Linux Server .run)
 	/// 
 	/// This API requires administrator authentication credentials, unless the server is configured to allow

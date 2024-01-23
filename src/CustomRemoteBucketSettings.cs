@@ -14,6 +14,9 @@ public class CustomRemoteBucketSettings {
 	[JsonPropertyName("URL")]
 	public string URL { get; set; } = string.Empty;
 
+	[JsonPropertyName("CustomHeaders")]
+	public Dictionary<string, string> CustomHeaders { get; set; }
+
 	public CustomRemoteBucketSettings(){ }
 
 	public string ToJson() {
