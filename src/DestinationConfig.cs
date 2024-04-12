@@ -189,6 +189,9 @@ public class DestinationConfig {
 	[JsonPropertyName("Storj")]
 	public StorjDestinationLocation Storj { get; set; }
 
+	[JsonPropertyName("SMB")]
+	public SMBDestinationLocation SMB { get; set; }
+
 	[JsonPropertyName("SpanTargets")]
 	//A list of underlying destinations, that will be combined and presented as one.
 	public List<DestinationLocation> SpanTargets { get; set; }
@@ -239,6 +242,10 @@ public class DestinationConfig {
 	[JsonPropertyName("RebrandStorage")]
 	//The "Prevent users from viewing the actual storage type" option
 	public bool RebrandStorage { get; set; }
+
+	[JsonPropertyName("RetentionError")]
+	//If not empty, an error occured during a retention pass. Describes the error.
+	public string RetentionError { get; set; } = string.Empty;
 
 	public DestinationConfig(){ }
 
@@ -296,6 +303,7 @@ public class DestinationConfig {
 		B2 = this.B2,
 		WebDav = this.WebDav,
 		Storj = this.Storj,
+		SMB = this.SMB,
 		SpanTargets = this.SpanTargets,
 		SpanUseStaticSlots = this.SpanUseStaticSlots,
 		Tag = this.Tag,
@@ -347,6 +355,7 @@ public class DestinationConfig {
 		this.B2 = other.B2;
 		this.WebDav = other.WebDav;
 		this.Storj = other.Storj;
+		this.SMB = other.SMB;
 		this.SpanTargets = other.SpanTargets;
 		this.SpanUseStaticSlots = other.SpanUseStaticSlots;
 		this.Tag = other.Tag;

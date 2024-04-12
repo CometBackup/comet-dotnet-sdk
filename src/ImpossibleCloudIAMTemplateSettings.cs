@@ -7,25 +7,21 @@ using System.Text.Json.Serialization;
 
 namespace CometBackup.CometAPI.SDK {
 /// <summary>
-/// Class <c>AmazonAWSVirtualStorageRoleSettings</c>
+/// Class <c>ImpossibleCloudIAMTemplateSettings</c>
+/// Since Version : 24.3.1
 /// </summary>
-public class AmazonAWSVirtualStorageRoleSettings {
-
-	[JsonPropertyName("MasterBucket")]
-	//If set, the Storage Template will generate Storage Vaults pointing to a subdirectory within this bucket. A single
-	//dynamic IAM policy will cover all created Storage Vaults.
-	//This is preferable for platforms that have limits on the total number of IAM policies. However, it requires a high
-	//level of IAM compatibility.
-	//If left blank, the Storage Template will generate Storage Vaults pointing to new, separate S3 buckets each time. An
-	//additional IAM policy is created for each new Storage Vault.
-	//This is preferable for platforms that have a lower level of IAM compatibility.
-	public string MasterBucket { get; set; } = string.Empty;
+public class ImpossibleCloudIAMTemplateSettings {
 
 	[JsonPropertyName("AccessKey")]
 	public string AccessKey { get; set; } = string.Empty;
 
 	[JsonPropertyName("SecretKey")]
 	public string SecretKey { get; set; } = string.Empty;
+
+	[JsonPropertyName("Region")]
+	//Optional. The region for both IAM communication and for provisioning new buckets. If blank, uses the default region
+	//for Impossible Cloud (eu-central-2).
+	public string Region { get; set; } = string.Empty;
 
 	[Obsolete("Deprecated since Comet version 23.x.x")]
 
@@ -46,14 +42,14 @@ public class AmazonAWSVirtualStorageRoleSettings {
 	//Templates using Object Lock.
 	public bool RemoveDeleted { get; set; }
 
-	public AmazonAWSVirtualStorageRoleSettings(){ }
+	public ImpossibleCloudIAMTemplateSettings(){ }
 
 	public string ToJson() {
 		return JsonSerializer.Serialize(this);
 	}
 
-	static public AmazonAWSVirtualStorageRoleSettings FromJson(string jsStr) {
-		return JsonSerializer.Deserialize<AmazonAWSVirtualStorageRoleSettings>(jsStr);
+	static public ImpossibleCloudIAMTemplateSettings FromJson(string jsStr) {
+		return JsonSerializer.Deserialize<ImpossibleCloudIAMTemplateSettings>(jsStr);
 	}
 
 	public ObjectLockStorageTemplateSettings GetEmbeddedObjectLockStorageTemplateSettings() => new ObjectLockStorageTemplateSettings {

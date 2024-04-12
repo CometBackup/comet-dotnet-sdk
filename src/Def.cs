@@ -3,13 +3,13 @@
 
 namespace CometBackup.CometAPI.SDK {
 public static class Def {
-	public const string APPLICATION_VERSION = "23.12.3";
+	public const string APPLICATION_VERSION = "24.3.5";
 
-	public const long APPLICATION_VERSION_MAJOR = 23;
+	public const long APPLICATION_VERSION_MAJOR = 24;
 
-	public const long APPLICATION_VERSION_MINOR = 12;
+	public const long APPLICATION_VERSION_MINOR = 3;
 
-	public const long APPLICATION_VERSION_REVISION = 3;
+	public const long APPLICATION_VERSION_REVISION = 5;
 
 	/// AutoRetentionLevel: The system will automatically choose how often to run an automatic Retention Pass after each
 	/// backup job.
@@ -117,6 +117,9 @@ public static class Def {
 	public const ulong DESTINATIONTYPE_STORJ = 1009;
 
 	public const ulong DESTINATIONTYPE_WEBDAV = 1010;
+
+	/// SMB Path
+	public const ulong DESTINATIONTYPE_SMB = 1011;
 
 	/// When defining a schedule via policy, use this option to dynamically select the Storage Vault that was created most
 	/// recently.
@@ -382,6 +385,8 @@ public static class Def {
 	/// MSSQLRestoreOpt
 	public const string MSSQL_RESTORE_NORECOVERY = "NO_RECOVERY";
 
+	/// Enable Object Lock capability if the corresponding Days field is greater than zero.
+	/// New code should explicitly use OBJECT_LOCK_ON / OBJECT_LOCK_OFF instead.
 	public const byte OBJECT_LOCK_LEGACY = 0;
 
 	public const byte OBJECT_LOCK_ON = 1;
@@ -443,38 +448,44 @@ public static class Def {
 
 	public const string RELEASE_CODENAME = "Voyager";
 
-	/// RemoteServerType
+	/// RemoteServerType: Comet Server
 	public const string REMOTESERVER_COMET = "comet";
 
-	/// RemoteServerType
+	/// RemoteServerType: Comet Storage powered by Wasabi
 	public const string REMOTESERVER_COMET_STORAGE = "cometstorage";
 
-	/// RemoteServerType
+	/// RemoteServerType: LDAP (Lightweight Directory Access Protocol)
 	public const string REMOTESERVER_LDAP = "ldap";
 
-	/// RemoteServerType
+	/// RemoteServerType: OpenID Connect
 	public const string REMOTESERVER_OIDC = "oidc";
 
-	/// RemoteServerType
+	/// RemoteServerType: Backblaze B2
 	public const string REMOTESERVER_B2 = "b2";
 
-	/// RemoteServerType
+	/// RemoteServerType: Wasabi Cloud Storage
 	public const string REMOTESERVER_WASABI = "wasabi";
 
-	/// RemoteServerType
+	/// RemoteServerType: Custom Remote Bucket HTTP protocol
 	public const string REMOTESERVER_CUSTOM = "custom";
 
-	/// RemoteServerType
+	/// RemoteServerType: Custom IAM-Compatible
 	public const string REMOTESERVER_S3_GENERIC = "s3";
 
-	/// RemoteServerType
+	/// RemoteServerType: Amazon Web Services
 	public const string REMOTESERVER_AWS = "aws";
 
-	/// RemoteServerType
+	/// RemoteServerType: Storj DCS
 	public const string REMOTESERVER_STORJ = "storj";
 
-	/// RemoteServerType
+	/// RemoteServerType: IDrive e2
 	public const string REMOTESERVER_IDRIVEE2 = "idrivee2";
+
+	/// RemoteServerType: Impossible Cloud (Partner API)
+	public const string REMOTESERVER_IMPOSSIBLECLOUD_PARTNER = "impossiblecloud-partner";
+
+	/// RemoteServerType: Impossible Cloud
+	public const string REMOTESERVER_IMPOSSIBLECLOUD_IAM = "impossiblecloud-iam";
 
 	/// ReplicatorState
 	public const long REPLICATOR_STATE_NONE = 0;
@@ -758,6 +769,9 @@ public static class Def {
 	public const long SETTING_ENFORCED_OFF = 4;
 
 	/// Severity
+	public const string SEVERITY_DEBUG = "D";
+
+	/// Severity
 	public const string SEVERITY_INFO = "I";
 
 	/// Severity
@@ -917,6 +931,12 @@ public static class Def {
 
 	/// StoredObjectType
 	public const string STOREDOBJECTTYPE_WINEFS = "winefs";
+
+	/// StoredObjectType
+	public const string STOREDOBJECTTYPE_WINDOWSFILE = "winfile";
+
+	/// StoredObjectType
+	public const string STOREDOBJECTTYPE_WINDOWSDIR = "windir";
 
 	/// StoredObjectType
 	public const string STOREDOBJECTTYPE_EMAILMESSAGE = "emailmessage";

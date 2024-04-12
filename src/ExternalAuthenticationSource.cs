@@ -18,12 +18,15 @@ public class ExternalAuthenticationSource {
 	public string Description { get; set; } = string.Empty;
 
 	[JsonPropertyName("RemoteAddress")]
+	//For use with Comet Server (Storage Role / Auth Role)
 	public string RemoteAddress { get; set; } = string.Empty;
 
 	[JsonPropertyName("Username")]
+	//For use with Comet Server (Storage Role / Auth Role)
 	public string Username { get; set; } = string.Empty;
 
 	[JsonPropertyName("Password")]
+	//For use with Comet Server (Storage Role / Auth Role)
 	public string Password { get; set; } = string.Empty;
 
 	[JsonPropertyName("LDAP")]
@@ -33,23 +36,36 @@ public class ExternalAuthenticationSource {
 	public OidcConfig OIDC { get; set; }
 
 	[JsonPropertyName("B2")]
+	//Backblaze B2 (Storage Template / Constellation)
 	public B2VirtualStorageRoleSettings B2 { get; set; }
 
 	[JsonPropertyName("Wasabi")]
+	//Wasabi, or Comet Storage powered by Wasabi (Storage Template / Constellation)
 	public WasabiVirtualStorageRoleSettings Wasabi { get; set; }
 
 	[JsonPropertyName("Custom")]
+	//Custom Remote Bucket HTTP protocol (Storage Template)
 	public CustomRemoteBucketSettings Custom { get; set; }
 
 	[JsonPropertyName("S3")]
+	//IDrive e2, or Custom IAM-compatible (Storage Template / Constellation)
 	public S3GenericVirtualStorageRole S3 { get; set; }
 
 	[JsonPropertyName("AWS")]
-	//Amazon AWS - Virtual Storage Role
+	//Amazon AWS (Storage Template / Constellation)
 	public AmazonAWSVirtualStorageRoleSettings AWS { get; set; }
 
 	[JsonPropertyName("Storj")]
+	//Storj (Storage Template / Constellation)
 	public StorjVirtualStorageRoleSetting Storj { get; set; }
+
+	[JsonPropertyName("ImpPartner")]
+	//Impossible Cloud Partner API (Storage Template / Constellation)
+	public ImpossibleCloudPartnerTemplateSettings ImpPartner { get; set; }
+
+	[JsonPropertyName("ImpUser")]
+	//Impossible Cloud IAM API (Storage Template / Constellation)
+	public ImpossibleCloudIAMTemplateSettings ImpUser { get; set; }
 
 	[JsonPropertyName("NewUserPermissions")]
 	public AdminUserPermissions NewUserPermissions { get; set; }
@@ -78,6 +94,8 @@ public class ExternalAuthenticationSource {
 		S3 = this.S3,
 		AWS = this.AWS,
 		Storj = this.Storj,
+		ImpPartner = this.ImpPartner,
+		ImpUser = this.ImpUser,
 	};
 
 	public void SetEmbeddedRemoteServerAddress(RemoteServerAddress other){
@@ -94,6 +112,8 @@ public class ExternalAuthenticationSource {
 		this.S3 = other.S3;
 		this.AWS = other.AWS;
 		this.Storj = other.Storj;
+		this.ImpPartner = other.ImpPartner;
+		this.ImpUser = other.ImpUser;
 	}
 
 }

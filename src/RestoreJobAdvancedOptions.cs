@@ -23,6 +23,10 @@ public class RestoreJobAdvancedOptions {
 	//For RESTORETYPE_FILE. If set, OverwriteExistingFiles must be true
 	public bool OverwriteIfNewer { get; set; }
 
+	[JsonPropertyName("OverwriteIfDifferentContent")]
+	//For RESTORETYPE_FILE. If set, OverwriteExistingFiles must be true
+	public bool OverwriteIfDifferentContent { get; set; }
+
 	[JsonPropertyName("DestIsOriginalLocation")]
 	//For RESTORETYPE_FILE. If set, DestPath must be blank
 	public bool DestIsOriginalLocation { get; set; }

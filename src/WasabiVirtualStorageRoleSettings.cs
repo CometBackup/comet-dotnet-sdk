@@ -7,11 +7,18 @@ using System.Text.Json.Serialization;
 
 namespace CometBackup.CometAPI.SDK {
 /// <summary>
-/// Class <c>WasabiVirtualStorageRoleSettings</c>
+/// Class <c>WasabiVirtualStorageRoleSettings</c> This is an alias type for AmazonAWSVirtualStorageRoleSettings.
 /// </summary>
 public class WasabiVirtualStorageRoleSettings {
 
 	[JsonPropertyName("MasterBucket")]
+	//If set, the Storage Template will generate Storage Vaults pointing to a subdirectory within this bucket. A single
+	//dynamic IAM policy will cover all created Storage Vaults.
+	//This is preferable for platforms that have limits on the total number of IAM policies. However, it requires a high
+	//level of IAM compatibility.
+	//If left blank, the Storage Template will generate Storage Vaults pointing to new, separate S3 buckets each time. An
+	//additional IAM policy is created for each new Storage Vault.
+	//This is preferable for platforms that have a lower level of IAM compatibility.
 	public string MasterBucket { get; set; } = string.Empty;
 
 	[JsonPropertyName("AccessKey")]
@@ -20,16 +27,23 @@ public class WasabiVirtualStorageRoleSettings {
 	[JsonPropertyName("SecretKey")]
 	public string SecretKey { get; set; } = string.Empty;
 
+	[Obsolete("Deprecated since Comet version 23.x.x")]
+
 	[JsonPropertyName("UseObjectLock")]
 	public bool UseObjectLock_Legacy_DoNotUse { get; set; }
 
 	[JsonPropertyName("ObjectLockMode")]
+	//Control whether the resulting Storage Vaults are configured for Object Lock. One of the OBJECT_LOCK_ constants
 	public byte ObjectLockMode { get; set; }
 
 	[JsonPropertyName("ObjectLockDays")]
 	public long ObjectLockDays { get; set; }
 
 	[JsonPropertyName("RemoveDeleted")]
+	//Control whether the "Allow removal of deleted files" checkbox is enabled for Storage Vaults generated from this
+	//Storage Template.
+	//When configuring a Storage Template from the Comet Server web interface, this field is set automatically for Storage
+	//Templates using Object Lock.
 	public bool RemoveDeleted { get; set; }
 
 	public WasabiVirtualStorageRoleSettings(){ }
@@ -40,6 +54,26 @@ public class WasabiVirtualStorageRoleSettings {
 
 	static public WasabiVirtualStorageRoleSettings FromJson(string jsStr) {
 		return JsonSerializer.Deserialize<WasabiVirtualStorageRoleSettings>(jsStr);
+	}
+
+	public AmazonAWSVirtualStorageRoleSettings GetEmbeddedAmazonAWSVirtualStorageRoleSettings() => new AmazonAWSVirtualStorageRoleSettings {
+		MasterBucket = this.MasterBucket,
+		AccessKey = this.AccessKey,
+		SecretKey = this.SecretKey,
+		UseObjectLock_Legacy_DoNotUse = this.UseObjectLock_Legacy_DoNotUse,
+		ObjectLockMode = this.ObjectLockMode,
+		ObjectLockDays = this.ObjectLockDays,
+		RemoveDeleted = this.RemoveDeleted,
+	};
+
+	public void SetEmbeddedAmazonAWSVirtualStorageRoleSettings(AmazonAWSVirtualStorageRoleSettings other){
+		this.MasterBucket = other.MasterBucket;
+		this.AccessKey = other.AccessKey;
+		this.SecretKey = other.SecretKey;
+		this.UseObjectLock_Legacy_DoNotUse = other.UseObjectLock_Legacy_DoNotUse;
+		this.ObjectLockMode = other.ObjectLockMode;
+		this.ObjectLockDays = other.ObjectLockDays;
+		this.RemoveDeleted = other.RemoveDeleted;
 	}
 
 }

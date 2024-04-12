@@ -168,6 +168,9 @@ public class DestinationLocation {
 	[JsonPropertyName("Storj")]
 	public StorjDestinationLocation Storj { get; set; }
 
+	[JsonPropertyName("SMB")]
+	public SMBDestinationLocation SMB { get; set; }
+
 	[JsonPropertyName("SpanTargets")]
 	//A list of underlying destinations, that will be combined and presented as one.
 	public List<DestinationLocation> SpanTargets { get; set; }

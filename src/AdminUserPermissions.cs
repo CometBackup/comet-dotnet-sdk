@@ -44,6 +44,9 @@ public class AdminUserPermissions {
 	[JsonPropertyName("DenyViewServerInfo")]
 	public bool DenyViewServerInfo { get; set; }
 
+	[JsonPropertyName("PreventDeleteStorageVault")]
+	public bool PreventDeleteStorageVault { get; set; }
+
 	[JsonPropertyName("PreventRequestStorageVault")]
 	public bool PreventRequestStorageVault { get; set; }
 

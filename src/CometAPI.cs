@@ -4469,6 +4469,49 @@ public class CometAPI : IDisposable {
 	}
 
 	/// <summary>
+	/// AdminMetaReadSelectLogsAsync: Get logs file content
+	/// On non-Windows platforms, log content uses LF line endings. On Windows, Comet changed from LF to CRLF line endings
+	/// in 18.3.2.
+	/// This API does not automatically convert line endings; around the 18.3.2 timeframe, log content may even contain
+	/// mixed line-endings.
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
+	/// </summary>
+	/// <param name="Logs">An array of log days, selected from the options returned by the Get Log Files API</param>
+	public async Task<byte[]> AdminMetaReadSelectLogsAsync(long[] Logs) {
+		var data = new Dictionary<string,string>();
+
+		data["Logs"] = JsonSerializer.Serialize(Logs);
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/meta/read-select-logs", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				MemoryStream mStream = new MemoryStream();
+				await stream.CopyToAsync(mStream);
+				return mStream.ToArray();
+			}
+		}
+	}
+
+	/// <summary>
+	/// AdminMetaReadSelectLogs: Get logs file content
+	/// On non-Windows platforms, log content uses LF line endings. On Windows, Comet changed from LF to CRLF line endings
+	/// in 18.3.2.
+	/// This API does not automatically convert line endings; around the 18.3.2 timeframe, log content may even contain
+	/// mixed line-endings.
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
+	/// </summary>
+	/// <param name="Logs">An array of log days, selected from the options returned by the Get Log Files API</param>
+	public byte[] AdminMetaReadSelectLogs(long[] Logs) {
+		var resultTask = AdminMetaReadSelectLogsAsync(Logs);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
 	/// AdminMetaRemoteStorageVaultGetAsync: Get Requesting Remote Storage Vault Config
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
@@ -4711,10 +4754,15 @@ public class CometAPI : IDisposable {
 	/// Access to this API may be prevented on a per-administrator basis.
 	/// </summary>
 	/// <param name="EmailReportingOption">Test email reporting option for sending</param>
-	public async Task<CometAPIResponseMessage> AdminMetaSendTestReportAsync(EmailReportingOption EmailReportingOption) {
+	/// <param name="TargetOrganization">(Optional) If present, Testing email with a target organization. Only allowed for
+	/// top-level admins. (>= 24.3.0)</param>
+	public async Task<CometAPIResponseMessage> AdminMetaSendTestReportAsync(EmailReportingOption EmailReportingOption, string TargetOrganization = null) {
 		var data = new Dictionary<string,string>();
 
 		data["EmailReportingOption"] = JsonSerializer.Serialize(EmailReportingOption);
+		if (TargetOrganization != null) {
+			data["TargetOrganization"] = TargetOrganization;
+		}
 
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/meta/send-test-report", data)){
 			response.EnsureSuccessStatusCode();
@@ -4732,8 +4780,10 @@ public class CometAPI : IDisposable {
 	/// Access to this API may be prevented on a per-administrator basis.
 	/// </summary>
 	/// <param name="EmailReportingOption">Test email reporting option for sending</param>
-	public CometAPIResponseMessage AdminMetaSendTestReport(EmailReportingOption EmailReportingOption) {
-		var resultTask = AdminMetaSendTestReportAsync(EmailReportingOption);
+	/// <param name="TargetOrganization">(Optional) If present, Testing email with a target organization. Only allowed for
+	/// top-level admins. (>= 24.3.0)</param>
+	public CometAPIResponseMessage AdminMetaSendTestReport(EmailReportingOption EmailReportingOption, string TargetOrganization = null) {
+		var resultTask = AdminMetaSendTestReportAsync(EmailReportingOption, TargetOrganization);
 		resultTask.Wait();
 		return resultTask.Result;
 	}
