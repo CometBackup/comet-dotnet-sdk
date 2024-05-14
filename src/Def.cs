@@ -3,13 +3,13 @@
 
 namespace CometBackup.CometAPI.SDK {
 public static class Def {
-	public const string APPLICATION_VERSION = "24.3.6";
+	public const string APPLICATION_VERSION = "24.3.7";
 
 	public const long APPLICATION_VERSION_MAJOR = 24;
 
 	public const long APPLICATION_VERSION_MINOR = 3;
 
-	public const long APPLICATION_VERSION_REVISION = 6;
+	public const long APPLICATION_VERSION_REVISION = 7;
 
 	/// AutoRetentionLevel: The system will automatically choose how often to run an automatic Retention Pass after each
 	/// backup job.
