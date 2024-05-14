@@ -11,8 +11,8 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 public class Office365Connection {
 
-	[JsonPropertyName("FeatureFlag")]
-	public string FeatureFlag { get; set; } = string.Empty;
+	[JsonPropertyName("Concurrency")]
+	public long Concurrency { get; set; }
 
 	[JsonPropertyName("Credential")]
 	public Office365Credential Credential { get; set; }
@@ -20,14 +20,20 @@ public class Office365Connection {
 	[JsonPropertyName("CustomSetting")]
 	public Office365CustomSetting CustomSetting { get; set; }
 
+	[JsonPropertyName("CustomSettingV2")]
+	public Office365CustomSettingV2 CustomSettingV2 { get; set; }
+
+	[JsonPropertyName("FeatureFlag")]
+	public string FeatureFlag { get; set; } = string.Empty;
+
+	[JsonPropertyName("LogLevel")]
+	public string LogLevel { get; set; } = string.Empty;
+
 	[JsonPropertyName("MailboxUniqueMembers")]
 	public List<string> MailboxUniqueMembers { get; set; }
 
 	[JsonPropertyName("SiteUniqueMembers")]
 	public List<string> SiteUniqueMembers { get; set; }
-
-	[JsonPropertyName("CustomSettingV2")]
-	public Office365CustomSettingV2 CustomSettingV2 { get; set; }
 
 	public Office365Connection(){ }
 

@@ -40,7 +40,12 @@ public class BackupJobAdvancedOptions {
 	//If Zero: default Automatic (BACKUPJOBAUTORETENTION_AUTOMATIC)
 	public long AutoRetentionLevel { get; set; }
 
+	[JsonPropertyName("ConcurrencyCount")]
+	//Desired concurrency count. If Zero, uses mode defaults
+	public long ConcurrencyCount { get; set; }
+
 	[JsonPropertyName("LogLevel")]
+	//Log verbosity level. LOG_DEBUG has the greatest verbosity
 	public string LogLevel { get; set; } = string.Empty;
 
 	public BackupJobAdvancedOptions(){ }

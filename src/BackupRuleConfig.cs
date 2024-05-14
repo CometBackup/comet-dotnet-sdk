@@ -70,7 +70,12 @@ public class BackupRuleConfig {
 	//If Zero: default Automatic (BACKUPJOBAUTORETENTION_AUTOMATIC)
 	public long AutoRetentionLevel { get; set; }
 
+	[JsonPropertyName("ConcurrencyCount")]
+	//Desired concurrency count. If Zero, uses mode defaults
+	public long ConcurrencyCount { get; set; }
+
 	[JsonPropertyName("LogLevel")]
+	//Log verbosity level. LOG_DEBUG has the greatest verbosity
 	public string LogLevel { get; set; } = string.Empty;
 
 	[JsonPropertyName("Schedules")]
@@ -99,6 +104,7 @@ public class BackupRuleConfig {
 		UseOnDiskIndexes = this.UseOnDiskIndexes,
 		AllowZeroFilesSuccess = this.AllowZeroFilesSuccess,
 		AutoRetentionLevel = this.AutoRetentionLevel,
+		ConcurrencyCount = this.ConcurrencyCount,
 		LogLevel = this.LogLevel,
 	};
 
@@ -110,6 +116,7 @@ public class BackupRuleConfig {
 		this.UseOnDiskIndexes = other.UseOnDiskIndexes;
 		this.AllowZeroFilesSuccess = other.AllowZeroFilesSuccess;
 		this.AutoRetentionLevel = other.AutoRetentionLevel;
+		this.ConcurrencyCount = other.ConcurrencyCount;
 		this.LogLevel = other.LogLevel;
 	}
 
