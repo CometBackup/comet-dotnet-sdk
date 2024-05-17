@@ -17,6 +17,10 @@ public class SoftwareBuildRoleOptions {
 	[JsonPropertyName("AllowUnauthenticatedDownloads")]
 	public bool AllowUnauthenticatedDownloads { get; set; }
 
+	[JsonPropertyName("MaxBuilders")]
+	//0 will default to CPU core count - 2
+	public long MaxBuilders { get; set; }
+
 	public SoftwareBuildRoleOptions(){ }
 
 	public string ToJson() {

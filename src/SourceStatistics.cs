@@ -11,6 +11,9 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 public class SourceStatistics {
 
+	[JsonPropertyName("LastStartTime")]
+	public long LastStartTime { get; set; }
+
 	[JsonPropertyName("LastBackupJob")]
 	public BackupJobDetail LastBackupJob { get; set; }
 
