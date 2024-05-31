@@ -17,6 +17,12 @@ public class CustomRemoteBucketSettings {
 	[JsonPropertyName("CustomHeaders")]
 	public Dictionary<string, string> CustomHeaders { get; set; }
 
+	[JsonPropertyName("CustomBody")]
+	public string CustomBody { get; set; } = string.Empty;
+
+	[JsonPropertyName("CustomBodyType")]
+	public string CustomBodyType { get; set; } = string.Empty;
+
 	public CustomRemoteBucketSettings(){ }
 
 	public string ToJson() {

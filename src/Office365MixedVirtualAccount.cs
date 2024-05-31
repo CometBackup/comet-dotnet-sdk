@@ -11,35 +11,38 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 public class Office365MixedVirtualAccount {
 
-	[JsonPropertyName("id")]
-	public string ID { get; set; } = string.Empty;
-
-	[JsonPropertyName("Type")]
-	public long Type { get; set; }
+	[JsonPropertyName("DefaultDriveID")]
+	public string DefaultDriveID { get; set; } = string.Empty;
 
 	[JsonPropertyName("DisplayName")]
 	public string DisplayName { get; set; } = string.Empty;
 
-	[JsonPropertyName("Mail")]
-	public string Mail { get; set; } = string.Empty;
+	[JsonPropertyName("EnabledServiceOption")]
+	public long EnabledServiceOption { get; set; }
+
+	[JsonPropertyName("id")]
+	public string ID { get; set; } = string.Empty;
 
 	[JsonPropertyName("JobTitle")]
 	public string JobTitle { get; set; } = string.Empty;
 
+	[JsonPropertyName("Mail")]
+	public string Mail { get; set; } = string.Empty;
+
 	[JsonPropertyName("SiteID")]
 	public string SiteID { get; set; } = string.Empty;
+
+	[JsonPropertyName("Type")]
+	public long Type { get; set; }
+
+	[JsonPropertyName("UserPrincipalName")]
+	public string UserPrincipalName { get; set; } = string.Empty;
 
 	[JsonPropertyName("WebID")]
 	public string WebID { get; set; } = string.Empty;
 
 	[JsonPropertyName("WebURL")]
 	public string WebURL { get; set; } = string.Empty;
-
-	[JsonPropertyName("UserPrincipalName")]
-	public string UserPrincipalName { get; set; } = string.Empty;
-
-	[JsonPropertyName("EnabledServiceOption")]
-	public long EnabledServiceOption { get; set; }
 
 	[JsonPropertyName("Members")]
 	public List<string> Members { get; set; }

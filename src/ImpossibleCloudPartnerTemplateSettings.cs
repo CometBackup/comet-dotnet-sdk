@@ -20,6 +20,25 @@ public class ImpossibleCloudPartnerTemplateSettings {
 	[JsonPropertyName("AccessKey")]
 	public string AccessKey { get; set; } = string.Empty;
 
+	[Obsolete("Deprecated since Comet version 23.x.x")]
+
+	[JsonPropertyName("UseObjectLock")]
+	public bool UseObjectLock_Legacy_DoNotUse { get; set; }
+
+	[JsonPropertyName("ObjectLockMode")]
+	//Control whether the resulting Storage Vaults are configured for Object Lock. One of the OBJECT_LOCK_ constants
+	public byte ObjectLockMode { get; set; }
+
+	[JsonPropertyName("ObjectLockDays")]
+	public long ObjectLockDays { get; set; }
+
+	[JsonPropertyName("RemoveDeleted")]
+	//Control whether the "Allow removal of deleted files" checkbox is enabled for Storage Vaults generated from this
+	//Storage Template.
+	//When configuring a Storage Template from the Comet Server web interface, this field is set automatically for Storage
+	//Templates using Object Lock.
+	public bool RemoveDeleted { get; set; }
+
 	public ImpossibleCloudPartnerTemplateSettings(){ }
 
 	public string ToJson() {
@@ -28,6 +47,20 @@ public class ImpossibleCloudPartnerTemplateSettings {
 
 	static public ImpossibleCloudPartnerTemplateSettings FromJson(string jsStr) {
 		return JsonSerializer.Deserialize<ImpossibleCloudPartnerTemplateSettings>(jsStr);
+	}
+
+	public ObjectLockStorageTemplateSettings GetEmbeddedObjectLockStorageTemplateSettings() => new ObjectLockStorageTemplateSettings {
+		UseObjectLock_Legacy_DoNotUse = this.UseObjectLock_Legacy_DoNotUse,
+		ObjectLockMode = this.ObjectLockMode,
+		ObjectLockDays = this.ObjectLockDays,
+		RemoveDeleted = this.RemoveDeleted,
+	};
+
+	public void SetEmbeddedObjectLockStorageTemplateSettings(ObjectLockStorageTemplateSettings other){
+		this.UseObjectLock_Legacy_DoNotUse = other.UseObjectLock_Legacy_DoNotUse;
+		this.ObjectLockMode = other.ObjectLockMode;
+		this.ObjectLockDays = other.ObjectLockDays;
+		this.RemoveDeleted = other.RemoveDeleted;
 	}
 
 }

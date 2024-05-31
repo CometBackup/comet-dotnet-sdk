@@ -3,13 +3,13 @@
 
 namespace CometBackup.CometAPI.SDK {
 public static class Def {
-	public const string APPLICATION_VERSION = "24.3.9";
+	public const string APPLICATION_VERSION = "24.5.0";
 
 	public const long APPLICATION_VERSION_MAJOR = 24;
 
-	public const long APPLICATION_VERSION_MINOR = 3;
+	public const long APPLICATION_VERSION_MINOR = 5;
 
-	public const long APPLICATION_VERSION_REVISION = 9;
+	public const long APPLICATION_VERSION_REVISION = 0;
 
 	/// AutoRetentionLevel: The system will automatically choose how often to run an automatic Retention Pass after each
 	/// backup job.
@@ -69,6 +69,18 @@ public static class Def {
 
 	/// CompressMode
 	public const long COMPRESS_DEFAULT = 4;
+
+	/// CustomRemoteBucketCustomBodyType
+	public const string CUSTOMREMOTEBUCKET_CUSTOMBODY_NONE = "none";
+
+	/// CustomRemoteBucketCustomBodyType
+	public const string CUSTOMREMOTEBUCKET_CUSTOMBODY_JSON = "json";
+
+	/// CustomRemoteBucketCustomBodyType
+	public const string CUSTOMREMOTEBUCKET_CUSTOMBODY_URLENC = "urlencoded";
+
+	/// CustomRemoteBucketCustomBodyType
+	public const string CUSTOMREMOTEBUCKET_CUSTOMBODY_FORM = "form";
 
 	/// LanguageCode
 	public const string DEFAULT_LANGUAGE = "en_US";
@@ -446,7 +458,7 @@ public static class Def {
 	/// PSAType
 	public const long PSA_TYPE_SYNCRO = 2;
 
-	public const string RELEASE_CODENAME = "Voyager";
+	public const string RELEASE_CODENAME = "Enceladus";
 
 	/// RemoteServerType: Comet Server
 	public const string REMOTESERVER_COMET = "comet";
