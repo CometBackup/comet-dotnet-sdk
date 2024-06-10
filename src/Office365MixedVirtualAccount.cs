@@ -14,6 +14,9 @@ public class Office365MixedVirtualAccount {
 	[JsonPropertyName("DefaultDriveID")]
 	public string DefaultDriveID { get; set; } = string.Empty;
 
+	[JsonPropertyName("Disabled")]
+	public bool Disabled { get; set; }
+
 	[JsonPropertyName("DisplayName")]
 	public string DisplayName { get; set; } = string.Empty;
 

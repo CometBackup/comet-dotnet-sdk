@@ -3,11 +3,11 @@
 
 namespace CometBackup.CometAPI.SDK {
 public static class Def {
-	public const string APPLICATION_VERSION = "24.5.0";
+	public const string APPLICATION_VERSION = "24.6.0";
 
 	public const long APPLICATION_VERSION_MAJOR = 24;
 
-	public const long APPLICATION_VERSION_MINOR = 5;
+	public const long APPLICATION_VERSION_MINOR = 6;
 
 	public const long APPLICATION_VERSION_REVISION = 0;
 
@@ -458,7 +458,7 @@ public static class Def {
 	/// PSAType
 	public const long PSA_TYPE_SYNCRO = 2;
 
-	public const string RELEASE_CODENAME = "Enceladus";
+	public const string RELEASE_CODENAME = "Voyager";
 
 	/// RemoteServerType: Comet Server
 	public const string REMOTESERVER_COMET = "comet";

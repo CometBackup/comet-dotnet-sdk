@@ -14,6 +14,9 @@ public class VaultSnapshot {
 	[JsonPropertyName("Snapshot")]
 	public string Snapshot { get; set; } = string.Empty;
 
+	[JsonPropertyName("EngineType")]
+	public string EngineType { get; set; } = string.Empty;
+
 	[JsonPropertyName("Source")]
 	public string Source { get; set; } = string.Empty;
 
