@@ -62,6 +62,18 @@ public class ServerMetaVersionInfo {
 	[JsonPropertyName("ServerLicenseFeatureSet")]
 	public uint ServerLicenseFeatureSet { get; set; }
 
+	[JsonPropertyName("ServerLicenseLimit")]
+	//If non-zero, the maximum numbers of devices and Protected Item types that this server is allowed.
+	public LicenseLimits ServerLicenseLimit { get; set; }
+
+	[JsonPropertyName("ConfiguredDevices")]
+	//A count of the devices registered on the server that have a configured Protected Item.
+	public long ConfiguredDevices { get; set; }
+
+	[JsonPropertyName("BoosterLimit")]
+	//The current number of Protected Item types configured on the server.
+	public Dictionary<string, long> BoosterLimit { get; set; }
+
 	[JsonPropertyName("LicenseValidUntil")]
 	//Unix timestamp, in seconds.
 	public long LicenseValidUntil { get; set; }

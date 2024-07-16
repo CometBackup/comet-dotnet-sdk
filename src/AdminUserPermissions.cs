@@ -65,6 +65,9 @@ public class AdminUserPermissions {
 	[JsonPropertyName("AllowedUserPolicies")]
 	public List<string> AllowedUserPolicies { get; set; }
 
+	[JsonPropertyName("DenySoftwareBuildRole")]
+	public bool DenySoftwareBuildRole { get; set; }
+
 	public AdminUserPermissions(){ }
 
 	public string ToJson() {
