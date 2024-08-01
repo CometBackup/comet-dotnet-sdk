@@ -1462,6 +1462,40 @@ public class CometAPI : IDisposable {
 	}
 
 	/// <summary>
+	/// AdminConvertStorageRoleAsync: Convert IAM Storage Role vault to its underlying S3 type
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// </summary>
+	/// <param name="TargetUser">The user to receive the new Storage Vault</param>
+	/// <param name="DestinationId">The id of the old storage role destination to convert</param>
+	public async Task<RequestStorageVaultResponseMessage> AdminConvertStorageRoleAsync(string TargetUser, string DestinationId) {
+		var data = new Dictionary<string,string>();
+
+		data["TargetUser"] = TargetUser;
+		data["DestinationId"] = DestinationId;
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/convert-storage-role", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<RequestStorageVaultResponseMessage>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// AdminConvertStorageRole: Convert IAM Storage Role vault to its underlying S3 type
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// </summary>
+	/// <param name="TargetUser">The user to receive the new Storage Vault</param>
+	/// <param name="DestinationId">The id of the old storage role destination to convert</param>
+	public RequestStorageVaultResponseMessage AdminConvertStorageRole(string TargetUser, string DestinationId) {
+		var resultTask = AdminConvertStorageRoleAsync(TargetUser, DestinationId);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
 	/// AdminCountJobsForCustomSearchAsync: Count jobs (for custom search)
 	/// 
 	/// You must supply administrator authentication credentials to use this API.

@@ -59,6 +59,10 @@ public class S3GenericVirtualStorageRole {
 	//(e.g. us-east-1).
 	public string Region { get; set; } = string.Empty;
 
+	[JsonPropertyName("Prefix")]
+	//Optional. Prefix to use for bucket paths.
+	public string Prefix { get; set; } = string.Empty;
+
 	public S3GenericVirtualStorageRole(){ }
 
 	public string ToJson() {

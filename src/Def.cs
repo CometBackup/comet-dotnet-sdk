@@ -3,13 +3,13 @@
 
 namespace CometBackup.CometAPI.SDK {
 public static class Def {
-	public const string APPLICATION_VERSION = "24.6.4";
+	public const string APPLICATION_VERSION = "24.6.6";
 
 	public const long APPLICATION_VERSION_MAJOR = 24;
 
 	public const long APPLICATION_VERSION_MINOR = 6;
 
-	public const long APPLICATION_VERSION_REVISION = 4;
+	public const long APPLICATION_VERSION_REVISION = 6;
 
 	/// AutoRetentionLevel: The system will automatically choose how often to run an automatic Retention Pass after each
 	/// backup job.
@@ -81,6 +81,12 @@ public static class Def {
 
 	/// CustomRemoteBucketCustomBodyType
 	public const string CUSTOMREMOTEBUCKET_CUSTOMBODY_FORM = "form";
+
+	/// The number of retry attempts a backup job can do
+	public const long DEFAULT_RETRY_COUNT = 1;
+
+	/// The number of minutes between backup job retry attempts
+	public const long DEFAULT_RETRY_TIME = 30;
 
 	/// LanguageCode
 	public const string DEFAULT_LANGUAGE = "en_US";
@@ -317,6 +323,9 @@ public static class Def {
 	/// status.
 	public const ulong JOB_STATUS_RUNNING_REVIVED = 6002;
 
+	/// JobStatus: The job has encountered an error and will wait to retry.
+	public const ulong JOB_STATUS_RUNNING_TRYAGAIN = 6003;
+
 	/// JobStatus
 	public const ulong JOB_STATUS_RUNNING__MAX = 6999;
 
@@ -368,6 +377,10 @@ public static class Def {
 
 	/// MacOSCodesignLevel: Sign, notarize, and staple
 	public const long MACOSCODESIGN_LEVEL_SIGN_NOTARISE_STAPLE = 2;
+
+	public const long MIN_BUILD_NUMBER_WIN_SERVER_2016 = 14393;
+
+	public const long MIN_BUILD_NUMBER_WIN_10 = 10240;
 
 	public const long MIXED_VIRTUAL_ACCOUNT_TYPE_USER = 1;
 

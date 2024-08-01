@@ -20,6 +20,18 @@ public class BackupRuleEventTriggers {
 	//and/or when the live connection is resumed.
 	public bool OnPCBootIfLastJobMissed { get; set; }
 
+	[JsonPropertyName("OnLastJobFailDoRetry")]
+	//The option to enable retrying when a backup job failed.
+	public bool OnLastJobFailDoRetry { get; set; }
+
+	[JsonPropertyName("LastJobFailDoRetryCount")]
+	//The number of retries when the backup job fails.
+	public ulong LastJobFailDoRetryCount { get; set; }
+
+	[JsonPropertyName("LastJobFailDoRetryTime")]
+	//The number of minutes before retrying when the backup job fails.
+	public ulong LastJobFailDoRetryTime { get; set; }
+
 	public BackupRuleEventTriggers(){ }
 
 	public string ToJson() {

@@ -31,6 +31,9 @@ public class BackupJobDetail {
 	//Unix timestamp in seconds. Will be zero if the job is still running.
 	public long EndTime { get; set; }
 
+	[JsonPropertyName("RetryCount")]
+	public long RetryCount { get; set; }
+
 	[JsonPropertyName("SourceGUID")]
 	//The Protected Item that this job is for
 	public string SourceGUID { get; set; } = string.Empty;
@@ -44,6 +47,10 @@ public class BackupJobDetail {
 
 	[JsonPropertyName("SnapshotID")]
 	public string SnapshotID { get; set; } = string.Empty;
+
+	[JsonPropertyName("BackupRuleGUID")]
+	//The ID of the backup rule that contains the schedule that triggered this job
+	public string BackupRuleGUID { get; set; } = string.Empty;
 
 	[JsonPropertyName("ClientVersion")]
 	public string ClientVersion { get; set; } = string.Empty;
