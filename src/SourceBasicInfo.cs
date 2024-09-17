@@ -12,11 +12,17 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 public class SourceBasicInfo {
 
+	[JsonPropertyName("Engine")]
+	public string Engine { get; set; } = string.Empty;
+
 	[JsonPropertyName("Description")]
 	public string Description { get; set; } = string.Empty;
 
 	[JsonPropertyName("O365AccountCount")]
 	public long O365AccountCount { get; set; }
+
+	[JsonPropertyName("TotalVmCount")]
+	public long TotalVmCount { get; set; }
 
 	[JsonPropertyName("Size")]
 	//Bytes

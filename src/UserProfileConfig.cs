@@ -96,6 +96,16 @@ public class UserProfileConfig {
 	//Set to zero to allow unlimited Office 365 Protected Accounts.
 	public long QuotaOffice365ProtectedAccounts { get; set; }
 
+	[JsonPropertyName("QuotaHyperVGuests")]
+	//A limit on the total number of Hyper-V guests across all Hyper-V Protected Items in this account. Set to zero to
+	//allow unlimited Office 365 Protected Accounts.
+	public long QuotaHyperVGuests { get; set; }
+
+	[JsonPropertyName("QuotaVMwareGuests")]
+	//A limit on the total number of VMware guests across all VMware Protected Items in this account. Set to zero to allow
+	//unlimited Office 365 Protected Accounts.
+	public long QuotaVMwareGuests { get; set; }
+
 	[JsonPropertyName("PolicyID")]
 	//If the PolicyID field is set to a non-empty string, the Comet Server will enforce the contents of the Policy field
 	//based on the matching server's policy. Otherwise if the PolicyID field is set to an empty string, the administrator
