@@ -30,6 +30,9 @@ public class BackupJobProgress {
 	[JsonPropertyName("ItemsDone")]
 	public long ItemsDone { get; set; }
 
+	[JsonPropertyName("ItemsTotal")]
+	public long ItemsTotal { get; set; }
+
 	public BackupJobProgress(){ }
 
 	public string ToJson() {

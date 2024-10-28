@@ -97,6 +97,10 @@ public class BackupJobDetail {
 	//For Office 365 backup jobs, the number of unlicensed mailboxes.
 	public long TotalUnlicensedMailsCount { get; set; }
 
+	[JsonPropertyName("ConflictingJobID")]
+	//If this field is present, this job did not perform some work because the Storage Vault is currently busy.
+	public string ConflictingJobID { get; set; } = string.Empty;
+
 	[JsonPropertyName("CancellationID")]
 	//If this field is present, it is possible to request cancellation of this job via the API.
 	public string CancellationID { get; set; } = string.Empty;

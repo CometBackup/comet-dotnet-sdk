@@ -3112,6 +3112,42 @@ public class CometAPI : IDisposable {
 	}
 
 	/// <summary>
+	/// AdminDispatcherTestSmbAuthAsync: Test a set of Windows SMB credentials
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Wsa">The target credentials to test</param>
+	public async Task<CometAPIResponseMessage> AdminDispatcherTestSmbAuthAsync(string TargetID, WinSMBAuth Wsa) {
+		var data = new Dictionary<string,string>();
+
+		data["TargetID"] = TargetID;
+		data["Wsa"] = JsonSerializer.Serialize(Wsa);
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/dispatcher/test-smb-auth", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<CometAPIResponseMessage>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// AdminDispatcherTestSmbAuth: Test a set of Windows SMB credentials
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Wsa">The target credentials to test</param>
+	public CometAPIResponseMessage AdminDispatcherTestSmbAuth(string TargetID, WinSMBAuth Wsa) {
+		var resultTask = AdminDispatcherTestSmbAuthAsync(TargetID, Wsa);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
 	/// AdminDispatcherUninstallSoftwareAsync: Instruct a live connected device to self-uninstall the software
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
@@ -7508,6 +7544,44 @@ public class CometAPI : IDisposable {
 	/// <param name="Filter">The search filter</param>
 	public SearchSnapshotsResponse UserWebDispatcherSearchSnapshots(string TargetID, string DestinationID, string[] SnapshotIDs, SearchClause Filter) {
 		var resultTask = UserWebDispatcherSearchSnapshotsAsync(TargetID, DestinationID, SnapshotIDs, Filter);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
+	/// UserWebDispatcherTestSmbAuthAsync: Test a set of Windows SMB credentials
+	/// 
+	/// You must supply user authentication credentials to use this API, and the user account must be authorized for web
+	/// access.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Wsa">The target credentials to test</param>
+	public async Task<CometAPIResponseMessage> UserWebDispatcherTestSmbAuthAsync(string TargetID, WinSMBAuth Wsa) {
+		var data = new Dictionary<string,string>();
+
+		data["TargetID"] = TargetID;
+		data["Wsa"] = JsonSerializer.Serialize(Wsa);
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/user/web/dispatcher/test-smb-auth", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<CometAPIResponseMessage>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// UserWebDispatcherTestSmbAuth: Test a set of Windows SMB credentials
+	/// 
+	/// You must supply user authentication credentials to use this API, and the user account must be authorized for web
+	/// access.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Wsa">The target credentials to test</param>
+	public CometAPIResponseMessage UserWebDispatcherTestSmbAuth(string TargetID, WinSMBAuth Wsa) {
+		var resultTask = UserWebDispatcherTestSmbAuthAsync(TargetID, Wsa);
 		resultTask.Wait();
 		return resultTask.Result;
 	}

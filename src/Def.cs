@@ -3,13 +3,13 @@
 
 namespace CometBackup.CometAPI.SDK {
 public static class Def {
-	public const string APPLICATION_VERSION = "24.9.1";
+	public const string APPLICATION_VERSION = "24.9.6";
 
 	public const long APPLICATION_VERSION_MAJOR = 24;
 
 	public const long APPLICATION_VERSION_MINOR = 9;
 
-	public const long APPLICATION_VERSION_REVISION = 1;
+	public const long APPLICATION_VERSION_REVISION = 6;
 
 	/// AutoRetentionLevel: The system will automatically choose how often to run an automatic Retention Pass after each
 	/// backup job.
@@ -594,6 +594,9 @@ public static class Def {
 
 	/// RestoreType: Restore disk image backup as VMware-compatible virtual disks
 	public const long RESTORETYPE_WINDISK_ESXI = 12;
+
+	/// RestoreType: Restore disk image backup as Hyper-V-compatible virtual disks (.vhdx format)
+	public const long RESTORETYPE_WINDISK_VHDX = 13;
 
 	/// RestoreType: Legacy name alias - Prefer to use RESTORETYPE_PROCESS_ARCHIVE since multiple archive file formats are
 	/// supported within this single RESTORETYPE_

@@ -27,19 +27,32 @@ public class DiskDrive {
 	public string SerialNumber { get; set; } = string.Empty;
 
 	[JsonPropertyName("Size")]
+	//Bytes
 	public long Size { get; set; }
 
 	[JsonPropertyName("Partitions")]
 	public List<Partition> Partitions { get; set; }
 
+	[JsonPropertyName("DeviceParents")]
+	//For physical disks, this array will be empty. For virtual disks, RAID devices or Linux DM devices, this array may
+	//contain the DeviceName of the parent device.
+	public List<string> DeviceParents { get; set; }
+
 	[JsonPropertyName("Flags")]
+	//See WINDISKFLAG_ constants
 	public long Flags { get; set; }
+
+	[Obsolete("Deprecated since Comet version 24.6.x This value is reported from the disk driver if available. Otherwise emulates a value based on modern LBA addressing. The field value is not used.")]
 
 	[JsonPropertyName("Cylinders")]
 	public long Cylinders { get; set; }
 
+	[Obsolete("Deprecated since Comet version 24.6.x This value is reported from the disk driver if available. Otherwise emulates a value based on modern LBA addressing. The field value is not used.")]
+
 	[JsonPropertyName("Heads")]
 	public long Heads { get; set; }
+
+	[Obsolete("Deprecated since Comet version 24.6.x This value is reported from the disk driver if available. Otherwise emulates a value based on modern LBA addressing. The field value is not used.")]
 
 	[JsonPropertyName("Sectors")]
 	public long Sectors { get; set; }
