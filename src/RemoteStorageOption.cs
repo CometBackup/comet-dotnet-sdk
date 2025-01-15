@@ -76,6 +76,12 @@ public class RemoteStorageOption {
 	[JsonPropertyName("RebrandStorage")]
 	public bool RebrandStorage { get; set; }
 
+	[JsonPropertyName("ID")]
+	public string ID { get; set; } = string.Empty;
+
+	[JsonPropertyName("Default")]
+	public bool Default { get; set; }
+
 	public RemoteStorageOption(){ }
 
 	public string ToJson() {

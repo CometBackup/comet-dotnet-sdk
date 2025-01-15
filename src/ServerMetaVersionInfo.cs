@@ -56,10 +56,13 @@ public class ServerMetaVersionInfo {
 	//point to an identical server.
 	public string ServerLicenseHash { get; set; } = string.Empty;
 
+	[Obsolete("Deprecated since Comet version 24.9.x")]
+
 	[JsonPropertyName("ServerLicenseFeaturesAll")]
 	public bool ServerLicenseFeaturesAll { get; set; }
 
 	[JsonPropertyName("ServerLicenseFeatureSet")]
+	//A bitset of feature flags representing functionality available in this Comet Server's plan
 	public uint ServerLicenseFeatureSet { get; set; }
 
 	[JsonPropertyName("ServerLicenseLimit")]

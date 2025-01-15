@@ -3,13 +3,13 @@
 
 namespace CometBackup.CometAPI.SDK {
 public static class Def {
-	public const string APPLICATION_VERSION = "24.9.6";
+	public const string APPLICATION_VERSION = "24.12.2";
 
 	public const long APPLICATION_VERSION_MAJOR = 24;
 
-	public const long APPLICATION_VERSION_MINOR = 9;
+	public const long APPLICATION_VERSION_MINOR = 12;
 
-	public const long APPLICATION_VERSION_REVISION = 6;
+	public const long APPLICATION_VERSION_REVISION = 2;
 
 	/// AutoRetentionLevel: The system will automatically choose how often to run an automatic Retention Pass after each
 	/// backup job.
@@ -214,7 +214,7 @@ public static class Def {
 	/// Microsoft SQL Server
 	public const string ENGINE_BUILTIN_MSSQL = "engine1/mssql";
 
-	/// Windows System Backup
+	/// Windows System Backup, deprecated from version 24.12.2
 	public const string ENGINE_BUILTIN_WINDOWSSYSTEM = "engine1/windowssystem";
 
 	/// Microsoft Exchange Server
@@ -409,6 +409,15 @@ public static class Def {
 
 	/// MSSQLRestoreOpt
 	public const string MSSQL_RESTORE_NORECOVERY = "NO_RECOVERY";
+
+	/// Used in policy to define that the automatic Storage Vaults for new devices is not enforced by the policy
+	public const string NEW_STORAGE_VAULT_MODE_USER = "user_controlled";
+
+	/// No Storage Vault will be created when a new device is added
+	public const string NEW_STORAGE_VAULT_MODE_NONE = "none";
+
+	/// When a new device is added, a Storage Vault will be created using the servers default Storage Template
+	public const string NEW_STORAGE_VAULT_MODE_SERVER = "server_controlled";
 
 	/// Enable Object Lock capability if the corresponding Days field is greater than zero.
 	/// New code should explicitly use OBJECT_LOCK_ON / OBJECT_LOCK_OFF instead.
@@ -923,6 +932,15 @@ public static class Def {
 
 	/// StreamableEventType: Device disconnected from registration lobby
 	public const long SEVT_DEVICE_LOBBY_DISCONNECT = 4705;
+
+	/// StreamableEventType: UserGroup created.
+	public const long SEVT_USERGROUP_NEW = 4800;
+
+	/// StreamableEventType: UserGroup deleted
+	public const long SEVT_USERGROUP_REMOVED = 4801;
+
+	/// StreamableEventType: UserGroup updated.
+	public const long SEVT_USERGROUP_UPDATED = 4802;
 
 	/// StreamableEventType
 	public const long SEVT__MAX = 4999;

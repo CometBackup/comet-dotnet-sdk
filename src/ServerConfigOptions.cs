@@ -44,6 +44,9 @@ public class ServerConfigOptions {
 	//The Comet Server can enforce a bandwidth limit based on the target IP address
 	public RatelimitOptions IPRateLimit { get; set; }
 
+	[JsonPropertyName("LoginProtection")]
+	public LoginProtectionOptions LoginProtection { get; set; }
+
 	[JsonPropertyName("License")]
 	public LicenseOptions License { get; set; }
 

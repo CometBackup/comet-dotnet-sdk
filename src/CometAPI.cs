@@ -496,6 +496,36 @@ public class CometAPI : IDisposable {
 	}
 
 	/// <summary>
+	/// AdminAddFirstAdminUserAsync: Add first admin user account on new server
+	/// </summary>
+	/// <param name="TargetUser">the username for this new admin</param>
+	/// <param name="TargetPassword">the password for this new admin user</param>
+	public async Task<CometAPIResponseMessage> AdminAddFirstAdminUserAsync(string TargetUser, string TargetPassword) {
+		var data = new Dictionary<string,string>();
+
+		data["TargetUser"] = TargetUser;
+		data["TargetPassword"] = TargetPassword;
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/add-first-admin-user", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<CometAPIResponseMessage>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// AdminAddFirstAdminUser: Add first admin user account on new server
+	/// </summary>
+	/// <param name="TargetUser">the username for this new admin</param>
+	/// <param name="TargetPassword">the password for this new admin user</param>
+	public CometAPIResponseMessage AdminAddFirstAdminUser(string TargetUser, string TargetPassword) {
+		var resultTask = AdminAddFirstAdminUserAsync(TargetUser, TargetPassword);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
 	/// AdminAddUserAsync: Add a new user account
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
@@ -2639,6 +2669,7 @@ public class CometAPI : IDisposable {
 	/// <summary>
 	/// AdminDispatcherRequestOffice365AccountsAsync: Request a list of Office365 mailbox accounts
 	/// The remote device must have given consent for an MSP to browse their files.
+	/// This is primarily used for testing the connection to Graph API, not for actual listing
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
@@ -2662,6 +2693,7 @@ public class CometAPI : IDisposable {
 	/// <summary>
 	/// AdminDispatcherRequestOffice365Accounts: Request a list of Office365 mailbox accounts
 	/// The remote device must have given consent for an MSP to browse their files.
+	/// This is primarily used for testing the connection to Graph API, not for actual listing
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
@@ -4615,10 +4647,15 @@ public class CometAPI : IDisposable {
 	/// Access to this API may be prevented on a per-administrator basis.
 	/// </summary>
 	/// <param name="RemoteStorageOptions">Updated configuration content</param>
-	public async Task<CometAPIResponseMessage> AdminMetaRemoteStorageVaultSetAsync(RemoteStorageOption[] RemoteStorageOptions) {
+	/// <param name="ReplacementAutoVaultID">(Optional) Replacement Storage Template ID for auto Storage Vault
+	/// configurations that use deleted Storage Templates</param>
+	public async Task<CometAPIResponseMessage> AdminMetaRemoteStorageVaultSetAsync(RemoteStorageOption[] RemoteStorageOptions, string ReplacementAutoVaultID = null) {
 		var data = new Dictionary<string,string>();
 
 		data["RemoteStorageOptions"] = JsonSerializer.Serialize(RemoteStorageOptions);
+		if (ReplacementAutoVaultID != null) {
+			data["ReplacementAutoVaultID"] = ReplacementAutoVaultID;
+		}
 
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/meta/remote-storage-vault/set", data)){
 			response.EnsureSuccessStatusCode();
@@ -4635,8 +4672,10 @@ public class CometAPI : IDisposable {
 	/// Access to this API may be prevented on a per-administrator basis.
 	/// </summary>
 	/// <param name="RemoteStorageOptions">Updated configuration content</param>
-	public CometAPIResponseMessage AdminMetaRemoteStorageVaultSet(RemoteStorageOption[] RemoteStorageOptions) {
-		var resultTask = AdminMetaRemoteStorageVaultSetAsync(RemoteStorageOptions);
+	/// <param name="ReplacementAutoVaultID">(Optional) Replacement Storage Template ID for auto Storage Vault
+	/// configurations that use deleted Storage Templates</param>
+	public CometAPIResponseMessage AdminMetaRemoteStorageVaultSet(RemoteStorageOption[] RemoteStorageOptions, string ReplacementAutoVaultID = null) {
+		var resultTask = AdminMetaRemoteStorageVaultSetAsync(RemoteStorageOptions, ReplacementAutoVaultID);
 		resultTask.Wait();
 		return resultTask.Result;
 	}
@@ -5699,12 +5738,17 @@ public class CometAPI : IDisposable {
 	/// <param name="TargetUser">The user to receive the new Storage Vault</param>
 	/// <param name="StorageProvider">ID for the storage template destination</param>
 	/// <param name="SelfAddress">(Optional) The external URL for this server. Used to resolve conflicts</param>
-	public async Task<RequestStorageVaultResponseMessage> AdminRequestStorageVaultAsync(string TargetUser, string StorageProvider, string SelfAddress = null) {
+	/// <param name="DeviceID">(Optional) The ID of the device to be added as a associated device of the Storage
+	/// Vault</param>
+	public async Task<RequestStorageVaultResponseMessage> AdminRequestStorageVaultAsync(string TargetUser, string StorageProvider, string SelfAddress = null, string DeviceID = null) {
 		var data = new Dictionary<string,string>();
 
 		data["TargetUser"] = TargetUser;
 		data["StorageProvider"] = StorageProvider;
 		data["SelfAddress"] = SelfAddress ?? this.ServerURL;
+		if (DeviceID != null) {
+			data["DeviceID"] = DeviceID;
+		}
 
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/request-storage-vault", data)){
 			response.EnsureSuccessStatusCode();
@@ -5727,8 +5771,10 @@ public class CometAPI : IDisposable {
 	/// <param name="TargetUser">The user to receive the new Storage Vault</param>
 	/// <param name="StorageProvider">ID for the storage template destination</param>
 	/// <param name="SelfAddress">(Optional) The external URL for this server. Used to resolve conflicts</param>
-	public RequestStorageVaultResponseMessage AdminRequestStorageVault(string TargetUser, string StorageProvider, string SelfAddress = null) {
-		var resultTask = AdminRequestStorageVaultAsync(TargetUser, StorageProvider, SelfAddress);
+	/// <param name="DeviceID">(Optional) The ID of the device to be added as a associated device of the Storage
+	/// Vault</param>
+	public RequestStorageVaultResponseMessage AdminRequestStorageVault(string TargetUser, string StorageProvider, string SelfAddress = null, string DeviceID = null) {
+		var resultTask = AdminRequestStorageVaultAsync(TargetUser, StorageProvider, SelfAddress, DeviceID);
 		resultTask.Wait();
 		return resultTask.Result;
 	}
@@ -6269,6 +6315,275 @@ public class CometAPI : IDisposable {
 	/// </summary>
 	public UpdateCampaignStatus AdminUpdateCampaignStatus() {
 		var resultTask = AdminUpdateCampaignStatusAsync();
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
+	/// AdminUserGroupsDeleteAsync: Delete an existing user group object
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="GroupID">The user group ID to delete</param>
+	public async Task<CometAPIResponseMessage> AdminUserGroupsDeleteAsync(string GroupID) {
+		var data = new Dictionary<string,string>();
+
+		data["GroupID"] = GroupID;
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/user-groups/delete", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<CometAPIResponseMessage>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// AdminUserGroupsDelete: Delete an existing user group object
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="GroupID">The user group ID to delete</param>
+	public CometAPIResponseMessage AdminUserGroupsDelete(string GroupID) {
+		var resultTask = AdminUserGroupsDeleteAsync(GroupID);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
+	/// AdminUserGroupsGetAsync: Retrieve a single user group object
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="GroupID">The user group ID to retrieve</param>
+	/// <param name="IncludeUsers">(Optional) If present, includes the users array in the response.</param>
+	public async Task<GetUserGroupWithUsersResponse> AdminUserGroupsGetAsync(string GroupID, Nullable<bool> IncludeUsers = null) {
+		var data = new Dictionary<string,string>();
+
+		data["GroupID"] = GroupID;
+		if (IncludeUsers != null) {
+			data["IncludeUsers"] = JsonSerializer.Serialize(IncludeUsers);
+		}
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/user-groups/get", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<GetUserGroupWithUsersResponse>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// AdminUserGroupsGet: Retrieve a single user group object
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="GroupID">The user group ID to retrieve</param>
+	/// <param name="IncludeUsers">(Optional) If present, includes the users array in the response.</param>
+	public GetUserGroupWithUsersResponse AdminUserGroupsGet(string GroupID, Nullable<bool> IncludeUsers = null) {
+		var resultTask = AdminUserGroupsGetAsync(GroupID, IncludeUsers);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
+	/// AdminUserGroupsListAsync: List all user group names
+	/// For the top-level organization, the API result includes all user groups for all organizations, unless the
+	/// TargetOrganization parameter is present.
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetOrganization">(Optional) If present, list the user groups belonging to another organization.
+	/// Only allowed for administrator accounts in the top-level organization.</param>
+	public async Task<Dictionary<string,string>> AdminUserGroupsListAsync(string TargetOrganization = null) {
+		var data = new Dictionary<string,string>();
+
+		if (TargetOrganization != null) {
+			data["TargetOrganization"] = TargetOrganization;
+		}
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/user-groups/list", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<Dictionary<string,string>>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// AdminUserGroupsList: List all user group names
+	/// For the top-level organization, the API result includes all user groups for all organizations, unless the
+	/// TargetOrganization parameter is present.
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetOrganization">(Optional) If present, list the user groups belonging to another organization.
+	/// Only allowed for administrator accounts in the top-level organization.</param>
+	public Dictionary<string,string> AdminUserGroupsList(string TargetOrganization = null) {
+		var resultTask = AdminUserGroupsListAsync(TargetOrganization);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
+	/// AdminUserGroupsListFullAsync: Get all user group objects
+	/// For the top-level organization, the API result includes all user groups for all organizations, unless the
+	/// TargetOrganization parameter is present.
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetOrganization">(Optional) If present, list the user groups belonging to the specified
+	/// organization. Only allowed for administrator accounts in the top-level organization.</param>
+	public async Task<Dictionary<string,UserGroup>> AdminUserGroupsListFullAsync(string TargetOrganization = null) {
+		var data = new Dictionary<string,string>();
+
+		if (TargetOrganization != null) {
+			data["TargetOrganization"] = TargetOrganization;
+		}
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/user-groups/list-full", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<Dictionary<string,UserGroup>>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// AdminUserGroupsListFull: Get all user group objects
+	/// For the top-level organization, the API result includes all user groups for all organizations, unless the
+	/// TargetOrganization parameter is present.
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetOrganization">(Optional) If present, list the user groups belonging to the specified
+	/// organization. Only allowed for administrator accounts in the top-level organization.</param>
+	public Dictionary<string,UserGroup> AdminUserGroupsListFull(string TargetOrganization = null) {
+		var resultTask = AdminUserGroupsListFullAsync(TargetOrganization);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
+	/// AdminUserGroupsNewAsync: Create a new user group object
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="Name">this is the name of the group.</param>
+	/// <param name="TargetOrganization">(Optional) If present, list the policies belonging to another organization. Only
+	/// allowed for administrator accounts in the top-level organization.</param>
+	public async Task<CreateUserGroupResponse> AdminUserGroupsNewAsync(string Name, string TargetOrganization = null) {
+		var data = new Dictionary<string,string>();
+
+		data["Name"] = Name;
+		if (TargetOrganization != null) {
+			data["TargetOrganization"] = TargetOrganization;
+		}
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/user-groups/new", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<CreateUserGroupResponse>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// AdminUserGroupsNew: Create a new user group object
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="Name">this is the name of the group.</param>
+	/// <param name="TargetOrganization">(Optional) If present, list the policies belonging to another organization. Only
+	/// allowed for administrator accounts in the top-level organization.</param>
+	public CreateUserGroupResponse AdminUserGroupsNew(string Name, string TargetOrganization = null) {
+		var resultTask = AdminUserGroupsNewAsync(Name, TargetOrganization);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
+	/// AdminUserGroupsSetAsync: Update an existing user group or create a new user group
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="GroupID">The user group ID to update or create</param>
+	/// <param name="Group">The user group data</param>
+	public async Task<CometAPIResponseMessage> AdminUserGroupsSetAsync(string GroupID, UserGroup Group) {
+		var data = new Dictionary<string,string>();
+
+		data["GroupID"] = GroupID;
+		data["Group"] = JsonSerializer.Serialize(Group);
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/user-groups/set", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<CometAPIResponseMessage>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// AdminUserGroupsSet: Update an existing user group or create a new user group
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="GroupID">The user group ID to update or create</param>
+	/// <param name="Group">The user group data</param>
+	public CometAPIResponseMessage AdminUserGroupsSet(string GroupID, UserGroup Group) {
+		var resultTask = AdminUserGroupsSetAsync(GroupID, Group);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
+	/// AdminUserGroupsSetUsersForGroupAsync: Update the users in the specified group
+	/// The provided list of users will be moved into the specified group, and any users
+	/// already in the group who are not in the list of usernames will be removed.
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="GroupID">The user group ID to update</param>
+	/// <param name="Users">An array of usernames.</param>
+	public async Task<CometAPIResponseMessage> AdminUserGroupsSetUsersForGroupAsync(string GroupID, string[] Users) {
+		var data = new Dictionary<string,string>();
+
+		data["GroupID"] = GroupID;
+		data["Users"] = JsonSerializer.Serialize(Users);
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/user-groups/set-users-for-group", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<CometAPIResponseMessage>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// AdminUserGroupsSetUsersForGroup: Update the users in the specified group
+	/// The provided list of users will be moved into the specified group, and any users
+	/// already in the group who are not in the list of usernames will be removed.
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="GroupID">The user group ID to update</param>
+	/// <param name="Users">An array of usernames.</param>
+	public CometAPIResponseMessage AdminUserGroupsSetUsersForGroup(string GroupID, string[] Users) {
+		var resultTask = AdminUserGroupsSetUsersForGroupAsync(GroupID, Users);
 		resultTask.Wait();
 		return resultTask.Result;
 	}
@@ -7924,11 +8239,16 @@ public class CometAPI : IDisposable {
 	/// </summary>
 	/// <param name="StorageProvider">ID for the storage template destination</param>
 	/// <param name="SelfAddress">(Optional) The external URL for this server. Used to resolve conflicts</param>
-	public async Task<RequestStorageVaultResponseMessage> UserWebRequestStorageVaultAsync(string StorageProvider, string SelfAddress = null) {
+	/// <param name="DeviceID">(Optional) The ID of the device to be added as a associated device of the Storage
+	/// Vault</param>
+	public async Task<RequestStorageVaultResponseMessage> UserWebRequestStorageVaultAsync(string StorageProvider, string SelfAddress = null, string DeviceID = null) {
 		var data = new Dictionary<string,string>();
 
 		data["StorageProvider"] = StorageProvider;
 		data["SelfAddress"] = SelfAddress ?? this.ServerURL;
+		if (DeviceID != null) {
+			data["DeviceID"] = DeviceID;
+		}
 
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/user/web/request-storage-vault", data)){
 			response.EnsureSuccessStatusCode();
@@ -7950,8 +8270,10 @@ public class CometAPI : IDisposable {
 	/// </summary>
 	/// <param name="StorageProvider">ID for the storage template destination</param>
 	/// <param name="SelfAddress">(Optional) The external URL for this server. Used to resolve conflicts</param>
-	public RequestStorageVaultResponseMessage UserWebRequestStorageVault(string StorageProvider, string SelfAddress = null) {
-		var resultTask = UserWebRequestStorageVaultAsync(StorageProvider, SelfAddress);
+	/// <param name="DeviceID">(Optional) The ID of the device to be added as a associated device of the Storage
+	/// Vault</param>
+	public RequestStorageVaultResponseMessage UserWebRequestStorageVault(string StorageProvider, string SelfAddress = null, string DeviceID = null) {
+		var resultTask = UserWebRequestStorageVaultAsync(StorageProvider, SelfAddress, DeviceID);
 		resultTask.Wait();
 		return resultTask.Result;
 	}

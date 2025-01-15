@@ -29,6 +29,9 @@ public class UserPolicy {
 	[JsonPropertyName("StorageVaultProviders")]
 	public StorageVaultProviderPolicy StorageVaultProviders { get; set; }
 
+	[JsonPropertyName("DefaultNewStorageVault")]
+	public string DefaultNewStorageVault { get; set; } = string.Empty;
+
 	[JsonPropertyName("PreventNewProtectedItem")]
 	public bool PreventNewProtectedItem { get; set; }
 

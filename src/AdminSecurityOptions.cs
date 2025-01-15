@@ -40,6 +40,9 @@ public class AdminSecurityOptions {
 	[JsonPropertyName("WebAuthnRegistrations")]
 	public List<AdminWebAuthnRegistration> WebAuthnRegistrations { get; set; }
 
+	[JsonPropertyName("RequirePasswordChange")]
+	public bool RequirePasswordChange { get; set; }
+
 	[JsonPropertyName("TOTPKeyEncryptionFormat")]
 	//One of the ENCRYPTIONMETHOD_ constants
 	public long TOTPKeyEncryptionFormat { get; set; }

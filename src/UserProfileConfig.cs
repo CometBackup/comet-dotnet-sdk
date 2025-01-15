@@ -33,12 +33,15 @@ public class UserProfileConfig {
 	//Tenant
 	public string OrganizationID { get; set; } = string.Empty;
 
+	[JsonPropertyName("GroupID")]
+	public string GroupID { get; set; } = string.Empty;
+
 	[JsonPropertyName("Emails")]
 	//A list of email addresses to send reports to.
 	public List<string> Emails { get; set; }
 
 	[JsonPropertyName("OverrideEmailSettings")]
-	//By default, all the email addresses in the Emails field will receieve the policy-default or server-wide-default style
+	//By default, all the email addresses in the Emails field will receive the policy-default or server-wide-default style
 	//of email report. Add an override for a specific email address in here to allow customizing the email report that will
 	//be received.
 	public Dictionary<string, UserCustomEmailSettings> OverrideEmailSettings { get; set; }
@@ -51,6 +54,10 @@ public class UserProfileConfig {
 	//Storage Vaults
 	//The string keys can be any unique key. Using a GUID is recommended, but optional.
 	public Dictionary<string, DestinationConfig> Destinations { get; set; }
+
+	[JsonPropertyName("SupportsDeviceAssociations")]
+	//Leave as true
+	public bool SupportsDeviceAssociations { get; set; }
 
 	[JsonPropertyName("Sources")]
 	//Protected Items
@@ -131,6 +138,7 @@ public class UserProfileConfig {
 	public string PasswordRecovery { get; set; } = string.Empty;
 
 	[JsonPropertyName("AllowPasswordLogin")]
+	//Allow login using the password alone. Set this to false if the password alone should not be sufficient.
 	public bool AllowPasswordLogin { get; set; }
 
 	[JsonPropertyName("AllowPasswordAndTOTPLogin")]
@@ -160,6 +168,9 @@ public class UserProfileConfig {
 	[JsonPropertyName("ServerConfig")]
 	//Additional server-wide settings that are enforced for this user profile
 	public UserServerConfig ServerConfig { get; set; }
+
+	[JsonPropertyName("AutoStorageTemplateGUID")]
+	public string AutoStorageTemplateGUID { get; set; } = string.Empty;
 
 	public UserProfileConfig(){ }
 

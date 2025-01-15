@@ -247,6 +247,9 @@ public class DestinationConfig {
 	//If not empty, an error occured during a retention pass. Describes the error.
 	public string RetentionError { get; set; } = string.Empty;
 
+	[JsonPropertyName("AssociatedDevices")]
+	public List<string> AssociatedDevices { get; set; }
+
 	public DestinationConfig(){ }
 
 	public string ToJson() {
