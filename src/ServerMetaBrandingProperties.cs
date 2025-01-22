@@ -56,6 +56,19 @@ public class ServerMetaBrandingProperties {
 	//If true, this Comet Server currently has no admins or users.
 	public bool ServerIsEmpty { get; set; }
 
+	[JsonPropertyName("CloudStorageName")]
+	public string CloudStorageName { get; set; } = string.Empty;
+
+	[JsonPropertyName("AdminHidePreBuiltClientOption")]
+	//Will hide the "Pre-built software client" option from the server settings. Only properly enforced when custom
+	//branding is enforced via the license.
+	public bool AdminHidePreBuiltClientOption { get; set; }
+
+	[JsonPropertyName("AdminHideBrandedCloudStorage")]
+	//Will hide Comet Storage from everywhere, including the admin view. Only properly enforced when custom branding is
+	//enforced via the license.
+	public bool AdminHideBrandedCloudStorage { get; set; }
+
 	public ServerMetaBrandingProperties(){ }
 
 	public string ToJson() {

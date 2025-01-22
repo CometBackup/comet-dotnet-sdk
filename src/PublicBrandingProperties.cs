@@ -35,6 +35,15 @@ public class PublicBrandingProperties {
 	[JsonPropertyName("HideBackgroundLogo")]
 	public bool HideBackgroundLogo { get; set; }
 
+	[JsonPropertyName("CloudStorageName")]
+	public string CloudStorageName { get; set; } = string.Empty;
+
+	[JsonPropertyName("AdminHidePreBuiltClientOption")]
+	public bool AdminHidePreBuiltClientOption { get; set; }
+
+	[JsonPropertyName("AdminHideBrandedCloudStorage")]
+	public bool AdminHideBrandedCloudStorage { get; set; }
+
 	public PublicBrandingProperties(){ }
 
 	public string ToJson() {

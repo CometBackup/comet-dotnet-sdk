@@ -3,13 +3,13 @@
 
 namespace CometBackup.CometAPI.SDK {
 public static class Def {
-	public const string APPLICATION_VERSION = "24.12.2";
+	public const string APPLICATION_VERSION = "24.12.3";
 
 	public const long APPLICATION_VERSION_MAJOR = 24;
 
 	public const long APPLICATION_VERSION_MINOR = 12;
 
-	public const long APPLICATION_VERSION_REVISION = 2;
+	public const long APPLICATION_VERSION_REVISION = 3;
 
 	/// AutoRetentionLevel: The system will automatically choose how often to run an automatic Retention Pass after each
 	/// backup job.
@@ -249,13 +249,14 @@ public static class Def {
 	/// (like STARTTLS).
 	public const long FTPS_MODE_EXPLICIT = 2;
 
-	/// Back up Hyper-V virtual machines using VSS mode. This includes all previous snapshots.
+	/// HypervMethod: Back up Hyper-V virtual machines using VSS mode. This includes all previous snapshots.
 	public const string HYPERV_METHOD_VSS = "vss";
 
-	/// Back up Hyper-V virtual machines using WMI mode. This includes the latest snapshot data only.
+	/// HypervMethod: Back up Hyper-V virtual machines using WMI mode. This includes the latest snapshot data only.
 	public const string HYPERV_METHOD_WMI_COPY = "copy";
 
-	/// Back up Hyper-V virtual machines using WMI mode with RCT acceleration. This includes the latest snapshot data only.
+	/// HypervMethod: Back up Hyper-V virtual machines using WMI mode with RCT acceleration. This includes the latest
+	/// snapshot data only.
 	public const string HYPERV_METHOD_WMI_CBT = "wmi";
 
 	/// JobClassification: All BackupJobDetail.Classification fields will fall in the 4xxx range.

@@ -35,6 +35,15 @@ public class BrandingProperties {
 	[JsonPropertyName("HideBackgroundLogo")]
 	public bool HideBackgroundLogo { get; set; }
 
+	[JsonPropertyName("CloudStorageName")]
+	public string CloudStorageName { get; set; } = string.Empty;
+
+	[JsonPropertyName("AdminHidePreBuiltClientOption")]
+	public bool AdminHidePreBuiltClientOption { get; set; }
+
+	[JsonPropertyName("AdminHideBrandedCloudStorage")]
+	public bool AdminHideBrandedCloudStorage { get; set; }
+
 	[JsonPropertyName("BuildMode")]
 	//One of the CLIENTBRANDINGBUILD_ constants
 	public long BuildMode { get; set; }
@@ -138,6 +147,9 @@ public class BrandingProperties {
 		TileBackgroundColor = this.TileBackgroundColor,
 		AccountRegisterURL = this.AccountRegisterURL,
 		HideBackgroundLogo = this.HideBackgroundLogo,
+		CloudStorageName = this.CloudStorageName,
+		AdminHidePreBuiltClientOption = this.AdminHidePreBuiltClientOption,
+		AdminHideBrandedCloudStorage = this.AdminHideBrandedCloudStorage,
 	};
 
 	public void SetEmbeddedPublicBrandingProperties(PublicBrandingProperties other){
@@ -149,6 +161,9 @@ public class BrandingProperties {
 		this.TileBackgroundColor = other.TileBackgroundColor;
 		this.AccountRegisterURL = other.AccountRegisterURL;
 		this.HideBackgroundLogo = other.HideBackgroundLogo;
+		this.CloudStorageName = other.CloudStorageName;
+		this.AdminHidePreBuiltClientOption = other.AdminHidePreBuiltClientOption;
+		this.AdminHideBrandedCloudStorage = other.AdminHideBrandedCloudStorage;
 	}
 
 	public PrivateBrandingProperties GetEmbeddedPrivateBrandingProperties() => new PrivateBrandingProperties {

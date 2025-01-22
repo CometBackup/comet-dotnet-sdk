@@ -57,6 +57,15 @@ public class BrandingOptions {
 	[JsonPropertyName("HideBackgroundLogo")]
 	public bool HideBackgroundLogo { get; set; }
 
+	[JsonPropertyName("CloudStorageName")]
+	public string CloudStorageName { get; set; } = string.Empty;
+
+	[JsonPropertyName("AdminHidePreBuiltClientOption")]
+	public bool AdminHidePreBuiltClientOption { get; set; }
+
+	[JsonPropertyName("AdminHideBrandedCloudStorage")]
+	public bool AdminHideBrandedCloudStorage { get; set; }
+
 	[JsonPropertyName("BuildMode")]
 	//One of the CLIENTBRANDINGBUILD_ constants
 	public long BuildMode { get; set; }
@@ -180,6 +189,9 @@ public class BrandingOptions {
 		TileBackgroundColor = this.TileBackgroundColor,
 		AccountRegisterURL = this.AccountRegisterURL,
 		HideBackgroundLogo = this.HideBackgroundLogo,
+		CloudStorageName = this.CloudStorageName,
+		AdminHidePreBuiltClientOption = this.AdminHidePreBuiltClientOption,
+		AdminHideBrandedCloudStorage = this.AdminHideBrandedCloudStorage,
 		BuildMode = this.BuildMode,
 		PathIcoFile = this.PathIcoFile,
 		PathIcnsFile = this.PathIcnsFile,
@@ -217,6 +229,9 @@ public class BrandingOptions {
 		this.TileBackgroundColor = other.TileBackgroundColor;
 		this.AccountRegisterURL = other.AccountRegisterURL;
 		this.HideBackgroundLogo = other.HideBackgroundLogo;
+		this.CloudStorageName = other.CloudStorageName;
+		this.AdminHidePreBuiltClientOption = other.AdminHidePreBuiltClientOption;
+		this.AdminHideBrandedCloudStorage = other.AdminHideBrandedCloudStorage;
 		this.BuildMode = other.BuildMode;
 		this.PathIcoFile = other.PathIcoFile;
 		this.PathIcnsFile = other.PathIcnsFile;
