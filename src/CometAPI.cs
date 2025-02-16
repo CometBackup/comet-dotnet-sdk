@@ -1731,6 +1731,45 @@ public class CometAPI : IDisposable {
 	}
 
 	/// <summary>
+	/// AdminDispatcherBrowseVirtualMachinesAsync: Browse virtual machines in target snapshot
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="DestinationID">The Storage Vault GUID</param>
+	/// <param name="SnapshotID">Snapshot to search</param>
+	public async Task<DispatcherListSnapshotVirtualMachinesResponse> AdminDispatcherBrowseVirtualMachinesAsync(string TargetID, string DestinationID, string SnapshotID) {
+		var data = new Dictionary<string,string>();
+
+		data["TargetID"] = TargetID;
+		data["DestinationID"] = DestinationID;
+		data["SnapshotID"] = SnapshotID;
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/dispatcher/browse-virtual-machines", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<DispatcherListSnapshotVirtualMachinesResponse>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// AdminDispatcherBrowseVirtualMachines: Browse virtual machines in target snapshot
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="DestinationID">The Storage Vault GUID</param>
+	/// <param name="SnapshotID">Snapshot to search</param>
+	public DispatcherListSnapshotVirtualMachinesResponse AdminDispatcherBrowseVirtualMachines(string TargetID, string DestinationID, string SnapshotID) {
+		var resultTask = AdminDispatcherBrowseVirtualMachinesAsync(TargetID, DestinationID, SnapshotID);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
 	/// AdminDispatcherDeepverifyStorageVaultAsync: Instruct a live connected device to deeply verify Storage Vault content
 	/// This command is understood by Comet Backup 18.8.2 and newer.
 	/// 
@@ -2556,6 +2595,175 @@ public class CometAPI : IDisposable {
 	/// <param name="Credentials">The VMware vSphere connection settings</param>
 	public BrowseVMwareResponse AdminDispatcherRequestBrowseVmware(string TargetID, VMwareConnection Credentials) {
 		var resultTask = AdminDispatcherRequestBrowseVmwareAsync(TargetID, Credentials);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
+	/// AdminDispatcherRequestBrowseVmwareDatacentersAsync: Request a list of VMware vSphere Datacenters on a VMware
+	/// vSphere connection
+	/// The remote device must have given consent for an MSP to browse their files.
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The VMware vSphere connection settings</param>
+	public async Task<BrowseVMwareDatacentersResponse> AdminDispatcherRequestBrowseVmwareDatacentersAsync(string TargetID, VMwareConnection Credentials) {
+		var data = new Dictionary<string,string>();
+
+		data["TargetID"] = TargetID;
+		data["Credentials"] = JsonSerializer.Serialize(Credentials);
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/dispatcher/request-browse-vmware/datacenters", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<BrowseVMwareDatacentersResponse>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// AdminDispatcherRequestBrowseVmwareDatacenters: Request a list of VMware vSphere Datacenters on a VMware vSphere
+	/// connection
+	/// The remote device must have given consent for an MSP to browse their files.
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The VMware vSphere connection settings</param>
+	public BrowseVMwareDatacentersResponse AdminDispatcherRequestBrowseVmwareDatacenters(string TargetID, VMwareConnection Credentials) {
+		var resultTask = AdminDispatcherRequestBrowseVmwareDatacentersAsync(TargetID, Credentials);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
+	/// AdminDispatcherRequestBrowseVmwareDatastoresAsync: Request a list of VMware vSphere Datastores on a VMware vSphere
+	/// connection, for a specified VMware Datacenter
+	/// The remote device must have given consent for an MSP to browse their files.
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The VMware vSphere connection settings</param>
+	/// <param name="Filter">The name of the target VMware Datacenter</param>
+	public async Task<BrowseVMwareDatastoresResponse> AdminDispatcherRequestBrowseVmwareDatastoresAsync(string TargetID, VMwareConnection Credentials, string Filter) {
+		var data = new Dictionary<string,string>();
+
+		data["TargetID"] = TargetID;
+		data["Credentials"] = JsonSerializer.Serialize(Credentials);
+		data["Filter"] = Filter;
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/dispatcher/request-browse-vmware/datastores", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<BrowseVMwareDatastoresResponse>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// AdminDispatcherRequestBrowseVmwareDatastores: Request a list of VMware vSphere Datastores on a VMware vSphere
+	/// connection, for a specified VMware Datacenter
+	/// The remote device must have given consent for an MSP to browse their files.
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The VMware vSphere connection settings</param>
+	/// <param name="Filter">The name of the target VMware Datacenter</param>
+	public BrowseVMwareDatastoresResponse AdminDispatcherRequestBrowseVmwareDatastores(string TargetID, VMwareConnection Credentials, string Filter) {
+		var resultTask = AdminDispatcherRequestBrowseVmwareDatastoresAsync(TargetID, Credentials, Filter);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
+	/// AdminDispatcherRequestBrowseVmwareHostsAsync: Request a list of VMware vSphere Hosts on a VMware vSphere
+	/// connection, for a specified VMware Datacenter
+	/// The remote device must have given consent for an MSP to browse their files.
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The VMware vSphere connection settings</param>
+	/// <param name="Filter">The name of the target VMware Datacenter</param>
+	public async Task<BrowseVMwareHostsResponse> AdminDispatcherRequestBrowseVmwareHostsAsync(string TargetID, VMwareConnection Credentials, string Filter) {
+		var data = new Dictionary<string,string>();
+
+		data["TargetID"] = TargetID;
+		data["Credentials"] = JsonSerializer.Serialize(Credentials);
+		data["Filter"] = Filter;
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/dispatcher/request-browse-vmware/hosts", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<BrowseVMwareHostsResponse>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// AdminDispatcherRequestBrowseVmwareHosts: Request a list of VMware vSphere Hosts on a VMware vSphere connection, for
+	/// a specified VMware Datacenter
+	/// The remote device must have given consent for an MSP to browse their files.
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The VMware vSphere connection settings</param>
+	/// <param name="Filter">The name of the target VMware Datacenter</param>
+	public BrowseVMwareHostsResponse AdminDispatcherRequestBrowseVmwareHosts(string TargetID, VMwareConnection Credentials, string Filter) {
+		var resultTask = AdminDispatcherRequestBrowseVmwareHostsAsync(TargetID, Credentials, Filter);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
+	/// AdminDispatcherRequestBrowseVmwareNetworksAsync: Request a list of VMware vSphere Networks on a VMware vSphere
+	/// connection, for a specified VMware Datacenter
+	/// The remote device must have given consent for an MSP to browse their files.
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The VMware vSphere connection settings</param>
+	/// <param name="Filter">The name of the target VMware Datacenter</param>
+	public async Task<BrowseVMwareNetworksResponse> AdminDispatcherRequestBrowseVmwareNetworksAsync(string TargetID, VMwareConnection Credentials, string Filter) {
+		var data = new Dictionary<string,string>();
+
+		data["TargetID"] = TargetID;
+		data["Credentials"] = JsonSerializer.Serialize(Credentials);
+		data["Filter"] = Filter;
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/dispatcher/request-browse-vmware/networks", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<BrowseVMwareNetworksResponse>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// AdminDispatcherRequestBrowseVmwareNetworks: Request a list of VMware vSphere Networks on a VMware vSphere
+	/// connection, for a specified VMware Datacenter
+	/// The remote device must have given consent for an MSP to browse their files.
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The VMware vSphere connection settings</param>
+	/// <param name="Filter">The name of the target VMware Datacenter</param>
+	public BrowseVMwareNetworksResponse AdminDispatcherRequestBrowseVmwareNetworks(string TargetID, VMwareConnection Credentials, string Filter) {
+		var resultTask = AdminDispatcherRequestBrowseVmwareNetworksAsync(TargetID, Credentials, Filter);
 		resultTask.Wait();
 		return resultTask.Result;
 	}
@@ -5626,13 +5834,17 @@ public class CometAPI : IDisposable {
 	/// <param name="Policy">The policy data</param>
 	/// <param name="CheckPolicyHash">(Optional) An atomic verification hash as supplied by the AdminPoliciesGet
 	/// API</param>
-	public async Task<CometAPIResponseMessage> AdminPoliciesSetAsync(string PolicyID, GroupPolicy Policy, string CheckPolicyHash = null) {
+	/// <param name="Options">(Optional) An array of PolicySourceID that will be explicitly deleted.</param>
+	public async Task<CometAPIResponseMessage> AdminPoliciesSetAsync(string PolicyID, GroupPolicy Policy, string CheckPolicyHash = null, PolicyOptions Options = null) {
 		var data = new Dictionary<string,string>();
 
 		data["PolicyID"] = PolicyID;
 		data["Policy"] = JsonSerializer.Serialize(Policy);
 		if (CheckPolicyHash != null) {
 			data["CheckPolicyHash"] = CheckPolicyHash;
+		}
+		if (Options != null) {
+			data["Options"] = JsonSerializer.Serialize(Options);
 		}
 
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/policies/set", data)){
@@ -5655,8 +5867,9 @@ public class CometAPI : IDisposable {
 	/// <param name="Policy">The policy data</param>
 	/// <param name="CheckPolicyHash">(Optional) An atomic verification hash as supplied by the AdminPoliciesGet
 	/// API</param>
-	public CometAPIResponseMessage AdminPoliciesSet(string PolicyID, GroupPolicy Policy, string CheckPolicyHash = null) {
-		var resultTask = AdminPoliciesSetAsync(PolicyID, Policy, CheckPolicyHash);
+	/// <param name="Options">(Optional) An array of PolicySourceID that will be explicitly deleted.</param>
+	public CometAPIResponseMessage AdminPoliciesSet(string PolicyID, GroupPolicy Policy, string CheckPolicyHash = null, PolicyOptions Options = null) {
+		var resultTask = AdminPoliciesSetAsync(PolicyID, Policy, CheckPolicyHash, Options);
 		resultTask.Wait();
 		return resultTask.Result;
 	}
@@ -5983,12 +6196,16 @@ public class CometAPI : IDisposable {
 	/// <param name="TargetUser">Selected account username</param>
 	/// <param name="ProfileData">Modified user profile</param>
 	/// <param name="RequireHash">Previous hash parameter</param>
-	public async Task<CometAPIResponseMessage> AdminSetUserProfileHashAsync(string TargetUser, UserProfileConfig ProfileData, string RequireHash) {
+	/// <param name="AdminOptions">(Optional) Instructions for modifying user profile</param>
+	public async Task<CometAPIResponseMessage> AdminSetUserProfileHashAsync(string TargetUser, UserProfileConfig ProfileData, string RequireHash, AdminOptions AdminOptions = null) {
 		var data = new Dictionary<string,string>();
 
 		data["TargetUser"] = TargetUser;
 		data["ProfileData"] = JsonSerializer.Serialize(ProfileData);
 		data["RequireHash"] = RequireHash;
+		if (AdminOptions != null) {
+			data["AdminOptions"] = JsonSerializer.Serialize(AdminOptions);
+		}
 
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/set-user-profile-hash", data)){
 			response.EnsureSuccessStatusCode();
@@ -6011,8 +6228,9 @@ public class CometAPI : IDisposable {
 	/// <param name="TargetUser">Selected account username</param>
 	/// <param name="ProfileData">Modified user profile</param>
 	/// <param name="RequireHash">Previous hash parameter</param>
-	public CometAPIResponseMessage AdminSetUserProfileHash(string TargetUser, UserProfileConfig ProfileData, string RequireHash) {
-		var resultTask = AdminSetUserProfileHashAsync(TargetUser, ProfileData, RequireHash);
+	/// <param name="AdminOptions">(Optional) Instructions for modifying user profile</param>
+	public CometAPIResponseMessage AdminSetUserProfileHash(string TargetUser, UserProfileConfig ProfileData, string RequireHash, AdminOptions AdminOptions = null) {
+		var resultTask = AdminSetUserProfileHashAsync(TargetUser, ProfileData, RequireHash, AdminOptions);
 		resultTask.Wait();
 		return resultTask.Result;
 	}
@@ -6807,6 +7025,47 @@ public class CometAPI : IDisposable {
 	}
 
 	/// <summary>
+	/// UserWebDispatcherBrowseVirtualMachinesAsync: Browse virtual machines in target snapshot
+	/// 
+	/// You must supply user authentication credentials to use this API, and the user account must be authorized for web
+	/// access.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="DestinationID">The Storage Vault GUID</param>
+	/// <param name="SnapshotID">Snapshot to search</param>
+	public async Task<DispatcherListSnapshotVirtualMachinesResponse> UserWebDispatcherBrowseVirtualMachinesAsync(string TargetID, string DestinationID, string SnapshotID) {
+		var data = new Dictionary<string,string>();
+
+		data["TargetID"] = TargetID;
+		data["DestinationID"] = DestinationID;
+		data["SnapshotID"] = SnapshotID;
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/user/web/dispatcher/browse-virtual-machines", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<DispatcherListSnapshotVirtualMachinesResponse>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// UserWebDispatcherBrowseVirtualMachines: Browse virtual machines in target snapshot
+	/// 
+	/// You must supply user authentication credentials to use this API, and the user account must be authorized for web
+	/// access.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="DestinationID">The Storage Vault GUID</param>
+	/// <param name="SnapshotID">Snapshot to search</param>
+	public DispatcherListSnapshotVirtualMachinesResponse UserWebDispatcherBrowseVirtualMachines(string TargetID, string DestinationID, string SnapshotID) {
+		var resultTask = UserWebDispatcherBrowseVirtualMachinesAsync(TargetID, DestinationID, SnapshotID);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
 	/// UserWebDispatcherDeleteSnapshotAsync: Instruct a live connected device to delete a stored snapshot
 	/// 
 	/// You must supply user authentication credentials to use this API, and the user account must be authorized for web
@@ -7343,6 +7602,183 @@ public class CometAPI : IDisposable {
 	/// <param name="Credentials">The VMWare ESXi connection settings</param>
 	public BrowseVMwareResponse UserWebDispatcherRequestBrowseVmware(string TargetID, VMwareConnection Credentials) {
 		var resultTask = UserWebDispatcherRequestBrowseVmwareAsync(TargetID, Credentials);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
+	/// UserWebDispatcherRequestBrowseVmwareDatacentersAsync: Request a list of VMware vSphere Datacenters on a VMware
+	/// vSphere connection
+	/// The remote device must have given consent for an MSP to browse their files.
+	/// 
+	/// You must supply user authentication credentials to use this API, and the user account must be authorized for web
+	/// access.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The VMware vSphere connection settings</param>
+	public async Task<BrowseVMwareDatacentersResponse> UserWebDispatcherRequestBrowseVmwareDatacentersAsync(string TargetID, VMwareConnection Credentials) {
+		var data = new Dictionary<string,string>();
+
+		data["TargetID"] = TargetID;
+		data["Credentials"] = JsonSerializer.Serialize(Credentials);
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/user/web/dispatcher/request-browse-vmware/datacenters", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<BrowseVMwareDatacentersResponse>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// UserWebDispatcherRequestBrowseVmwareDatacenters: Request a list of VMware vSphere Datacenters on a VMware vSphere
+	/// connection
+	/// The remote device must have given consent for an MSP to browse their files.
+	/// 
+	/// You must supply user authentication credentials to use this API, and the user account must be authorized for web
+	/// access.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The VMware vSphere connection settings</param>
+	public BrowseVMwareDatacentersResponse UserWebDispatcherRequestBrowseVmwareDatacenters(string TargetID, VMwareConnection Credentials) {
+		var resultTask = UserWebDispatcherRequestBrowseVmwareDatacentersAsync(TargetID, Credentials);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
+	/// UserWebDispatcherRequestBrowseVmwareDatastoresAsync: Request a list of VMware vSphere Datastores on a VMware
+	/// vSphere connection, for a specified VMware Datacenter
+	/// The remote device must have given consent for an MSP to browse their files.
+	/// 
+	/// You must supply user authentication credentials to use this API, and the user account must be authorized for web
+	/// access.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The VMware vSphere connection settings</param>
+	/// <param name="Filter">The name of the target VMware Datacenter</param>
+	public async Task<BrowseVMwareDatastoresResponse> UserWebDispatcherRequestBrowseVmwareDatastoresAsync(string TargetID, VMwareConnection Credentials, string Filter) {
+		var data = new Dictionary<string,string>();
+
+		data["TargetID"] = TargetID;
+		data["Credentials"] = JsonSerializer.Serialize(Credentials);
+		data["Filter"] = Filter;
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/user/web/dispatcher/request-browse-vmware/datastores", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<BrowseVMwareDatastoresResponse>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// UserWebDispatcherRequestBrowseVmwareDatastores: Request a list of VMware vSphere Datastores on a VMware vSphere
+	/// connection, for a specified VMware Datacenter
+	/// The remote device must have given consent for an MSP to browse their files.
+	/// 
+	/// You must supply user authentication credentials to use this API, and the user account must be authorized for web
+	/// access.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The VMware vSphere connection settings</param>
+	/// <param name="Filter">The name of the target VMware Datacenter</param>
+	public BrowseVMwareDatastoresResponse UserWebDispatcherRequestBrowseVmwareDatastores(string TargetID, VMwareConnection Credentials, string Filter) {
+		var resultTask = UserWebDispatcherRequestBrowseVmwareDatastoresAsync(TargetID, Credentials, Filter);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
+	/// UserWebDispatcherRequestBrowseVmwareHostsAsync: Request a list of VMware vSphere Hosts on a VMware vSphere
+	/// connection, for a specified VMware Datacenter
+	/// The remote device must have given consent for an MSP to browse their files.
+	/// 
+	/// You must supply user authentication credentials to use this API, and the user account must be authorized for web
+	/// access.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The VMware vSphere connection settings</param>
+	/// <param name="Filter">The name of the target VMware Datacenter</param>
+	public async Task<BrowseVMwareHostsResponse> UserWebDispatcherRequestBrowseVmwareHostsAsync(string TargetID, VMwareConnection Credentials, string Filter) {
+		var data = new Dictionary<string,string>();
+
+		data["TargetID"] = TargetID;
+		data["Credentials"] = JsonSerializer.Serialize(Credentials);
+		data["Filter"] = Filter;
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/user/web/dispatcher/request-browse-vmware/hosts", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<BrowseVMwareHostsResponse>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// UserWebDispatcherRequestBrowseVmwareHosts: Request a list of VMware vSphere Hosts on a VMware vSphere connection,
+	/// for a specified VMware Datacenter
+	/// The remote device must have given consent for an MSP to browse their files.
+	/// 
+	/// You must supply user authentication credentials to use this API, and the user account must be authorized for web
+	/// access.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The VMware vSphere connection settings</param>
+	/// <param name="Filter">The name of the target VMware Datacenter</param>
+	public BrowseVMwareHostsResponse UserWebDispatcherRequestBrowseVmwareHosts(string TargetID, VMwareConnection Credentials, string Filter) {
+		var resultTask = UserWebDispatcherRequestBrowseVmwareHostsAsync(TargetID, Credentials, Filter);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
+	/// UserWebDispatcherRequestBrowseVmwareNetworksAsync: Request a list of VMware vSphere Networks on a VMware vSphere
+	/// connection, for a specified VMware Datacenter
+	/// The remote device must have given consent for an MSP to browse their files.
+	/// 
+	/// You must supply user authentication credentials to use this API, and the user account must be authorized for web
+	/// access.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The VMware vSphere connection settings</param>
+	/// <param name="Filter">The name of the target VMware Datacenter</param>
+	public async Task<BrowseVMwareNetworksResponse> UserWebDispatcherRequestBrowseVmwareNetworksAsync(string TargetID, VMwareConnection Credentials, string Filter) {
+		var data = new Dictionary<string,string>();
+
+		data["TargetID"] = TargetID;
+		data["Credentials"] = JsonSerializer.Serialize(Credentials);
+		data["Filter"] = Filter;
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/user/web/dispatcher/request-browse-vmware/networks", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<BrowseVMwareNetworksResponse>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// UserWebDispatcherRequestBrowseVmwareNetworks: Request a list of VMware vSphere Networks on a VMware vSphere
+	/// connection, for a specified VMware Datacenter
+	/// The remote device must have given consent for an MSP to browse their files.
+	/// 
+	/// You must supply user authentication credentials to use this API, and the user account must be authorized for web
+	/// access.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The VMware vSphere connection settings</param>
+	/// <param name="Filter">The name of the target VMware Datacenter</param>
+	public BrowseVMwareNetworksResponse UserWebDispatcherRequestBrowseVmwareNetworks(string TargetID, VMwareConnection Credentials, string Filter) {
+		var resultTask = UserWebDispatcherRequestBrowseVmwareNetworksAsync(TargetID, Credentials, Filter);
 		resultTask.Wait();
 		return resultTask.Result;
 	}

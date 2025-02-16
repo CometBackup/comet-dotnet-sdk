@@ -103,6 +103,14 @@ public class RestoreJobAdvancedOptions {
 	//For RESTORETYPE_MSSQL.
 	public MSSQLLoginArgs MsSqlConnection { get; set; }
 
+	[JsonPropertyName("VMwareConnection")]
+	//For RESTORETYPE_VMHOST
+	public VMwareRestoreTargetOptions VMwareConnection { get; set; }
+
+	[JsonPropertyName("HyperVConnection")]
+	//For RESTORETYPE_VMHOST
+	public HyperVRestoreTargetOptions HyperVConnection { get; set; }
+
 	public RestoreJobAdvancedOptions(){ }
 
 	public string ToJson() {

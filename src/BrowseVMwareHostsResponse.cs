@@ -7,10 +7,10 @@ using System.Text.Json.Serialization;
 
 namespace CometBackup.CometAPI.SDK {
 /// <summary>
-/// Class <c>BrowseVMwareResponse</c> BrowseVMwareResponse contains a list of Virtual Machines when remotely browsing a
-/// VMware vSphere connection.
+/// Class <c>BrowseVMwareHostsResponse</c> BrowseVMwareHostsResponse contains a list of VMware Hosts for a specific
+/// VMware Datacenter, when remotely browsing a VMware vSphere connection.
 /// </summary>
-public class BrowseVMwareResponse {
+public class BrowseVMwareHostsResponse {
 
 	[JsonPropertyName("Status")]
 	//If the operation was successful, the status will be in the 200-299 range.
@@ -19,17 +19,17 @@ public class BrowseVMwareResponse {
 	[JsonPropertyName("Message")]
 	public string Message { get; set; } = string.Empty;
 
-	[JsonPropertyName("VirtualMachines")]
-	public List<VMwareMachineInfo> VirtualMachines { get; set; }
+	[JsonPropertyName("Hosts")]
+	public List<VMwareHostInfo> Hosts { get; set; }
 
-	public BrowseVMwareResponse(){ }
+	public BrowseVMwareHostsResponse(){ }
 
 	public string ToJson() {
 		return JsonSerializer.Serialize(this);
 	}
 
-	static public BrowseVMwareResponse FromJson(string jsStr) {
-		return JsonSerializer.Deserialize<BrowseVMwareResponse>(jsStr);
+	static public BrowseVMwareHostsResponse FromJson(string jsStr) {
+		return JsonSerializer.Deserialize<BrowseVMwareHostsResponse>(jsStr);
 	}
 
 	public CometAPIResponseMessage GetEmbeddedCometAPIResponseMessage() => new CometAPIResponseMessage {

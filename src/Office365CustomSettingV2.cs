@@ -13,20 +13,35 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 public class Office365CustomSettingV2 {
 
+	[Obsolete("Deprecated since Comet version 24.12.2")]
+
 	[JsonPropertyName("Organization")]
-	//If true, then backup the entire Office 365 Tenant except the selected members. If false, backup the selected members
-	//only.
+	//If true, then backup everything except the selected users (group members are still included)
 	public bool Organization { get; set; }
 
+	[JsonPropertyName("FilterMode")]
+	//If true, exclude all filtered IDs and Members. Backup everything else
+	public bool FilterMode { get; set; }
+
 	[JsonPropertyName("BackupOptions")]
-	//Key can be the ID of user, group or SharePoint
-	//Value is a bitset of the SERVICE_ constants, to select which services to back up for this member.
+	//Key is the ID of User, Group, or Site
+	//Value is a bitset of the SERVICE_ constants, to select which services to back up for members
 	public Dictionary<string, long> BackupOptions { get; set; }
 
 	[JsonPropertyName("MemberBackupOptions")]
-	//Key must be a group ID
-	//Value is a bitset of the SERVICE_ constants, to select which services to back up for this member.
+	//Key is the ID of a Group or Team Site
+	//Value is a bitset of the SERVICE_ constants, to select which services to back up for members
 	public Dictionary<string, long> MemberBackupOptions { get; set; }
+
+	[JsonPropertyName("FilterOptions")]
+	//Key is the ID of a User, Group, or Site
+	//Value is a bitset of the SERVICE_ constants, to select which services to back up for members
+	public Dictionary<string, long> FilterOptions { get; set; }
+
+	[JsonPropertyName("FilterMemberOptions")]
+	//Key is the ID of a Group or Team Site
+	//Value is a bitset of the SERVICE_ constants, to select which services to back up for members
+	public Dictionary<string, long> FilterMemberOptions { get; set; }
 
 	public Office365CustomSettingV2(){ }
 

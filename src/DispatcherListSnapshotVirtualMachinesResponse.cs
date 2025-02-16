@@ -7,10 +7,10 @@ using System.Text.Json.Serialization;
 
 namespace CometBackup.CometAPI.SDK {
 /// <summary>
-/// Class <c>BrowseVMwareResponse</c> BrowseVMwareResponse contains a list of Virtual Machines when remotely browsing a
-/// VMware vSphere connection.
+/// Class <c>DispatcherListSnapshotVirtualMachinesResponse</c>
+/// Since Version : 24.12.x
 /// </summary>
-public class BrowseVMwareResponse {
+public class DispatcherListSnapshotVirtualMachinesResponse {
 
 	[JsonPropertyName("Status")]
 	//If the operation was successful, the status will be in the 200-299 range.
@@ -19,17 +19,17 @@ public class BrowseVMwareResponse {
 	[JsonPropertyName("Message")]
 	public string Message { get; set; } = string.Empty;
 
-	[JsonPropertyName("VirtualMachines")]
-	public List<VMwareMachineInfo> VirtualMachines { get; set; }
+	[JsonPropertyName("VMs")]
+	public List<VMInfo> VMs { get; set; }
 
-	public BrowseVMwareResponse(){ }
+	public DispatcherListSnapshotVirtualMachinesResponse(){ }
 
 	public string ToJson() {
 		return JsonSerializer.Serialize(this);
 	}
 
-	static public BrowseVMwareResponse FromJson(string jsStr) {
-		return JsonSerializer.Deserialize<BrowseVMwareResponse>(jsStr);
+	static public DispatcherListSnapshotVirtualMachinesResponse FromJson(string jsStr) {
+		return JsonSerializer.Deserialize<DispatcherListSnapshotVirtualMachinesResponse>(jsStr);
 	}
 
 	public CometAPIResponseMessage GetEmbeddedCometAPIResponseMessage() => new CometAPIResponseMessage {
@@ -40,6 +40,14 @@ public class BrowseVMwareResponse {
 	public void SetEmbeddedCometAPIResponseMessage(CometAPIResponseMessage other){
 		this.Status = other.Status;
 		this.Message = other.Message;
+	}
+
+	public VMInfoList GetEmbeddedVMInfoList() => new VMInfoList {
+		VMs = this.VMs,
+	};
+
+	public void SetEmbeddedVMInfoList(VMInfoList other){
+		this.VMs = other.VMs;
 	}
 
 }

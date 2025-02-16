@@ -23,6 +23,9 @@ public class Office365MixedVirtualAccount {
 	[JsonPropertyName("EnabledServiceOption")]
 	public long EnabledServiceOption { get; set; }
 
+	[JsonPropertyName("hasLicense")]
+	public bool HasLicense { get; set; }
+
 	[JsonPropertyName("id")]
 	public string ID { get; set; } = string.Empty;
 
@@ -55,9 +58,6 @@ public class Office365MixedVirtualAccount {
 
 	[JsonPropertyName("MemberServiceOptions")]
 	public long MemberServiceOptions { get; set; }
-
-	[JsonPropertyName("hasLicense")]
-	public bool HasLicense { get; set; }
 
 	public Office365MixedVirtualAccount(){ }
 

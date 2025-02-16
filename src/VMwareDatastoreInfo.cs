@@ -7,21 +7,21 @@ using System.Text.Json.Serialization;
 
 namespace CometBackup.CometAPI.SDK {
 /// <summary>
-/// Class <c>VMwareMachineInfo</c> VMwareMachineInfo describes a single VMware virtual machine.
+/// Class <c>VMwareDatastoreInfo</c> VMwareDatastoreInfo describes a single VMware datastore within a VMware datacenter.
 /// </summary>
-public class VMwareMachineInfo {
+public class VMwareDatastoreInfo {
 
 	[JsonPropertyName("Name")]
 	public string Name { get; set; } = string.Empty;
 
-	public VMwareMachineInfo(){ }
+	public VMwareDatastoreInfo(){ }
 
 	public string ToJson() {
 		return JsonSerializer.Serialize(this);
 	}
 
-	static public VMwareMachineInfo FromJson(string jsStr) {
-		return JsonSerializer.Deserialize<VMwareMachineInfo>(jsStr);
+	static public VMwareDatastoreInfo FromJson(string jsStr) {
+		return JsonSerializer.Deserialize<VMwareDatastoreInfo>(jsStr);
 	}
 
 }

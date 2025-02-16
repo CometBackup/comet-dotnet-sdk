@@ -17,6 +17,21 @@ public class HyperVMachineInfo {
 	[JsonPropertyName("Name")]
 	public string DisplayName { get; set; } = string.Empty;
 
+	[JsonPropertyName("MemoryLimitMB")]
+	public long MemoryLimitMB { get; set; }
+
+	[JsonPropertyName("CPUCores")]
+	public long CPUCores { get; set; }
+
+	[JsonPropertyName("HardDrives")]
+	public List<string> HardDrives { get; set; }
+
+	[JsonPropertyName("Generation")]
+	public long Generation { get; set; }
+
+	[JsonPropertyName("ConfigFilePath")]
+	public string ConfigFilePath { get; set; } = string.Empty;
+
 	public HyperVMachineInfo(){ }
 
 	public string ToJson() {
