@@ -32,6 +32,9 @@ public class RetentionRange {
 	[JsonPropertyName("Months")]
 	public long Months { get; set; }
 
+	[JsonPropertyName("Years")]
+	public long Years { get; set; }
+
 	[JsonPropertyName("WeekOffset")]
 	//0: Sunday, 6: Saturday
 	public long WeekOffset { get; set; }
@@ -42,6 +45,9 @@ public class RetentionRange {
 	//For months that do not have a day equal to the specified offset, no backup will be retained.
 	//For example, if the offset is set to 30, no backup will be kept for February.
 	public long MonthOffset { get; set; }
+
+	[JsonPropertyName("YearOffset")]
+	public long YearOffset { get; set; }
 
 	public RetentionRange(){ }
 

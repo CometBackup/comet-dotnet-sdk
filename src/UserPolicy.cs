@@ -128,6 +128,11 @@ public class UserPolicy {
 	[JsonPropertyName("RandomDelaySecs")]
 	public ulong RandomDelaySecs { get; set; }
 
+	[JsonPropertyName("RotateStorageVaultKeysHours")]
+	//Rotate access keys of a conflicting jobs Storage Vault, if no update from the conflicting job for X hours. If value
+	//is 0, ROTATE_STORAGE_VAULT_KEYS_DEFAULT is used.
+	public long RotateStorageVaultKeysHours { get; set; }
+
 	public UserPolicy(){ }
 
 	public string ToJson() {

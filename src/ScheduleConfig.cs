@@ -38,6 +38,12 @@ public class ScheduleConfig {
 	[JsonPropertyName("RandomDelaySecs")]
 	public ulong RandomDelaySecs { get; set; }
 
+	[JsonPropertyName("SelectedMonth")]
+	public ulong SelectedMonth { get; set; }
+
+	[JsonPropertyName("SelectedDay")]
+	public ulong SelectedDay { get; set; }
+
 	public ScheduleConfig(){ }
 
 	public string ToJson() {

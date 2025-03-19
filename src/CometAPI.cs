@@ -3437,11 +3437,15 @@ public class CometAPI : IDisposable {
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Destination">The Storage Vault GUID</param>
-	public async Task<CometAPIResponseMessage> AdminDispatcherUnlockAsync(string TargetID, string Destination) {
+	/// <param name="AllowUnsafe">(Optional) Allow legacy Storage Vault unlocking, which is unsafe in some cases.</param>
+	public async Task<CometAPIResponseMessage> AdminDispatcherUnlockAsync(string TargetID, string Destination, Nullable<bool> AllowUnsafe = null) {
 		var data = new Dictionary<string,string>();
 
 		data["TargetID"] = TargetID;
 		data["Destination"] = Destination;
+		if (AllowUnsafe != null) {
+			data["AllowUnsafe"] = JsonSerializer.Serialize(AllowUnsafe);
+		}
 
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/dispatcher/unlock", data)){
 			response.EnsureSuccessStatusCode();
@@ -3461,8 +3465,9 @@ public class CometAPI : IDisposable {
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Destination">The Storage Vault GUID</param>
-	public CometAPIResponseMessage AdminDispatcherUnlock(string TargetID, string Destination) {
-		var resultTask = AdminDispatcherUnlockAsync(TargetID, Destination);
+	/// <param name="AllowUnsafe">(Optional) Allow legacy Storage Vault unlocking, which is unsafe in some cases.</param>
+	public CometAPIResponseMessage AdminDispatcherUnlock(string TargetID, string Destination, Nullable<bool> AllowUnsafe = null) {
+		var resultTask = AdminDispatcherUnlockAsync(TargetID, Destination, AllowUnsafe);
 		resultTask.Wait();
 		return resultTask.Result;
 	}

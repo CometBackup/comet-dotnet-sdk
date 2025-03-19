@@ -3,13 +3,13 @@
 
 namespace CometBackup.CometAPI.SDK {
 public static class Def {
-	public const string APPLICATION_VERSION = "24.12.5";
+	public const string APPLICATION_VERSION = "25.3.1";
 
-	public const long APPLICATION_VERSION_MAJOR = 24;
+	public const long APPLICATION_VERSION_MAJOR = 25;
 
-	public const long APPLICATION_VERSION_MINOR = 12;
+	public const long APPLICATION_VERSION_MINOR = 3;
 
-	public const long APPLICATION_VERSION_REVISION = 5;
+	public const long APPLICATION_VERSION_REVISION = 1;
 
 	/// AutoRetentionLevel: The system will automatically choose how often to run an automatic Retention Pass after each
 	/// backup job.
@@ -630,7 +630,7 @@ public static class Def {
 	/// RetentionRangeType: Uses Timestamp
 	public const long RETENTIONRANGE_NEWER_THAN_X = 901;
 
-	/// RetentionRangeType: Uses Days, Weeks, Months
+	/// RetentionRangeType: Uses Days, Weeks, Months, Years
 	public const long RETENTIONRANGE_JOBS_SINCE = 902;
 
 	/// RetentionRangeType: Uses Days
@@ -654,10 +654,18 @@ public static class Def {
 	/// RetentionRangeType: Uses Jobs
 	public const long RETENTIONRANGE_LAST_X_BACKUPS_ONE_FOR_EACH_MONTH = 909;
 
+	/// RetentionRangeType: Uses Jobs
+	public const long RETENTIONRANGE_LAST_X_BACKUPS_ONE_FOR_EACH_YEAR = 910;
+
+	/// RetentionRangeType: Uses Years, YearOffset
+	public const long RETENTIONRANGE_FIRST_JOB_FOR_LAST_X_YEARS = 911;
+
 	/// RetentionRangeType
-	public const long RETENTIONRANGE__HIGHEST = 909;
+	public const long RETENTIONRANGE__HIGHEST = 911;
 
 	public const long RETENTIONRANGE_MAXINT = 1125899906842624;
+
+	public const long ROTATE_STORAGE_VAULT_KEYS_DEFAULT = 48;
 
 	public const ulong SCHEDULE_FREQUENCY_LOWEST = 8010;
 
@@ -679,7 +687,10 @@ public static class Def {
 	/// SecondsPast is the number of seconds per period. Offset: Shunt seconds after unix epoch
 	public const ulong SCHEDULE_FREQUENCY_PERIODIC = 8015;
 
-	public const ulong SCHEDULE_FREQUENCY_HIGHEST = 8015;
+	/// SecondsPast is the number of seconds past 00:00 1st, in the device's local timezone.
+	public const ulong SCHEDULE_FREQUENCY_YEARLY = 8016;
+
+	public const ulong SCHEDULE_FREQUENCY_HIGHEST = 8016;
 
 	/// Maximum random delay (5 hours)
 	public const long SCHEDULE_MAX_RANDOM_DELAY_SECS = 18000;
@@ -1032,6 +1043,9 @@ public static class Def {
 
 	/// StoredObjectType
 	public const string STOREDOBJECTTYPE_VMDK_SYMLINK = "vmdksymlink";
+
+	/// StoredObjectType
+	public const string STOREDOBJECTTYPE_VMDK_WINDEDUP = "vmdkwindedup";
 
 	/// StoredObjectType
 	public const string STOREDOBJECTTYPE_VIRTUALIMAGE_DISK = "virtualimagedisk";

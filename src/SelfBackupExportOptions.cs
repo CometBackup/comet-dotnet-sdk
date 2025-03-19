@@ -26,8 +26,8 @@ public class SelfBackupExportOptions {
 	public long Compression { get; set; }
 
 	[JsonPropertyName("ExcludeJobsDB")]
-	//The jobs database is often the largest component of the Server Self-Backup archive. By excluding it, you could run
-	//the Server Self-Backup more often.
+	//The jobs database is often the largest component of the System Self-Backup archive. By excluding it, you could run
+	//the System Self-Backup more often.
 	public bool ExcludeJobsDB { get; set; }
 
 	[JsonPropertyName("IncludeServerLogs")]

@@ -18,15 +18,15 @@ public class ExternalAuthenticationSource {
 	public string Description { get; set; } = string.Empty;
 
 	[JsonPropertyName("RemoteAddress")]
-	//For use with Comet Server (Storage Role / Auth Role)
+	//For use with Comet Server (Storage Gateway / Management Console)
 	public string RemoteAddress { get; set; } = string.Empty;
 
 	[JsonPropertyName("Username")]
-	//For use with Comet Server (Storage Role / Auth Role)
+	//For use with Comet Server (Storage Gateway / Management Console)
 	public string Username { get; set; } = string.Empty;
 
 	[JsonPropertyName("Password")]
-	//For use with Comet Server (Storage Role / Auth Role)
+	//For use with Comet Server (Storage Gateway / Management Console)
 	public string Password { get; set; } = string.Empty;
 
 	[JsonPropertyName("LDAP")]
