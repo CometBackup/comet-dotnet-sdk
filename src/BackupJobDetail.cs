@@ -97,6 +97,10 @@ public class BackupJobDetail {
 	//For Office 365 backup jobs, the number of unlicensed mailboxes.
 	public long TotalUnlicensedMailsCount { get; set; }
 
+	[JsonPropertyName("BillingCrc32")]
+	//The CRC32 of the billing data for this job.
+	public uint BillingCrc32 { get; set; }
+
 	[JsonPropertyName("ConflictingJobID")]
 	//If this field is present, this job did not perform some work because the Storage Vault is currently busy.
 	public string ConflictingJobID { get; set; } = string.Empty;

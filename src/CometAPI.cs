@@ -2562,6 +2562,114 @@ public class CometAPI : IDisposable {
 	}
 
 	/// <summary>
+	/// AdminDispatcherRequestBrowseProxmoxAsync: Request a list of Proxmox virtual machines and containers
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The Proxmox connection settings</param>
+	public async Task<BrowseProxmoxResponse> AdminDispatcherRequestBrowseProxmoxAsync(string TargetID, ProxmoxConnection Credentials) {
+		var data = new Dictionary<string,string>();
+
+		data["TargetID"] = TargetID;
+		data["Credentials"] = JsonSerializer.Serialize(Credentials);
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/dispatcher/request-browse-proxmox", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<BrowseProxmoxResponse>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// AdminDispatcherRequestBrowseProxmox: Request a list of Proxmox virtual machines and containers
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The Proxmox connection settings</param>
+	public BrowseProxmoxResponse AdminDispatcherRequestBrowseProxmox(string TargetID, ProxmoxConnection Credentials) {
+		var resultTask = AdminDispatcherRequestBrowseProxmoxAsync(TargetID, Credentials);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
+	/// AdminDispatcherRequestBrowseProxmoxNodesAsync: Request a list of Proxmox nodes
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The SSH connection settings</param>
+	public async Task<BrowseProxmoxNodesResponse> AdminDispatcherRequestBrowseProxmoxNodesAsync(string TargetID, SSHConnection Credentials) {
+		var data = new Dictionary<string,string>();
+
+		data["TargetID"] = TargetID;
+		data["Credentials"] = JsonSerializer.Serialize(Credentials);
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/dispatcher/request-browse-proxmox/nodes", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<BrowseProxmoxNodesResponse>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// AdminDispatcherRequestBrowseProxmoxNodes: Request a list of Proxmox nodes
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The SSH connection settings</param>
+	public BrowseProxmoxNodesResponse AdminDispatcherRequestBrowseProxmoxNodes(string TargetID, SSHConnection Credentials) {
+		var resultTask = AdminDispatcherRequestBrowseProxmoxNodesAsync(TargetID, Credentials);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
+	/// AdminDispatcherRequestBrowseProxmoxStorageAsync: Request a list of configured Proxmox storage
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The SSH connection settings</param>
+	public async Task<BrowseProxmoxStorageResponse> AdminDispatcherRequestBrowseProxmoxStorageAsync(string TargetID, SSHConnection Credentials) {
+		var data = new Dictionary<string,string>();
+
+		data["TargetID"] = TargetID;
+		data["Credentials"] = JsonSerializer.Serialize(Credentials);
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/dispatcher/request-browse-proxmox/storage", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<BrowseProxmoxStorageResponse>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// AdminDispatcherRequestBrowseProxmoxStorage: Request a list of configured Proxmox storage
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The SSH connection settings</param>
+	public BrowseProxmoxStorageResponse AdminDispatcherRequestBrowseProxmoxStorage(string TargetID, SSHConnection Credentials) {
+		var resultTask = AdminDispatcherRequestBrowseProxmoxStorageAsync(TargetID, Credentials);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
 	/// AdminDispatcherRequestBrowseVmwareAsync: Request a list of VMware vSphere virtual machines
 	/// The remote device must have given consent for an MSP to browse their files.
 	/// 
@@ -5962,7 +6070,8 @@ public class CometAPI : IDisposable {
 	/// <param name="SelfAddress">(Optional) The external URL for this server. Used to resolve conflicts</param>
 	/// <param name="DeviceID">(Optional) The ID of the device to be added as a associated device of the Storage
 	/// Vault</param>
-	public async Task<RequestStorageVaultResponseMessage> AdminRequestStorageVaultAsync(string TargetUser, string StorageProvider, string SelfAddress = null, string DeviceID = null) {
+	/// <param name="ProfileHash">(Optional) The profile hash of the user profile</param>
+	public async Task<RequestStorageVaultResponseMessage> AdminRequestStorageVaultAsync(string TargetUser, string StorageProvider, string SelfAddress = null, string DeviceID = null, string ProfileHash = null) {
 		var data = new Dictionary<string,string>();
 
 		data["TargetUser"] = TargetUser;
@@ -5970,6 +6079,9 @@ public class CometAPI : IDisposable {
 		data["SelfAddress"] = SelfAddress ?? this.ServerURL;
 		if (DeviceID != null) {
 			data["DeviceID"] = DeviceID;
+		}
+		if (ProfileHash != null) {
+			data["ProfileHash"] = ProfileHash;
 		}
 
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/request-storage-vault", data)){
@@ -5995,8 +6107,9 @@ public class CometAPI : IDisposable {
 	/// <param name="SelfAddress">(Optional) The external URL for this server. Used to resolve conflicts</param>
 	/// <param name="DeviceID">(Optional) The ID of the device to be added as a associated device of the Storage
 	/// Vault</param>
-	public RequestStorageVaultResponseMessage AdminRequestStorageVault(string TargetUser, string StorageProvider, string SelfAddress = null, string DeviceID = null) {
-		var resultTask = AdminRequestStorageVaultAsync(TargetUser, StorageProvider, SelfAddress, DeviceID);
+	/// <param name="ProfileHash">(Optional) The profile hash of the user profile</param>
+	public RequestStorageVaultResponseMessage AdminRequestStorageVault(string TargetUser, string StorageProvider, string SelfAddress = null, string DeviceID = null, string ProfileHash = null) {
+		var resultTask = AdminRequestStorageVaultAsync(TargetUser, StorageProvider, SelfAddress, DeviceID, ProfileHash);
 		resultTask.Wait();
 		return resultTask.Result;
 	}
@@ -6202,7 +6315,7 @@ public class CometAPI : IDisposable {
 	/// <param name="ProfileData">Modified user profile</param>
 	/// <param name="RequireHash">Previous hash parameter</param>
 	/// <param name="AdminOptions">(Optional) Instructions for modifying user profile</param>
-	public async Task<CometAPIResponseMessage> AdminSetUserProfileHashAsync(string TargetUser, UserProfileConfig ProfileData, string RequireHash, AdminOptions AdminOptions = null) {
+	public async Task<GetProfileAndHashResponseMessage> AdminSetUserProfileHashAsync(string TargetUser, UserProfileConfig ProfileData, string RequireHash, AdminOptions AdminOptions = null) {
 		var data = new Dictionary<string,string>();
 
 		data["TargetUser"] = TargetUser;
@@ -6215,7 +6328,7 @@ public class CometAPI : IDisposable {
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/set-user-profile-hash", data)){
 			response.EnsureSuccessStatusCode();
 			using(var stream = await response.Content.ReadAsStreamAsync()){
-				return await JsonSerializer.DeserializeAsync<CometAPIResponseMessage>(stream);
+				return await JsonSerializer.DeserializeAsync<GetProfileAndHashResponseMessage>(stream);
 			}
 		}
 	}
@@ -6234,7 +6347,7 @@ public class CometAPI : IDisposable {
 	/// <param name="ProfileData">Modified user profile</param>
 	/// <param name="RequireHash">Previous hash parameter</param>
 	/// <param name="AdminOptions">(Optional) Instructions for modifying user profile</param>
-	public CometAPIResponseMessage AdminSetUserProfileHash(string TargetUser, UserProfileConfig ProfileData, string RequireHash, AdminOptions AdminOptions = null) {
+	public GetProfileAndHashResponseMessage AdminSetUserProfileHash(string TargetUser, UserProfileConfig ProfileData, string RequireHash, AdminOptions AdminOptions = null) {
 		var resultTask = AdminSetUserProfileHashAsync(TargetUser, ProfileData, RequireHash, AdminOptions);
 		resultTask.Wait();
 		return resultTask.Result;
@@ -7574,6 +7687,121 @@ public class CometAPI : IDisposable {
 	}
 
 	/// <summary>
+	/// UserWebDispatcherRequestBrowseProxmoxAsync: Request a list of Proxmox virtual machines and containers
+	/// 
+	/// You must supply user authentication credentials to use this API, and the user account must be authorized for web
+	/// access.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The Proxmox connection settings</param>
+	public async Task<BrowseProxmoxResponse> UserWebDispatcherRequestBrowseProxmoxAsync(string TargetID, ProxmoxConnection Credentials) {
+		var data = new Dictionary<string,string>();
+
+		data["TargetID"] = TargetID;
+		data["Credentials"] = JsonSerializer.Serialize(Credentials);
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/user/web/dispatcher/request-browse-proxmox", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<BrowseProxmoxResponse>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// UserWebDispatcherRequestBrowseProxmox: Request a list of Proxmox virtual machines and containers
+	/// 
+	/// You must supply user authentication credentials to use this API, and the user account must be authorized for web
+	/// access.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">The Proxmox connection settings</param>
+	public BrowseProxmoxResponse UserWebDispatcherRequestBrowseProxmox(string TargetID, ProxmoxConnection Credentials) {
+		var resultTask = UserWebDispatcherRequestBrowseProxmoxAsync(TargetID, Credentials);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
+	/// UserWebDispatcherRequestBrowseProxmoxNodesAsync: Request a list of Proxmox nodes from a Proxmox cluster
+	/// 
+	/// You must supply user authentication credentials to use this API, and the user account must be authorized for web
+	/// access.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">SSH connection settings</param>
+	public async Task<BrowseProxmoxNodesResponse> UserWebDispatcherRequestBrowseProxmoxNodesAsync(string TargetID, SSHConnection Credentials) {
+		var data = new Dictionary<string,string>();
+
+		data["TargetID"] = TargetID;
+		data["Credentials"] = JsonSerializer.Serialize(Credentials);
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/user/web/dispatcher/request-browse-proxmox/nodes", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<BrowseProxmoxNodesResponse>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// UserWebDispatcherRequestBrowseProxmoxNodes: Request a list of Proxmox nodes from a Proxmox cluster
+	/// 
+	/// You must supply user authentication credentials to use this API, and the user account must be authorized for web
+	/// access.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">SSH connection settings</param>
+	public BrowseProxmoxNodesResponse UserWebDispatcherRequestBrowseProxmoxNodes(string TargetID, SSHConnection Credentials) {
+		var resultTask = UserWebDispatcherRequestBrowseProxmoxNodesAsync(TargetID, Credentials);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
+	/// UserWebDispatcherRequestBrowseProxmoxStorageAsync: Request a list of configured Proxmox storage from a Proxmox
+	/// cluster
+	/// 
+	/// You must supply user authentication credentials to use this API, and the user account must be authorized for web
+	/// access.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">SSH connection settings</param>
+	public async Task<BrowseProxmoxStorageResponse> UserWebDispatcherRequestBrowseProxmoxStorageAsync(string TargetID, SSHConnection Credentials) {
+		var data = new Dictionary<string,string>();
+
+		data["TargetID"] = TargetID;
+		data["Credentials"] = JsonSerializer.Serialize(Credentials);
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/user/web/dispatcher/request-browse-proxmox/storage", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<BrowseProxmoxStorageResponse>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// UserWebDispatcherRequestBrowseProxmoxStorage: Request a list of configured Proxmox storage from a Proxmox cluster
+	/// 
+	/// You must supply user authentication credentials to use this API, and the user account must be authorized for web
+	/// access.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="Credentials">SSH connection settings</param>
+	public BrowseProxmoxStorageResponse UserWebDispatcherRequestBrowseProxmoxStorage(string TargetID, SSHConnection Credentials) {
+		var resultTask = UserWebDispatcherRequestBrowseProxmoxStorageAsync(TargetID, Credentials);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
 	/// UserWebDispatcherRequestBrowseVmwareAsync: Request a list of VMware vSphere virtual machines
 	/// 
 	/// You must supply user authentication credentials to use this API, and the user account must be authorized for web
@@ -8493,14 +8721,20 @@ public class CometAPI : IDisposable {
 	}
 
 	/// <summary>
-	/// UserWebGetJobsForCustomSearchAsync: List all backup jobs (Web)
+	/// UserWebGetJobsForCustomSearchAsync: Get jobs (for custom search)
+	/// The jobs are returned in an unspecified order.
 	/// 
 	/// You must supply user authentication credentials to use this API, and the user account must be authorized for web
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	public async Task<BackupJobDetail[]> UserWebGetJobsForCustomSearchAsync() {
-		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/user/web/get-jobs-for-custom-search", null)){
+	/// <param name="Query">(No description available)</param>
+	public async Task<BackupJobDetail[]> UserWebGetJobsForCustomSearchAsync(SearchClause Query) {
+		var data = new Dictionary<string,string>();
+
+		data["Query"] = JsonSerializer.Serialize(Query);
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/user/web/get-jobs-for-custom-search", data)){
 			response.EnsureSuccessStatusCode();
 			using(var stream = await response.Content.ReadAsStreamAsync()){
 				return await JsonSerializer.DeserializeAsync<BackupJobDetail[]>(stream);
@@ -8509,14 +8743,16 @@ public class CometAPI : IDisposable {
 	}
 
 	/// <summary>
-	/// UserWebGetJobsForCustomSearch: List all backup jobs (Web)
+	/// UserWebGetJobsForCustomSearch: Get jobs (for custom search)
+	/// The jobs are returned in an unspecified order.
 	/// 
 	/// You must supply user authentication credentials to use this API, and the user account must be authorized for web
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	public BackupJobDetail[] UserWebGetJobsForCustomSearch() {
-		var resultTask = UserWebGetJobsForCustomSearchAsync();
+	/// <param name="Query">(No description available)</param>
+	public BackupJobDetail[] UserWebGetJobsForCustomSearch(SearchClause Query) {
+		var resultTask = UserWebGetJobsForCustomSearchAsync(Query);
 		resultTask.Wait();
 		return resultTask.Result;
 	}
@@ -8686,13 +8922,17 @@ public class CometAPI : IDisposable {
 	/// <param name="SelfAddress">(Optional) The external URL for this server. Used to resolve conflicts</param>
 	/// <param name="DeviceID">(Optional) The ID of the device to be added as a associated device of the Storage
 	/// Vault</param>
-	public async Task<RequestStorageVaultResponseMessage> UserWebRequestStorageVaultAsync(string StorageProvider, string SelfAddress = null, string DeviceID = null) {
+	/// <param name="ProfileHash">(Optional) The profile hash of the user profile</param>
+	public async Task<RequestStorageVaultResponseMessage> UserWebRequestStorageVaultAsync(string StorageProvider, string SelfAddress = null, string DeviceID = null, string ProfileHash = null) {
 		var data = new Dictionary<string,string>();
 
 		data["StorageProvider"] = StorageProvider;
 		data["SelfAddress"] = SelfAddress ?? this.ServerURL;
 		if (DeviceID != null) {
 			data["DeviceID"] = DeviceID;
+		}
+		if (ProfileHash != null) {
+			data["ProfileHash"] = ProfileHash;
 		}
 
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/user/web/request-storage-vault", data)){
@@ -8717,8 +8957,9 @@ public class CometAPI : IDisposable {
 	/// <param name="SelfAddress">(Optional) The external URL for this server. Used to resolve conflicts</param>
 	/// <param name="DeviceID">(Optional) The ID of the device to be added as a associated device of the Storage
 	/// Vault</param>
-	public RequestStorageVaultResponseMessage UserWebRequestStorageVault(string StorageProvider, string SelfAddress = null, string DeviceID = null) {
-		var resultTask = UserWebRequestStorageVaultAsync(StorageProvider, SelfAddress, DeviceID);
+	/// <param name="ProfileHash">(Optional) The profile hash of the user profile</param>
+	public RequestStorageVaultResponseMessage UserWebRequestStorageVault(string StorageProvider, string SelfAddress = null, string DeviceID = null, string ProfileHash = null) {
+		var resultTask = UserWebRequestStorageVaultAsync(StorageProvider, SelfAddress, DeviceID, ProfileHash);
 		resultTask.Wait();
 		return resultTask.Result;
 	}
@@ -8819,7 +9060,7 @@ public class CometAPI : IDisposable {
 	/// </summary>
 	/// <param name="ProfileData">Updated account profile</param>
 	/// <param name="ProfileHash">Previous account profile hash</param>
-	public async Task<CometAPIResponseMessage> UserWebSetProfileHashAsync(UserProfileConfig ProfileData, string ProfileHash) {
+	public async Task<GetProfileAndHashResponseMessage> UserWebSetProfileHashAsync(UserProfileConfig ProfileData, string ProfileHash) {
 		var data = new Dictionary<string,string>();
 
 		data["ProfileData"] = JsonSerializer.Serialize(ProfileData);
@@ -8828,7 +9069,7 @@ public class CometAPI : IDisposable {
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/user/web/set-profile-hash", data)){
 			response.EnsureSuccessStatusCode();
 			using(var stream = await response.Content.ReadAsStreamAsync()){
-				return await JsonSerializer.DeserializeAsync<CometAPIResponseMessage>(stream);
+				return await JsonSerializer.DeserializeAsync<GetProfileAndHashResponseMessage>(stream);
 			}
 		}
 	}
@@ -8842,7 +9083,7 @@ public class CometAPI : IDisposable {
 	/// </summary>
 	/// <param name="ProfileData">Updated account profile</param>
 	/// <param name="ProfileHash">Previous account profile hash</param>
-	public CometAPIResponseMessage UserWebSetProfileHash(UserProfileConfig ProfileData, string ProfileHash) {
+	public GetProfileAndHashResponseMessage UserWebSetProfileHash(UserProfileConfig ProfileData, string ProfileHash) {
 		var resultTask = UserWebSetProfileHashAsync(ProfileData, ProfileHash);
 		resultTask.Wait();
 		return resultTask.Result;

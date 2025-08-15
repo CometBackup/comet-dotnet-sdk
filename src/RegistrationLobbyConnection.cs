@@ -35,6 +35,9 @@ public class RegistrationLobbyConnection {
 	[JsonPropertyName("IPAddress")]
 	public string IPAddress { get; set; } = string.Empty;
 
+	[JsonPropertyName("Host")]
+	public string Host { get; set; } = string.Empty;
+
 	[JsonPropertyName("ConnectionTime")]
 	public long ConnectionTime { get; set; }
 

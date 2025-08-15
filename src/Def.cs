@@ -3,13 +3,13 @@
 
 namespace CometBackup.CometAPI.SDK {
 public static class Def {
-	public const string APPLICATION_VERSION = "25.3.1";
+	public const string APPLICATION_VERSION = "25.6.8";
 
 	public const long APPLICATION_VERSION_MAJOR = 25;
 
-	public const long APPLICATION_VERSION_MINOR = 3;
+	public const long APPLICATION_VERSION_MINOR = 6;
 
-	public const long APPLICATION_VERSION_REVISION = 1;
+	public const long APPLICATION_VERSION_REVISION = 8;
 
 	/// AutoRetentionLevel: The system will automatically choose how often to run an automatic Retention Pass after each
 	/// backup job.
@@ -103,6 +103,9 @@ public static class Def {
 	public const ulong DESTINATION_SFTP_AUTHMODE_PRIVATEKEY = 2;
 
 	public const ulong DESTINATIONTYPE___INVALID = 0;
+
+	/// Storage type that is applied when Storage Gateway fails to launch correctly
+	public const ulong DESTINATIONTYPE_ERROR = 1;
 
 	/// S3-compatible, or a specific S3 service such as AWS S3, Wasabi, or iDrive e2
 	public const ulong DESTINATIONTYPE_S3 = 1000;
@@ -237,6 +240,9 @@ public static class Def {
 
 	/// VMware
 	public const string ENGINE_BUILTIN_VMWARE = "engine1/vmware";
+
+	/// Proxmox (PVE)
+	public const string ENGINE_BUILTIN_PROXMOX = "engine1/proxmox";
 
 	/// FtpsModeType: Use plain FTP, do not use FTPS.
 	public const long FTPS_MODE_PLAINTEXT = 0;
@@ -438,6 +444,8 @@ public static class Def {
 
 	public const string OFFICE365_REGION_US_DOD = "USGovtGccDoDCloud";
 
+	public const string OFFICE365_REGION_PUBLIC_TEST = "GlobalPublicCloudTest";
+
 	/// ExtraFileExclusionOSRestriction: Applies to any device
 	public const long OS_ANY = 0;
 
@@ -472,6 +480,10 @@ public static class Def {
 	/// OidcProvider
 	public const string PROVIDER_DASHBOARD = "dashboard";
 
+	public const string PROXMOX_TYPE_VM = "qemu";
+
+	public const string PROXMOX_TYPE_CONTAINER = "lxc";
+
 	/// PSAType
 	public const long PSA_TYPE_GENERIC = 0;
 
@@ -480,6 +492,14 @@ public static class Def {
 
 	/// PSAType
 	public const long PSA_TYPE_SYNCRO = 2;
+
+	public const string PVE_BACKUP_METHOD_STOP = "stop";
+
+	public const string PVE_BACKUP_METHOD_SUSPEND = "suspend";
+
+	public const string PVE_BACKUP_METHOD_SNAPSHOT = "snapshot";
+
+	public const string PVE_BACKUP_METHOD_DEFAULT = "snapshot";
 
 	public const string RELEASE_CODENAME = "Voyager";
 

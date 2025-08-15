@@ -23,24 +23,28 @@ public class Office365CustomSettingV2 {
 	//If true, exclude all filtered IDs and Members. Backup everything else
 	public bool FilterMode { get; set; }
 
+	[JsonPropertyName("WholeOrg")]
+	//If true, backup everything, ignoring selection and filter options
+	public bool WholeOrg { get; set; }
+
 	[JsonPropertyName("BackupOptions")]
 	//Key is the ID of User, Group, or Site
-	//Value is a bitset of the SERVICE_ constants, to select which services to back up for members
+	//Value is a bitset of the SERVICE_ constants, to select which services to backup for accounts
 	public Dictionary<string, long> BackupOptions { get; set; }
 
 	[JsonPropertyName("MemberBackupOptions")]
 	//Key is the ID of a Group or Team Site
-	//Value is a bitset of the SERVICE_ constants, to select which services to back up for members
+	//Value is a bitset of the SERVICE_ constants, to select which services to backup for members
 	public Dictionary<string, long> MemberBackupOptions { get; set; }
 
 	[JsonPropertyName("FilterOptions")]
 	//Key is the ID of a User, Group, or Site
-	//Value is a bitset of the SERVICE_ constants, to select which services to back up for members
+	//Value is a bitset of the SERVICE_ constants, to select which services to not backup for accounts
 	public Dictionary<string, long> FilterOptions { get; set; }
 
 	[JsonPropertyName("FilterMemberOptions")]
 	//Key is the ID of a Group or Team Site
-	//Value is a bitset of the SERVICE_ constants, to select which services to back up for members
+	//Value is a bitset of the SERVICE_ constants, to select which services to not backup for members
 	public Dictionary<string, long> FilterMemberOptions { get; set; }
 
 	public Office365CustomSettingV2(){ }

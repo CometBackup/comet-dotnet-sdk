@@ -14,6 +14,14 @@ public class Partition {
 	[JsonPropertyName("DeviceName")]
 	public string DeviceName { get; set; } = string.Empty;
 
+	[JsonPropertyName("PartitionGuid")]
+	//The partition's MBR or GPT id, if any
+	public string PartitionGuid { get; set; } = string.Empty;
+
+	[JsonPropertyName("PartitionOffset")]
+	//The partition's offset within the physical disk
+	public long PartitionOffset { get; set; }
+
 	[JsonPropertyName("Filesystem")]
 	//The name of the filesystem used on this partition (e.g. "NTFS")
 	public string Filesystem { get; set; } = string.Empty;

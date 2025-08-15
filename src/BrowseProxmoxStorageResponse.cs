@@ -7,9 +7,9 @@ using System.Text.Json.Serialization;
 
 namespace CometBackup.CometAPI.SDK {
 /// <summary>
-/// Class <c>RequestStorageVaultResponseMessage</c>
+/// Class <c>BrowseProxmoxStorageResponse</c>
 /// </summary>
-public class RequestStorageVaultResponseMessage {
+public class BrowseProxmoxStorageResponse {
 
 	[JsonPropertyName("Status")]
 	//If the operation was successful, the status will be in the 200-299 range.
@@ -18,23 +18,17 @@ public class RequestStorageVaultResponseMessage {
 	[JsonPropertyName("Message")]
 	public string Message { get; set; } = string.Empty;
 
-	[JsonPropertyName("DestinationID")]
-	public string DestinationID { get; set; } = string.Empty;
+	[JsonPropertyName("Storage")]
+	public List<PVEStorageName> Storage { get; set; }
 
-	[JsonPropertyName("ProfileHash")]
-	public string ProfileHash { get; set; } = string.Empty;
-
-	[JsonPropertyName("Profile")]
-	public UserProfileConfig Profile { get; set; }
-
-	public RequestStorageVaultResponseMessage(){ }
+	public BrowseProxmoxStorageResponse(){ }
 
 	public string ToJson() {
 		return JsonSerializer.Serialize(this);
 	}
 
-	static public RequestStorageVaultResponseMessage FromJson(string jsStr) {
-		return JsonSerializer.Deserialize<RequestStorageVaultResponseMessage>(jsStr);
+	static public BrowseProxmoxStorageResponse FromJson(string jsStr) {
+		return JsonSerializer.Deserialize<BrowseProxmoxStorageResponse>(jsStr);
 	}
 
 	public CometAPIResponseMessage GetEmbeddedCometAPIResponseMessage() => new CometAPIResponseMessage {
