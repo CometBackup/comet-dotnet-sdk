@@ -7,14 +7,19 @@ using System.Text.Json.Serialization;
 
 namespace CometBackup.CometAPI.SDK {
 /// <summary>
-/// Class <c>PVEBackupDisk</c>
+/// Class <c>PVEBackupDisk</c> This type is used in the EngineProps for an "engine1/proxmox" Protected Item. It
+/// represents the selection state for a single disk attached to a single Proxmox VM or LXC Container. It is expected to
+/// be user-configurable.
+/// Since Version : 25.8.0
 /// </summary>
 public class PVEBackupDisk {
 
 	[JsonPropertyName("Device")]
+	//For a disk "scsi0", this field should contain: "scsi"
 	public string Device { get; set; } = string.Empty;
 
 	[JsonPropertyName("DeviceNum")]
+	//For a disk "scsi0", this field should contain: 0
 	public long DeviceNum { get; set; }
 
 	public PVEBackupDisk(){ }

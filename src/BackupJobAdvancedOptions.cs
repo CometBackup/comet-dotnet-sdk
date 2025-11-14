@@ -48,6 +48,10 @@ public class BackupJobAdvancedOptions {
 	//Log verbosity level. LOG_DEBUG has the greatest verbosity
 	public string LogLevel { get; set; } = string.Empty;
 
+	[JsonPropertyName("Tags")]
+	//Default disabled
+	public string Tags { get; set; } = string.Empty;
+
 	public BackupJobAdvancedOptions(){ }
 
 	public string ToJson() {

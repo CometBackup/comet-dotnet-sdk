@@ -78,6 +78,10 @@ public class BackupRuleConfig {
 	//Log verbosity level. LOG_DEBUG has the greatest verbosity
 	public string LogLevel { get; set; } = string.Empty;
 
+	[JsonPropertyName("Tags")]
+	//Default disabled
+	public string Tags { get; set; } = string.Empty;
+
 	[JsonPropertyName("Schedules")]
 	//Scheduled start times
 	public List<ScheduleConfig> Schedules { get; set; }
@@ -106,6 +110,7 @@ public class BackupRuleConfig {
 		AutoRetentionLevel = this.AutoRetentionLevel,
 		ConcurrencyCount = this.ConcurrencyCount,
 		LogLevel = this.LogLevel,
+		Tags = this.Tags,
 	};
 
 	public void SetEmbeddedBackupJobAdvancedOptions(BackupJobAdvancedOptions other){
@@ -118,6 +123,7 @@ public class BackupRuleConfig {
 		this.AutoRetentionLevel = other.AutoRetentionLevel;
 		this.ConcurrencyCount = other.ConcurrencyCount;
 		this.LogLevel = other.LogLevel;
+		this.Tags = other.Tags;
 	}
 
 }

@@ -172,6 +172,11 @@ public class UserProfileConfig {
 	[JsonPropertyName("AutoStorageTemplateGUID")]
 	public string AutoStorageTemplateGUID { get; set; } = string.Empty;
 
+	[JsonPropertyName("LinuxHomedirSandbox")]
+	//If enabled, Linux devices in this user account will sandbox all read/write operations to paths inside user home
+	//directories
+	public bool LinuxHomedirSandbox { get; set; }
+
 	public UserProfileConfig(){ }
 
 	public string ToJson() {

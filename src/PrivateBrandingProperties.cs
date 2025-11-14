@@ -92,6 +92,18 @@ public class PrivateBrandingProperties {
 	[JsonPropertyName("WindowsCodeSignAzureTenantID")]
 	public string WindowsCodeSignAzureTenantID { get; set; } = string.Empty;
 
+	[JsonPropertyName("WindowsCodeSignRelicServerURL")]
+	//URL of the SAS Relic server, with protocol (https://) and trailing slash
+	public string WindowsCodeSignRelicServerURL { get; set; } = string.Empty;
+
+	[JsonPropertyName("WindowsCodeSignRelicKeypairFile")]
+	//The SAS Relic client keypair in PEM format
+	public string WindowsCodeSignRelicKeypairFile { get; set; } = string.Empty;
+
+	[JsonPropertyName("WindowsCodeSignRelicKeyName")]
+	//The name of the key to select on the remote SAS Relic server
+	public string WindowsCodeSignRelicKeyName { get; set; } = string.Empty;
+
 	[JsonPropertyName("MacOSCodeSign")]
 	public MacOSCodeSignProperties MacOSCodeSign { get; set; }
 
@@ -122,6 +134,9 @@ public class PrivateBrandingProperties {
 		WindowsCodeSignAzureAppSecretFormat = this.WindowsCodeSignAzureAppSecretFormat,
 		WindowsCodeSignAzureAppSecret = this.WindowsCodeSignAzureAppSecret,
 		WindowsCodeSignAzureTenantID = this.WindowsCodeSignAzureTenantID,
+		WindowsCodeSignRelicServerURL = this.WindowsCodeSignRelicServerURL,
+		WindowsCodeSignRelicKeypairFile = this.WindowsCodeSignRelicKeypairFile,
+		WindowsCodeSignRelicKeyName = this.WindowsCodeSignRelicKeyName,
 	};
 
 	public void SetEmbeddedWindowsCodeSignProperties(WindowsCodeSignProperties other){
@@ -141,6 +156,9 @@ public class PrivateBrandingProperties {
 		this.WindowsCodeSignAzureAppSecretFormat = other.WindowsCodeSignAzureAppSecretFormat;
 		this.WindowsCodeSignAzureAppSecret = other.WindowsCodeSignAzureAppSecret;
 		this.WindowsCodeSignAzureTenantID = other.WindowsCodeSignAzureTenantID;
+		this.WindowsCodeSignRelicServerURL = other.WindowsCodeSignRelicServerURL;
+		this.WindowsCodeSignRelicKeypairFile = other.WindowsCodeSignRelicKeypairFile;
+		this.WindowsCodeSignRelicKeyName = other.WindowsCodeSignRelicKeyName;
 	}
 
 }

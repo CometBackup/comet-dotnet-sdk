@@ -7,7 +7,9 @@ using System.Text.Json.Serialization;
 
 namespace CometBackup.CometAPI.SDK {
 /// <summary>
-/// Class <c>PVEParams</c>
+/// Class <c>PVEParams</c> This type is used in the EngineProps for an "engine1/proxmox" Protected Item. It represents
+/// the entire Protected Item configuration. It is expected to be user-configurable.
+/// Since Version : 25.8.0
 /// </summary>
 public class PVEParams {
 
@@ -18,16 +20,18 @@ public class PVEParams {
 	public List<PVEBackupNode> Exclusions { get; set; }
 
 	[JsonPropertyName("Method")]
+	//One of the PVE_BACKUP_METHOD constants
 	public string Method { get; set; } = string.Empty;
 
-	[JsonPropertyName("Quota")]
-	public long Quota { get; set; }
-
 	[JsonPropertyName("SSHConnection")]
+	//Primary node URL + SSH credentials
 	public SSHConnection SSHConnection { get; set; }
 
 	[JsonPropertyName("Selections")]
 	public List<PVEBackupNode> Selections { get; set; }
+
+	[JsonPropertyName("UseCBT")]
+	public bool UseCBT { get; set; }
 
 	public PVEParams(){ }
 

@@ -26,6 +26,9 @@ public class VaultSnapshot {
 	[JsonPropertyName("HasOriginalPathInfo")]
 	public bool HasOriginalPathInfo { get; set; }
 
+	[JsonPropertyName("Tags")]
+	public List<string> Tags { get; set; }
+
 	public VaultSnapshot(){ }
 
 	public string ToJson() {

@@ -3,13 +3,13 @@
 
 namespace CometBackup.CometAPI.SDK {
 public static class Def {
-	public const string APPLICATION_VERSION = "25.6.8";
+	public const string APPLICATION_VERSION = "25.9.6";
 
 	public const long APPLICATION_VERSION_MAJOR = 25;
 
-	public const long APPLICATION_VERSION_MINOR = 6;
+	public const long APPLICATION_VERSION_MINOR = 9;
 
-	public const long APPLICATION_VERSION_REVISION = 8;
+	public const long APPLICATION_VERSION_REVISION = 6;
 
 	/// AutoRetentionLevel: The system will automatically choose how often to run an automatic Retention Pass after each
 	/// backup job.
@@ -333,6 +333,9 @@ public static class Def {
 	/// JobStatus: The job has encountered an error and will wait to retry.
 	public const ulong JOB_STATUS_RUNNING_TRYAGAIN = 6003;
 
+	/// JobStatus: The job has been created by the server but has not yet been initialized by the client.
+	public const ulong JOB_STATUS_NOT_YET_STARTED = 6004;
+
 	/// JobStatus
 	public const ulong JOB_STATUS_RUNNING__MAX = 6999;
 
@@ -493,12 +496,16 @@ public static class Def {
 	/// PSAType
 	public const long PSA_TYPE_SYNCRO = 2;
 
+	/// PveBackupMethod
 	public const string PVE_BACKUP_METHOD_STOP = "stop";
 
+	/// PveBackupMethod
 	public const string PVE_BACKUP_METHOD_SUSPEND = "suspend";
 
+	/// PveBackupMethod
 	public const string PVE_BACKUP_METHOD_SNAPSHOT = "snapshot";
 
+	/// PveBackupMethod
 	public const string PVE_BACKUP_METHOD_DEFAULT = "snapshot";
 
 	public const string RELEASE_CODENAME = "Voyager";
@@ -1191,5 +1198,8 @@ public static class Def {
 
 	/// WindowsCodesignMethod: Use a configured Azure Key Vault for Authenticode codesigning
 	public const long WINDOWSCODESIGN_METHOD_AZUREKEYVAULT = 4;
+
+	/// WindowsCodesignMethod: Use a configured SAS Relic server for Authenticode codesigning
+	public const long WINDOWSCODESIGN_METHOD_RELICSERVER = 5;
 
 }}

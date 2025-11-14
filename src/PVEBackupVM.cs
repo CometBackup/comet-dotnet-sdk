@@ -7,7 +7,9 @@ using System.Text.Json.Serialization;
 
 namespace CometBackup.CometAPI.SDK {
 /// <summary>
-/// Class <c>PVEBackupVM</c>
+/// Class <c>PVEBackupVM</c> This type is used in the EngineProps for an "engine1/proxmox" Protected Item. It represents
+/// the selection state for a single Proxmox VM or LXC Container. It is expected to be user-configurable.
+/// Since Version : 25.8.0
 /// </summary>
 public class PVEBackupVM {
 
@@ -15,12 +17,14 @@ public class PVEBackupVM {
 	public List<PVEBackupDisk> IncludedDisks { get; set; }
 
 	[JsonPropertyName("Name")]
+	//Used as a cache if the device is offline when editing the Protected Item; not considered as part of the selection
 	public string Name { get; set; } = string.Empty;
 
 	[JsonPropertyName("Selected")]
 	public bool Selected { get; set; }
 
 	[JsonPropertyName("Type")]
+	//One of the PROXMOX_TYPE_ constants
 	public string Type { get; set; } = string.Empty;
 
 	[JsonPropertyName("VMID")]

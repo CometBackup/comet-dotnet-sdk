@@ -1614,6 +1614,42 @@ public class CometAPI : IDisposable {
 	}
 
 	/// <summary>
+	/// AdminDeleteProtectedItemAsync: Delete a Protected Item
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetUser">Selected account username</param>
+	/// <param name="SourceID">Selected Protected Item GUID</param>
+	public async Task<CometAPIResponseMessage> AdminDeleteProtectedItemAsync(string TargetUser, string SourceID) {
+		var data = new Dictionary<string,string>();
+
+		data["TargetUser"] = TargetUser;
+		data["SourceID"] = SourceID;
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/delete-protected-item", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<CometAPIResponseMessage>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// AdminDeleteProtectedItem: Delete a Protected Item
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetUser">Selected account username</param>
+	/// <param name="SourceID">Selected Protected Item GUID</param>
+	public CometAPIResponseMessage AdminDeleteProtectedItem(string TargetUser, string SourceID) {
+		var resultTask = AdminDeleteProtectedItemAsync(TargetUser, SourceID);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
 	/// AdminDeleteUserAsync: Delete user account
 	/// This does not remove any storage buckets. Unused storage buckets will be cleaned up by the Constellation Role.
 	/// Any stored data can not be decrypted without the user profile. Misuse can cause data loss!
@@ -1962,6 +1998,41 @@ public class CometAPI : IDisposable {
 	/// <param name="Path">of the email to view</param>
 	public EmailReportGeneratedPreview AdminDispatcherEmailPreview(string TargetID, string Snapshot, string Destination, string Path) {
 		var resultTask = AdminDispatcherEmailPreviewAsync(TargetID, Snapshot, Destination, Path);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
+	/// AdminDispatcherForceLoginAsync: Instruct a live connected device to re-enter login credentials
+	/// The device will terminate its live-connection process and will not reconnect.
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	public async Task<CometAPIResponseMessage> AdminDispatcherForceLoginAsync(string TargetID) {
+		var data = new Dictionary<string,string>();
+
+		data["TargetID"] = TargetID;
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/dispatcher/force-login", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<CometAPIResponseMessage>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// AdminDispatcherForceLogin: Instruct a live connected device to re-enter login credentials
+	/// The device will terminate its live-connection process and will not reconnect.
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	public CometAPIResponseMessage AdminDispatcherForceLogin(string TargetID) {
+		var resultTask = AdminDispatcherForceLoginAsync(TargetID);
 		resultTask.Wait();
 		return resultTask.Result;
 	}
@@ -3210,7 +3281,7 @@ public class CometAPI : IDisposable {
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="BackupRule">The schedule GUID</param>
-	public async Task<CometAPIResponseMessage> AdminDispatcherRunBackupAsync(string TargetID, string BackupRule) {
+	public async Task<DispatchWithJobIDResponse> AdminDispatcherRunBackupAsync(string TargetID, string BackupRule) {
 		var data = new Dictionary<string,string>();
 
 		data["TargetID"] = TargetID;
@@ -3219,7 +3290,7 @@ public class CometAPI : IDisposable {
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/dispatcher/run-backup", data)){
 			response.EnsureSuccessStatusCode();
 			using(var stream = await response.Content.ReadAsStreamAsync()){
-				return await JsonSerializer.DeserializeAsync<CometAPIResponseMessage>(stream);
+				return await JsonSerializer.DeserializeAsync<DispatchWithJobIDResponse>(stream);
 			}
 		}
 	}
@@ -3232,7 +3303,7 @@ public class CometAPI : IDisposable {
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="BackupRule">The schedule GUID</param>
-	public CometAPIResponseMessage AdminDispatcherRunBackup(string TargetID, string BackupRule) {
+	public DispatchWithJobIDResponse AdminDispatcherRunBackup(string TargetID, string BackupRule) {
 		var resultTask = AdminDispatcherRunBackupAsync(TargetID, BackupRule);
 		resultTask.Wait();
 		return resultTask.Result;
@@ -3248,7 +3319,7 @@ public class CometAPI : IDisposable {
 	/// <param name="Source">The Protected Item GUID</param>
 	/// <param name="Destination">The Storage Vault GUID</param>
 	/// <param name="Options">(Optional) Extra job parameters (>= 19.3.6)</param>
-	public async Task<CometAPIResponseMessage> AdminDispatcherRunBackupCustomAsync(string TargetID, string Source, string Destination, BackupJobAdvancedOptions Options = null) {
+	public async Task<DispatchWithJobIDResponse> AdminDispatcherRunBackupCustomAsync(string TargetID, string Source, string Destination, BackupJobAdvancedOptions Options = null) {
 		var data = new Dictionary<string,string>();
 
 		data["TargetID"] = TargetID;
@@ -3261,7 +3332,7 @@ public class CometAPI : IDisposable {
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/dispatcher/run-backup-custom", data)){
 			response.EnsureSuccessStatusCode();
 			using(var stream = await response.Content.ReadAsStreamAsync()){
-				return await JsonSerializer.DeserializeAsync<CometAPIResponseMessage>(stream);
+				return await JsonSerializer.DeserializeAsync<DispatchWithJobIDResponse>(stream);
 			}
 		}
 	}
@@ -3276,7 +3347,7 @@ public class CometAPI : IDisposable {
 	/// <param name="Source">The Protected Item GUID</param>
 	/// <param name="Destination">The Storage Vault GUID</param>
 	/// <param name="Options">(Optional) Extra job parameters (>= 19.3.6)</param>
-	public CometAPIResponseMessage AdminDispatcherRunBackupCustom(string TargetID, string Source, string Destination, BackupJobAdvancedOptions Options = null) {
+	public DispatchWithJobIDResponse AdminDispatcherRunBackupCustom(string TargetID, string Source, string Destination, BackupJobAdvancedOptions Options = null) {
 		var resultTask = AdminDispatcherRunBackupCustomAsync(TargetID, Source, Destination, Options);
 		resultTask.Wait();
 		return resultTask.Result;
@@ -3297,7 +3368,7 @@ public class CometAPI : IDisposable {
 	/// for the selected Protected Item + Storage Vault pair</param>
 	/// <param name="Paths">(Optional) If present, restore these paths only. Otherwise, restore all data (>=
 	/// 19.3.0)</param>
-	public async Task<CometAPIResponseMessage> AdminDispatcherRunRestoreAsync(string TargetID, string Path, string Source, string Destination, string Snapshot = null, string[] Paths = null) {
+	public async Task<DispatchWithJobIDResponse> AdminDispatcherRunRestoreAsync(string TargetID, string Path, string Source, string Destination, string Snapshot = null, string[] Paths = null) {
 		var data = new Dictionary<string,string>();
 
 		data["TargetID"] = TargetID;
@@ -3314,7 +3385,7 @@ public class CometAPI : IDisposable {
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/dispatcher/run-restore", data)){
 			response.EnsureSuccessStatusCode();
 			using(var stream = await response.Content.ReadAsStreamAsync()){
-				return await JsonSerializer.DeserializeAsync<CometAPIResponseMessage>(stream);
+				return await JsonSerializer.DeserializeAsync<DispatchWithJobIDResponse>(stream);
 			}
 		}
 	}
@@ -3334,7 +3405,7 @@ public class CometAPI : IDisposable {
 	/// for the selected Protected Item + Storage Vault pair</param>
 	/// <param name="Paths">(Optional) If present, restore these paths only. Otherwise, restore all data (>=
 	/// 19.3.0)</param>
-	public CometAPIResponseMessage AdminDispatcherRunRestore(string TargetID, string Path, string Source, string Destination, string Snapshot = null, string[] Paths = null) {
+	public DispatchWithJobIDResponse AdminDispatcherRunRestore(string TargetID, string Path, string Source, string Destination, string Snapshot = null, string[] Paths = null) {
 		var resultTask = AdminDispatcherRunRestoreAsync(TargetID, Path, Source, Destination, Snapshot, Paths);
 		resultTask.Wait();
 		return resultTask.Result;
@@ -3362,7 +3433,7 @@ public class CometAPI : IDisposable {
 	/// <param name="KnownDirCount">(Optional) The number of directories to restore, if known. Supplying this means we
 	/// don't need to walk the entire tree just to find the number of directories and will speed up the restoration
 	/// process.</param>
-	public async Task<CometAPIResponseMessage> AdminDispatcherRunRestoreCustomAsync(string TargetID, string Source, string Destination, RestoreJobAdvancedOptions Options, string Snapshot = null, string[] Paths = null, Nullable<int> KnownFileCount = null, Nullable<int> KnownByteCount = null, Nullable<int> KnownDirCount = null) {
+	public async Task<DispatchWithJobIDResponse> AdminDispatcherRunRestoreCustomAsync(string TargetID, string Source, string Destination, RestoreJobAdvancedOptions Options, string Snapshot = null, string[] Paths = null, Nullable<int> KnownFileCount = null, Nullable<int> KnownByteCount = null, Nullable<int> KnownDirCount = null) {
 		var data = new Dictionary<string,string>();
 
 		data["TargetID"] = TargetID;
@@ -3388,7 +3459,7 @@ public class CometAPI : IDisposable {
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/dispatcher/run-restore-custom", data)){
 			response.EnsureSuccessStatusCode();
 			using(var stream = await response.Content.ReadAsStreamAsync()){
-				return await JsonSerializer.DeserializeAsync<CometAPIResponseMessage>(stream);
+				return await JsonSerializer.DeserializeAsync<DispatchWithJobIDResponse>(stream);
 			}
 		}
 	}
@@ -3415,7 +3486,7 @@ public class CometAPI : IDisposable {
 	/// <param name="KnownDirCount">(Optional) The number of directories to restore, if known. Supplying this means we
 	/// don't need to walk the entire tree just to find the number of directories and will speed up the restoration
 	/// process.</param>
-	public CometAPIResponseMessage AdminDispatcherRunRestoreCustom(string TargetID, string Source, string Destination, RestoreJobAdvancedOptions Options, string Snapshot = null, string[] Paths = null, Nullable<int> KnownFileCount = null, Nullable<int> KnownByteCount = null, Nullable<int> KnownDirCount = null) {
+	public DispatchWithJobIDResponse AdminDispatcherRunRestoreCustom(string TargetID, string Source, string Destination, RestoreJobAdvancedOptions Options, string Snapshot = null, string[] Paths = null, Nullable<int> KnownFileCount = null, Nullable<int> KnownByteCount = null, Nullable<int> KnownDirCount = null) {
 		var resultTask = AdminDispatcherRunRestoreCustomAsync(TargetID, Source, Destination, Options, Snapshot, Paths, KnownFileCount, KnownByteCount, KnownDirCount);
 		resultTask.Wait();
 		return resultTask.Result;
@@ -3576,6 +3647,42 @@ public class CometAPI : IDisposable {
 	/// <param name="AllowUnsafe">(Optional) Allow legacy Storage Vault unlocking, which is unsafe in some cases.</param>
 	public CometAPIResponseMessage AdminDispatcherUnlock(string TargetID, string Destination, Nullable<bool> AllowUnsafe = null) {
 		var resultTask = AdminDispatcherUnlockAsync(TargetID, Destination, AllowUnsafe);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
+	/// AdminDispatcherUpdateLoginPasswordAsync: Instruct a live connected device to update its login password
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="NewPassword">The new password of this user</param>
+	public async Task<CometAPIResponseMessage> AdminDispatcherUpdateLoginPasswordAsync(string TargetID, string NewPassword) {
+		var data = new Dictionary<string,string>();
+
+		data["TargetID"] = TargetID;
+		data["NewPassword"] = NewPassword;
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/dispatcher/update-login-password", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<CometAPIResponseMessage>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// AdminDispatcherUpdateLoginPassword: Instruct a live connected device to update its login password
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="NewPassword">The new password of this user</param>
+	public CometAPIResponseMessage AdminDispatcherUpdateLoginPassword(string TargetID, string NewPassword) {
+		var resultTask = AdminDispatcherUpdateLoginPasswordAsync(TargetID, NewPassword);
 		resultTask.Wait();
 		return resultTask.Result;
 	}
@@ -4088,6 +4195,42 @@ public class CometAPI : IDisposable {
 	/// </summary>
 	public BackupJobDetail[] AdminGetJobsRecent() {
 		var resultTask = AdminGetJobsRecentAsync();
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
+	/// AdminGetProtectedItemWithBackupRulesAsync: Get a Protected Item with its backup rules
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetUser">Selected account username</param>
+	/// <param name="SourceID">Selected Protected Item GUID</param>
+	public async Task<ProtectedItemWithBackupRulesResponse> AdminGetProtectedItemWithBackupRulesAsync(string TargetUser, string SourceID) {
+		var data = new Dictionary<string,string>();
+
+		data["TargetUser"] = TargetUser;
+		data["SourceID"] = SourceID;
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/get-protected-item-with-backup-rules", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<ProtectedItemWithBackupRulesResponse>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// AdminGetProtectedItemWithBackupRules: Get a Protected Item with its backup rules
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetUser">Selected account username</param>
+	/// <param name="SourceID">Selected Protected Item GUID</param>
+	public ProtectedItemWithBackupRulesResponse AdminGetProtectedItemWithBackupRules(string TargetUser, string SourceID) {
+		var resultTask = AdminGetProtectedItemWithBackupRulesAsync(TargetUser, SourceID);
 		resultTask.Wait();
 		return resultTask.Result;
 	}
@@ -6266,6 +6409,57 @@ public class CometAPI : IDisposable {
 	}
 
 	/// <summary>
+	/// AdminSetProtectedItemWithBackupRulesAsync: Add or update a Protected Item with its backup rules
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetUser">Selected account username</param>
+	/// <param name="SourceID">Selected Protected Item GUID</param>
+	/// <param name="RequireHash">(Optional) Previous account profile hash</param>
+	/// <param name="Source">(Optional) Optional Protected Item to create or update</param>
+	/// <param name="BackupRules">(Optional) Optional backup rules for the Protected Item</param>
+	public async Task<CometAPIResponseMessage> AdminSetProtectedItemWithBackupRulesAsync(string TargetUser, string SourceID, string RequireHash = null, SourceConfig Source = null, Dictionary<string,BackupRuleConfig> BackupRules = null) {
+		var data = new Dictionary<string,string>();
+
+		data["TargetUser"] = TargetUser;
+		data["SourceID"] = SourceID;
+		if (RequireHash != null) {
+			data["RequireHash"] = RequireHash;
+		}
+		if (Source != null) {
+			data["Source"] = JsonSerializer.Serialize(Source);
+		}
+		if (BackupRules != null) {
+			data["BackupRules"] = JsonSerializer.Serialize(BackupRules);
+		}
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/set-protected-item-with-backup-rules", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<CometAPIResponseMessage>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// AdminSetProtectedItemWithBackupRules: Add or update a Protected Item with its backup rules
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetUser">Selected account username</param>
+	/// <param name="SourceID">Selected Protected Item GUID</param>
+	/// <param name="RequireHash">(Optional) Previous account profile hash</param>
+	/// <param name="Source">(Optional) Optional Protected Item to create or update</param>
+	/// <param name="BackupRules">(Optional) Optional backup rules for the Protected Item</param>
+	public CometAPIResponseMessage AdminSetProtectedItemWithBackupRules(string TargetUser, string SourceID, string RequireHash = null, SourceConfig Source = null, Dictionary<string,BackupRuleConfig> BackupRules = null) {
+		var resultTask = AdminSetProtectedItemWithBackupRulesAsync(TargetUser, SourceID, RequireHash, Source, BackupRules);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
 	/// AdminSetUserProfileAsync: Modify user account profile
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
@@ -7143,6 +7337,41 @@ public class CometAPI : IDisposable {
 	}
 
 	/// <summary>
+	/// UserWebDeleteProtectedItemAsync: Delete a Protected Item
+	/// 
+	/// You must supply user authentication credentials to use this API, and the user account must be authorized for web
+	/// access.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="SourceID">Selected Protected Item GUID</param>
+	public async Task<CometAPIResponseMessage> UserWebDeleteProtectedItemAsync(string SourceID) {
+		var data = new Dictionary<string,string>();
+
+		data["SourceID"] = SourceID;
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/user/web/delete-protected-item", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<CometAPIResponseMessage>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// UserWebDeleteProtectedItem: Delete a Protected Item
+	/// 
+	/// You must supply user authentication credentials to use this API, and the user account must be authorized for web
+	/// access.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="SourceID">Selected Protected Item GUID</param>
+	public CometAPIResponseMessage UserWebDeleteProtectedItem(string SourceID) {
+		var resultTask = UserWebDeleteProtectedItemAsync(SourceID);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
 	/// UserWebDispatcherBrowseVirtualMachinesAsync: Browse virtual machines in target snapshot
 	/// 
 	/// You must supply user authentication credentials to use this API, and the user account must be authorized for web
@@ -7263,6 +7492,43 @@ public class CometAPI : IDisposable {
 	/// <param name="SnapshotIDs">The backup job snapshot IDs to delete</param>
 	public CometAPIResponseMessage UserWebDispatcherDeleteSnapshots(string TargetID, string DestinationID, string[] SnapshotIDs) {
 		var resultTask = UserWebDispatcherDeleteSnapshotsAsync(TargetID, DestinationID, SnapshotIDs);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
+	/// UserWebDispatcherDropConnectionAsync: Disconnect a live connected device
+	/// The device will almost certainly attempt to reconnect.
+	/// 
+	/// You must supply user authentication credentials to use this API, and the user account must be authorized for web
+	/// access.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	public async Task<CometAPIResponseMessage> UserWebDispatcherDropConnectionAsync(string TargetID) {
+		var data = new Dictionary<string,string>();
+
+		data["TargetID"] = TargetID;
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/user/web/dispatcher/drop-connection", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<CometAPIResponseMessage>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// UserWebDispatcherDropConnection: Disconnect a live connected device
+	/// The device will almost certainly attempt to reconnect.
+	/// 
+	/// You must supply user authentication credentials to use this API, and the user account must be authorized for web
+	/// access.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	public CometAPIResponseMessage UserWebDispatcherDropConnection(string TargetID) {
+		var resultTask = UserWebDispatcherDropConnectionAsync(TargetID);
 		resultTask.Wait();
 		return resultTask.Result;
 	}
@@ -8575,6 +8841,44 @@ public class CometAPI : IDisposable {
 	}
 
 	/// <summary>
+	/// UserWebDispatcherUpdateLoginPasswordAsync: Instruct a live connected device to update its login password
+	/// 
+	/// You must supply user authentication credentials to use this API, and the user account must be authorized for web
+	/// access.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="NewPassword">The new password of this user</param>
+	public async Task<CometAPIResponseMessage> UserWebDispatcherUpdateLoginPasswordAsync(string TargetID, string NewPassword) {
+		var data = new Dictionary<string,string>();
+
+		data["TargetID"] = TargetID;
+		data["NewPassword"] = NewPassword;
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/user/web/dispatcher/update-login-password", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<CometAPIResponseMessage>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// UserWebDispatcherUpdateLoginPassword: Instruct a live connected device to update its login password
+	/// 
+	/// You must supply user authentication credentials to use this API, and the user account must be authorized for web
+	/// access.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="NewPassword">The new password of this user</param>
+	public CometAPIResponseMessage UserWebDispatcherUpdateLoginPassword(string TargetID, string NewPassword) {
+		var resultTask = UserWebDispatcherUpdateLoginPasswordAsync(TargetID, NewPassword);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
 	/// UserWebGetJobLogAsync: Get backup job report log, in plaintext format (Web)
 	/// 
 	/// You must supply user authentication credentials to use this API, and the user account must be authorized for web
@@ -8753,6 +9057,41 @@ public class CometAPI : IDisposable {
 	/// <param name="Query">(No description available)</param>
 	public BackupJobDetail[] UserWebGetJobsForCustomSearch(SearchClause Query) {
 		var resultTask = UserWebGetJobsForCustomSearchAsync(Query);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
+	/// UserWebGetProtectedItemWithBackupRulesAsync: Get a Protected Item with its backup rules
+	/// 
+	/// You must supply user authentication credentials to use this API, and the user account must be authorized for web
+	/// access.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="SourceID">Selected Protected Item GUID</param>
+	public async Task<ProtectedItemWithBackupRulesResponse> UserWebGetProtectedItemWithBackupRulesAsync(string SourceID) {
+		var data = new Dictionary<string,string>();
+
+		data["SourceID"] = SourceID;
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/user/web/get-protected-item-with-backup-rules", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<ProtectedItemWithBackupRulesResponse>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// UserWebGetProtectedItemWithBackupRules: Get a Protected Item with its backup rules
+	/// 
+	/// You must supply user authentication credentials to use this API, and the user account must be authorized for web
+	/// access.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="SourceID">Selected Protected Item GUID</param>
+	public ProtectedItemWithBackupRulesResponse UserWebGetProtectedItemWithBackupRules(string SourceID) {
+		var resultTask = UserWebGetProtectedItemWithBackupRulesAsync(SourceID);
 		resultTask.Wait();
 		return resultTask.Result;
 	}
@@ -9085,6 +9424,56 @@ public class CometAPI : IDisposable {
 	/// <param name="ProfileHash">Previous account profile hash</param>
 	public GetProfileAndHashResponseMessage UserWebSetProfileHash(UserProfileConfig ProfileData, string ProfileHash) {
 		var resultTask = UserWebSetProfileHashAsync(ProfileData, ProfileHash);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
+	/// UserWebSetProtectedItemWithBackupRulesAsync: Add or update a Protected Item with its backup rules
+	/// 
+	/// You must supply user authentication credentials to use this API, and the user account must be authorized for web
+	/// access.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="SourceID">Selected Protected Item GUID</param>
+	/// <param name="RequireHash">(Optional) Previous account profile hash</param>
+	/// <param name="Source">(Optional) Optional Protected Item to update or create</param>
+	/// <param name="BackupRules">(Optional) Optional backup rules for the Protected Item</param>
+	public async Task<CometAPIResponseMessage> UserWebSetProtectedItemWithBackupRulesAsync(string SourceID, string RequireHash = null, SourceConfig Source = null, Dictionary<string,BackupRuleConfig> BackupRules = null) {
+		var data = new Dictionary<string,string>();
+
+		data["SourceID"] = SourceID;
+		if (RequireHash != null) {
+			data["RequireHash"] = RequireHash;
+		}
+		if (Source != null) {
+			data["Source"] = JsonSerializer.Serialize(Source);
+		}
+		if (BackupRules != null) {
+			data["BackupRules"] = JsonSerializer.Serialize(BackupRules);
+		}
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/user/web/set-protected-item-with-backup-rules", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<CometAPIResponseMessage>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// UserWebSetProtectedItemWithBackupRules: Add or update a Protected Item with its backup rules
+	/// 
+	/// You must supply user authentication credentials to use this API, and the user account must be authorized for web
+	/// access.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="SourceID">Selected Protected Item GUID</param>
+	/// <param name="RequireHash">(Optional) Previous account profile hash</param>
+	/// <param name="Source">(Optional) Optional Protected Item to update or create</param>
+	/// <param name="BackupRules">(Optional) Optional backup rules for the Protected Item</param>
+	public CometAPIResponseMessage UserWebSetProtectedItemWithBackupRules(string SourceID, string RequireHash = null, SourceConfig Source = null, Dictionary<string,BackupRuleConfig> BackupRules = null) {
+		var resultTask = UserWebSetProtectedItemWithBackupRulesAsync(SourceID, RequireHash, Source, BackupRules);
 		resultTask.Wait();
 		return resultTask.Result;
 	}

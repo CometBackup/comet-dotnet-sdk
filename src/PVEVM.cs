@@ -7,7 +7,7 @@ using System.Text.Json.Serialization;
 
 namespace CometBackup.CometAPI.SDK {
 /// <summary>
-/// Class <c>PVEVM</c>
+/// Class <c>PVEVM</c> PVEVM describes a single Proxmox virtual machine or container.
 /// </summary>
 public class PVEVM {
 
@@ -36,6 +36,7 @@ public class PVEVM {
 	public string Type { get; set; } = string.Empty;
 
 	[JsonPropertyName("VMID")]
+	//String type, but always contains an integer value
 	public string VMID { get; set; } = string.Empty;
 
 	public PVEVM(){ }

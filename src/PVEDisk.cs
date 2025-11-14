@@ -24,7 +24,8 @@ public class PVEDisk {
 	public string Volume { get; set; } = string.Empty;
 
 	[JsonPropertyName("Size")]
-	public string Size { get; set; } = string.Empty;
+	//Bytes
+	public long Size { get; set; }
 
 	[JsonPropertyName("Format")]
 	public string Format { get; set; } = string.Empty;
