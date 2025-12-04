@@ -17,6 +17,9 @@ public class PVEStorageName {
 	[JsonPropertyName("Type")]
 	public string Type { get; set; } = string.Empty;
 
+	[JsonPropertyName("Content")]
+	public List<string> Content { get; set; }
+
 	public PVEStorageName(){ }
 
 	public string ToJson() {

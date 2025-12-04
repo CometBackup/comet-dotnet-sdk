@@ -231,6 +231,11 @@ public class DestinationConfig {
 	//Storage Vault quota
 	public long StorageLimitBytes { get; set; }
 
+	[JsonPropertyName("StorageLimitID")]
+	//If set, use a shared Storage Vault quota from the Comet Management Console. The direct value of StorageLimitBytes is
+	//ignored.
+	public string StorageLimitID { get; set; } = string.Empty;
+
 	[JsonPropertyName("Statistics")]
 	public DestinationStatistics Statistics { get; set; }
 

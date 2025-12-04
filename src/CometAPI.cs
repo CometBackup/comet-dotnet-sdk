@@ -2712,11 +2712,13 @@ public class CometAPI : IDisposable {
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Credentials">The SSH connection settings</param>
-	public async Task<BrowseProxmoxStorageResponse> AdminDispatcherRequestBrowseProxmoxStorageAsync(string TargetID, SSHConnection Credentials) {
+	/// <param name="Node">The target node</param>
+	public async Task<BrowseProxmoxStorageResponse> AdminDispatcherRequestBrowseProxmoxStorageAsync(string TargetID, SSHConnection Credentials, string Node) {
 		var data = new Dictionary<string,string>();
 
 		data["TargetID"] = TargetID;
 		data["Credentials"] = JsonSerializer.Serialize(Credentials);
+		data["Node"] = Node;
 
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/dispatcher/request-browse-proxmox/storage", data)){
 			response.EnsureSuccessStatusCode();
@@ -2734,8 +2736,9 @@ public class CometAPI : IDisposable {
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Credentials">The SSH connection settings</param>
-	public BrowseProxmoxStorageResponse AdminDispatcherRequestBrowseProxmoxStorage(string TargetID, SSHConnection Credentials) {
-		var resultTask = AdminDispatcherRequestBrowseProxmoxStorageAsync(TargetID, Credentials);
+	/// <param name="Node">The target node</param>
+	public BrowseProxmoxStorageResponse AdminDispatcherRequestBrowseProxmoxStorage(string TargetID, SSHConnection Credentials, string Node) {
+		var resultTask = AdminDispatcherRequestBrowseProxmoxStorageAsync(TargetID, Credentials, Node);
 		resultTask.Wait();
 		return resultTask.Result;
 	}
@@ -6548,6 +6551,142 @@ public class CometAPI : IDisposable {
 	}
 
 	/// <summary>
+	/// AdminSquotaDeleteAsync: Delete a shared storage quota and detach all users
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="SharedStorageQuotaID">(No description available)</param>
+	public async Task<CometAPIResponseMessage> AdminSquotaDeleteAsync(string SharedStorageQuotaID) {
+		var data = new Dictionary<string,string>();
+
+		data["SharedStorageQuotaID"] = SharedStorageQuotaID;
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/squota/delete", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<CometAPIResponseMessage>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// AdminSquotaDelete: Delete a shared storage quota and detach all users
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="SharedStorageQuotaID">(No description available)</param>
+	public CometAPIResponseMessage AdminSquotaDelete(string SharedStorageQuotaID) {
+		var resultTask = AdminSquotaDeleteAsync(SharedStorageQuotaID);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
+	/// AdminSquotaGetWithHashAsync: Get properties for a shared storage quota
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="SharedStorageQuotaID">(No description available)</param>
+	public async Task<GetSharedStorageQuotaResponse> AdminSquotaGetWithHashAsync(string SharedStorageQuotaID) {
+		var data = new Dictionary<string,string>();
+
+		data["SharedStorageQuotaID"] = SharedStorageQuotaID;
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/squota/get-with-hash", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<GetSharedStorageQuotaResponse>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// AdminSquotaGetWithHash: Get properties for a shared storage quota
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="SharedStorageQuotaID">(No description available)</param>
+	public GetSharedStorageQuotaResponse AdminSquotaGetWithHash(string SharedStorageQuotaID) {
+		var resultTask = AdminSquotaGetWithHashAsync(SharedStorageQuotaID);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
+	/// AdminSquotaListAllAsync: List available shared storage quota objects
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	public async Task<ListSharedStorageQuotaResponse> AdminSquotaListAllAsync() {
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/squota/list-all", null)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<ListSharedStorageQuotaResponse>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// AdminSquotaListAll: List available shared storage quota objects
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	public ListSharedStorageQuotaResponse AdminSquotaListAll() {
+		var resultTask = AdminSquotaListAllAsync();
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
+	/// AdminSquotaSetWithHashAsync: Create or update a shared storage quota
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="SharedStorageQuotaID">(No description available)</param>
+	/// <param name="SharedStorageQuota">(No description available)</param>
+	/// <param name="CheckHash">(Optional) If supplied, validate the change against this hash. Omit to forcibly apply
+	/// changes.</param>
+	public async Task<SetSharedStorageQuotaResponse> AdminSquotaSetWithHashAsync(string SharedStorageQuotaID, SharedStorageQuota SharedStorageQuota, string CheckHash = null) {
+		var data = new Dictionary<string,string>();
+
+		data["SharedStorageQuotaID"] = SharedStorageQuotaID;
+		data["SharedStorageQuota"] = JsonSerializer.Serialize(SharedStorageQuota);
+		if (CheckHash != null) {
+			data["CheckHash"] = CheckHash;
+		}
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/squota/set-with-hash", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<SetSharedStorageQuotaResponse>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// AdminSquotaSetWithHash: Create or update a shared storage quota
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="SharedStorageQuotaID">(No description available)</param>
+	/// <param name="SharedStorageQuota">(No description available)</param>
+	/// <param name="CheckHash">(Optional) If supplied, validate the change against this hash. Omit to forcibly apply
+	/// changes.</param>
+	public SetSharedStorageQuotaResponse AdminSquotaSetWithHash(string SharedStorageQuotaID, SharedStorageQuota SharedStorageQuota, string CheckHash = null) {
+		var resultTask = AdminSquotaSetWithHashAsync(SharedStorageQuotaID, SharedStorageQuota, CheckHash);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
 	/// AdminStorageBucketPropertiesAsync: Retrieve properties for a single bucket
 	/// This API can also be used to refresh the size measurement for a single bucket by passing a valid AfterTimestamp
 	/// parameter.
@@ -8038,11 +8177,13 @@ public class CometAPI : IDisposable {
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Credentials">SSH connection settings</param>
-	public async Task<BrowseProxmoxStorageResponse> UserWebDispatcherRequestBrowseProxmoxStorageAsync(string TargetID, SSHConnection Credentials) {
+	/// <param name="Node">The target node</param>
+	public async Task<BrowseProxmoxStorageResponse> UserWebDispatcherRequestBrowseProxmoxStorageAsync(string TargetID, SSHConnection Credentials, string Node) {
 		var data = new Dictionary<string,string>();
 
 		data["TargetID"] = TargetID;
 		data["Credentials"] = JsonSerializer.Serialize(Credentials);
+		data["Node"] = Node;
 
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/user/web/dispatcher/request-browse-proxmox/storage", data)){
 			response.EnsureSuccessStatusCode();
@@ -8061,8 +8202,9 @@ public class CometAPI : IDisposable {
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Credentials">SSH connection settings</param>
-	public BrowseProxmoxStorageResponse UserWebDispatcherRequestBrowseProxmoxStorage(string TargetID, SSHConnection Credentials) {
-		var resultTask = UserWebDispatcherRequestBrowseProxmoxStorageAsync(TargetID, Credentials);
+	/// <param name="Node">The target node</param>
+	public BrowseProxmoxStorageResponse UserWebDispatcherRequestBrowseProxmoxStorage(string TargetID, SSHConnection Credentials, string Node) {
+		var resultTask = UserWebDispatcherRequestBrowseProxmoxStorageAsync(TargetID, Credentials, Node);
 		resultTask.Wait();
 		return resultTask.Result;
 	}

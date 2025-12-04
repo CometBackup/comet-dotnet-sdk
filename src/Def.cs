@@ -3,13 +3,13 @@
 
 namespace CometBackup.CometAPI.SDK {
 public static class Def {
-	public const string APPLICATION_VERSION = "25.9.6";
+	public const string APPLICATION_VERSION = "25.9.8";
 
 	public const long APPLICATION_VERSION_MAJOR = 25;
 
 	public const long APPLICATION_VERSION_MINOR = 9;
 
-	public const long APPLICATION_VERSION_REVISION = 6;
+	public const long APPLICATION_VERSION_REVISION = 8;
 
 	/// AutoRetentionLevel: The system will automatically choose how often to run an automatic Retention Pass after each
 	/// backup job.
@@ -983,6 +983,15 @@ public static class Def {
 
 	/// StreamableEventType: UserGroup updated.
 	public const long SEVT_USERGROUP_UPDATED = 4802;
+
+	/// StreamableEventType
+	public const long SEVT_SQUOTA_NEW = 4803;
+
+	/// StreamableEventType
+	public const long SEVT_SQUOTA_REMOVED = 4804;
+
+	/// StreamableEventType
+	public const long SEVT_SQUOTA_UPDATED = 4805;
 
 	/// StreamableEventType
 	public const long SEVT__MAX = 4999;
