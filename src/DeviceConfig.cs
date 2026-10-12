@@ -37,6 +37,9 @@ public class DeviceConfig {
 	[JsonPropertyName("SyncroUUID")]
 	public string SyncroUUID { get; set; } = string.Empty;
 
+	[JsonPropertyName("NinjaOneNodeId")]
+	public long NinjaOneNodeId { get; set; }
+
 	public DeviceConfig(){ }
 
 	public string ToJson() {

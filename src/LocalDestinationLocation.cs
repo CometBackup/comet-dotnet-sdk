@@ -24,7 +24,7 @@ public class LocalDestinationLocation {
 	public string LocalcopyWinSMBPassword { get; set; } = string.Empty;
 
 	[JsonPropertyName("LocalcopyWinSMBPasswordFormat")]
-	//One of the PASSWORD_FORMAT_ constants. It controls the hash format of the LocalcopyWinSMBPassword field.
+	//One of the ENCRYPTIONMETHOD_ constants. It controls the hash format of the LocalcopyWinSMBPassword field.
 	public ulong LocalcopyWinSMBPasswordFormat { get; set; }
 
 	public LocalDestinationLocation(){ }

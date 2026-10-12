@@ -15,7 +15,7 @@ public class SingleFieldSource {
 	public string FieldName { get; set; } = string.Empty;
 
 	[JsonPropertyName("FieldType")]
-	//One of "bool" / "int" / "string"
+	//One of the SOURCEFIELD_ constants
 	public string FieldType { get; set; } = string.Empty;
 
 	[JsonPropertyName("BoolVal")]

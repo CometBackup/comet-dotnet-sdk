@@ -21,6 +21,9 @@ public class UpdateCampaignStatusDeviceEntry {
 	//One of the UPDATESTATUS_ constants
 	public long Status { get; set; }
 
+	[JsonPropertyName("SkipDetail")]
+	public UpdateCampaignSkipDetail SkipDetail { get; set; }
+
 	public UpdateCampaignStatusDeviceEntry(){ }
 
 	public string ToJson() {
@@ -33,10 +36,12 @@ public class UpdateCampaignStatusDeviceEntry {
 
 	public UpdateCampaignDeviceStatus GetEmbeddedUpdateCampaignDeviceStatus() => new UpdateCampaignDeviceStatus {
 		Status = this.Status,
+		SkipDetail = this.SkipDetail,
 	};
 
 	public void SetEmbeddedUpdateCampaignDeviceStatus(UpdateCampaignDeviceStatus other){
 		this.Status = other.Status;
+		this.SkipDetail = other.SkipDetail;
 	}
 
 }

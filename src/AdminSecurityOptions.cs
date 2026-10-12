@@ -45,7 +45,7 @@ public class AdminSecurityOptions {
 
 	[JsonPropertyName("TOTPKeyEncryptionFormat")]
 	//One of the ENCRYPTIONMETHOD_ constants
-	public long TOTPKeyEncryptionFormat { get; set; }
+	public ulong TOTPKeyEncryptionFormat { get; set; }
 
 	[JsonPropertyName("TOTPKey")]
 	public string TOTPKey { get; set; } = string.Empty;

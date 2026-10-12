@@ -107,6 +107,9 @@ public class PrivateBrandingProperties {
 	[JsonPropertyName("MacOSCodeSign")]
 	public MacOSCodeSignProperties MacOSCodeSign { get; set; }
 
+	[JsonPropertyName("LinuxRpmCodeSign")]
+	public LinuxRpmCodeSignProperties LinuxRpmCodeSign { get; set; }
+
 	public PrivateBrandingProperties(){ }
 
 	public string ToJson() {

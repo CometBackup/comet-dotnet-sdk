@@ -140,6 +140,9 @@ public class BrandingProperties {
 	[JsonPropertyName("MacOSCodeSign")]
 	public MacOSCodeSignProperties MacOSCodeSign { get; set; }
 
+	[JsonPropertyName("LinuxRpmCodeSign")]
+	public LinuxRpmCodeSignProperties LinuxRpmCodeSign { get; set; }
+
 	public BrandingProperties(){ }
 
 	public string ToJson() {
@@ -208,6 +211,7 @@ public class BrandingProperties {
 		WindowsCodeSignRelicKeypairFile = this.WindowsCodeSignRelicKeypairFile,
 		WindowsCodeSignRelicKeyName = this.WindowsCodeSignRelicKeyName,
 		MacOSCodeSign = this.MacOSCodeSign,
+		LinuxRpmCodeSign = this.LinuxRpmCodeSign,
 	};
 
 	public void SetEmbeddedPrivateBrandingProperties(PrivateBrandingProperties other){
@@ -240,6 +244,7 @@ public class BrandingProperties {
 		this.WindowsCodeSignRelicKeypairFile = other.WindowsCodeSignRelicKeypairFile;
 		this.WindowsCodeSignRelicKeyName = other.WindowsCodeSignRelicKeyName;
 		this.MacOSCodeSign = other.MacOSCodeSign;
+		this.LinuxRpmCodeSign = other.LinuxRpmCodeSign;
 	}
 
 }

@@ -87,6 +87,34 @@ public class SourceConfig {
 	//- SAVEAS: The virtual filename inside the backup snapshot
 	//- Any key starting with EXTRACOMMAND- : Additional commands to run. Each value should be a JSON array of 3 strings,
 	//equivalent to the COMMAND, WORKDIR, SAVEAS values.
+	//
+	//For engine1/mysql, Comet understands the following EngineProp keys:
+	//
+	//- USERNAME: The username to connect to the MySQL server
+	//- PASSWORD: The password to connect to the MySQL server
+	//- HOST: The hostname or IP address of the MySQL server
+	//- PORT: The TCP port of the MySQL server. If not present, defaults to 3306
+	//- USE_TLS: If set to "1", connect using TLS
+	//- TLS_SKIP_VERIFY: If set to "1" and USE_TLS is set, skip verifying the server certificate
+	//- TLS_CUSTOM_SERVER_CA_PATH: Path to a custom CA file or directory for verifying the server certificate
+	//- TLS_CUSTOM_CLIENT_CRT_PATH: Path to a client TLS certificate file
+	//- TLS_CUSTOM_CLIENT_KEY_PATH: Path to a client TLS private key file
+	//- MYSQLDUMP: Path to a custom mysqldump binary, or "$internal$" to force the internal implementation. If not present,
+	//autodiscover a mysqldump binary and fall back to the internal implementation
+	//- ISOLATION_MODE: One of "ST" (single transaction), "FL" (lock tables), or "UNSAFE". If not present, defaults to "ST"
+	//- EXTRA_PARAMS: Extra space-separated arguments to pass to mysqldump
+	//- ALL_DATABASES: If present, include all databases with specified exclusions. If not present, only back up the
+	//specified inclusions
+	//- Any key starting with DATABASE: A database that is included. Only valid if ALL_DATABASES is not present.
+	//- Any key starting with EXCEPT-DATABASE: A database that is excluded. Only valid if ALL_DATABASES is present.
+	//- METADATA_FILE: Path to a local file whose content will be stored in the backup snapshot under the reserved
+	//".metadata" filename. The file is read at backup time on the device. Restore jobs of type RESTORETYPE_MYSQL skip this
+	//stream; it can be retrieved with a file restore. If not present, no metadata stream is added
+	//- INCLUDE_USERS_GRANTS: Optional. If set to "1", additionally capture the MySQL server's user accounts and their
+	//privilege grants as a generated SQL script, stored in the backup snapshot under the reserved ".users-grants.sql"
+	//filename. Requires the connecting MySQL user to have privileges to read the grant tables. Restore jobs of type
+	//RESTORETYPE_MYSQL skip this stream; it can be retrieved with a file restore. If not present, or set to any other
+	//value, no users-and-grants stream is added
 	public Dictionary<string, string> EngineProps { get; set; }
 
 	[JsonPropertyName("PolicySourceID")]

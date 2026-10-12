@@ -26,6 +26,11 @@ public class EmailReportConfig {
 	[JsonPropertyName("Filter")]
 	public SearchClause Filter { get; set; }
 
+	[JsonPropertyName("Title")]
+	//A custom name for this email report, used to distinguish it from other reports of the same type. If blank, the report
+	//is labelled by its type.
+	public string Title { get; set; } = string.Empty;
+
 	public EmailReportConfig(){ }
 
 	public string ToJson() {

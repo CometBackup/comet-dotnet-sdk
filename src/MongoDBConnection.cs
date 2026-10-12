@@ -32,7 +32,10 @@ public class MongoDBConnection {
 	//Prior to Comet 22.12.3, must be a filesystem path to `mongo` (n.b. not `mongosh`). In Comet >= 22.12.3, not used.
 	public string MongoShellPath { get; set; } = string.Empty;
 
+	[Obsolete("Deprecated since Comet version 25.9.11")]
+
 	[JsonPropertyName("MongodumpPath")]
+	//External mongodump path. This is deprecated in Comet 25.9.11, Comet now includes MongoDB dump functionality.
 	public string MongodumpPath { get; set; } = string.Empty;
 
 	[JsonPropertyName("ReadPreference")]

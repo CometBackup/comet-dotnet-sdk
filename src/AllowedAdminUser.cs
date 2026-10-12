@@ -54,7 +54,7 @@ public class AllowedAdminUser {
 
 	[JsonPropertyName("TOTPKeyEncryptionFormat")]
 	//One of the ENCRYPTIONMETHOD_ constants
-	public long TOTPKeyEncryptionFormat { get; set; }
+	public ulong TOTPKeyEncryptionFormat { get; set; }
 
 	[JsonPropertyName("TOTPKey")]
 	public string TOTPKey { get; set; } = string.Empty;
@@ -65,6 +65,9 @@ public class AllowedAdminUser {
 
 	[JsonPropertyName("Permissions")]
 	public AdminUserPermissions Permissions { get; set; }
+
+	[JsonPropertyName("APITokens")]
+	public List<AdminAPIToken> APITokens { get; set; }
 
 	public AllowedAdminUser(){ }
 

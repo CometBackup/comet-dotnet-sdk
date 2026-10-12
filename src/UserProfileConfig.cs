@@ -105,13 +105,23 @@ public class UserProfileConfig {
 
 	[JsonPropertyName("QuotaHyperVGuests")]
 	//A limit on the total number of Hyper-V guests across all Hyper-V Protected Items in this account. Set to zero to
-	//allow unlimited Office 365 Protected Accounts.
+	//allow unlimited Hyper-V guests.
 	public long QuotaHyperVGuests { get; set; }
 
 	[JsonPropertyName("QuotaVMwareGuests")]
 	//A limit on the total number of VMware guests across all VMware Protected Items in this account. Set to zero to allow
-	//unlimited Office 365 Protected Accounts.
+	//unlimited VMware guests.
 	public long QuotaVMwareGuests { get; set; }
+
+	[JsonPropertyName("QuotaProxmoxGuestVMs")]
+	//A limit on the total number of Proxmox guest VMs across all Proxmox Protected Items in this account. Set to zero to
+	//allow unlimited Proxmox guest VMs.
+	public long QuotaProxmoxGuestVMs { get; set; }
+
+	[JsonPropertyName("QuotaProxmoxGuestLXCs")]
+	//A limit on the total number of Proxmox guest LXCs across all Proxmox Protected Items in this account. Set to zero to
+	//allow unlimited Proxmox guest LXCs.
+	public long QuotaProxmoxGuestLXCs { get; set; }
 
 	[JsonPropertyName("PolicyID")]
 	//If the PolicyID field is set to a non-empty string, the Comet Server will enforce the contents of the Policy field
@@ -148,7 +158,7 @@ public class UserProfileConfig {
 
 	[JsonPropertyName("TOTPKeyEncryptionFormat")]
 	//One of the ENCRYPTIONMETHOD_ constants
-	public long TOTPKeyEncryptionFormat { get; set; }
+	public ulong TOTPKeyEncryptionFormat { get; set; }
 
 	[JsonPropertyName("TOTPKey")]
 	public string TOTPKey { get; set; } = string.Empty;
@@ -172,10 +182,21 @@ public class UserProfileConfig {
 	[JsonPropertyName("AutoStorageTemplateGUID")]
 	public string AutoStorageTemplateGUID { get; set; } = string.Empty;
 
+	[Obsolete("Deprecated since Comet version 26.2.4 Linux home-directory sandboxing is always enabled; this field is ignored.")]
+
 	[JsonPropertyName("LinuxHomedirSandbox")]
-	//If enabled, Linux devices in this user account will sandbox all read/write operations to paths inside user home
-	//directories
 	public bool LinuxHomedirSandbox { get; set; }
+
+	[JsonPropertyName("UserExtra")]
+	//A freeform key-value map that can be used for any custom metadata. The Comet Server does not use this field for any
+	//purpose, but it is stored and replicated along with the rest of the user profile.
+	public Dictionary<string, string> UserExtra { get; set; }
+
+	[JsonPropertyName("AdminExtra")]
+	//A freeform key-value map that can be used for any custom metadata that should only be visible to administrators. The
+	//Comet Server does not use this field for any purpose, but it is stored and replicated along with the rest of the user
+	//profile.
+	public Dictionary<string, string> AdminExtra { get; set; }
 
 	public UserProfileConfig(){ }
 

@@ -11,6 +11,8 @@ namespace CometBackup.CometAPI.SDK {
 /// </summary>
 public class PSAConfig {
 
+	[Obsolete("Deprecated since Comet version 26.5.2")]
+
 	[JsonPropertyName("AlertsDisabled")]
 	//For PSA_TYPE_GRADIENT. Defaults to enabled
 	public bool AlertsDisabled { get; set; }
@@ -18,6 +20,10 @@ public class PSAConfig {
 	[JsonPropertyName("CustomHeaders")]
 	//Custom headers to send with each PSA request
 	public Dictionary<string, string> CustomHeaders { get; set; }
+
+	[JsonPropertyName("NinjaOne")]
+	//NinjaOne-specific PSA configuration
+	public NinjaOneConfig NinjaOne { get; set; }
 
 	[JsonPropertyName("PartnerKey")]
 	//Specified API key for the target PSA
@@ -31,8 +37,14 @@ public class PSAConfig {
 	//The URL or subdomain for outbound PSA requests
 	public string URL { get; set; } = string.Empty;
 
+	[Obsolete("Deprecated since Comet version 26.5.2")]
+
 	[JsonPropertyName("GroupedBy")]
 	public PSAGroupedBy GroupedBy { get; set; }
+
+	[JsonPropertyName("ConnectWise")]
+	//For PSA_TYPE_CONNECTWISE. The additional connection parameters for ConnectWise Manage
+	public PSAConfigConnectWise ConnectWise { get; set; }
 
 	public PSAConfig(){ }
 

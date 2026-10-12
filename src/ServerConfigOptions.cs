@@ -45,7 +45,12 @@ public class ServerConfigOptions {
 	public RatelimitOptions IPRateLimit { get; set; }
 
 	[JsonPropertyName("LoginProtection")]
+	//Enable these options to block repeated failed login attempts to the Comet Server.
 	public LoginProtectionOptions LoginProtection { get; set; }
+
+	[JsonPropertyName("DNSCache")]
+	//Configure the in-process DNS cache used for outbound HTTP requests.
+	public DNSCacheOptions DNSCache { get; set; }
 
 	[JsonPropertyName("License")]
 	public LicenseOptions License { get; set; }
@@ -75,17 +80,49 @@ public class ServerConfigOptions {
 	[JsonPropertyName("StorageRole")]
 	public StorageRoleOptions StorageRole { get; set; }
 
+	[JsonPropertyName("Pkcs11Allowlist")]
+	//Defense-in-depth allowlist of permitted PKCS#11 driver module paths during Authenticode codesigning. Top-level only -
+	//not read from per-tenant configuration.
+	public Pkcs11AllowlistOptions Pkcs11Allowlist { get; set; }
+
 	[JsonPropertyName("TrustXForwardedFor")]
 	//If true, the X-Forwarded-For header will be trusted for the purposes of IP allowlisting. This should only be enabled
 	//when you explicitly configure Comet Server behind a reverse proxy, otherwise it could allow malicious users to bypass
 	//the IP allowlist.
 	public bool TrustXForwardedFor { get; set; }
 
+	[JsonPropertyName("AllowEmailDeliveryToPrivateAddresses")]
+	//If true, this Comet Server may send email through SMTP servers on loopback, RFC1918, or other private/link-local IP
+	//addresses. Enable this only if you intentionally run an SMTP relay on the LAN. Otherwise a tenant admin who controls
+	//SMTP host or recipient settings could direct outbound SMTP traffic at internal network services. If unset (null),
+	//Comet Server picks a value at startup by DNS-resolving the currently configured SMTP servers: enabled if any resolve
+	//to a private address (preserves the behavior of servers upgrading from a version without this setting), disabled
+	//otherwise.
+	public bool AllowEmailDeliveryToPrivateAddresses { get; set; }
+
 	[JsonPropertyName("WebhookOptions")]
 	public Dictionary<string, WebhookOption> WebhookOptions { get; set; }
 
 	[JsonPropertyName("AuditFileOptions")]
 	public Dictionary<string, FileOption> AuditFileOptions { get; set; }
+
+	[JsonPropertyName("AutoStartUpgradeCampaign")]
+	//Start a new Bulk Upgrade Campaign at each server start using the saved campaign options
+	public bool AutoStartUpgradeCampaign { get; set; }
+
+	[JsonPropertyName("AutoStartUpgradeCampaignOptions")]
+	//Saved campaign options reused at startup
+	public UpdateCampaignOptions AutoStartUpgradeCampaignOptions { get; set; }
+
+	[JsonPropertyName("CustomBranding")]
+	//Custom JavaScript / CSS injected into the web interface of the top-level organization and all tenants. Can only be
+	//configured by a top-level admin
+	public CustomBrandingOptions CustomBranding { get; set; }
+
+	[JsonPropertyName("AllowAdminAPITokens")]
+	//If true, admin accounts may create personal API tokens and authenticate using them. Defaults to true on new
+	//installations, and false when upgrading from a version without this feature.
+	public bool AllowAdminAPITokens { get; set; }
 
 	public ServerConfigOptions(){ }
 

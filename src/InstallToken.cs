@@ -26,13 +26,13 @@ public class InstallToken {
 	//Unix timestamp, in seconds.
 	public long CreateTime { get; set; }
 
-	[JsonPropertyName("Used")]
-	//If the token has been used, it cannot be used again.
-	public bool Used { get; set; }
-
 	[JsonPropertyName("ExpireTime")]
 	//Unix timestamp, in seconds.
 	public long ExpireTime { get; set; }
+
+	[JsonPropertyName("Used")]
+	//If the token has been used, it cannot be used again.
+	public bool Used { get; set; }
 
 	public InstallToken(){ }
 

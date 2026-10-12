@@ -21,6 +21,9 @@ public class BrowseProxmoxResponse {
 	[JsonPropertyName("VMs")]
 	public List<PVEVM> VMs { get; set; }
 
+	[JsonPropertyName("Nodes")]
+	public List<Node> Nodes { get; set; }
+
 	public BrowseProxmoxResponse(){ }
 
 	public string ToJson() {

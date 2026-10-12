@@ -47,6 +47,13 @@ public class Office365CustomSettingV2 {
 	//Value is a bitset of the SERVICE_ constants, to select which services to not backup for members
 	public Dictionary<string, long> FilterMemberOptions { get; set; }
 
+	[JsonPropertyName("Rules")]
+	//An ordered list of include/exclude rules. If this field is non-empty, it is the
+	//sole source of truth for account and service selection, and the Organization, FilterMode,
+	//WholeOrg, BackupOptions, MemberBackupOptions, FilterOptions and FilterMemberOptions fields are
+	//all ignored. If empty or omitted, behavior is identical to prior Comet versions.
+	public List<Office365SelectionRule> Rules { get; set; }
+
 	public Office365CustomSettingV2(){ }
 
 	public string ToJson() {

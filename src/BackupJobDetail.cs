@@ -74,8 +74,12 @@ public class BackupJobDetail {
 	public long DownloadSize { get; set; }
 
 	[JsonPropertyName("TotalVmCount")]
-	//For Hyper-V and VMware backup jobs, the total number of virtual machines.
+	//For Hyper-V, VMware and Proxmox backup jobs, the total number of virtual machines.
 	public long TotalVmCount { get; set; }
+
+	[JsonPropertyName("TotalLxcCount")]
+	//For Proxmox backup jobs, the total number of LXC containers.
+	public long TotalLxcCount { get; set; }
 
 	[JsonPropertyName("TotalMailsCount")]
 	//For Office 365 backup jobs, the total number of mailboxes.

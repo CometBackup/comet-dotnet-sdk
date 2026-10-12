@@ -18,6 +18,7 @@ public class PVEVM {
 	public List<PVEDisk> Disks { get; set; }
 
 	[JsonPropertyName("Memory")]
+	//Memory is a human-formatted string of the VM's memory. It might be rounded.
 	public string Memory { get; set; } = string.Empty;
 
 	[JsonPropertyName("Name")]
@@ -34,6 +35,9 @@ public class PVEVM {
 
 	[JsonPropertyName("Type")]
 	public string Type { get; set; } = string.Empty;
+
+	[JsonPropertyName("Template")]
+	public bool Template { get; set; }
 
 	[JsonPropertyName("VMID")]
 	//String type, but always contains an integer value

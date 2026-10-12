@@ -32,6 +32,9 @@ public class UserPolicy {
 	[JsonPropertyName("DefaultNewStorageVault")]
 	public string DefaultNewStorageVault { get; set; } = string.Empty;
 
+	[JsonPropertyName("SVSelectionRuleIncludeUnassociated")]
+	public bool SVSelectionRuleIncludeUnassociated { get; set; }
+
 	[JsonPropertyName("PreventNewProtectedItem")]
 	public bool PreventNewProtectedItem { get; set; }
 

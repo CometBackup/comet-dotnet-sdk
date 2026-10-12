@@ -20,6 +20,16 @@ public class AdminAccountPropertiesResponse {
 	[JsonPropertyName("Security")]
 	public AdminSecurityOptions Security { get; set; }
 
+	[JsonPropertyName("AllowAPITokens")]
+	//True if this server and this admin account permit creating personal API tokens
+	public bool AllowAPITokens { get; set; }
+
+	[JsonPropertyName("APITokenCreateRequiresPassword")]
+	//True if AdminAccountAPITokenCreate requires the account's current password to be re-supplied. This is the case
+	//whenever the caller is not already authenticating with a password, unless the account is managed by an external
+	//authentication source and so has no local password to confirm.
+	public bool APITokenCreateRequiresPassword { get; set; }
+
 	public AdminAccountPropertiesResponse(){ }
 
 	public string ToJson() {

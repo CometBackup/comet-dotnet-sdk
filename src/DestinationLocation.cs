@@ -153,7 +153,7 @@ public class DestinationLocation {
 	public string LocalcopyWinSMBPassword { get; set; } = string.Empty;
 
 	[JsonPropertyName("LocalcopyWinSMBPasswordFormat")]
-	//One of the PASSWORD_FORMAT_ constants. It controls the hash format of the LocalcopyWinSMBPassword field.
+	//One of the ENCRYPTIONMETHOD_ constants. It controls the hash format of the LocalcopyWinSMBPassword field.
 	public ulong LocalcopyWinSMBPasswordFormat { get; set; }
 
 	[JsonPropertyName("Swift")]
@@ -170,6 +170,9 @@ public class DestinationLocation {
 
 	[JsonPropertyName("SMB")]
 	public SMBDestinationLocation SMB { get; set; }
+
+	[JsonPropertyName("NFS")]
+	public NFSDestinationLocation NFS { get; set; }
 
 	[JsonPropertyName("SpanTargets")]
 	//A list of underlying destinations, that will be combined and presented as one.

@@ -68,6 +68,13 @@ public class AdminUserPermissions {
 	[JsonPropertyName("DenySoftwareBuildRole")]
 	public bool DenySoftwareBuildRole { get; set; }
 
+	[JsonPropertyName("PreventWriteActions")]
+	public bool PreventWriteActions { get; set; }
+
+	[JsonPropertyName("PreventAPITokens")]
+	//If true, this admin cannot create personal API tokens or authenticate using existing ones
+	public bool PreventAPITokens { get; set; }
+
 	public AdminUserPermissions(){ }
 
 	public string ToJson() {

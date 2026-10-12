@@ -15,6 +15,9 @@ public class UpdateCampaignDeviceStatus {
 	//One of the UPDATESTATUS_ constants
 	public long Status { get; set; }
 
+	[JsonPropertyName("SkipDetail")]
+	public UpdateCampaignSkipDetail SkipDetail { get; set; }
+
 	public UpdateCampaignDeviceStatus(){ }
 
 	public string ToJson() {

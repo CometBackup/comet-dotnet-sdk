@@ -52,6 +52,11 @@ public class BackupJobAdvancedOptions {
 	//Default disabled
 	public string Tags { get; set; } = string.Empty;
 
+	[JsonPropertyName("LimitVaultSpeedTimeWindow")]
+	//Optionally restricts LimitVaultSpeedBps to a specific time of day and days of the week. When absent, or when its
+	//RestrictTimes is false, LimitVaultSpeedBps applies at all times. Has no effect unless LimitVaultSpeedBps is set.
+	public SpeedLimitTimeWindow LimitVaultSpeedTimeWindow { get; set; }
+
 	public BackupJobAdvancedOptions(){ }
 
 	public string ToJson() {

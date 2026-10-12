@@ -115,6 +115,12 @@ public class RestoreJobAdvancedOptions {
 	//For RESTORETYPE_VMHOST
 	public ProxmoxRestoreTargetOptions ProxmoxConnection { get; set; }
 
+	[JsonPropertyName("DestinationLocation")]
+	//For RESTORETYPE_CLOUD_STORAGE. Describes the target cloud/remote storage
+	//location. The destination path (subdir/prefix) is taken from the fields
+	//inside this DestinationLocation - no separate DestPath is used.
+	public DestinationLocation DestinationLocation { get; set; }
+
 	public RestoreJobAdvancedOptions(){ }
 
 	public string ToJson() {
