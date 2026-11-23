@@ -69,6 +69,9 @@ public class ServerMetaBrandingProperties {
 	//enforced via the license.
 	public bool AdminHideBrandedCloudStorage { get; set; }
 
+	[JsonPropertyName("ExperimentalOptions")]
+	public List<string> ExperimentalOptions { get; set; }
+
 	public ServerMetaBrandingProperties(){ }
 
 	public string ToJson() {

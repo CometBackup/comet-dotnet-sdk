@@ -59,45 +59,63 @@ public class RestoreJobAdvancedOptions {
 	//Corresponds to the "Prefer temporary files instead of RAM (slower)" option
 	public bool OnDiskIndexesKey { get; set; }
 
+	[JsonPropertyName("PreventAutoSparsify")]
+	//Default disabled. For RESTORETYPE_FILE. If set, restored files are always written in full. Otherwise, large
+	//zero-filled regions may be restored as sparse regions or extended without writing, which is faster and can use
+	//less disk space, but some files (e.g. swap files, preallocated database files) require full allocation.
+	//Corresponds to the "Fully allocate restored files (disable sparse files)" option
+	public bool PreventAutoSparsify { get; set; }
+
 	[JsonPropertyName("Office365Credential")]
 	//For RESTORETYPE_OFFICE365_CLOUD.
 	public Office365Credential Office365Credential { get; set; }
 
+	[JsonPropertyName("Office365SkipExisting")]
+	//Default disabled. For RESTORETYPE_OFFICE365_CLOUD. If set, items already present at the destination are skipped
+	//instead of being restored again.
+	//Corresponds to the "Skip items that are already present at the destination" option
+	public bool Office365SkipExisting { get; set; }
+
 	[JsonPropertyName("Username")]
-	//For RESTORETYPE_MYSQL
+	//For RESTORETYPE_MYSQL and RESTORETYPE_POSTGRESQL
 	public string Username { get; set; } = string.Empty;
 
 	[JsonPropertyName("Password")]
-	//For RESTORETYPE_MYSQL
+	//For RESTORETYPE_MYSQL and RESTORETYPE_POSTGRESQL
 	public string Password { get; set; } = string.Empty;
 
 	[JsonPropertyName("Host")]
-	//For RESTORETYPE_MYSQL
+	//For RESTORETYPE_MYSQL and RESTORETYPE_POSTGRESQL
 	public string Host { get; set; } = string.Empty;
 
 	[JsonPropertyName("Port")]
-	//For RESTORETYPE_MYSQL
+	//For RESTORETYPE_MYSQL and RESTORETYPE_POSTGRESQL
 	public string Port { get; set; } = string.Empty;
 
 	[JsonPropertyName("UseSsl")]
-	//For RESTORETYPE_MYSQL
+	//For RESTORETYPE_MYSQL and RESTORETYPE_POSTGRESQL
 	public bool UseSsl { get; set; }
 
 	[JsonPropertyName("SslAllowInvalid")]
-	//For RESTORETYPE_MYSQL i.e.: Self signed certs
+	//For RESTORETYPE_MYSQL and RESTORETYPE_POSTGRESQL i.e.: Self signed certs
 	public bool SslAllowInvalid { get; set; }
 
 	[JsonPropertyName("SslCaFile")]
-	//For RESTORETYPE_MYSQL
+	//For RESTORETYPE_MYSQL and RESTORETYPE_POSTGRESQL
 	public string SslCaFile { get; set; } = string.Empty;
 
 	[JsonPropertyName("SslCrtFile")]
-	//For RESTORETYPE_MYSQL
+	//For RESTORETYPE_MYSQL and RESTORETYPE_POSTGRESQL
 	public string SslCrtFile { get; set; } = string.Empty;
 
 	[JsonPropertyName("SslKeyFile")]
-	//For RESTORETYPE_MYSQL
+	//For RESTORETYPE_MYSQL and RESTORETYPE_POSTGRESQL
 	public string SslKeyFile { get; set; } = string.Empty;
+
+	[JsonPropertyName("PostgresConnectDatabase")]
+	//For RESTORETYPE_POSTGRESQL. The database to connect to in order to
+	//create the restored databases. If blank, "postgres" is used
+	public string PostgresConnectDatabase { get; set; } = string.Empty;
 
 	[JsonPropertyName("MsSqlConnection")]
 	//For RESTORETYPE_MSSQL.

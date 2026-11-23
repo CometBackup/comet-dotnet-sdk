@@ -76,6 +76,78 @@ public class WindowsCodeSignProperties {
 	//The name of the key to select on the remote SAS Relic server
 	public string WindowsCodeSignRelicKeyName { get; set; } = string.Empty;
 
+	[JsonPropertyName("WindowsCodeSignAWSRegion")]
+	//The AWS region containing the KMS key, e.g. us-east-1
+	public string WindowsCodeSignAWSRegion { get; set; } = string.Empty;
+
+	[JsonPropertyName("WindowsCodeSignAWSAccessKeyID")]
+	//The access key ID of an IAM user permitted to call kms:GetPublicKey and kms:Sign on the key
+	public string WindowsCodeSignAWSAccessKeyID { get; set; } = string.Empty;
+
+	[JsonPropertyName("WindowsCodeSignAWSSecretAccessKeyFormat")]
+	//One of the ENCRYPTIONMETHOD_ constants
+	public ulong WindowsCodeSignAWSSecretAccessKeyFormat { get; set; }
+
+	[JsonPropertyName("WindowsCodeSignAWSSecretAccessKey")]
+	public string WindowsCodeSignAWSSecretAccessKey { get; set; } = string.Empty;
+
+	[JsonPropertyName("WindowsCodeSignAWSKMSKeyID")]
+	//The KMS key ID, key ARN, alias name (alias/...) or alias ARN of an asymmetric SIGN_VERIFY key
+	public string WindowsCodeSignAWSKMSKeyID { get; set; } = string.Empty;
+
+	[JsonPropertyName("WindowsCodeSignAWSCertfile")]
+	//The X.509 code signing certificate for the KMS key, and optionally its intermediate certificates, in PEM or DER
+	//format
+	public string WindowsCodeSignAWSCertfile { get; set; } = string.Empty;
+
+	[JsonPropertyName("WindowsCodeSignGCPKMSKeyVersion")]
+	//The full resource name of a Cloud KMS asymmetric signing key version:
+	//projects/PROJECT/locations/LOCATION/keyRings/KEYRING/cryptoKeys/KEY/cryptoKeyVersions/VERSION
+	public string WindowsCodeSignGCPKMSKeyVersion { get; set; } = string.Empty;
+
+	[JsonPropertyName("WindowsCodeSignGCPServiceAccountKeyFormat")]
+	//One of the ENCRYPTIONMETHOD_ constants
+	public ulong WindowsCodeSignGCPServiceAccountKeyFormat { get; set; }
+
+	[JsonPropertyName("WindowsCodeSignGCPServiceAccountKey")]
+	//The JSON key file contents of a Google Cloud service account with the Cloud KMS Signer/Verifier role on the key
+	//version. Only keys of type service_account are accepted.
+	public string WindowsCodeSignGCPServiceAccountKey { get; set; } = string.Empty;
+
+	[JsonPropertyName("WindowsCodeSignGCPCertfile")]
+	//The X.509 code signing certificate for the Cloud KMS key, and optionally its intermediate certificates, in PEM or DER
+	//format
+	public string WindowsCodeSignGCPCertfile { get; set; } = string.Empty;
+
+	[JsonPropertyName("WindowsCodeSignAzureArtifactSigningEndpoint")]
+	//The regional endpoint of the Azure Artifact Signing account, e.g. https://eus.codesigning.azure.net
+	public string WindowsCodeSignAzureArtifactSigningEndpoint { get; set; } = string.Empty;
+
+	[JsonPropertyName("WindowsCodeSignAzureArtifactSigningAccount")]
+	//The Azure Artifact Signing account name
+	public string WindowsCodeSignAzureArtifactSigningAccount { get; set; } = string.Empty;
+
+	[JsonPropertyName("WindowsCodeSignAzureArtifactSigningProfile")]
+	//The certificate profile name within the Azure Artifact Signing account
+	public string WindowsCodeSignAzureArtifactSigningProfile { get; set; } = string.Empty;
+
+	[JsonPropertyName("WindowsCodeSignAzureArtifactSigningTenantID")]
+	//The Microsoft Entra tenant ID of the app registration
+	public string WindowsCodeSignAzureArtifactSigningTenantID { get; set; } = string.Empty;
+
+	[JsonPropertyName("WindowsCodeSignAzureArtifactSigningAppID")]
+	//The application (client) ID of a Microsoft Entra app registration with the Artifact Signing Certificate Profile
+	//Signer role on the certificate profile
+	public string WindowsCodeSignAzureArtifactSigningAppID { get; set; } = string.Empty;
+
+	[JsonPropertyName("WindowsCodeSignAzureArtifactSigningAppSecretFormat")]
+	//One of the ENCRYPTIONMETHOD_ constants
+	public ulong WindowsCodeSignAzureArtifactSigningAppSecretFormat { get; set; }
+
+	[JsonPropertyName("WindowsCodeSignAzureArtifactSigningAppSecret")]
+	//A client secret of the app registration
+	public string WindowsCodeSignAzureArtifactSigningAppSecret { get; set; } = string.Empty;
+
 	public WindowsCodeSignProperties(){ }
 
 	public string ToJson() {

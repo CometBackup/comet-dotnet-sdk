@@ -46,6 +46,10 @@ public class EmailOptions {
 	//Override the HELO/EHLO hostname for SMTP or MX Direct modes. If blank, uses system default HELO/EHLO hostname.
 	public string SMTPCustomEhlo { get; set; } = string.Empty;
 
+	[JsonPropertyName("SMTPOAuth")]
+	//If set, authenticate to the SMTP server with OAuth 2.0 (SASL XOAUTH2) as SMTPUsername instead of using SMTPPassword.
+	public SMTPOAuthOptions SMTPOAuth { get; set; }
+
 	public EmailOptions(){ }
 
 	public string ToJson() {

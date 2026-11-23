@@ -147,6 +147,12 @@ public class UserProfileConfig {
 	//filled, it contains a cryptographic root of trust that can decrypt and re-encrypt other secrets in this profile.
 	public string PasswordRecovery { get; set; } = string.Empty;
 
+	[JsonPropertyName("RestoreDataRecoveryKey")]
+	//If this field is empty, the "Allow administrator to restore data" feature is turned off. If this field is filled, it
+	//contains a key allowing passwordless in-browser restores for this user. In a profile update, an empty value leaves
+	//the stored key unchanged, and RESTORE_DATA_RECOVERY_KEY_DISABLE removes it.
+	public string RestoreDataRecoveryKey { get; set; } = string.Empty;
+
 	[JsonPropertyName("AllowPasswordLogin")]
 	//Allow login using the password alone. Set this to false if the password alone should not be sufficient.
 	public bool AllowPasswordLogin { get; set; }

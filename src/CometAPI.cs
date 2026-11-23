@@ -46,7 +46,7 @@ public class CometAPI : IDisposable {
 		ServerURL = serverURL;
 		Username  = username;
 		Password  = password;
-		_client = new HttpClient();
+		_client = client;
 	}
 
 	public void Dispose() {
@@ -79,7 +79,8 @@ public class CometAPI : IDisposable {
 				form.Headers.Add("X-Comet-Admin-Password", Password);
 				
 				foreach (var pair in data) {
-					form.Add(new StringContent(pair.Value), pair.Key);                        
+					// The filename makes the server see a file part, which is how multipart APIs read uploads
+					form.Add(new StringContent(pair.Value), pair.Key, pair.Key);
 				}
 				request.Content = form;
 				break;
@@ -101,18 +102,22 @@ public class CometAPI : IDisposable {
 	/// securely.
 	/// The token inherits the current permissions of the admin account that created it, evaluated live on each request; it
 	/// does not capture a fixed snapshot of permissions.
+	/// To authenticate with the token, send it in the Token field with AuthType=Token, or in the Password field with
+	/// AuthType=Password. The latter lets SDKs and integrations that only support password authentication use a token
+	/// without needing to handle 2FA.
 	/// Creating a token requires you to supply your current password, unless the request is already authenticated with a
 	/// password, or the account is managed by an external authentication source. Check
 	/// AdminAccountProperties.APITokenCreateRequiresPassword to know whether it is needed.
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	/// <param name="Description">Human-readable label for this token</param>
 	/// <param name="ExpireTime">(Optional) Unix timestamp, in seconds, when the token stops working. Must be in the
 	/// future. If this parameter is omitted entirely, the token expires after 90 days. Pass zero explicitly for a token
 	/// that never expires</param>
-	public async Task<AdminAccountAPITokenCreateResponse> AdminAccountApiTokenCreateAsync(string Description, Nullable<int64> ExpireTime = null) {
+	public async Task<AdminAccountAPITokenCreateResponse> AdminAccountApiTokenCreateAsync(string Description, Nullable<long> ExpireTime = null) {
 		var data = new Dictionary<string,string>();
 
 		data["Description"] = Description;
@@ -134,18 +139,22 @@ public class CometAPI : IDisposable {
 	/// securely.
 	/// The token inherits the current permissions of the admin account that created it, evaluated live on each request; it
 	/// does not capture a fixed snapshot of permissions.
+	/// To authenticate with the token, send it in the Token field with AuthType=Token, or in the Password field with
+	/// AuthType=Password. The latter lets SDKs and integrations that only support password authentication use a token
+	/// without needing to handle 2FA.
 	/// Creating a token requires you to supply your current password, unless the request is already authenticated with a
 	/// password, or the account is managed by an external authentication source. Check
 	/// AdminAccountProperties.APITokenCreateRequiresPassword to know whether it is needed.
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	/// <param name="Description">Human-readable label for this token</param>
 	/// <param name="ExpireTime">(Optional) Unix timestamp, in seconds, when the token stops working. Must be in the
 	/// future. If this parameter is omitted entirely, the token expires after 90 days. Pass zero explicitly for a token
 	/// that never expires</param>
-	public AdminAccountAPITokenCreateResponse AdminAccountApiTokenCreate(string Description, Nullable<int64> ExpireTime = null) {
+	public AdminAccountAPITokenCreateResponse AdminAccountApiTokenCreate(string Description, Nullable<long> ExpireTime = null) {
 		var resultTask = AdminAccountApiTokenCreateAsync(Description, ExpireTime);
 		resultTask.Wait();
 		return resultTask.Result;
@@ -156,7 +165,8 @@ public class CometAPI : IDisposable {
 	/// This does not include the token itself, which is only returned once when the token is created.
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	public async Task<AdminAccountAPITokenListResponse> AdminAccountApiTokenListAsync() {
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/account/api-token/list", null)){
@@ -172,7 +182,8 @@ public class CometAPI : IDisposable {
 	/// This does not include the token itself, which is only returned once when the token is created.
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	public AdminAccountAPITokenListResponse AdminAccountApiTokenList() {
 		var resultTask = AdminAccountApiTokenListAsync();
@@ -186,7 +197,8 @@ public class CometAPI : IDisposable {
 	/// server.
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	/// <param name="TokenID">The token identifier, as shown in the token list</param>
 	public async Task<CometAPIResponseMessage> AdminAccountApiTokenRevokeAsync(string TokenID) {
@@ -208,7 +220,8 @@ public class CometAPI : IDisposable {
 	/// server.
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	/// <param name="TokenID">The token identifier, as shown in the token list</param>
 	public CometAPIResponseMessage AdminAccountApiTokenRevoke(string TokenID) {
@@ -225,7 +238,8 @@ public class CometAPI : IDisposable {
 	/// obscured.
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public async Task<AdminAccountPropertiesResponse> AdminAccountPropertiesAsync() {
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/account/properties", null)){
@@ -244,7 +258,8 @@ public class CometAPI : IDisposable {
 	/// obscured.
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public AdminAccountPropertiesResponse AdminAccountProperties() {
 		var resultTask = AdminAccountPropertiesAsync();
@@ -258,7 +273,8 @@ public class CometAPI : IDisposable {
 	/// admin account.
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	public async Task<TotpRegeneratedResponse> AdminAccountRegenerateTotpAsync() {
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/account/regenerate-totp", null)){
@@ -275,7 +291,8 @@ public class CometAPI : IDisposable {
 	/// admin account.
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	public TotpRegeneratedResponse AdminAccountRegenerateTotp() {
 		var resultTask = AdminAccountRegenerateTotpAsync();
@@ -287,7 +304,8 @@ public class CometAPI : IDisposable {
 	/// AdminAccountSessionRevokeAsync: Revoke a session key (log out)
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	public async Task<CometAPIResponseMessage> AdminAccountSessionRevokeAsync() {
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/account/session-revoke", null)){
@@ -302,7 +320,8 @@ public class CometAPI : IDisposable {
 	/// AdminAccountSessionRevoke: Revoke a session key (log out)
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	public CometAPIResponseMessage AdminAccountSessionRevoke() {
 		var resultTask = AdminAccountSessionRevokeAsync();
@@ -314,7 +333,8 @@ public class CometAPI : IDisposable {
 	/// AdminAccountSessionStartAsync: Generate a session key (log in)
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	/// <param name="SelfAddress">(Optional) External URL of this server (>= 18.9.9)</param>
 	public async Task<SessionKeyRegeneratedResponse> AdminAccountSessionStartAsync(string SelfAddress = null) {
@@ -334,7 +354,8 @@ public class CometAPI : IDisposable {
 	/// AdminAccountSessionStart: Generate a session key (log in)
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	/// <param name="SelfAddress">(Optional) External URL of this server (>= 18.9.9)</param>
 	public SessionKeyRegeneratedResponse AdminAccountSessionStart(string SelfAddress = null) {
@@ -347,7 +368,8 @@ public class CometAPI : IDisposable {
 	/// AdminAccountSessionStartAsUserAsync: Generate a session key for an end-user (log in as end-user)
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetUser">Target account username</param>
 	public async Task<SessionKeyRegeneratedResponse> AdminAccountSessionStartAsUserAsync(string TargetUser) {
@@ -367,7 +389,8 @@ public class CometAPI : IDisposable {
 	/// AdminAccountSessionStartAsUser: Generate a session key for an end-user (log in as end-user)
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetUser">Target account username</param>
 	public SessionKeyRegeneratedResponse AdminAccountSessionStartAsUser(string TargetUser) {
@@ -380,7 +403,8 @@ public class CometAPI : IDisposable {
 	/// AdminAccountSessionUpgradeAsync: Exchange an SSO one-time token for a session key
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	public async Task<SessionKeyRegeneratedResponse> AdminAccountSessionUpgradeAsync() {
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/account/session-upgrade", null)){
@@ -395,7 +419,8 @@ public class CometAPI : IDisposable {
 	/// AdminAccountSessionUpgrade: Exchange an SSO one-time token for a session key
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	public SessionKeyRegeneratedResponse AdminAccountSessionUpgrade() {
 		var resultTask = AdminAccountSessionUpgradeAsync();
@@ -412,7 +437,8 @@ public class CometAPI : IDisposable {
 	/// field were ignored.
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	/// <param name="Security">Updated account properties</param>
 	public async Task<CometAPIResponseMessage> AdminAccountSetPropertiesAsync(AdminSecurityOptions Security) {
@@ -437,7 +463,8 @@ public class CometAPI : IDisposable {
 	/// field were ignored.
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	/// <param name="Security">Updated account properties</param>
 	public CometAPIResponseMessage AdminAccountSetProperties(AdminSecurityOptions Security) {
@@ -453,7 +480,8 @@ public class CometAPI : IDisposable {
 	/// to allow their use with the WebAuthn endpoints.
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	/// <param name="SelfAddress">External URL of this server, used as U2F AppID and Facet</param>
 	public async Task<U2FRegistrationChallengeResponse> AdminAccountU2fRequestRegistrationChallengeAsync(string SelfAddress) {
@@ -476,7 +504,8 @@ public class CometAPI : IDisposable {
 	/// to allow their use with the WebAuthn endpoints.
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	/// <param name="SelfAddress">External URL of this server, used as U2F AppID and Facet</param>
 	public U2FRegistrationChallengeResponse AdminAccountU2fRequestRegistrationChallenge(string SelfAddress) {
@@ -492,7 +521,8 @@ public class CometAPI : IDisposable {
 	/// to allow their use with the WebAuthn endpoints.
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	/// <param name="U2FChallengeID">Associated value from AdminAccountU2fRequestRegistrationChallenge API</param>
 	/// <param name="U2FClientData">U2F response data supplied by hardware token</param>
@@ -525,7 +555,8 @@ public class CometAPI : IDisposable {
 	/// to allow their use with the WebAuthn endpoints.
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	/// <param name="U2FChallengeID">Associated value from AdminAccountU2fRequestRegistrationChallenge API</param>
 	/// <param name="U2FClientData">U2F response data supplied by hardware token</param>
@@ -542,7 +573,8 @@ public class CometAPI : IDisposable {
 	/// AdminAccountValidateTotpAsync: Validate the TOTP code before turning 2fa(TOTP) on
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	/// <param name="TOTPCode">Six-digit code after scanning barcode image</param>
 	public async Task<CometAPIResponseMessage> AdminAccountValidateTotpAsync(string TOTPCode) {
@@ -562,7 +594,8 @@ public class CometAPI : IDisposable {
 	/// AdminAccountValidateTotp: Validate the TOTP code before turning 2fa(TOTP) on
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	/// <param name="TOTPCode">Six-digit code after scanning barcode image</param>
 	public CometAPIResponseMessage AdminAccountValidateTotp(string TOTPCode) {
@@ -575,7 +608,8 @@ public class CometAPI : IDisposable {
 	/// AdminAccountWebauthnRequestRegistrationChallengeAsync: Register a new FIDO2 WebAuthn token
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	/// <param name="SelfAddress">External URL of this server, used as WebAuthn ID</param>
 	public async Task<WebAuthnRegistrationChallengeResponse> AdminAccountWebauthnRequestRegistrationChallengeAsync(string SelfAddress) {
@@ -595,7 +629,8 @@ public class CometAPI : IDisposable {
 	/// AdminAccountWebauthnRequestRegistrationChallenge: Register a new FIDO2 WebAuthn token
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	/// <param name="SelfAddress">External URL of this server, used as WebAuthn ID</param>
 	public WebAuthnRegistrationChallengeResponse AdminAccountWebauthnRequestRegistrationChallenge(string SelfAddress) {
@@ -608,7 +643,8 @@ public class CometAPI : IDisposable {
 	/// AdminAccountWebauthnSubmitChallengeResponseAsync: Register a new FIDO2 WebAuthn token
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	/// <param name="SelfAddress">External URL of this server, used as WebAuthn ID</param>
 	/// <param name="ChallengeID">Associated value from AdminAccountWebAuthnRequestRegistrationChallenge API</param>
@@ -632,7 +668,8 @@ public class CometAPI : IDisposable {
 	/// AdminAccountWebauthnSubmitChallengeResponse: Register a new FIDO2 WebAuthn token
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	/// <param name="SelfAddress">External URL of this server, used as WebAuthn ID</param>
 	/// <param name="ChallengeID">Associated value from AdminAccountWebAuthnRequestRegistrationChallenge API</param>
@@ -678,7 +715,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetUser">New account username (>= 17.2.0)</param>
 	/// <param name="TargetPassword">New account password (>= 17.2.0)</param>
@@ -688,7 +726,9 @@ public class CometAPI : IDisposable {
 	/// generated user (>= 20.3.4)</param>
 	/// <param name="TargetOrganization">(Optional) If present, create the user account on behalf of another organization.
 	/// Only allowed for administrator accounts in the top-level organization. (>= 22.5.0)</param>
-	public async Task<CometAPIResponseMessage> AdminAddUserAsync(string TargetUser, string TargetPassword, Nullable<int> StoreRecoveryCode = null, Nullable<int> RequirePasswordChange = null, string TargetOrganization = null) {
+	/// <param name="StoreDataRecoveryCode">(Optional) If set to 1, store and keep a data recovery code for the generated
+	/// user (>= 26.8.10)</param>
+	public async Task<CometAPIResponseMessage> AdminAddUserAsync(string TargetUser, string TargetPassword, Nullable<int> StoreRecoveryCode = null, Nullable<int> RequirePasswordChange = null, string TargetOrganization = null, Nullable<int> StoreDataRecoveryCode = null) {
 		var data = new Dictionary<string,string>();
 
 		data["TargetUser"] = TargetUser;
@@ -701,6 +741,9 @@ public class CometAPI : IDisposable {
 		}
 		if (TargetOrganization != null) {
 			data["TargetOrganization"] = TargetOrganization;
+		}
+		if (StoreDataRecoveryCode != null) {
+			data["StoreDataRecoveryCode"] = JsonSerializer.Serialize(StoreDataRecoveryCode);
 		}
 
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/add-user", data)){
@@ -716,7 +759,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetUser">New account username (>= 17.2.0)</param>
 	/// <param name="TargetPassword">New account password (>= 17.2.0)</param>
@@ -726,8 +770,10 @@ public class CometAPI : IDisposable {
 	/// generated user (>= 20.3.4)</param>
 	/// <param name="TargetOrganization">(Optional) If present, create the user account on behalf of another organization.
 	/// Only allowed for administrator accounts in the top-level organization. (>= 22.5.0)</param>
-	public CometAPIResponseMessage AdminAddUser(string TargetUser, string TargetPassword, Nullable<int> StoreRecoveryCode = null, Nullable<int> RequirePasswordChange = null, string TargetOrganization = null) {
-		var resultTask = AdminAddUserAsync(TargetUser, TargetPassword, StoreRecoveryCode, RequirePasswordChange, TargetOrganization);
+	/// <param name="StoreDataRecoveryCode">(Optional) If set to 1, store and keep a data recovery code for the generated
+	/// user (>= 26.8.10)</param>
+	public CometAPIResponseMessage AdminAddUser(string TargetUser, string TargetPassword, Nullable<int> StoreRecoveryCode = null, Nullable<int> RequirePasswordChange = null, string TargetOrganization = null, Nullable<int> StoreDataRecoveryCode = null) {
+		var resultTask = AdminAddUserAsync(TargetUser, TargetPassword, StoreRecoveryCode, RequirePasswordChange, TargetOrganization, StoreDataRecoveryCode);
 		resultTask.Wait();
 		return resultTask.Result;
 	}
@@ -740,7 +786,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetUser">New account username (>= 17.2.0)</param>
 	/// <param name="ProfileData">New account profile (>= 17.2.0)</param>
@@ -771,7 +818,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetUser">New account username (>= 17.2.0)</param>
 	/// <param name="ProfileData">New account profile (>= 17.2.0)</param>
@@ -789,13 +837,19 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetUser">the username of the admin to be deleted</param>
-	public async Task<CometAPIResponseMessage> AdminAdminUserDeleteAsync(string TargetUser) {
+	/// <param name="TargetOrgID">(Optional) the organization ID of the admin to be deleted. If omitted, defaults to the
+	/// top-level organization. (>= 26.11.0)</param>
+	public async Task<CometAPIResponseMessage> AdminAdminUserDeleteAsync(string TargetUser, string TargetOrgID = null) {
 		var data = new Dictionary<string,string>();
 
 		data["TargetUser"] = TargetUser;
+		if (TargetOrgID != null) {
+			data["TargetOrgID"] = TargetOrgID;
+		}
 
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/admin-user/delete", data)){
 			response.EnsureSuccessStatusCode();
@@ -811,11 +865,14 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetUser">the username of the admin to be deleted</param>
-	public CometAPIResponseMessage AdminAdminUserDelete(string TargetUser) {
-		var resultTask = AdminAdminUserDeleteAsync(TargetUser);
+	/// <param name="TargetOrgID">(Optional) the organization ID of the admin to be deleted. If omitted, defaults to the
+	/// top-level organization. (>= 26.11.0)</param>
+	public CometAPIResponseMessage AdminAdminUserDelete(string TargetUser, string TargetOrgID = null) {
+		var resultTask = AdminAdminUserDeleteAsync(TargetUser, TargetOrgID);
 		resultTask.Wait();
 		return resultTask.Result;
 	}
@@ -826,10 +883,19 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
-	public async Task<AllowedAdminUser[]> AdminAdminUserListAsync() {
-		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/admin-user/list", null)){
+	/// <param name="TargetOrgID">(Optional) If present, only list the administrators belonging to this organization.
+	/// Otherwise, administrators from all organizations are listed. (>= 26.11.0)</param>
+	public async Task<AllowedAdminUser[]> AdminAdminUserListAsync(string TargetOrgID = null) {
+		var data = new Dictionary<string,string>();
+
+		if (TargetOrgID != null) {
+			data["TargetOrgID"] = TargetOrgID;
+		}
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/admin-user/list", data)){
 			response.EnsureSuccessStatusCode();
 			using(var stream = await response.Content.ReadAsStreamAsync()){
 				return await JsonSerializer.DeserializeAsync<AllowedAdminUser[]>(stream);
@@ -843,10 +909,13 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
-	public AllowedAdminUser[] AdminAdminUserList() {
-		var resultTask = AdminAdminUserListAsync();
+	/// <param name="TargetOrgID">(Optional) If present, only list the administrators belonging to this organization.
+	/// Otherwise, administrators from all organizations are listed. (>= 26.11.0)</param>
+	public AllowedAdminUser[] AdminAdminUserList(string TargetOrgID = null) {
+		var resultTask = AdminAdminUserListAsync(TargetOrgID);
 		resultTask.Wait();
 		return resultTask.Result;
 	}
@@ -857,12 +926,13 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetUser">the username for this new admin</param>
 	/// <param name="TargetPassword">the password for this new admin user</param>
-	/// <param name="TargetOrgID">(Optional) provide the organization ID for this user, it will default to the org of the
-	/// authenticating user otherwise</param>
+	/// <param name="TargetOrgID">(Optional) provide the organization ID for this user, it will default to the top-level
+	/// organization otherwise.</param>
 	public async Task<CometAPIResponseMessage> AdminAdminUserNewAsync(string TargetUser, string TargetPassword, string TargetOrgID = null) {
 		var data = new Dictionary<string,string>();
 
@@ -886,14 +956,82 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetUser">the username for this new admin</param>
 	/// <param name="TargetPassword">the password for this new admin user</param>
-	/// <param name="TargetOrgID">(Optional) provide the organization ID for this user, it will default to the org of the
-	/// authenticating user otherwise</param>
+	/// <param name="TargetOrgID">(Optional) provide the organization ID for this user, it will default to the top-level
+	/// organization otherwise.</param>
 	public CometAPIResponseMessage AdminAdminUserNew(string TargetUser, string TargetPassword, string TargetOrgID = null) {
 		var resultTask = AdminAdminUserNewAsync(TargetUser, TargetPassword, TargetOrgID);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
+	/// AdminAdminUserSetAsync: Update another administrator
+	/// This API cannot update your own administrator account. Use the AdminAccountSetProperties API instead.
+	/// The supplied Profile replaces the stored administrator account as-is, with the following exceptions:
+	/// - The Username and OrganizationID fields must either be empty or match the target administrator. This API cannot
+	/// rename an administrator or move it to another organization.
+	/// - To set a new plaintext password, use a password format of 0 (PASSWORD_FORMAT_PLAINTEXT); it must be at least 8
+	/// characters. A password format of 4 (PASSWORD_FORMAT_UNVERIFIABLE) leaves the password unchanged.
+	/// - APITokens may only be removed, or have their Description changed. New tokens must be created by the administrator
+	/// themselves. Other fields of retained tokens are ignored.
+	/// - IPWhitelist is cleared if the server license does not permit it.
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// Access to this API may be prevented on a per-administrator basis.
+	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
+	/// </summary>
+	/// <param name="TargetUser">the username of the admin to be updated (>= 26.11.0)</param>
+	/// <param name="Profile">the updated administrator account (>= 26.11.0)</param>
+	/// <param name="TargetOrgID">(Optional) the organization ID of the admin to be updated. If omitted, defaults to the
+	/// top-level organization. (>= 26.11.0)</param>
+	public async Task<CometAPIResponseMessage> AdminAdminUserSetAsync(string TargetUser, AllowedAdminUser Profile, string TargetOrgID = null) {
+		var data = new Dictionary<string,string>();
+
+		data["TargetUser"] = TargetUser;
+		data["Profile"] = JsonSerializer.Serialize(Profile);
+		if (TargetOrgID != null) {
+			data["TargetOrgID"] = TargetOrgID;
+		}
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/admin-user/set", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<CometAPIResponseMessage>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// AdminAdminUserSet: Update another administrator
+	/// This API cannot update your own administrator account. Use the AdminAccountSetProperties API instead.
+	/// The supplied Profile replaces the stored administrator account as-is, with the following exceptions:
+	/// - The Username and OrganizationID fields must either be empty or match the target administrator. This API cannot
+	/// rename an administrator or move it to another organization.
+	/// - To set a new plaintext password, use a password format of 0 (PASSWORD_FORMAT_PLAINTEXT); it must be at least 8
+	/// characters. A password format of 4 (PASSWORD_FORMAT_UNVERIFIABLE) leaves the password unchanged.
+	/// - APITokens may only be removed, or have their Description changed. New tokens must be created by the administrator
+	/// themselves. Other fields of retained tokens are ignored.
+	/// - IPWhitelist is cleared if the server license does not permit it.
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// Access to this API may be prevented on a per-administrator basis.
+	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
+	/// </summary>
+	/// <param name="TargetUser">the username of the admin to be updated (>= 26.11.0)</param>
+	/// <param name="Profile">the updated administrator account (>= 26.11.0)</param>
+	/// <param name="TargetOrgID">(Optional) the organization ID of the admin to be updated. If omitted, defaults to the
+	/// top-level organization. (>= 26.11.0)</param>
+	public CometAPIResponseMessage AdminAdminUserSet(string TargetUser, AllowedAdminUser Profile, string TargetOrgID = null) {
+		var resultTask = AdminAdminUserSetAsync(TargetUser, Profile, TargetOrgID);
 		resultTask.Wait();
 		return resultTask.Result;
 	}
@@ -1510,7 +1648,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="Subject">Bulletin subject line (>= 17.3.5)</param>
 	/// <param name="Content">Bulletin message content (>= 17.3.5)</param>
@@ -1533,7 +1672,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="Subject">Bulletin subject line (>= 17.3.5)</param>
 	/// <param name="Content">Bulletin message content (>= 17.3.5)</param>
@@ -1548,7 +1688,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Constellation Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public async Task<ConstellationCheckReport> AdminConstellationLastReportAsync() {
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/constellation/last-report", null)){
@@ -1564,7 +1705,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Constellation Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public ConstellationCheckReport AdminConstellationLastReport() {
 		var resultTask = AdminConstellationLastReportAsync();
@@ -1577,7 +1719,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Constellation Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public async Task<ConstellationCheckReport> AdminConstellationNewReportAsync() {
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/constellation/new-report", null)){
@@ -1593,7 +1736,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Constellation Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public ConstellationCheckReport AdminConstellationNewReport() {
 		var resultTask = AdminConstellationNewReportAsync();
@@ -1607,7 +1751,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
 	/// This API requires the Constellation Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public async Task<CometAPIResponseMessage> AdminConstellationPruneNowAsync() {
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/constellation/prune-now", null)){
@@ -1624,7 +1769,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
 	/// This API requires the Constellation Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public CometAPIResponseMessage AdminConstellationPruneNow() {
 		var resultTask = AdminConstellationPruneNowAsync();
@@ -1637,7 +1783,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Constellation Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public async Task<ConstellationStatusAPIResponse> AdminConstellationStatusAsync() {
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/constellation/status", null)){
@@ -1653,7 +1800,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Constellation Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public ConstellationStatusAPIResponse AdminConstellationStatus() {
 		var resultTask = AdminConstellationStatusAsync();
@@ -1665,7 +1813,8 @@ public class CometAPI : IDisposable {
 	/// AdminConvertStorageRoleAsync: Convert IAM Storage Role vault to its underlying S3 type
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetUser">The user to receive the new Storage Vault</param>
 	/// <param name="DestinationId">The id of the old storage role destination to convert</param>
@@ -1687,7 +1836,8 @@ public class CometAPI : IDisposable {
 	/// AdminConvertStorageRole: Convert IAM Storage Role vault to its underlying S3 type
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetUser">The user to receive the new Storage Vault</param>
 	/// <param name="DestinationId">The id of the old storage role destination to convert</param>
@@ -1702,7 +1852,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="Query">(No description available)</param>
 	public async Task<CountJobsResponse> AdminCountJobsForCustomSearchAsync(SearchClause Query) {
@@ -1723,7 +1874,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="Query">(No description available)</param>
 	public CountJobsResponse AdminCountJobsForCustomSearch(SearchClause Query) {
@@ -1741,7 +1893,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetUser">Selected account username</param>
 	/// <param name="TargetPassword">Selected account password (>= 20.9.1)</param>
@@ -1773,7 +1926,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetUser">Selected account username</param>
 	/// <param name="TargetPassword">Selected account password (>= 20.9.1)</param>
@@ -1790,7 +1944,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetUser">Selected account username</param>
 	/// <param name="SourceID">Selected Protected Item GUID</param>
@@ -1813,7 +1968,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetUser">Selected account username</param>
 	/// <param name="SourceID">Selected Protected Item GUID</param>
@@ -1832,7 +1988,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetUser">Selected account username (>= 17.2.0)</param>
 	/// <param name="UninstallConfig">(Optional) Uninstall software configuration (>= 20.3.5)</param>
@@ -1861,7 +2018,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetUser">Selected account username (>= 17.2.0)</param>
 	/// <param name="UninstallConfig">(Optional) Uninstall software configuration (>= 20.3.5)</param>
@@ -1876,7 +2034,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetUser">Selected account username</param>
 	public async Task<CometAPIResponseMessage> AdminDisableUserTotpAsync(string TargetUser) {
@@ -1897,7 +2056,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetUser">Selected account username</param>
 	public CometAPIResponseMessage AdminDisableUserTotp(string TargetUser) {
@@ -1912,7 +2072,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Destination">The Storage Vault GUID</param>
@@ -1936,7 +2097,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Destination">The Storage Vault GUID</param>
@@ -1951,7 +2113,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="DestinationID">The Storage Vault GUID</param>
@@ -1976,7 +2139,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="DestinationID">The Storage Vault GUID</param>
@@ -1988,12 +2152,60 @@ public class CometAPI : IDisposable {
 	}
 
 	/// <summary>
+	/// AdminDispatcherClearLoginPasswordAsync: Instruct a live connected device to discard its stored login password and
+	/// return to the login screen
+	/// The device keeps its username and server URL, so only the new password needs to be re-entered. Use this after a
+	/// server-side password change when the device should not be given the new password automatically. Devices older than
+	/// 26.11.3 cannot retain the login details and receive the force-login behavior instead, discarding all stored
+	/// credentials.
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	public async Task<CometAPIResponseMessage> AdminDispatcherClearLoginPasswordAsync(string TargetID) {
+		var data = new Dictionary<string,string>();
+
+		data["TargetID"] = TargetID;
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/dispatcher/clear-login-password", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<CometAPIResponseMessage>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// AdminDispatcherClearLoginPassword: Instruct a live connected device to discard its stored login password and return
+	/// to the login screen
+	/// The device keeps its username and server URL, so only the new password needs to be re-entered. Use this after a
+	/// server-side password change when the device should not be given the new password automatically. Devices older than
+	/// 26.11.3 cannot retain the login details and receive the force-login behavior instead, discarding all stored
+	/// credentials.
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	public CometAPIResponseMessage AdminDispatcherClearLoginPassword(string TargetID) {
+		var resultTask = AdminDispatcherClearLoginPasswordAsync(TargetID);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
 	/// AdminDispatcherDeepverifyStorageVaultAsync: Instruct a live connected device to deeply verify Storage Vault content
 	/// This command is understood by Comet Backup 18.8.2 and newer.
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Destination">The Storage Vault GUID</param>
@@ -2017,7 +2229,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Destination">The Storage Vault GUID</param>
@@ -2032,7 +2245,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="DestinationID">The Storage Vault GUID</param>
@@ -2057,7 +2271,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="DestinationID">The Storage Vault GUID</param>
@@ -2074,7 +2289,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="DestinationID">The Storage Vault GUID</param>
@@ -2100,7 +2316,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="DestinationID">The Storage Vault GUID</param>
@@ -2117,7 +2334,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID (>= 17.2.0)</param>
 	public async Task<CometAPIResponseMessage> AdminDispatcherDropConnectionAsync(string TargetID) {
@@ -2139,7 +2357,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID (>= 17.2.0)</param>
 	public CometAPIResponseMessage AdminDispatcherDropConnection(string TargetID) {
@@ -2154,7 +2373,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Snapshot">where the email belongs to</param>
@@ -2182,7 +2402,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Snapshot">where the email belongs to</param>
@@ -2200,7 +2421,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	public async Task<CometAPIResponseMessage> AdminDispatcherForceLoginAsync(string TargetID) {
@@ -2222,7 +2444,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	public CometAPIResponseMessage AdminDispatcherForceLogin(string TargetID) {
@@ -2237,7 +2460,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="OrganizationID">Target organization</param>
 	public async Task<OrganizationLoginURLResponse> AdminDispatcherGetDefaultLoginUrlAsync(string OrganizationID) {
@@ -2259,7 +2483,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="OrganizationID">Target organization</param>
 	public OrganizationLoginURLResponse AdminDispatcherGetDefaultLoginUrl(string OrganizationID) {
@@ -2274,7 +2499,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="ImportSourceID">The selected import source, as found by the AdminDispatcherRequestImportSources
@@ -2299,7 +2525,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="ImportSourceID">The selected import source, as found by the AdminDispatcherRequestImportSources
@@ -2316,7 +2543,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID (>= 17.2.0)</param>
 	public async Task<CometAPIResponseMessage> AdminDispatcherKillProcessAsync(string TargetID) {
@@ -2338,7 +2566,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID (>= 17.2.0)</param>
 	public CometAPIResponseMessage AdminDispatcherKillProcess(string TargetID) {
@@ -2352,7 +2581,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="UserNameFilter">(Optional) User name filter string (>= 22.6.5)</param>
 	public async Task<Dictionary<string,LiveUserConnection>> AdminDispatcherListActiveAsync(string UserNameFilter = null) {
@@ -2375,7 +2605,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="UserNameFilter">(Optional) User name filter string (>= 22.6.5)</param>
 	public Dictionary<string,LiveUserConnection> AdminDispatcherListActive(string UserNameFilter = null) {
@@ -2391,7 +2622,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Credentials">The Office365 account credential</param>
@@ -2416,7 +2648,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Credentials">The Office365 account credential</param>
@@ -2431,7 +2664,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="ExtraData">The destination location settings</param>
@@ -2454,7 +2688,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="ExtraData">The destination location settings</param>
@@ -2470,7 +2705,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID (>= 17.2.0)</param>
 	public async Task<CometAPIResponseMessage> AdminDispatcherRefetchProfileAsync(string TargetID) {
@@ -2492,7 +2728,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID (>= 17.2.0)</param>
 	public CometAPIResponseMessage AdminDispatcherRefetchProfile(string TargetID) {
@@ -2510,7 +2747,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="EmailAddress">The email address of the Azure AD administrator</param>
@@ -2537,7 +2775,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="EmailAddress">The email address of the Azure AD administrator</param>
@@ -2555,7 +2794,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Continuation">The ID returned from the AdminDispatcherRegisterOfficeApplicationBegin endpoint</param>
@@ -2581,7 +2821,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Continuation">The ID returned from the AdminDispatcherRegisterOfficeApplicationBegin endpoint</param>
@@ -2597,7 +2838,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Destination">The Storage Vault GUID</param>
@@ -2621,7 +2863,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Destination">The Storage Vault GUID</param>
@@ -2637,7 +2880,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	public async Task<BrowseDiskDrivesResponse> AdminDispatcherRequestBrowseDiskDrivesAsync(string TargetID) {
@@ -2659,7 +2903,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	public BrowseDiskDrivesResponse AdminDispatcherRequestBrowseDiskDrives(string TargetID) {
@@ -2673,7 +2918,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	public async Task<BrowseEDBResponse> AdminDispatcherRequestBrowseExchangeEdbAsync(string TargetID) {
@@ -2694,7 +2940,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	public BrowseEDBResponse AdminDispatcherRequestBrowseExchangeEdb(string TargetID) {
@@ -2708,7 +2955,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	public async Task<BrowseHVResponse> AdminDispatcherRequestBrowseHypervAsync(string TargetID) {
@@ -2729,7 +2977,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	public BrowseHVResponse AdminDispatcherRequestBrowseHyperv(string TargetID) {
@@ -2744,7 +2993,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Credentials">The Mongo database authentication settings</param>
@@ -2768,7 +3018,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Credentials">The Mongo database authentication settings</param>
@@ -2784,7 +3035,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Credentials">The MSSQL database authentication settings</param>
@@ -2808,7 +3060,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Credentials">The MSSQL database authentication settings</param>
@@ -2824,7 +3077,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Credentials">The MySQL database authentication settings</param>
@@ -2848,7 +3102,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Credentials">The MySQL database authentication settings</param>
@@ -2859,11 +3114,54 @@ public class CometAPI : IDisposable {
 	}
 
 	/// <summary>
+	/// AdminDispatcherRequestBrowsePostgresqlAsync: Request a list of databases in a PostgreSQL server
+	/// The remote device must have given consent for an MSP to browse their files.
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID (>= 26.11.0)</param>
+	/// <param name="Credentials">The PostgreSQL database authentication settings (>= 26.11.0)</param>
+	public async Task<BrowseSQLServerResponse> AdminDispatcherRequestBrowsePostgresqlAsync(string TargetID, PostgreSQLConnection Credentials) {
+		var data = new Dictionary<string,string>();
+
+		data["TargetID"] = TargetID;
+		data["Credentials"] = JsonSerializer.Serialize(Credentials);
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/dispatcher/request-browse-postgresql", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<BrowseSQLServerResponse>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// AdminDispatcherRequestBrowsePostgresql: Request a list of databases in a PostgreSQL server
+	/// The remote device must have given consent for an MSP to browse their files.
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Auth Role to be enabled.
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID (>= 26.11.0)</param>
+	/// <param name="Credentials">The PostgreSQL database authentication settings (>= 26.11.0)</param>
+	public BrowseSQLServerResponse AdminDispatcherRequestBrowsePostgresql(string TargetID, PostgreSQLConnection Credentials) {
+		var resultTask = AdminDispatcherRequestBrowsePostgresqlAsync(TargetID, Credentials);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
 	/// AdminDispatcherRequestBrowseProxmoxAsync: Request a list of Proxmox virtual machines and containers
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Credentials">The Proxmox connection settings</param>
@@ -2886,7 +3184,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Credentials">The Proxmox connection settings</param>
@@ -2901,7 +3200,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Credentials">The SSH connection settings</param>
@@ -2924,7 +3224,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Credentials">The SSH connection settings</param>
@@ -2939,7 +3240,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Credentials">The SSH connection settings</param>
@@ -2964,7 +3266,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Credentials">The SSH connection settings</param>
@@ -2981,7 +3284,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Credentials">The VMware vSphere connection settings</param>
@@ -3005,7 +3309,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Credentials">The VMware vSphere connection settings</param>
@@ -3022,7 +3327,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Credentials">The VMware vSphere connection settings</param>
@@ -3047,7 +3353,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Credentials">The VMware vSphere connection settings</param>
@@ -3064,7 +3371,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Credentials">The VMware vSphere connection settings</param>
@@ -3091,7 +3399,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Credentials">The VMware vSphere connection settings</param>
@@ -3109,7 +3418,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Credentials">The VMware vSphere connection settings</param>
@@ -3136,7 +3446,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Credentials">The VMware vSphere connection settings</param>
@@ -3154,7 +3465,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Credentials">The VMware vSphere connection settings</param>
@@ -3181,7 +3493,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Credentials">The VMware vSphere connection settings</param>
@@ -3198,7 +3511,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	public async Task<BrowseVSSResponse> AdminDispatcherRequestBrowseVssAawAsync(string TargetID) {
@@ -3220,7 +3534,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	public BrowseVSSResponse AdminDispatcherRequestBrowseVssAaw(string TargetID) {
@@ -3235,7 +3550,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Path">(Optional) Browse objects inside this path. If empty or not present, returns the top-level
@@ -3262,7 +3578,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Path">(Optional) Browse objects inside this path. If empty or not present, returns the top-level
@@ -3278,7 +3595,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	public async Task<DispatcherAdminSourcesResponse> AdminDispatcherRequestImportSourcesAsync(string TargetID) {
@@ -3299,7 +3617,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	public DispatcherAdminSourcesResponse AdminDispatcherRequestImportSources(string TargetID) {
@@ -3315,7 +3634,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Credentials">The Office365 account credential</param>
@@ -3340,7 +3660,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Credentials">The Office365 account credential</param>
@@ -3356,7 +3677,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Credentials">The Office365 account credential</param>
@@ -3380,7 +3702,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Credentials">The Office365 account credential</param>
@@ -3400,7 +3723,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Destination">The Storage Vault ID</param>
@@ -3439,7 +3763,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Destination">The Storage Vault ID</param>
@@ -3458,7 +3783,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Destination">The Storage Vault ID</param>
@@ -3481,7 +3807,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Destination">The Storage Vault ID</param>
@@ -3497,7 +3824,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Destination">The Storage Vault ID</param>
@@ -3523,7 +3851,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Destination">The Storage Vault ID</param>
@@ -3539,7 +3868,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID (>= 17.2.0)</param>
 	/// <param name="BackupRule">The schedule GUID</param>
@@ -3562,7 +3892,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID (>= 17.2.0)</param>
 	/// <param name="BackupRule">The schedule GUID</param>
@@ -3577,7 +3908,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID (>= 17.2.0)</param>
 	/// <param name="Source">The Protected Item GUID (>= 17.2.0)</param>
@@ -3606,7 +3938,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID (>= 17.2.0)</param>
 	/// <param name="Source">The Protected Item GUID (>= 17.2.0)</param>
@@ -3624,7 +3957,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Path">The local path to restore to</param>
@@ -3662,7 +3996,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Path">The local path to restore to</param>
@@ -3684,7 +4019,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Source">The Protected Item ID</param>
@@ -3739,7 +4075,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Source">The Protected Item ID</param>
@@ -3768,7 +4105,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="DestinationID">The Storage Vault GUID</param>
@@ -3795,7 +4133,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="DestinationID">The Storage Vault GUID</param>
@@ -3812,7 +4151,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Credentials">The SSH connection settings</param>
@@ -3835,7 +4175,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Credentials">The SSH connection settings</param>
@@ -3850,7 +4191,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Wsa">The target credentials to test</param>
@@ -3873,7 +4215,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Wsa">The target credentials to test</param>
@@ -3888,7 +4231,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="RemoveConfigFile">Determine if the config.dat file will be deleted at the same time</param>
@@ -3911,7 +4255,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="RemoveConfigFile">Determine if the config.dat file will be deleted at the same time</param>
@@ -3928,7 +4273,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Destination">The Storage Vault GUID</param>
@@ -3958,7 +4304,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="Destination">The Storage Vault GUID</param>
@@ -3976,7 +4323,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="NewPassword">The new password of this user</param>
@@ -4000,7 +4348,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="NewPassword">The new password of this user</param>
@@ -4019,7 +4368,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="NewURL">The new external URL of this server</param>
@@ -4050,7 +4400,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID</param>
 	/// <param name="NewURL">The new external URL of this server</param>
@@ -4063,20 +4414,30 @@ public class CometAPI : IDisposable {
 
 	/// <summary>
 	/// AdminDispatcherUpdateSoftwareAsync: Instruct a live connected device to download a software update
+	/// By default the request is queued for delivery and this API returns immediately, without waiting for the device. If
+	/// WaitForConfirmation is true and the device supports confirming update requests, this API instead waits up to ten
+	/// seconds for the device to confirm that it has accepted the request, and reports the device's response. A device
+	/// that does not support it is sent the request without waiting, as if WaitForConfirmation were false.
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// This API requires the Software Build Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID (>= 17.2.0)</param>
 	/// <param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts (>=
 	/// 19.3.11)</param>
-	public async Task<CometAPIResponseMessage> AdminDispatcherUpdateSoftwareAsync(string TargetID, string SelfAddress = null) {
+	/// <param name="WaitForConfirmation">(Optional) If true, wait for the device to confirm that it accepted the request
+	/// (>= 26.11.2)</param>
+	public async Task<CometAPIResponseMessage> AdminDispatcherUpdateSoftwareAsync(string TargetID, string SelfAddress = null, Nullable<bool> WaitForConfirmation = null) {
 		var data = new Dictionary<string,string>();
 
 		data["TargetID"] = TargetID;
 		data["SelfAddress"] = SelfAddress ?? this.ServerURL;
+		if (WaitForConfirmation != null) {
+			data["WaitForConfirmation"] = JsonSerializer.Serialize(WaitForConfirmation);
+		}
 
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/dispatcher/update-software", data)){
 			response.EnsureSuccessStatusCode();
@@ -4088,17 +4449,24 @@ public class CometAPI : IDisposable {
 
 	/// <summary>
 	/// AdminDispatcherUpdateSoftware: Instruct a live connected device to download a software update
+	/// By default the request is queued for delivery and this API returns immediately, without waiting for the device. If
+	/// WaitForConfirmation is true and the device supports confirming update requests, this API instead waits up to ten
+	/// seconds for the device to confirm that it has accepted the request, and reports the device's response. A device
+	/// that does not support it is sent the request without waiting, as if WaitForConfirmation were false.
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
 	/// This API requires the Software Build Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetID">The live connection GUID (>= 17.2.0)</param>
 	/// <param name="SelfAddress">(Optional) The external URL of this server, used to resolve conflicts (>=
 	/// 19.3.11)</param>
-	public CometAPIResponseMessage AdminDispatcherUpdateSoftware(string TargetID, string SelfAddress = null) {
-		var resultTask = AdminDispatcherUpdateSoftwareAsync(TargetID, SelfAddress);
+	/// <param name="WaitForConfirmation">(Optional) If true, wait for the device to confirm that it accepted the request
+	/// (>= 26.11.2)</param>
+	public CometAPIResponseMessage AdminDispatcherUpdateSoftware(string TargetID, string SelfAddress = null, Nullable<bool> WaitForConfirmation = null) {
+		var resultTask = AdminDispatcherUpdateSoftwareAsync(TargetID, SelfAddress, WaitForConfirmation);
 		resultTask.Wait();
 		return resultTask.Result;
 	}
@@ -4107,7 +4475,8 @@ public class CometAPI : IDisposable {
 	/// AdminExternalAuthSourcesDeleteAsync: Delete an external admin authentication source
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	/// <param name="SourceID">(No description available)</param>
 	public async Task<CometAPIResponseMessage> AdminExternalAuthSourcesDeleteAsync(string SourceID) {
@@ -4127,7 +4496,8 @@ public class CometAPI : IDisposable {
 	/// AdminExternalAuthSourcesDelete: Delete an external admin authentication source
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	/// <param name="SourceID">(No description available)</param>
 	public CometAPIResponseMessage AdminExternalAuthSourcesDelete(string SourceID) {
@@ -4140,7 +4510,8 @@ public class CometAPI : IDisposable {
 	/// AdminExternalAuthSourcesGetAsync: Get a map of all external admin authentication sources
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	public async Task<Dictionary<string,ExternalAuthenticationSource>> AdminExternalAuthSourcesGetAsync() {
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/external-auth-sources/get", null)){
@@ -4155,7 +4526,8 @@ public class CometAPI : IDisposable {
 	/// AdminExternalAuthSourcesGet: Get a map of all external admin authentication sources
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	public Dictionary<string,ExternalAuthenticationSource> AdminExternalAuthSourcesGet() {
 		var resultTask = AdminExternalAuthSourcesGetAsync();
@@ -4167,7 +4539,8 @@ public class CometAPI : IDisposable {
 	/// AdminExternalAuthSourcesNewAsync: Create an external admin authentication source
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	/// <param name="Source">(No description available)</param>
 	/// <param name="SourceID">(Optional) (No description available)</param>
@@ -4191,7 +4564,8 @@ public class CometAPI : IDisposable {
 	/// AdminExternalAuthSourcesNew: Create an external admin authentication source
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	/// <param name="Source">(No description available)</param>
 	/// <param name="SourceID">(Optional) (No description available)</param>
@@ -4207,7 +4581,8 @@ public class CometAPI : IDisposable {
 	/// sources for the tenant; none will be preserved.
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	/// <param name="Sources">(No description available)</param>
 	public async Task<CometAPIResponseMessage> AdminExternalAuthSourcesSetAsync(Dictionary<string,ExternalAuthenticationSource> Sources) {
@@ -4228,7 +4603,8 @@ public class CometAPI : IDisposable {
 	/// sources for the tenant; none will be preserved.
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	/// <param name="Sources">(No description available)</param>
 	public CometAPIResponseMessage AdminExternalAuthSourcesSet(Dictionary<string,ExternalAuthenticationSource> Sources) {
@@ -4242,7 +4618,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="JobID">Selected job ID (>= 17.2.0)</param>
 	public async Task<byte[]> AdminGetJobLogAsync(string JobID) {
@@ -4265,7 +4642,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="JobID">Selected job ID (>= 17.2.0)</param>
 	public byte[] AdminGetJobLog(string JobID) {
@@ -4279,7 +4657,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="JobID">Selected job ID</param>
 	/// <param name="MinSeverity">(Optional) Return only job log entries with equal or higher severity (>= 23.3.1)</param>
@@ -4308,7 +4687,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="JobID">Selected job ID</param>
 	/// <param name="MinSeverity">(Optional) Return only job log entries with equal or higher severity (>= 23.3.1)</param>
@@ -4324,7 +4704,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="JobID">Selected job ID (>= 17.2.0)</param>
 	public async Task<BackupJobDetail> AdminGetJobPropertiesAsync(string JobID) {
@@ -4345,7 +4726,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="JobID">Selected job ID (>= 17.2.0)</param>
 	public BackupJobDetail AdminGetJobProperties(string JobID) {
@@ -4360,7 +4742,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public async Task<BackupJobDetail[]> AdminGetJobsAllAsync() {
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/get-jobs-all", null)){
@@ -4377,7 +4760,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public BackupJobDetail[] AdminGetJobsAll() {
 		var resultTask = AdminGetJobsAllAsync();
@@ -4391,7 +4775,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="Query">(No description available)</param>
 	public async Task<BackupJobDetail[]> AdminGetJobsForCustomSearchAsync(SearchClause Query) {
@@ -4413,7 +4798,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="Query">(No description available)</param>
 	public BackupJobDetail[] AdminGetJobsForCustomSearch(SearchClause Query) {
@@ -4438,7 +4824,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="Start">Timestamp (Unix)</param>
 	/// <param name="End">Timestamp (Unix)</param>
@@ -4472,7 +4859,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="Start">Timestamp (Unix)</param>
 	/// <param name="End">Timestamp (Unix)</param>
@@ -4488,7 +4876,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetUser">Selected username (>= 17.2.0)</param>
 	public async Task<BackupJobDetail[]> AdminGetJobsForUserAsync(string TargetUser) {
@@ -4510,7 +4899,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetUser">Selected username (>= 17.2.0)</param>
 	public BackupJobDetail[] AdminGetJobsForUser(string TargetUser) {
@@ -4525,7 +4915,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public async Task<BackupJobDetail[]> AdminGetJobsRecentAsync() {
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/get-jobs-recent", null)){
@@ -4542,7 +4933,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public BackupJobDetail[] AdminGetJobsRecent() {
 		var resultTask = AdminGetJobsRecentAsync();
@@ -4555,7 +4947,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetUser">Selected account username</param>
 	/// <param name="SourceID">Selected Protected Item GUID</param>
@@ -4578,7 +4971,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetUser">Selected account username</param>
 	/// <param name="SourceID">Selected Protected Item GUID</param>
@@ -4593,7 +4987,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetUser">Selected account username (>= 17.2.0)</param>
 	public async Task<UserProfileConfig> AdminGetUserProfileAsync(string TargetUser) {
@@ -4614,7 +5009,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetUser">Selected account username (>= 17.2.0)</param>
 	public UserProfileConfig AdminGetUserProfile(string TargetUser) {
@@ -4632,7 +5028,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetUser">Selected account username (>= 17.2.0)</param>
 	public async Task<GetProfileAndHashResponseMessage> AdminGetUserProfileAndHashAsync(string TargetUser) {
@@ -4657,7 +5054,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetUser">Selected account username (>= 17.2.0)</param>
 	public GetProfileAndHashResponseMessage AdminGetUserProfileAndHash(string TargetUser) {
@@ -4674,7 +5072,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetUser">Selected account username (>= 17.2.0)</param>
 	public async Task<GetProfileHashResponseMessage> AdminGetUserProfileHashAsync(string TargetUser) {
@@ -4698,7 +5097,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetUser">Selected account username (>= 17.2.0)</param>
 	public GetProfileHashResponseMessage AdminGetUserProfileHash(string TargetUser) {
@@ -4713,7 +5113,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="DeviceID">The live connection Device GUID</param>
 	public async Task<CometAPIResponseMessage> AdminInstallationDispatchDropConnectionAsync(string DeviceID) {
@@ -4735,7 +5136,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="DeviceID">The live connection Device GUID</param>
 	public CometAPIResponseMessage AdminInstallationDispatchDropConnection(string DeviceID) {
@@ -4749,7 +5151,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="DeviceID">The live connection Device GUID</param>
 	/// <param name="TargetUser">Selected account username</param>
@@ -4774,7 +5177,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="DeviceID">The live connection Device GUID</param>
 	/// <param name="TargetUser">Selected account username</param>
@@ -4790,7 +5194,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public async Task<Dictionary<string,RegistrationLobbyConnection>> AdminInstallationListActiveAsync() {
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/installation/list-active", null)){
@@ -4806,7 +5211,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public Dictionary<string,RegistrationLobbyConnection> AdminInstallationListActive() {
 		var resultTask = AdminInstallationListActiveAsync();
@@ -4823,7 +5229,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetUser">Username</param>
 	/// <param name="JobID">Job ID</param>
@@ -4850,7 +5257,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetUser">Username</param>
 	/// <param name="JobID">Job ID</param>
@@ -4871,7 +5279,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetUser">Username</param>
 	/// <param name="JobID">Job ID</param>
@@ -4900,7 +5309,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetUser">Username</param>
 	/// <param name="JobID">Job ID</param>
@@ -4915,7 +5325,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public async Task<string[]> AdminListUsersAsync() {
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/list-users", null)){
@@ -4931,7 +5342,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public string[] AdminListUsers() {
 		var resultTask = AdminListUsersAsync();
@@ -4944,7 +5356,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public async Task<Dictionary<string,UserProfileConfig>> AdminListUsersFullAsync() {
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/list-users-full", null)){
@@ -4960,7 +5373,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public Dictionary<string,UserProfileConfig> AdminListUsersFull() {
 		var resultTask = AdminListUsersFullAsync();
@@ -4973,7 +5387,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public async Task<ServerConfigOptionsBrandingFragment> AdminMetaBrandingConfigGetAsync() {
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/meta/branding-config/get", null)){
@@ -4989,7 +5404,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public ServerConfigOptionsBrandingFragment AdminMetaBrandingConfigGet() {
 		var resultTask = AdminMetaBrandingConfigGetAsync();
@@ -5005,7 +5421,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="BrandingConfig">Updated configuration content</param>
 	public async Task<CometAPIResponseMessage> AdminMetaBrandingConfigSetAsync(BrandingOptions BrandingConfig) {
@@ -5029,7 +5446,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="BrandingConfig">Updated configuration content</param>
 	public CometAPIResponseMessage AdminMetaBrandingConfigSet(BrandingOptions BrandingConfig) {
@@ -5043,7 +5461,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public async Task<ServerConfigOptionsSoftwareBuildRoleFragment> AdminMetaBuildConfigGetAsync() {
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/meta/build-config/get", null)){
@@ -5059,7 +5478,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public ServerConfigOptionsSoftwareBuildRoleFragment AdminMetaBuildConfigGet() {
 		var resultTask = AdminMetaBuildConfigGetAsync();
@@ -5072,7 +5492,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="SoftwareBuildRoleConfig">Updated configuration content</param>
 	public async Task<CometAPIResponseMessage> AdminMetaBuildConfigSetAsync(SoftwareBuildRoleOptions SoftwareBuildRoleConfig) {
@@ -5093,7 +5514,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="SoftwareBuildRoleConfig">Updated configuration content</param>
 	public CometAPIResponseMessage AdminMetaBuildConfigSet(SoftwareBuildRoleOptions SoftwareBuildRoleConfig) {
@@ -5107,7 +5529,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Constellation Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public async Task<ConstellationRoleOptions> AdminMetaConstellationConfigGetAsync() {
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/meta/constellation/config/get", null)){
@@ -5123,7 +5546,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Constellation Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public ConstellationRoleOptions AdminMetaConstellationConfigGet() {
 		var resultTask = AdminMetaConstellationConfigGetAsync();
@@ -5136,7 +5560,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Constellation Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="ConstellationRoleOptions">Constellation role options to set</param>
 	public async Task<CometAPIResponseMessage> AdminMetaConstellationConfigSetAsync(ConstellationRoleOptions ConstellationRoleOptions) {
@@ -5157,7 +5582,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Constellation Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="ConstellationRoleOptions">Constellation role options to set</param>
 	public CometAPIResponseMessage AdminMetaConstellationConfigSet(ConstellationRoleOptions ConstellationRoleOptions) {
@@ -5171,7 +5597,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public async Task<EmailOptions> AdminMetaEmailOptionsGetAsync() {
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/meta/email-options/get", null)){
@@ -5187,10 +5614,63 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public EmailOptions AdminMetaEmailOptionsGet() {
 		var resultTask = AdminMetaEmailOptionsGetAsync();
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
+	/// AdminMetaEmailOptionsOauthCallbackAsync: Exchange an OAuth 2.0 authorization code for an encrypted SMTP refresh
+	/// token
+	/// The web interface calls this after the mailbox user grants consent. The response is the supplied SMTPOAuth with the
+	/// refresh token added and secrets encrypted; store it in EmailOptions.SMTPOAuth and save it with the
+	/// AdminMetaEmailOptionsSet API.
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// Access to this API may be prevented on a per-administrator basis.
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
+	/// </summary>
+	/// <param name="SMTPOAuth">The app registration that requested the authorization code. Flow must be
+	/// SMTP_OAUTH_FLOW_AUTHORIZATION_CODE. The RefreshToken field is ignored. (>= 26.11.0)</param>
+	/// <param name="Code">The authorization code returned to the redirect URI (>= 26.11.0)</param>
+	/// <param name="RedirectURI">The redirect URI used in the authorization request (>= 26.11.0)</param>
+	public async Task<SMTPOAuthOptions> AdminMetaEmailOptionsOauthCallbackAsync(SMTPOAuthOptions SMTPOAuth, string Code, string RedirectURI) {
+		var data = new Dictionary<string,string>();
+
+		data["SMTPOAuth"] = JsonSerializer.Serialize(SMTPOAuth);
+		data["Code"] = Code;
+		data["RedirectURI"] = RedirectURI;
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/meta/email-options/oauth-callback", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<SMTPOAuthOptions>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// AdminMetaEmailOptionsOauthCallback: Exchange an OAuth 2.0 authorization code for an encrypted SMTP refresh token
+	/// The web interface calls this after the mailbox user grants consent. The response is the supplied SMTPOAuth with the
+	/// refresh token added and secrets encrypted; store it in EmailOptions.SMTPOAuth and save it with the
+	/// AdminMetaEmailOptionsSet API.
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// Access to this API may be prevented on a per-administrator basis.
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
+	/// </summary>
+	/// <param name="SMTPOAuth">The app registration that requested the authorization code. Flow must be
+	/// SMTP_OAUTH_FLOW_AUTHORIZATION_CODE. The RefreshToken field is ignored. (>= 26.11.0)</param>
+	/// <param name="Code">The authorization code returned to the redirect URI (>= 26.11.0)</param>
+	/// <param name="RedirectURI">The redirect URI used in the authorization request (>= 26.11.0)</param>
+	public SMTPOAuthOptions AdminMetaEmailOptionsOauthCallback(SMTPOAuthOptions SMTPOAuth, string Code, string RedirectURI) {
+		var resultTask = AdminMetaEmailOptionsOauthCallbackAsync(SMTPOAuth, Code, RedirectURI);
 		resultTask.Wait();
 		return resultTask.Result;
 	}
@@ -5200,7 +5680,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="EmailOptions">The replacement email reporting options.</param>
 	public async Task<CometAPIResponseMessage> AdminMetaEmailOptionsSetAsync(EmailOptions EmailOptions) {
@@ -5221,7 +5702,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="EmailOptions">The replacement email reporting options.</param>
 	public CometAPIResponseMessage AdminMetaEmailOptionsSet(EmailOptions EmailOptions) {
@@ -5235,7 +5717,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public async Task<long[]> AdminMetaListAvailableLogDaysAsync() {
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/meta/list-available-log-days", null)){
@@ -5251,7 +5734,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public long[] AdminMetaListAvailableLogDays() {
 		var resultTask = AdminMetaListAvailableLogDaysAsync();
@@ -5263,7 +5747,8 @@ public class CometAPI : IDisposable {
 	/// AdminMetaPsaConfigListGetAsync: Get the server PSA configuration
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public async Task<PSAConfig[]> AdminMetaPsaConfigListGetAsync() {
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/meta/psa-config-list/get", null)){
@@ -5278,7 +5763,8 @@ public class CometAPI : IDisposable {
 	/// AdminMetaPsaConfigListGet: Get the server PSA configuration
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public PSAConfig[] AdminMetaPsaConfigListGet() {
 		var resultTask = AdminMetaPsaConfigListGetAsync();
@@ -5290,7 +5776,8 @@ public class CometAPI : IDisposable {
 	/// AdminMetaPsaConfigListSetAsync: Update the server PSA configuration
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="PSAConfigList">The replacement PSA configuration list</param>
 	public async Task<CometAPIResponseMessage> AdminMetaPsaConfigListSetAsync(PSAConfig[] PSAConfigList) {
@@ -5310,7 +5797,8 @@ public class CometAPI : IDisposable {
 	/// AdminMetaPsaConfigListSet: Update the server PSA configuration
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="PSAConfigList">The replacement PSA configuration list</param>
 	public CometAPIResponseMessage AdminMetaPsaConfigListSet(PSAConfig[] PSAConfigList) {
@@ -5325,7 +5813,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public async Task<CometAPIResponseMessage> AdminMetaPsaConfigListSyncNowAsync() {
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/meta/psa-config-list/sync-now", null)){
@@ -5342,7 +5831,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public CometAPIResponseMessage AdminMetaPsaConfigListSyncNow() {
 		var resultTask = AdminMetaPsaConfigListSyncNowAsync();
@@ -5356,7 +5846,8 @@ public class CometAPI : IDisposable {
 	/// flow.
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="Code">The authorization code from NinjaOne</param>
 	/// <param name="RedirectURI">The callback URI used in the authorization request</param>
@@ -5386,7 +5877,8 @@ public class CometAPI : IDisposable {
 	/// flow.
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="Code">The authorization code from NinjaOne</param>
 	/// <param name="RedirectURI">The callback URI used in the authorization request</param>
@@ -5404,7 +5896,8 @@ public class CometAPI : IDisposable {
 	/// Used to populate the NinjaOne Client ID dropdown in the admin UI.
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="PSAConfig">The PSA configuration containing NinjaOne credentials</param>
 	public async Task<NinjaOneOrganization[]> AdminMetaPsaNinjaoneOrganizationsAsync(PSAConfig PSAConfig) {
@@ -5425,7 +5918,8 @@ public class CometAPI : IDisposable {
 	/// Used to populate the NinjaOne Client ID dropdown in the admin UI.
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="PSAConfig">The PSA configuration containing NinjaOne credentials</param>
 	public NinjaOneOrganization[] AdminMetaPsaNinjaoneOrganizations(PSAConfig PSAConfig) {
@@ -5443,7 +5937,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public async Task<byte[]> AdminMetaReadAllLogsAsync() {
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/meta/read-all-logs", null)){
@@ -5465,7 +5960,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public byte[] AdminMetaReadAllLogs() {
 		var resultTask = AdminMetaReadAllLogsAsync();
@@ -5482,7 +5978,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="Log">A log day, selected from the options returned by the Get Log Files API (>= 17.2.0)</param>
 	public async Task<byte[]> AdminMetaReadLogsAsync(Nullable<int> Log) {
@@ -5509,7 +6006,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="Log">A log day, selected from the options returned by the Get Log Files API (>= 17.2.0)</param>
 	public byte[] AdminMetaReadLogs(Nullable<int> Log) {
@@ -5527,7 +6025,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="Logs">An array of log days, selected from the options returned by the Get Log Files API</param>
 	public async Task<byte[]> AdminMetaReadSelectLogsAsync(long[] Logs) {
@@ -5554,7 +6053,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="Logs">An array of log days, selected from the options returned by the Get Log Files API</param>
 	public byte[] AdminMetaReadSelectLogs(long[] Logs) {
@@ -5568,7 +6068,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public async Task<RemoteStorageOption[]> AdminMetaRemoteStorageVaultGetAsync() {
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/meta/remote-storage-vault/get", null)){
@@ -5584,7 +6085,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public RemoteStorageOption[] AdminMetaRemoteStorageVaultGet() {
 		var resultTask = AdminMetaRemoteStorageVaultGetAsync();
@@ -5597,7 +6099,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="RemoteStorageOptions">Updated configuration content</param>
 	/// <param name="ReplacementAutoVaultID">(Optional) Replacement Storage Template ID for auto Storage Vault
@@ -5623,7 +6126,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="RemoteStorageOptions">Updated configuration content</param>
 	/// <param name="ReplacementAutoVaultID">(Optional) Replacement Storage Template ID for auto Storage Vault
@@ -5639,7 +6143,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TemplateOptions">Storage Template Vault Options</param>
 	public async Task<CometAPIResponseMessage> AdminMetaRemoteStorageVaultTestAsync(RemoteStorageOption TemplateOptions) {
@@ -5660,7 +6165,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TemplateOptions">Storage Template Vault Options</param>
 	public CometAPIResponseMessage AdminMetaRemoteStorageVaultTest(RemoteStorageOption TemplateOptions) {
@@ -5674,7 +6180,8 @@ public class CometAPI : IDisposable {
 	/// Resources are used to upload files within the server configuration.
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="Hash">The resource identifier</param>
 	public async Task<byte[]> AdminMetaResourceGetAsync(string Hash) {
@@ -5697,7 +6204,8 @@ public class CometAPI : IDisposable {
 	/// Resources are used to upload files within the server configuration.
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="Hash">The resource identifier</param>
 	public byte[] AdminMetaResourceGet(string Hash) {
@@ -5715,7 +6223,8 @@ public class CometAPI : IDisposable {
 	/// referenced by the server configuration.
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="upload">The uploaded file contents, as a multipart/form-data part. (>= 20.11.0)</param>
 	public async Task<AdminResourceResponse> AdminMetaResourceNewAsync(string upload) {
@@ -5731,7 +6240,8 @@ public class CometAPI : IDisposable {
 	/// referenced by the server configuration.
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="upload">The uploaded file contents, as a multipart/form-data part. (>= 20.11.0)</param>
 	public AdminResourceResponse AdminMetaResourceNew(string upload) {
@@ -5750,7 +6260,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
 	/// Access to this API may be prevented on a per-administrator basis.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public async Task<CometAPIResponseMessage> AdminMetaRestartServiceAsync() {
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/meta/restart-service", null)){
@@ -5771,7 +6282,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
 	/// Access to this API may be prevented on a per-administrator basis.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public CometAPIResponseMessage AdminMetaRestartService() {
 		var resultTask = AdminMetaRestartServiceAsync();
@@ -5785,7 +6297,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="EmailOptions">Updated configuration content</param>
 	/// <param name="Recipient">Target email address to send test email</param>
@@ -5809,7 +6322,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="EmailOptions">Updated configuration content</param>
 	/// <param name="Recipient">Target email address to send test email</param>
@@ -5825,7 +6339,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="EmailReportingOption">Test email reporting option for sending</param>
 	/// <param name="TargetOrganization">(Optional) If present, Testing email with a target organization. Only allowed for
@@ -5852,7 +6367,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="EmailReportingOption">Test email reporting option for sending</param>
 	/// <param name="TargetOrganization">(Optional) If present, Testing email with a target organization. Only allowed for
@@ -5868,7 +6384,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
 	/// </summary>
 	public async Task<ServerConfigOptions> AdminMetaServerConfigGetAsync() {
@@ -5885,11 +6402,92 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
 	/// </summary>
 	public ServerConfigOptions AdminMetaServerConfigGet() {
 		var resultTask = AdminMetaServerConfigGetAsync();
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
+	/// AdminMetaServerConfigGetAndHashAsync: Get server configuration (atomic)
+	/// The resulting hash parameter can be passed to the AdminMetaServerConfigSet API, to atomically ensure that no
+	/// changes occur between get/set operations.
+	/// The hash format is not publicly documented and may change in a future server version. Use server APIs to retrieve
+	/// current hash values.
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// Access to this API may be prevented on a per-administrator basis.
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
+	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
+	/// </summary>
+	public async Task<ServerConfigOptionsAndHashResponse> AdminMetaServerConfigGetAndHashAsync() {
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/meta/server-config/get-and-hash", null)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<ServerConfigOptionsAndHashResponse>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// AdminMetaServerConfigGetAndHash: Get server configuration (atomic)
+	/// The resulting hash parameter can be passed to the AdminMetaServerConfigSet API, to atomically ensure that no
+	/// changes occur between get/set operations.
+	/// The hash format is not publicly documented and may change in a future server version. Use server APIs to retrieve
+	/// current hash values.
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// Access to this API may be prevented on a per-administrator basis.
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
+	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
+	/// </summary>
+	public ServerConfigOptionsAndHashResponse AdminMetaServerConfigGetAndHash() {
+		var resultTask = AdminMetaServerConfigGetAndHashAsync();
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
+	/// AdminMetaServerConfigGetHashAsync: Get server configuration (hash)
+	/// The hash can be used to determine if the server configuration has changed.
+	/// The hash format is not publicly documented and may change in a future server version. Use server APIs to retrieve
+	/// current hash values.
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// Access to this API may be prevented on a per-administrator basis.
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
+	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
+	/// </summary>
+	public async Task<ServerConfigOptionsHashResponse> AdminMetaServerConfigGetHashAsync() {
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/meta/server-config/get-hash", null)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<ServerConfigOptionsHashResponse>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// AdminMetaServerConfigGetHash: Get server configuration (hash)
+	/// The hash can be used to determine if the server configuration has changed.
+	/// The hash format is not publicly documented and may change in a future server version. Use server APIs to retrieve
+	/// current hash values.
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// Access to this API may be prevented on a per-administrator basis.
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
+	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
+	/// </summary>
+	public ServerConfigOptionsHashResponse AdminMetaServerConfigGetHash() {
+		var resultTask = AdminMetaServerConfigGetHashAsync();
 		resultTask.Wait();
 		return resultTask.Result;
 	}
@@ -5900,7 +6498,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
 	/// </summary>
 	public async Task<string[]> AdminMetaServerConfigNetworkInterfacesAsync() {
@@ -5918,7 +6517,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
 	/// </summary>
 	public string[] AdminMetaServerConfigNetworkInterfaces() {
@@ -5936,14 +6536,21 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
 	/// </summary>
 	/// <param name="Config">Updated configuration content (>= 17.3.8)</param>
-	public async Task<CometAPIResponseMessage> AdminMetaServerConfigSetAsync(ServerConfigOptions Config) {
+	/// <param name="RequireHash">(Optional) If present, the change is only applied if the server configuration is
+	/// unchanged since this hash was retrieved from the AdminMetaServerConfigGetAndHash API. Otherwise, the change is
+	/// rejected with status 409 and the server does not restart. (>= 26.11.0)</param>
+	public async Task<CometAPIResponseMessage> AdminMetaServerConfigSetAsync(ServerConfigOptions Config, string RequireHash = null) {
 		var data = new Dictionary<string,string>();
 
 		data["Config"] = JsonSerializer.Serialize(Config);
+		if (RequireHash != null) {
+			data["RequireHash"] = RequireHash;
+		}
 
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/meta/server-config/set", data)){
 			response.EnsureSuccessStatusCode();
@@ -5962,12 +6569,16 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
 	/// </summary>
 	/// <param name="Config">Updated configuration content (>= 17.3.8)</param>
-	public CometAPIResponseMessage AdminMetaServerConfigSet(ServerConfigOptions Config) {
-		var resultTask = AdminMetaServerConfigSetAsync(Config);
+	/// <param name="RequireHash">(Optional) If present, the change is only applied if the server configuration is
+	/// unchanged since this hash was retrieved from the AdminMetaServerConfigGetAndHash API. Otherwise, the change is
+	/// rejected with status 409 and the server does not restart. (>= 26.11.0)</param>
+	public CometAPIResponseMessage AdminMetaServerConfigSet(ServerConfigOptions Config, string RequireHash = null) {
+		var resultTask = AdminMetaServerConfigSetAsync(Config, RequireHash);
 		resultTask.Wait();
 		return resultTask.Result;
 	}
@@ -5982,7 +6593,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
 	/// Access to this API may be prevented on a per-administrator basis.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	public async Task<CometAPIResponseMessage> AdminMetaShutdownServiceAsync() {
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/meta/shutdown-service", null)){
@@ -6003,7 +6615,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
 	/// Access to this API may be prevented on a per-administrator basis.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	public CometAPIResponseMessage AdminMetaShutdownService() {
 		var resultTask = AdminMetaShutdownServiceAsync();
@@ -6015,7 +6628,8 @@ public class CometAPI : IDisposable {
 	/// AdminMetaSoftwareUpdateNewsAsync: Get software update news from the software provider
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public async Task<SoftwareUpdateNewsResponse> AdminMetaSoftwareUpdateNewsAsync() {
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/meta/software-update-news", null)){
@@ -6030,7 +6644,8 @@ public class CometAPI : IDisposable {
 	/// AdminMetaSoftwareUpdateNews: Get software update news from the software provider
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public SoftwareUpdateNewsResponse AdminMetaSoftwareUpdateNews() {
 		var resultTask = AdminMetaSoftwareUpdateNewsAsync();
@@ -6043,7 +6658,8 @@ public class CometAPI : IDisposable {
 	/// The returned key-value map is not necessarily ordered. Client-side code should sort the result before display.
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="Simple">Remove redundant statistics (>= 18.9.1)</param>
 	public async Task<Dictionary<long,StatResult>> AdminMetaStatsAsync(Nullable<bool> Simple) {
@@ -6064,7 +6680,8 @@ public class CometAPI : IDisposable {
 	/// The returned key-value map is not necessarily ordered. Client-side code should sort the result before display.
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="Simple">Remove redundant statistics (>= 18.9.1)</param>
 	public Dictionary<long,StatResult> AdminMetaStats(Nullable<bool> Simple) {
@@ -6078,7 +6695,8 @@ public class CometAPI : IDisposable {
 	/// Retrieve the version number and basic properties about the server.
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public async Task<ServerMetaVersionInfo> AdminMetaVersionAsync() {
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/meta/version", null)){
@@ -6094,7 +6712,8 @@ public class CometAPI : IDisposable {
 	/// Retrieve the version number and basic properties about the server.
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public ServerMetaVersionInfo AdminMetaVersion() {
 		var resultTask = AdminMetaVersionAsync();
@@ -6107,7 +6726,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public async Task<Dictionary<string,WebhookOption>> AdminMetaWebhookOptionsGetAsync() {
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/meta/webhook-options/get", null)){
@@ -6123,7 +6743,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public Dictionary<string,WebhookOption> AdminMetaWebhookOptionsGet() {
 		var resultTask = AdminMetaWebhookOptionsGetAsync();
@@ -6137,7 +6758,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	/// <param name="WebhookOptions">The replacement webhook target options. (>= 20.6.8)</param>
 	public async Task<CometAPIResponseMessage> AdminMetaWebhookOptionsSetAsync(Dictionary<string,WebhookOption> WebhookOptions) {
@@ -6159,7 +6781,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	/// <param name="WebhookOptions">The replacement webhook target options. (>= 20.6.8)</param>
 	public CometAPIResponseMessage AdminMetaWebhookOptionsSet(Dictionary<string,WebhookOption> WebhookOptions) {
@@ -6173,7 +6796,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public async Task<Dictionary<string,NewsEntry>> AdminNewsGetAllAsync() {
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/news/get-all", null)){
@@ -6189,7 +6813,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public Dictionary<string,NewsEntry> AdminNewsGetAll() {
 		var resultTask = AdminNewsGetAllAsync();
@@ -6202,7 +6827,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="NewsItem">Selected news item GUID (>= 17.2.0)</param>
 	public async Task<CometAPIResponseMessage> AdminNewsRemoveAsync(string NewsItem) {
@@ -6223,7 +6849,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="NewsItem">Selected news item GUID (>= 17.2.0)</param>
 	public CometAPIResponseMessage AdminNewsRemove(string NewsItem) {
@@ -6237,7 +6864,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="NewsContent">Content of news item (>= 17.2.0)</param>
 	public async Task<CometAPIResponseMessage> AdminNewsSubmitAsync(string NewsContent) {
@@ -6258,7 +6886,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="NewsContent">Content of news item (>= 17.2.0)</param>
 	public CometAPIResponseMessage AdminNewsSubmit(string NewsContent) {
@@ -6274,7 +6903,8 @@ public class CometAPI : IDisposable {
 	/// generated rules' display metadata.
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	/// <param name="Selection">The legacy selection to convert</param>
 	/// <param name="Accounts">(Optional) The organization's account list, for display-name enrichment</param>
@@ -6301,7 +6931,8 @@ public class CometAPI : IDisposable {
 	/// generated rules' display metadata.
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	/// <param name="Selection">The legacy selection to convert</param>
 	/// <param name="Accounts">(Optional) The organization's account list, for display-name enrichment</param>
@@ -6318,7 +6949,8 @@ public class CometAPI : IDisposable {
 	/// computation with no device round-trip.
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	/// <param name="Rules">The ordered rule list to evaluate</param>
 	/// <param name="Accounts">The organization's account list</param>
@@ -6342,7 +6974,8 @@ public class CometAPI : IDisposable {
 	/// computation with no device round-trip.
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	/// <param name="Rules">The ordered rule list to evaluate</param>
 	/// <param name="Accounts">The organization's account list</param>
@@ -6360,7 +6993,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="OrganizationID">(Optional) (No description available)</param>
 	/// <param name="UninstallConfig">(Optional) Uninstall software configuration</param>
@@ -6390,7 +7024,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="OrganizationID">(Optional) (No description available)</param>
 	/// <param name="UninstallConfig">(Optional) Uninstall software configuration</param>
@@ -6405,7 +7040,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	/// <param name="Options">The export config options</param>
 	public async Task<CometAPIResponseMessage> AdminOrganizationExportAsync(SelfBackupExportOptions Options) {
@@ -6426,7 +7062,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	/// <param name="Options">The export config options</param>
 	public CometAPIResponseMessage AdminOrganizationExport(SelfBackupExportOptions Options) {
@@ -6440,7 +7077,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public async Task<Dictionary<string,Organization>> AdminOrganizationListAsync() {
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/organization/list", null)){
@@ -6456,7 +7094,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public Dictionary<string,Organization> AdminOrganizationList() {
 		var resultTask = AdminOrganizationListAsync();
@@ -6471,7 +7110,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="OrganizationID">(Optional) (No description available)</param>
 	/// <param name="Organization">(Optional) (No description available)</param>
@@ -6500,7 +7140,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="OrganizationID">(Optional) (No description available)</param>
 	/// <param name="Organization">(Optional) (No description available)</param>
@@ -6515,7 +7156,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="PolicyID">The policy ID to update or create</param>
 	public async Task<CometAPIResponseMessage> AdminPoliciesDeleteAsync(string PolicyID) {
@@ -6536,7 +7178,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="PolicyID">The policy ID to update or create</param>
 	public CometAPIResponseMessage AdminPoliciesDelete(string PolicyID) {
@@ -6551,7 +7194,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="PolicyID">The policy ID to retrieve</param>
 	public async Task<GetGroupPolicyResponse> AdminPoliciesGetAsync(string PolicyID) {
@@ -6573,7 +7217,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="PolicyID">The policy ID to retrieve</param>
 	public GetGroupPolicyResponse AdminPoliciesGet(string PolicyID) {
@@ -6589,7 +7234,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetOrganization">(Optional) If present, list the policies belonging to another organization. Only
 	/// allowed for administrator accounts in the top-level organization. (>= 22.5.0)</param>
@@ -6615,7 +7261,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetOrganization">(Optional) If present, list the policies belonging to another organization. Only
 	/// allowed for administrator accounts in the top-level organization. (>= 22.5.0)</param>
@@ -6632,7 +7279,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetOrganization">(Optional) If present, list the policies belonging to another organization. Only
 	/// allowed for administrator accounts in the top-level organization. (>= 22.5.0)</param>
@@ -6658,7 +7306,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetOrganization">(Optional) If present, list the policies belonging to another organization. Only
 	/// allowed for administrator accounts in the top-level organization. (>= 22.5.0)</param>
@@ -6673,7 +7322,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="Policy">The policy data</param>
 	public async Task<CreateGroupPolicyResponse> AdminPoliciesNewAsync(GroupPolicy Policy) {
@@ -6694,7 +7344,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="Policy">The policy data</param>
 	public CreateGroupPolicyResponse AdminPoliciesNew(GroupPolicy Policy) {
@@ -6710,7 +7361,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="PolicyID">The policy ID to update or create</param>
 	/// <param name="Policy">The policy data</param>
@@ -6744,7 +7396,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="PolicyID">The policy ID to update or create</param>
 	/// <param name="Policy">The policy data</param>
@@ -6762,7 +7415,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetUser">Selected account username</param>
 	/// <param name="EmailReportConfig">Email report configuration to preview</param>
@@ -6789,7 +7443,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetUser">Selected account username</param>
 	/// <param name="EmailReportConfig">Email report configuration to preview</param>
@@ -6805,7 +7460,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public async Task<ReplicatorStateAPIResponse[]> AdminReplicationStateAsync() {
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/replication/state", null)){
@@ -6821,7 +7477,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public ReplicatorStateAPIResponse[] AdminReplicationState() {
 		var resultTask = AdminReplicationStateAsync();
@@ -6838,7 +7495,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetUser">The user to receive the new Storage Vault</param>
 	/// <param name="StorageProvider">ID for the storage template destination</param>
@@ -6876,7 +7534,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetUser">The user to receive the new Storage Vault</param>
 	/// <param name="StorageProvider">ID for the storage template destination</param>
@@ -6895,7 +7554,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetOrganization">(Optional) If present, list the storage template options belonging to another
 	/// organization. Only allowed for administrator accounts in the top-level organization. (>= 22.5.0)</param>
@@ -6919,7 +7579,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetOrganization">(Optional) If present, list the storage template options belonging to another
 	/// organization. Only allowed for administrator accounts in the top-level organization. (>= 22.5.0)</param>
@@ -6936,7 +7597,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetUser">Selected account username</param>
 	/// <param name="NewPassword">New account password</param>
@@ -6966,7 +7628,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetUser">Selected account username</param>
 	/// <param name="NewPassword">New account password</param>
@@ -6985,7 +7648,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetUser">Selected account username</param>
 	/// <param name="TargetDevice">Selected Device ID</param>
@@ -7010,7 +7674,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetUser">Selected account username</param>
 	/// <param name="TargetDevice">Selected Device ID</param>
@@ -7025,7 +7690,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public async Task<CometAPIResponseMessage> AdminSelfBackupStartAsync() {
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/self-backup/start", null)){
@@ -7041,7 +7707,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public CometAPIResponseMessage AdminSelfBackupStart() {
 		var resultTask = AdminSelfBackupStartAsync();
@@ -7054,7 +7721,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetUser">Selected account username</param>
 	/// <param name="SourceID">Selected Protected Item GUID</param>
@@ -7089,7 +7757,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetUser">Selected account username</param>
 	/// <param name="SourceID">Selected Protected Item GUID</param>
@@ -7107,7 +7776,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetUser">Selected account username (>= 17.2.0)</param>
 	/// <param name="ProfileData">Modified user profile (>= 17.2.0)</param>
@@ -7134,7 +7804,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetUser">Selected account username (>= 17.2.0)</param>
 	/// <param name="ProfileData">Modified user profile (>= 17.2.0)</param>
@@ -7154,7 +7825,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetUser">Selected account username (>= 17.2.0)</param>
 	/// <param name="ProfileData">Modified user profile (>= 17.2.0)</param>
@@ -7187,7 +7859,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetUser">Selected account username (>= 17.2.0)</param>
 	/// <param name="ProfileData">Modified user profile (>= 17.2.0)</param>
@@ -7204,7 +7877,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="SharedStorageQuotaID">(No description available)</param>
 	public async Task<CometAPIResponseMessage> AdminSquotaDeleteAsync(string SharedStorageQuotaID) {
@@ -7225,7 +7899,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="SharedStorageQuotaID">(No description available)</param>
 	public CometAPIResponseMessage AdminSquotaDelete(string SharedStorageQuotaID) {
@@ -7239,7 +7914,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="SharedStorageQuotaID">(No description available)</param>
 	public async Task<GetSharedStorageQuotaResponse> AdminSquotaGetWithHashAsync(string SharedStorageQuotaID) {
@@ -7260,7 +7936,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="SharedStorageQuotaID">(No description available)</param>
 	public GetSharedStorageQuotaResponse AdminSquotaGetWithHash(string SharedStorageQuotaID) {
@@ -7274,7 +7951,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public async Task<ListSharedStorageQuotaResponse> AdminSquotaListAllAsync() {
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/squota/list-all", null)){
@@ -7290,7 +7968,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public ListSharedStorageQuotaResponse AdminSquotaListAll() {
 		var resultTask = AdminSquotaListAllAsync();
@@ -7303,7 +7982,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="SharedStorageQuotaID">(No description available)</param>
 	/// <param name="SharedStorageQuota">(No description available)</param>
@@ -7331,7 +8011,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="SharedStorageQuotaID">(No description available)</param>
 	/// <param name="SharedStorageQuota">(No description available)</param>
@@ -7350,7 +8031,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Storage Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="BucketID">Bucket ID</param>
 	/// <param name="AfterTimestamp">(Optional) Allow a stale size measurement if it is at least as new as the supplied
@@ -7379,7 +8061,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Storage Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="BucketID">Bucket ID</param>
 	/// <param name="AfterTimestamp">(Optional) Allow a stale size measurement if it is at least as new as the supplied
@@ -7397,7 +8080,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Storage Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="BucketID">Selected bucket name (>= 17.2.0)</param>
 	public async Task<CometAPIResponseMessage> AdminStorageDeleteBucketAsync(string BucketID) {
@@ -7419,7 +8103,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Storage Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="BucketID">Selected bucket name (>= 17.2.0)</param>
 	public CometAPIResponseMessage AdminStorageDeleteBucket(string BucketID) {
@@ -7434,7 +8119,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
 	/// This API requires the Storage Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
 	/// </summary>
 	/// <param name="BucketID">(Optional) (This parameter is not used)</param>
@@ -7459,7 +8145,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
 	/// This API requires the Storage Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
 	/// </summary>
 	/// <param name="BucketID">(Optional) (This parameter is not used)</param>
@@ -7474,7 +8161,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Storage Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public async Task<Dictionary<string,BucketProperties>> AdminStorageListBucketsAsync() {
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/storage/list-buckets", null)){
@@ -7490,7 +8178,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Storage Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	public Dictionary<string,BucketProperties> AdminStorageListBuckets() {
 		var resultTask = AdminStorageListBucketsAsync();
@@ -7503,7 +8192,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
 	/// </summary>
 	/// <param name="ExtraData">The destination location settings</param>
@@ -7525,7 +8215,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// Access to this API may be prevented on a per-administrator basis.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
 	/// </summary>
 	/// <param name="ExtraData">The destination location settings</param>
@@ -7543,7 +8234,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Storage Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="SetBucketValue">(Optional) Bucket ID (>= 17.2.0)</param>
 	/// <param name="SetKeyHashFormat">(Optional) Bucket key hashing format (>= 17.2.0)</param>
@@ -7581,7 +8273,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Storage Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="SetBucketValue">(Optional) Bucket ID (>= 17.2.0)</param>
 	/// <param name="SetKeyHashFormat">(Optional) Bucket key hashing format (>= 17.2.0)</param>
@@ -7594,12 +8287,60 @@ public class CometAPI : IDisposable {
 	}
 
 	/// <summary>
+	/// AdminStorageRotateBucketKeyAsync: Issue a new key for an existing bucket, replacing the previous one
+	/// The previous key stops working immediately. Any device or Storage Vault still using it loses access to the bucket
+	/// until it is given the new key, so this can be used to cut off a backup job that is no longer supposed to be
+	/// writing.
+	/// The new key is returned in the response message. It is not recoverable afterwards; if it is lost, issue another
+	/// one.
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Storage Role to be enabled.
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
+	/// </summary>
+	/// <param name="BucketID">Selected bucket name</param>
+	public async Task<AddBucketResponseMessage> AdminStorageRotateBucketKeyAsync(string BucketID) {
+		var data = new Dictionary<string,string>();
+
+		data["BucketID"] = BucketID;
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/admin/storage/rotate-bucket-key", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<AddBucketResponseMessage>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// AdminStorageRotateBucketKey: Issue a new key for an existing bucket, replacing the previous one
+	/// The previous key stops working immediately. Any device or Storage Vault still using it loses access to the bucket
+	/// until it is given the new key, so this can be used to cut off a backup job that is no longer supposed to be
+	/// writing.
+	/// The new key is returned in the response message. It is not recoverable afterwards; if it is lost, issue another
+	/// one.
+	/// 
+	/// You must supply administrator authentication credentials to use this API.
+	/// This API requires the Storage Role to be enabled.
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
+	/// </summary>
+	/// <param name="BucketID">Selected bucket name</param>
+	public AddBucketResponseMessage AdminStorageRotateBucketKey(string BucketID) {
+		var resultTask = AdminStorageRotateBucketKeyAsync(BucketID);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
 	/// AdminUpdateCampaignStartAsync: Start a new software update campaign
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
 	/// This API requires the Software Build Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
 	/// <param name="Options">Configure targets for the software update campaign</param>
@@ -7622,7 +8363,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
 	/// This API requires the Software Build Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
 	/// <param name="Options">Configure targets for the software update campaign</param>
@@ -7638,7 +8380,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
 	/// This API requires the Software Build Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
 	public async Task<UpdateCampaignStatus> AdminUpdateCampaignStatusAsync() {
@@ -7656,7 +8399,8 @@ public class CometAPI : IDisposable {
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API is only available for top-level administrator accounts, not for Tenant administrator accounts.
 	/// This API requires the Software Build Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
 	public UpdateCampaignStatus AdminUpdateCampaignStatus() {
@@ -7670,7 +8414,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="GroupID">The user group ID to delete</param>
 	public async Task<CometAPIResponseMessage> AdminUserGroupsDeleteAsync(string GroupID) {
@@ -7691,7 +8436,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="GroupID">The user group ID to delete</param>
 	public CometAPIResponseMessage AdminUserGroupsDelete(string GroupID) {
@@ -7705,7 +8451,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="GroupID">The user group ID to retrieve</param>
 	/// <param name="IncludeUsers">(Optional) If present, includes the users array in the response.</param>
@@ -7730,7 +8477,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="GroupID">The user group ID to retrieve</param>
 	/// <param name="IncludeUsers">(Optional) If present, includes the users array in the response.</param>
@@ -7747,7 +8495,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetOrganization">(Optional) If present, list the user groups belonging to another organization.
 	/// Only allowed for administrator accounts in the top-level organization.</param>
@@ -7773,7 +8522,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetOrganization">(Optional) If present, list the user groups belonging to another organization.
 	/// Only allowed for administrator accounts in the top-level organization.</param>
@@ -7790,7 +8540,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetOrganization">(Optional) If present, list the user groups belonging to the specified
 	/// organization. Only allowed for administrator accounts in the top-level organization.</param>
@@ -7816,7 +8567,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetOrganization">(Optional) If present, list the user groups belonging to the specified
 	/// organization. Only allowed for administrator accounts in the top-level organization.</param>
@@ -7831,7 +8583,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="Name">this is the name of the group.</param>
 	/// <param name="TargetOrganization">(Optional) If present, list the policies belonging to another organization. Only
@@ -7857,7 +8610,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="Name">this is the name of the group.</param>
 	/// <param name="TargetOrganization">(Optional) If present, list the policies belonging to another organization. Only
@@ -7873,7 +8627,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="GroupID">The user group ID to update or create</param>
 	/// <param name="Group">The user group data</param>
@@ -7896,7 +8651,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="GroupID">The user group ID to update or create</param>
 	/// <param name="Group">The user group data</param>
@@ -7913,7 +8669,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="GroupID">The user group ID to update</param>
 	/// <param name="Users">An array of usernames.</param>
@@ -7938,7 +8695,8 @@ public class CometAPI : IDisposable {
 	/// 
 	/// You must supply administrator authentication credentials to use this API.
 	/// This API requires the Auth Role to be enabled.
-	/// This API accepts admin personal API token authentication (AuthType=Token).
+	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
+	/// with AuthType=Password).
 	/// </summary>
 	/// <param name="GroupID">The user group ID to update</param>
 	/// <param name="Users">An array of usernames.</param>
@@ -7975,7 +8733,8 @@ public class CometAPI : IDisposable {
 	/// This API behaves like either AdminAccountSessionStart or UserWebSessionStart, depending on what the supplied
 	/// credentials were valid for.
 	/// 
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	public async Task<SessionKeyRegeneratedResponse> HybridSessionStartAsync() {
 		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/hybrid/session/start", null)){
@@ -7992,7 +8751,8 @@ public class CometAPI : IDisposable {
 	/// This API behaves like either AdminAccountSessionStart or UserWebSessionStart, depending on what the supplied
 	/// credentials were valid for.
 	/// 
-	/// This API does not accept admin personal API token authentication (AuthType=Token).
+	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
+	/// password with AuthType=Password).
 	/// </summary>
 	public SessionKeyRegeneratedResponse HybridSessionStart() {
 		var resultTask = HybridSessionStartAsync();
@@ -8238,6 +8998,47 @@ public class CometAPI : IDisposable {
 	/// <param name="SnapshotID">Snapshot to search</param>
 	public DispatcherListSnapshotVirtualMachinesResponse UserWebDispatcherBrowseVirtualMachines(string TargetID, string DestinationID, string SnapshotID) {
 		var resultTask = UserWebDispatcherBrowseVirtualMachinesAsync(TargetID, DestinationID, SnapshotID);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
+	/// UserWebDispatcherClearLoginPasswordAsync: Instruct a live connected device to discard its stored login password and
+	/// return to the login screen
+	/// The device keeps its username and server URL, so only the new password needs to be re-entered. Devices older than
+	/// 26.11.3 cannot retain the login details and discard all stored credentials instead.
+	/// 
+	/// You must supply user authentication credentials to use this API, and the user account must be authorized for web
+	/// access.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	public async Task<CometAPIResponseMessage> UserWebDispatcherClearLoginPasswordAsync(string TargetID) {
+		var data = new Dictionary<string,string>();
+
+		data["TargetID"] = TargetID;
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/user/web/dispatcher/clear-login-password", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<CometAPIResponseMessage>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// UserWebDispatcherClearLoginPassword: Instruct a live connected device to discard its stored login password and
+	/// return to the login screen
+	/// The device keeps its username and server URL, so only the new password needs to be re-entered. Devices older than
+	/// 26.11.3 cannot retain the login details and discard all stored credentials instead.
+	/// 
+	/// You must supply user authentication credentials to use this API, and the user account must be authorized for web
+	/// access.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID</param>
+	public CometAPIResponseMessage UserWebDispatcherClearLoginPassword(string TargetID) {
+		var resultTask = UserWebDispatcherClearLoginPasswordAsync(TargetID);
 		resultTask.Wait();
 		return resultTask.Result;
 	}
@@ -8778,6 +9579,44 @@ public class CometAPI : IDisposable {
 	/// <param name="Credentials">The MySQL database authentication settings</param>
 	public BrowseSQLServerResponse UserWebDispatcherRequestBrowseMysql(string TargetID, MySQLConnection Credentials) {
 		var resultTask = UserWebDispatcherRequestBrowseMysqlAsync(TargetID, Credentials);
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
+	/// UserWebDispatcherRequestBrowsePostgresqlAsync: Request a list of databases in a PostgreSQL server
+	/// 
+	/// You must supply user authentication credentials to use this API, and the user account must be authorized for web
+	/// access.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID (>= 26.11.0)</param>
+	/// <param name="Credentials">The PostgreSQL database authentication settings (>= 26.11.0)</param>
+	public async Task<BrowseSQLServerResponse> UserWebDispatcherRequestBrowsePostgresqlAsync(string TargetID, PostgreSQLConnection Credentials) {
+		var data = new Dictionary<string,string>();
+
+		data["TargetID"] = TargetID;
+		data["Credentials"] = JsonSerializer.Serialize(Credentials);
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/user/web/dispatcher/request-browse-postgresql", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<BrowseSQLServerResponse>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// UserWebDispatcherRequestBrowsePostgresql: Request a list of databases in a PostgreSQL server
+	/// 
+	/// You must supply user authentication credentials to use this API, and the user account must be authorized for web
+	/// access.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="TargetID">The live connection GUID (>= 26.11.0)</param>
+	/// <param name="Credentials">The PostgreSQL database authentication settings (>= 26.11.0)</param>
+	public BrowseSQLServerResponse UserWebDispatcherRequestBrowsePostgresql(string TargetID, PostgreSQLConnection Credentials) {
+		var resultTask = UserWebDispatcherRequestBrowsePostgresqlAsync(TargetID, Credentials);
 		resultTask.Wait();
 		return resultTask.Result;
 	}
@@ -9998,6 +10837,53 @@ public class CometAPI : IDisposable {
 	/// </summary>
 	public GetProfileAndHashResponseMessage UserWebGetUserProfileAndHash() {
 		var resultTask = UserWebGetUserProfileAndHashAsync();
+		resultTask.Wait();
+		return resultTask.Result;
+	}
+
+	/// <summary>
+	/// UserWebJobAbandonAsync: Mark a running job as abandoned
+	/// This will change the status of a running job to abandoned.
+	/// This is intended to be used on jobs which are definitely no longer running but are stuck in the running state; it
+	/// will not attempt to cancel the job. If the job is detected to still be running after being marked as abandoned, it
+	/// will be revived.
+	/// This is the user-facing counterpart to /api/v1/admin/job/abandon; it can only abandon jobs belonging to the
+	/// authenticated user.
+	/// 
+	/// You must supply user authentication credentials to use this API, and the user account must be authorized for web
+	/// access.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="JobID">Job ID</param>
+	public async Task<CometAPIResponseMessage> UserWebJobAbandonAsync(string JobID) {
+		var data = new Dictionary<string,string>();
+
+		data["JobID"] = JobID;
+
+		using(var response = await this.Request("application/x-www-form-urlencoded", HttpMethod.Post, "/api/v1/user/web/job/abandon", data)){
+			response.EnsureSuccessStatusCode();
+			using(var stream = await response.Content.ReadAsStreamAsync()){
+				return await JsonSerializer.DeserializeAsync<CometAPIResponseMessage>(stream);
+			}
+		}
+	}
+
+	/// <summary>
+	/// UserWebJobAbandon: Mark a running job as abandoned
+	/// This will change the status of a running job to abandoned.
+	/// This is intended to be used on jobs which are definitely no longer running but are stuck in the running state; it
+	/// will not attempt to cancel the job. If the job is detected to still be running after being marked as abandoned, it
+	/// will be revived.
+	/// This is the user-facing counterpart to /api/v1/admin/job/abandon; it can only abandon jobs belonging to the
+	/// authenticated user.
+	/// 
+	/// You must supply user authentication credentials to use this API, and the user account must be authorized for web
+	/// access.
+	/// This API requires the Auth Role to be enabled.
+	/// </summary>
+	/// <param name="JobID">Job ID</param>
+	public CometAPIResponseMessage UserWebJobAbandon(string JobID) {
+		var resultTask = UserWebJobAbandonAsync(JobID);
 		resultTask.Wait();
 		return resultTask.Result;
 	}

@@ -30,6 +30,16 @@ public class AdminAccountPropertiesResponse {
 	//authentication source and so has no local password to confirm.
 	public bool APITokenCreateRequiresPassword { get; set; }
 
+	[JsonPropertyName("ExternalSourceIsOIDC")]
+	//True if this account logs in via an external OpenID Connect identity provider (single sign-on). The identity provider
+	//may enforce its own multi-factor authentication.
+	public bool ExternalSourceIsOIDC { get; set; }
+
+	[JsonPropertyName("ExternalSourceSkipsMFA")]
+	//True if this account logs in via an external authentication source that is configured to skip Comet multi-factor
+	//authentication. In that case, the account's TOTP and WebAuthn settings are not enforced at login.
+	public bool ExternalSourceSkipsMFA { get; set; }
+
 	public AdminAccountPropertiesResponse(){ }
 
 	public string ToJson() {
