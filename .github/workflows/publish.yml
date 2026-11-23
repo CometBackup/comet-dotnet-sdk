@@ -1,0 +1,61 @@
+# Publishes CometBackup.CometAPI.SDK to nuget.org when a version tag (v1.2.3) is pushed, using NuGet
+# trusted publishing: nuget.org verifies this workflow run's identity through GitHub's OIDC token and
+# issues a one-hour API key, so no long-lived NuGet API key is stored anywhere.
+#
+# The trusted publishing policy on nuget.org names this repository and this workflow file
+# (publish.yml). Renaming either stops publishing until that policy is updated. The NUGET_USER
+# repository variable holds the nuget.org username of the policy's owner.
+# See https://learn.microsoft.com/nuget/nuget-org/trusted-publishing
+
+name: Publish to NuGet
+
+on:
+  push:
+    tags:
+      - 'v*'
+  # Fallback: run it from the Actions tab, choosing the tag, if a tag push did not start a run
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    # The internal mirror receives the same tags, but only the public repository is trusted
+    if: github.repository == 'CometBackup/comet-dotnet-sdk'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # NuGet trusted publishing
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-dotnet@0f4a354dd5547a28c70b7853dbd95d5b67886e73 # v6.1.0
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Check the tag matches the project version
+        run: |
+          version="v$(sed -n 's:.*<Version>\(.*\)</Version>.*:\1:p' src/CometBackup.CometAPI.SDK.csproj)"
+          if [ "${version}" != "${GITHUB_REF_NAME}" ]; then
+            echo "::error::${GITHUB_REF_NAME} does not match the project version ${version}"
+            exit 1
+          fi
+
+      - run: dotnet pack src/CometBackup.CometAPI.SDK.csproj --configuration Release --output artifacts
+
+      # Requested after the build, since the key is only valid for an hour
+      - name: NuGet login
+        id: login
+        uses: NuGet/login@8d196754b4036150537f80ac539e15c2f1028841 # v1.2.0
+        with:
+          user: ${{ vars.NUGET_USER }}
+
+      - name: Push to nuget.org
+        env:
+          NUGET_API_KEY: ${{ steps.login.outputs.NUGET_API_KEY }}
+        run: |
+          dotnet nuget push "artifacts/CometBackup.CometAPI.SDK.${GITHUB_REF_NAME#v}.nupkg" \
+            --api-key "${NUGET_API_KEY}" --source https://api.nuget.org/v3/index.json
