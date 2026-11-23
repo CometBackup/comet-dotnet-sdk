@@ -4,7 +4,8 @@
 #
 # The trusted publishing policy on nuget.org names this repository and this workflow file
 # (publish.yml). Renaming either stops publishing until that policy is updated. The NUGET_USER
-# repository variable holds the nuget.org username of the policy's owner.
+# repository variable must be a nuget.org user account: the policy is owned by the CometBackupNZ
+# organization, but logging in as the organization fails.
 # See https://learn.microsoft.com/nuget/nuget-org/trusted-publishing
 
 name: Publish to NuGet
