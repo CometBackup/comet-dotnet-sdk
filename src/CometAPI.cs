@@ -19,6 +19,10 @@ public class CometAPI : IDisposable {
 	public string ServerURL;
 	public string Username;
 	public string Password;
+	/// <summary>
+	/// Admin personal API token. If set, it is used instead of the password. See <see cref="WithToken(string, string, string)"/>.
+	/// </summary>
+	public string Token;
 	private HttpClient _client;
 
 	/// <summary>
@@ -49,6 +53,37 @@ public class CometAPI : IDisposable {
 		_client = client;
 	}
 
+	/// <summary>
+	/// Creates an access point for the Comet API that authenticates using an admin personal API token.
+	/// A token is not asked for 2FA, but is only accepted by APIs documented as accepting it.
+	/// Admin personal API tokens require Comet Server 26.8.3 or later. Since Comet Server 26.11.3, a
+	/// token can also be passed as the password to the CometAPI constructor.
+	/// An HttpClient is created and managed automatically.
+	/// <param name="serverURL">Address of Comet server to connect to</param>
+	/// <param name="username">Username of the admin that owns the token</param>
+	/// <param name="token">Admin personal API token</param>
+	/// </summary>
+	public static CometAPI WithToken(string serverURL, string username, string token) {
+		return WithToken(serverURL, username, token, new HttpClient());
+	}
+
+	/// <summary>
+	/// Creates an access point for the Comet API that authenticates using an admin personal API token.
+	/// Admin personal API tokens require Comet Server 26.8.3 or later. Since Comet Server 26.11.3, a
+	/// token can also be passed as the password to the CometAPI constructor.
+	/// An HttpClient is supplied by client code, which this class takes ownership of (it will be
+	/// Disposed when the CometAPI object is Disposed)
+	/// <param name="serverURL">Address of Comet server to connect to</param>
+	/// <param name="username">Username of the admin that owns the token</param>
+	/// <param name="token">Admin personal API token</param>
+	/// <param name="client">HttpClient used to access the Comet server. Will be cleaned up on Dispose</param>
+	/// </summary>
+	public static CometAPI WithToken(string serverURL, string username, string token, HttpClient client) {
+		var api = new CometAPI(serverURL, username, "", client);
+		api.Token = token;
+		return api;
+	}
+
 	public void Dispose() {
 		_client.Dispose();
 	}
@@ -63,9 +98,14 @@ public class CometAPI : IDisposable {
 
 		switch(contentType) {
 			case "application/x-www-form-urlencoded":
-				data["AuthType"] = "Password";
 				data["Username"] = Username;
-				data["Password"] = Password;
+				if (!string.IsNullOrEmpty(Token)) {
+					data["AuthType"] = "Token";
+					data["Token"] = Token;
+				} else {
+					data["AuthType"] = "Password";
+					data["Password"] = Password;
+				}
 
 				request.Content = new FormUrlEncodedContent(data);
 				request.Content.Headers.ContentType = new MediaTypeHeaderValue(contentType);
@@ -74,9 +114,14 @@ public class CometAPI : IDisposable {
 			case "multipart/form-data":
 				MultipartFormDataContent form = new MultipartFormDataContent();
 				
-				form.Headers.Add("X-Comet-Admin-AuthType", "Password");
 				form.Headers.Add("X-Comet-Admin-Username", Username);
-				form.Headers.Add("X-Comet-Admin-Password", Password);
+				if (!string.IsNullOrEmpty(Token)) {
+					form.Headers.Add("X-Comet-Admin-AuthType", "Token");
+					form.Headers.Add("X-Comet-Admin-Token", Token);
+				} else {
+					form.Headers.Add("X-Comet-Admin-AuthType", "Password");
+					form.Headers.Add("X-Comet-Admin-Password", Password);
+				}
 				
 				foreach (var pair in data) {
 					// The filename makes the server see a file part, which is how multipart APIs read uploads
@@ -842,7 +887,7 @@ public class CometAPI : IDisposable {
 	/// </summary>
 	/// <param name="TargetUser">the username of the admin to be deleted</param>
 	/// <param name="TargetOrgID">(Optional) the organization ID of the admin to be deleted. If omitted, defaults to the
-	/// top-level organization. (>= 26.11.0)</param>
+	/// top-level organization. (>= 26.10.2)</param>
 	public async Task<CometAPIResponseMessage> AdminAdminUserDeleteAsync(string TargetUser, string TargetOrgID = null) {
 		var data = new Dictionary<string,string>();
 
@@ -870,7 +915,7 @@ public class CometAPI : IDisposable {
 	/// </summary>
 	/// <param name="TargetUser">the username of the admin to be deleted</param>
 	/// <param name="TargetOrgID">(Optional) the organization ID of the admin to be deleted. If omitted, defaults to the
-	/// top-level organization. (>= 26.11.0)</param>
+	/// top-level organization. (>= 26.10.2)</param>
 	public CometAPIResponseMessage AdminAdminUserDelete(string TargetUser, string TargetOrgID = null) {
 		var resultTask = AdminAdminUserDeleteAsync(TargetUser, TargetOrgID);
 		resultTask.Wait();
@@ -887,7 +932,7 @@ public class CometAPI : IDisposable {
 	/// password with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetOrgID">(Optional) If present, only list the administrators belonging to this organization.
-	/// Otherwise, administrators from all organizations are listed. (>= 26.11.0)</param>
+	/// Otherwise, administrators from all organizations are listed. (>= 26.10.2)</param>
 	public async Task<AllowedAdminUser[]> AdminAdminUserListAsync(string TargetOrgID = null) {
 		var data = new Dictionary<string,string>();
 
@@ -913,7 +958,7 @@ public class CometAPI : IDisposable {
 	/// password with AuthType=Password).
 	/// </summary>
 	/// <param name="TargetOrgID">(Optional) If present, only list the administrators belonging to this organization.
-	/// Otherwise, administrators from all organizations are listed. (>= 26.11.0)</param>
+	/// Otherwise, administrators from all organizations are listed. (>= 26.10.2)</param>
 	public AllowedAdminUser[] AdminAdminUserList(string TargetOrgID = null) {
 		var resultTask = AdminAdminUserListAsync(TargetOrgID);
 		resultTask.Wait();
@@ -987,10 +1032,10 @@ public class CometAPI : IDisposable {
 	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
 	/// password with AuthType=Password).
 	/// </summary>
-	/// <param name="TargetUser">the username of the admin to be updated (>= 26.11.0)</param>
-	/// <param name="Profile">the updated administrator account (>= 26.11.0)</param>
+	/// <param name="TargetUser">the username of the admin to be updated (>= 26.10.2)</param>
+	/// <param name="Profile">the updated administrator account (>= 26.10.2)</param>
 	/// <param name="TargetOrgID">(Optional) the organization ID of the admin to be updated. If omitted, defaults to the
-	/// top-level organization. (>= 26.11.0)</param>
+	/// top-level organization. (>= 26.10.2)</param>
 	public async Task<CometAPIResponseMessage> AdminAdminUserSetAsync(string TargetUser, AllowedAdminUser Profile, string TargetOrgID = null) {
 		var data = new Dictionary<string,string>();
 
@@ -1026,10 +1071,10 @@ public class CometAPI : IDisposable {
 	/// This API does not accept admin personal API token authentication (AuthType=Token, or the token supplied as the
 	/// password with AuthType=Password).
 	/// </summary>
-	/// <param name="TargetUser">the username of the admin to be updated (>= 26.11.0)</param>
-	/// <param name="Profile">the updated administrator account (>= 26.11.0)</param>
+	/// <param name="TargetUser">the username of the admin to be updated (>= 26.10.2)</param>
+	/// <param name="Profile">the updated administrator account (>= 26.10.2)</param>
 	/// <param name="TargetOrgID">(Optional) the organization ID of the admin to be updated. If omitted, defaults to the
-	/// top-level organization. (>= 26.11.0)</param>
+	/// top-level organization. (>= 26.10.2)</param>
 	public CometAPIResponseMessage AdminAdminUserSet(string TargetUser, AllowedAdminUser Profile, string TargetOrgID = null) {
 		var resultTask = AdminAdminUserSetAsync(TargetUser, Profile, TargetOrgID);
 		resultTask.Wait();
@@ -2164,7 +2209,7 @@ public class CometAPI : IDisposable {
 	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
 	/// with AuthType=Password).
 	/// </summary>
-	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="TargetID">The live connection GUID (>= 26.11.3)</param>
 	public async Task<CometAPIResponseMessage> AdminDispatcherClearLoginPasswordAsync(string TargetID) {
 		var data = new Dictionary<string,string>();
 
@@ -2191,7 +2236,7 @@ public class CometAPI : IDisposable {
 	/// This API accepts admin personal API token authentication (AuthType=Token, or the token supplied as the password
 	/// with AuthType=Password).
 	/// </summary>
-	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="TargetID">The live connection GUID (>= 26.11.3)</param>
 	public CometAPIResponseMessage AdminDispatcherClearLoginPassword(string TargetID) {
 		var resultTask = AdminDispatcherClearLoginPasswordAsync(TargetID);
 		resultTask.Wait();
@@ -6543,7 +6588,7 @@ public class CometAPI : IDisposable {
 	/// <param name="Config">Updated configuration content (>= 17.3.8)</param>
 	/// <param name="RequireHash">(Optional) If present, the change is only applied if the server configuration is
 	/// unchanged since this hash was retrieved from the AdminMetaServerConfigGetAndHash API. Otherwise, the change is
-	/// rejected with status 409 and the server does not restart. (>= 26.11.0)</param>
+	/// rejected with status 409 and the server does not restart. (>= 26.10.2)</param>
 	public async Task<CometAPIResponseMessage> AdminMetaServerConfigSetAsync(ServerConfigOptions Config, string RequireHash = null) {
 		var data = new Dictionary<string,string>();
 
@@ -6576,7 +6621,7 @@ public class CometAPI : IDisposable {
 	/// <param name="Config">Updated configuration content (>= 17.3.8)</param>
 	/// <param name="RequireHash">(Optional) If present, the change is only applied if the server configuration is
 	/// unchanged since this hash was retrieved from the AdminMetaServerConfigGetAndHash API. Otherwise, the change is
-	/// rejected with status 409 and the server does not restart. (>= 26.11.0)</param>
+	/// rejected with status 409 and the server does not restart. (>= 26.10.2)</param>
 	public CometAPIResponseMessage AdminMetaServerConfigSet(ServerConfigOptions Config, string RequireHash = null) {
 		var resultTask = AdminMetaServerConfigSetAsync(Config, RequireHash);
 		resultTask.Wait();
@@ -9012,7 +9057,7 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="TargetID">The live connection GUID (>= 26.11.3)</param>
 	public async Task<CometAPIResponseMessage> UserWebDispatcherClearLoginPasswordAsync(string TargetID) {
 		var data = new Dictionary<string,string>();
 
@@ -9036,7 +9081,7 @@ public class CometAPI : IDisposable {
 	/// access.
 	/// This API requires the Auth Role to be enabled.
 	/// </summary>
-	/// <param name="TargetID">The live connection GUID</param>
+	/// <param name="TargetID">The live connection GUID (>= 26.11.3)</param>
 	public CometAPIResponseMessage UserWebDispatcherClearLoginPassword(string TargetID) {
 		var resultTask = UserWebDispatcherClearLoginPasswordAsync(TargetID);
 		resultTask.Wait();
